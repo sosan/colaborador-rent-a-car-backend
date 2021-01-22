@@ -31,11 +31,19 @@
       <form class="form-inline">
         <label for="fechaRecogida">Fecha Recogida :<label>
         <!-- <input type="text" class="form-control has-Datepicker" id="fechaRecogida" name="" readonly=""> -->
-        <input type="text" class="form-control " id="fechaRecogida" data-placement="rigth" data-align="top" name="" readonly="">
-        <img src="./img/img-Calendar/calendar.jpg" alt="Fecha recogida" class="" width="40px">
-
+        <!-- <input type="text" class="form-control " id="fechaRecogida" data-placement="rigth" data-align="top" name="" readonly=""> -->
+        
         <label>Hora :</label>
-        <input type="text" class="form-control clockpicker " data-placement="right" data-align="top" data-autoclose="true" readonly="">
+        <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
+          <input type="text" class="form-control" value="13:14">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+          </span>
+        </div>
+        <img src="./img/img-Calendar/calendar.jpg" alt="Fecha recogida" class="" width="40px">
+        <!-- <input type="text" class="form-control clockpicker " data-placement="right" data-align="top" data-autoclose="true" readonly="">
+        <input type="text" class="form-control clockpicker" value="13:14"> -->
+
       </form> 
       
     </div>
@@ -48,6 +56,8 @@
     
     <button type="submit" class="btn btn-success ml-sm-3">Buscar</button>
 
+    <!-- *********************************************** -->
+  
 
   </body>
 </html>
@@ -66,3 +76,8 @@
 </script>
 
  
+
+
+<script type="text/javascript">
+  $('.clockpicker').clockpicker();
+  </script>

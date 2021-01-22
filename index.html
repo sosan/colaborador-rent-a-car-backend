@@ -64,7 +64,7 @@
             <!-- Fin Cabecera -->
 
             <section id="eslogan">
-                Conoce Mallorca...
+                Conozca Mallorca...
             </section>
             
             <!-- Inicio contenido -->
@@ -137,12 +137,13 @@
                                             Hora :
                                     </label>
                                 </div>
-                                <div class="clockpicker">
-                                    <input type="text" class="form-control form-control-clock" value="09:00" ata-align="top" data-placement="bottom" data-autoclose="true" readonly=""/>
+                                <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+                                    <input type="text" class="form-control form-control-clock" value="09:00" readonly=""/>
                                     <span class="input-group-addon">
-                                        <img src="/img/Img-Clock/clock.png" alt="Reloj Recogida" class="img-clock">
+                                      <!-- <span class="glyphicon glyphicon-time"></span> -->
+                                      <img src="/img/Img-Clock/clock.png" alt="Reloj Recogida" class="img-clock">
                                     </span>
-                                </div>         
+                                </div>
                             </form>   
                         </div>    
                     </div>
@@ -166,12 +167,13 @@
                                             Hora :
                                     </label>
                                 </div>
-                                <div class="clockpicker">
-                                    <input type="text" class="form-control form-control-clock" value="20:00" ata-align="top" data-placement="bottom" data-autoclose="true" readonly=""/>
+                                <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+                                    <input type="text" class="form-control form-control-clock" value="20:00" readonly=""/>
                                     <span class="input-group-addon">
-                                        <img src="/img/Img-Clock/clock.png" alt="Reloj Devolucion" class="img-clock">
+                                      <!-- <span class="glyphicon glyphicon-time"></span> -->
+                                      <img src="/img/Img-Clock/clock.png" alt="Reloj Recogida" class="img-clock">
                                     </span>
-                                </div>         
+                                </div>
                             </form>   
                         </div>    
                     </div>
@@ -857,6 +859,8 @@
 </script>
 <!-- Fin Bootstrap Calendario Cupertino themes ------------>
 
+
+<!--------------------- ClockPicker ----------------------->
 <script type="text/javascript">
     $('.clockpicker').clockpicker();
 </script>
