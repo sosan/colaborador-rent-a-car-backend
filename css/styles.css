@@ -49,10 +49,10 @@ body{
   grid-row-end: 1;
 }
 
-
 .logo h1 {
   width: 100%;
-  margin-top: 45px;
+  margin-top: 46px;
+  margin-left: -9px;
   font-size: 40px;
   color: #000080;
   text-shadow: 1px 1px 2px;
@@ -125,8 +125,6 @@ body{
 }
 
 #eslogan {
-  /* background-color: #F3E04E;
-  background-color: #939597; */
   display: grid;
   grid-template-columns: 1fr;
   
@@ -156,21 +154,10 @@ body{
 
   padding-top: 20px;
   padding-bottom: 20px;
-  /* background: transparent url("../img/Img-Banner/FaroSoller.jpeg"); */
   background-image: url("../img/Img-Banner/FaroSoller.jpeg");
   background-position: center;
   background-size: cover;
   position: relative;
-}
-
-#content::before{
-    /* content:'';
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    background-color: rgba(0, 0, 0, 0.2); */
 }
 
 /* --------- Inicio Formulario busqueda ----------*/
@@ -182,7 +169,6 @@ body{
   margin-left: 67px;
   padding-top: 2px;
   background: #c3d2f2;
-  /* border: 1px solid black; */
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.3),
     0px 0px 1px white inset, 0px -3px 2px rgba(0, 0, 0, 0.3) inset;
   position: relative;  
@@ -224,7 +210,7 @@ body{
 }
 
 .form-control-date {
-  width: 109px !important;
+  width: 153px !important;
   margin-left: 2px;
   box-shadow: 0px 0px 2px #1e1c1c;
   cursor: pointer;
@@ -312,7 +298,6 @@ body{
   box-shadow: 0px 10px 15px -5px rgba(0, 0, 0, 0.65);
 }
 
-
 /* -----------------   Inicio Adelante y Atrás  ---------------- */
 .adelante,
 .atras {
@@ -330,7 +315,6 @@ body{
   background: white;
 }
 
-
 /* *********   Inicio Atras    ************** */
 .atras {
   display: grid;
@@ -340,11 +324,6 @@ body{
   font-family: "open-sans";
   background-color: #d4d6d9bd;
 }
-
-/* .atras img{
-  grid-row-start: 2;
-  grid-column-start: 3;
-} */
 
 .DetailCar_Vehiculo {
   font-weight: bold;
@@ -431,14 +410,8 @@ body{
   padding: 14px 10px;
 }
 
-
-
 /* *********   Fin Atras    ************** */
-
-
 /* -----------------   Fin Adelante y Atrás  ---------------- */
-
-
 
 .tarjeta-wrap:hover .tarjeta {
   transform: rotateY(180deg);
@@ -509,7 +482,6 @@ body{
   margin-right: 20px;
   border: 1px solid #ccc;
   background: #ffffff;
-  /* box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.3), 0px 1px white inset, 0px -3px 2px rgba(0, 0, 0, 0.3) inset; */
 }
 
 .tarjetaCoche img {
@@ -522,12 +494,6 @@ body{
   font-size: 10px;
   text-align: center;
 }
-
-/* 
-.wrap{
-    width: 100%;
-    margin: 2px auto;
-} */
 
 .project-info {
   font-size: 10px;
@@ -547,7 +513,6 @@ body{
   grid-template-columns: 1fr 25%;
   align-items: center;
   justify-content: start;
-
   height: 120px;
   align-items: center;
   border-top: 1px solid rgba(225, 225, 226, 0.8);

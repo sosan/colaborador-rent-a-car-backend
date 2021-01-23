@@ -67,59 +67,16 @@
                 Conozca Mallorca...
             </section>
             
-            <!-- Inicio contenido -->
+            <!------------ Inicio contenido ------------------------->
             <section id="content">
                 <!-------- Inicio Formulario de Busqueda ------------>
                 <div class="aside-box">
                     <div class="titulo-form">
                         <label>Alquiler de Coches</label>
                     </div>
-                        <!-- <div class="form-inline form-buscar">
-                            <div class="formDataRecogida">
-                                <form class="form-inline form-separador">  
-                                    <div class="labelDate-form-recogida">
-                                        <label for="fechaRecogida">Recogida:<label>
-                                    </div>
-
-                                    <input type="text" class="form-control form-control-data datepicker" id="fechaRecogida" value="" data-placement="right" data-align="bottom" data-name="" readonly="">
-                                    <img src="./img/img-Calendar/calendar.jpg" alt="Calendario recogida" class="img-calendar">
-                                
-                                    <div class="labelClock-form-recogida">
-                                        <label for="horaRecogida">Hora :</label>
-                                    </div>
-
-                                    <input type="text" class="form-control form-contol-clock clockpicker" id="horaRecogida" value="09:00" data-align="top" data-placement="bottom" data-autoclose="true" readonly="">
-                                    <img src="/img/Img-Clock/clock.png" alt="Relog Recogida" class="img-clock">
-                                </form>   
-                            </div> 
-                            
-                            <div class="formDataDevolucion">
-                                <form class="form-inline">
-                                    <label for="fechaDevolucion">Devolución :<label>
-                                    <input type="text" class="form-control form-control-data datepicker" id="fechaDevolucion" value="" data-placement="right" data-align="bottom" data-name="" readonly="">
-                                        
-                                    <img src="./img/img-Calendar/calendar.jpg" alt="Calendario devolucion" class="img-calendar">
-                                    
-                                    <div class="labelClock-form-recogida">
-                                        <label>Hora :</label>
-                                    </div>
-                                    <input type="text" class="form-control form-contol-clock clockpicker" value="20:00" data-align="top" data-placement="bottom" data-autoclose="true" readonly="">
-    
-                                    <img src="/img/Img-Clock/clock.png" alt="Relog Recogida" class="img-clock">
-                                </form>   
-                            </div>
-                            
-                            <div class="form-chequeo">
-                                <label>
-                                    <input type="checkbox" name="" class="form-check-input mr-sm-2" checked>Conductor de entre 26 y 69 años
-                                </label>
-                            </div>
                         
-                        </div>
-                        <div class="btnBuscar">
-                            <button type="button" class="btn btn-primary btn-lg btn-block">Ver precios</button>
-                        </div> -->
-                        <!-- -----------------------------------Inicio Fecha/Hora Recogida  ------------------------- -->
+
+                    <!-------------  Inicio  Fecha/Hora Recogida  ------------------------- -->
                     <div class="form-inline form-buscar">
                         <div class="formDateRecogida">
                             <form class="form-inline">  
@@ -140,16 +97,15 @@
                                 <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
                                     <input type="text" class="form-control form-control-clock" value="09:00" readonly=""/>
                                     <span class="input-group-addon">
-                                      <!-- <span class="glyphicon glyphicon-time"></span> -->
                                       <img src="/img/Img-Clock/clock.png" alt="Reloj Recogida" class="img-clock">
                                     </span>
                                 </div>
                             </form>   
                         </div>    
                     </div>
-                    <!-- -----------------------------------Fin Fecha/Hora Recogida  ------------------------- -->
-                    <!-- ******************************************************************************** -->
-                    <!-- -----------------------------------Inicio Fecha/Hora Devolucion  -------------------- -->
+                    <!-- --------------------- Fin Fecha/Hora Recogida  --------------------------->
+                    <!-- *********************************************************************** -->
+                    <!-- ------------------ Inicio Fecha/Hora Devolucion -------------------------->
                     <div class="form-inline form-buscar">
                         <div class="formDateDevolucion">
                             <form class="form-inline">  
@@ -170,14 +126,13 @@
                                 <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
                                     <input type="text" class="form-control form-control-clock" value="20:00" readonly=""/>
                                     <span class="input-group-addon">
-                                      <!-- <span class="glyphicon glyphicon-time"></span> -->
                                       <img src="/img/Img-Clock/clock.png" alt="Reloj Recogida" class="img-clock">
                                     </span>
                                 </div>
                             </form>   
                         </div>    
                     </div>
-                    <!-- -----------------------------------Fin Fecha/Hora Devolucion  ------------------------- -->
+                    <!--------------------------- Fin Fecha/Hora Devolucion  ---------------------->
 
                     <div class="form-chequeo">
                         <label>
@@ -188,7 +143,7 @@
                         <button type="button" class="btn btn-primary btn-lg btn-block">Ver precios</button>
                     </div>
                 </div>         
-                <!-------- Fin Formulario de Busqueda ------------>
+                <!-------------------------------- Fin Formulario de Busqueda --------------------------->
 
                 <!-------- Inicio Tarjetas --------->
                 <div class="wrap">
@@ -810,37 +765,37 @@
         </div>
         <!-- Fin container -->
 
-        <!-------------------------- Scripts ---------------------------->
-
+        
     </body>
-
-</html>
-
-<!-- Inicio Bootstrap Calendario Cupertino themes -------->
-<!-- <script>
-    $( function() {
-      $('#fechaRecogida').datepicker({ dateFormat: 'dd-mm-yy' }); 
-      $('.datepicker').datepicker("setDate", new Date());
-    } );
+    
+    </html>
+    
+<!--------------------------- Scripts ---------------------------->
+<script>
+    $.datepicker.regional['es'] = {
+        closeText: 'Cerrar',
+        prevText: '< Ant',
+        nextText: 'Sig >',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['es']);
 </script>
 
-<script>
-    $( function() {
-      $('#fechaDevolucion').datepicker({ dateFormat: 'dd-mm-yy' }); 
-      $('.datepicker').datepicker("setDate", new Date());
-    } );
-</script> -->
-<!-- Fin Bootstrap Calendario Cupertino themes ------------>
-
-<!-- <script>
-    $('.clockpicker').clockpicker();
-</script> -->
-<!-- --------------------------------------------------- -->
-
-<!-- Inicio Bootstrap Calendario Cupertino themes -------->
-<script>
+<!-- Scripts calendario Recogida/Devolucion ---------------------->
+<script> 
     $(function() {
-        $("#fechaRecogida").datepicker({ dateFormat: 'dd-mm-yy' });
+        $("#fechaRecogida").datepicker({ dateFormat: 'D,dd-mm-yy', minDate:'1d' });
         $(".datepicker").datepicker("setDate", new Date());
         $(".triggerRec").click(function(){
             $("#fechaRecogida").datepicker("show");
@@ -850,19 +805,19 @@
 
 <script>
     $(function() {
-        $("#fechaDevolucion").datepicker({ dateFormat: 'dd-mm-yy' });
+        $("#fechaDevolucion").datepicker({ dateFormat: 'D,dd-mm-yy', minDate:'1d' });
         $(".datepicker").datepicker("setDate", new Date());
         $(".triggerDev").click(function(){
             $("#fechaDevolucion").datepicker("show");
         }); 
     });
 </script>
-<!-- Fin Bootstrap Calendario Cupertino themes ------------>
+<!--------- Fin Bootstrap Calendario Cupertino themes ------------>
 
 
-<!--------------------- ClockPicker ----------------------->
+<!---------------------------- ClockPicker ----------------------->
 <script type="text/javascript">
     $('.clockpicker').clockpicker();
 </script>
-<!-- --------------------------------------------------- -->
+<!--------- --------------------------------------------------- -->
 
