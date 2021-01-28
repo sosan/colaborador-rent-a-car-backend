@@ -418,6 +418,7 @@ body{
 }
 
 .card1 {
+  /* background-image: url("../img/Img-Vehiculos/Coches/Peugeot_108.png"); */
   background-image: url("../img/Img-Vehiculos/Coches/Peugeot_108.png");
   background-size: cover;
 }
@@ -428,7 +429,7 @@ body{
 }
 
 .card3 {
-  background-image: url("../img/Img-Vehiculos/Coches/CitroenC1.jpg");
+  background-image: url("../img/Img-Vehiculos/Coches/CitroenC1.png");
   background-size: cover;
 }
 
@@ -438,7 +439,7 @@ body{
 }
 
 .card5 {
-  background-image: url("../img/Img-Vehiculos/Coches/ToyotaAygoOpen.jpg");
+  background-image: url("../img/Img-Vehiculos/Coches/ToyotaAygoOpen.png");
   background-size: cover;
 }
 .card6 {
@@ -446,19 +447,19 @@ body{
   background-size: cover;
 }
 .card7 {
-  background-image: url("../img/Img-Vehiculos/Coches/CitroenC3.jpeg");
+  background-image: url("../img/Img-Vehiculos/Coches/CitroenC3.png");
   background-size: cover;
 }
 .card8 {
-  background-image: url("../img/Img-Vehiculos/Coches/Peugeot_807.jpg");
+  background-image: url("../img/Img-Vehiculos/Coches/Peugeot_807.png");
   background-size: cover;
 }
 .card9 {
-  background-image: url("../img/Img-Vehiculos/Motos/PiaggioLiberty_125cc.jpeg");
+  background-image: url("../img/Img-Vehiculos/Motos/PiaggioLiberty_125cc.png");
   background-size: cover;
 }
 .card10 {
-  background-image: url("../img/Img-Vehiculos/Motos/Suzuki-Burgman_125cc.jpg");
+  background-image: url("../img/Img-Vehiculos/Motos/Suzuki-Burgman_125cc.png");
   background-size: cover;
 }
 
