@@ -6,6 +6,6 @@ function CustomExceptions(message) {
 
 }
 
-CustomExceptions.prototype = Object.create(Error.prototype);
+// CustomExceptions.prototype = Object.create(Error.prototype);
 
 module.exports = { CustomExceptions }

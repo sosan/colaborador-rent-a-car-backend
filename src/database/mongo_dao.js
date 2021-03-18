@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-const { CustomExceptions } = require("../errors/Exceptions");
+// const { CustomExceptions } = require("../errors/Exceptions");
 
 const client = new MongoClient(process.env.MONGO_DB_URI,
     {
@@ -18,8 +18,8 @@ async function conectDb() {
         console.log(`[process ${process.pid}] CONNECTED TO DB`);
     }
     catch (err) {
-        console.log(err);
-        throw new CustomExceptions("no posible conexion a la base de datos");
+        console.error(err);
+        // throw new CustomExceptions("no posible conexion a la base de datos");
         //TODO: enviar a la db Redis para recoger los errores.
     }
 
