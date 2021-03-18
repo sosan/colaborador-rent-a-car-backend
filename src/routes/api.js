@@ -1,6 +1,5 @@
 const express = require('express');
 const mongo_dao = require('../database/mongo_dao');
-const { CustomExceptions } = require('../errors/exceptions');
 
 const router = express.Router();
 
@@ -28,7 +27,8 @@ router.post("/api", async (req, res) => {
             res.send({
                 "data": "categoria no existe"
             });
-            throw new CustomExceptions("no existe categoria");
+            console.error("no existe categoria")
+            // throw new ("no existe categoria");
             //TODO: pasarlo a una db para pillar ip etc
 
         }
