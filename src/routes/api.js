@@ -1,5 +1,6 @@
 const express = require('express');
-const mongo_dao = require('../database/mongo_dao');
+const apiSchema = require("../schemas/apischema");
+const dbInterfaces = require("../database/dbInterfaces");
 
 const router = express.Router();
 
@@ -7,39 +8,63 @@ router.get("/", (req, res) => {
     res.json({ 'message': 'SERVER RUNNING' });
 });
 
+
+
 router.post("/api", async (req, res) => {
 
-    let categoria = req.body.categoria;
-    if (typeof categoria != "undefined") {
+    const isSchemaValid = await ControlSchema(req.body);
+    
+    if (isSchemaValid === false)
+    {
+        //TODO: mejorar
+        res.send({ "data": "" });
+        console.error("schema invalido")
+        return;
+    }
 
-        if (categoriasDefault.includes(categoria) === true) {
-            let resultados = await mongo_dao.GetCarsByCategoria(categoria);
-            if (resultados != null) {
-                res.send({ "data": resultados });
-            }
-            else {
-                res.send({ "data": "No hay productos" });
-            }
+    // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
+    const resultados = await dbInterfaces.GetCarsByTaken(req.body);
 
-
-        }
-        else {
-            res.send({
-                "data": "categoria no existe"
-            });
-            console.error("no existe categoria")
-            // throw new ("no existe categoria");
-            //TODO: pasarlo a una db para pillar ip etc
-
-        }
-
+    if (resultados !== undefined) {
+        return res.send({ "data": resultados });
     }
     else {
-        res.send({
-            "data": "No existe categoria"
-        }).status;
+        return res.send({ "data": "No hay productos" });
     }
+    
+
 });
 
+const ControlSchema = async (body) =>
+{
+
+    
+    for (key in body)
+    {
+        if (body[key] === "" || body[key] === undefined)
+        {
+            return false;
+        }
+        
+        
+        let schemaValid = false;
+        for (let i = 0; i < apiSchema.length; i++)
+        {
+            if (key === apiSchema[i])
+            {
+                schemaValid = true;
+                break;
+            }
+        }
+
+        if (schemaValid === false)
+        {
+            return false;
+        }
+
+    }
+
+    return true;
+}
 
 module.exports = router;

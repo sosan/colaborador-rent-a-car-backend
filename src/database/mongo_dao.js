@@ -26,46 +26,37 @@ async function conectDb() {
 }
 
 /**
- * Devuelve listado de resultados por categoria
- * @param {Array} categoria
+ * Devuelve listado de resultados por fecha
+ * @param {Array} fecha
  * @returns {null|Array} nulo o listado de resultados
  */
-async function GetCarsByCategoria(categoria) {
+
+const GetCarsByTaken = async (taken) =>
+{
 
     try {
         let cursorResultados = await collectionProductos.find(
             {
-                "categoria": categoria
-            },
-            {
-                projection: {
-                    "_id": false,
-                    "orden": false,
-                    "fechaDescuento": false,
-                    "fecharegistro": false
-                }
+                "ocupado": taken
             }
-        ).sort({
-            "fechaDescuento": -1
-        }).toArray();
+        )
+        .project({ _id: 0 })
+        .toArray();
 
-        if (typeof cursorResultados != "undefined") {
-            if (cursorResultados.length > 0) {
-                return cursorResultados;
-            }
-            else {
-                return null;
-            }
+        if (cursorResultados !== undefined)
+        {
+            return cursorResultados;
         }
-        else {
+        else
+        {
             return null;
         }
 
     }
     catch (err) {
-        console.log(err);
-        throw new CustomExceptions("no posible conexion con la db")
         //TODO: enviar a otra db error
+        console.error(err);
+        // throw new CustomExceptions("no posible conexion con la db")
     }
 
 
@@ -73,5 +64,5 @@ async function GetCarsByCategoria(categoria) {
 
 module.exports = {
     conectDb,
-    GetProductosByCategoria: GetCarsByCategoria
+    GetCarsByTaken
 }
