@@ -4,9 +4,6 @@ const apiSchema = [
     "fechaRecogidaValue",
     "horaRecogidaValue",
     "conductorExperienciaValue"
-
 ];
-
-
 
 module.exports = apiSchema;
