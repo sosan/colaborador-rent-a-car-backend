@@ -36,6 +36,7 @@ router.post("/api", async (req, res) => {
     // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
     const resultados = await dbInterfaces.GetCarsByReservado(req.body);
 
+    console.log(JSON.stringify(resultados));
     if (resultados !== undefined) {
         return res.send({ "data": resultados });
     }
