@@ -15,5 +15,11 @@
             "dest": "/src/index.js"
 
         }
-    ]
+    ],
+    "env": {
+        "MONGO_DB_URI": "@mongo-db-uri-production-p4sv",
+        "MONGO_DB_NAME": "@mongo-db-name-production-a9jv",
+        "MONGO_COLECCION_CARS": "@mongo-coleccion-cars-production-y289",
+        "NODE_EXPRESS_PORT": "@node-express-port-production-pbmi"
+    }
 }
