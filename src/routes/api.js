@@ -46,10 +46,11 @@ router.post("/api", async (req, res) => {
 
 });
 
+// control de schema para comprobar que lo que envia el frontend
+// cumple con el schema
 const ControlSchema = async (body) =>
 {
 
-    
     for (key in body)
     {
         if (body[key] === "" || body[key] === undefined)

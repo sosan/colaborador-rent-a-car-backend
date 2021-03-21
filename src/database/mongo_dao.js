@@ -54,7 +54,7 @@ const GetCarsByReservado = async (taken) =>
 
     }
     catch (err) {
-        //TODO: enviar a otra db error
+        //TODO: enviar a otra db error, redis
         console.error(err);
         // throw new CustomExceptions("no posible conexion con la db")
     }
