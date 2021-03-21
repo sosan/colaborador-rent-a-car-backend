@@ -4,7 +4,8 @@ const { MongoClient } = require("mongodb");
 const client = new MongoClient(process.env.MONGO_DB_URI,
     {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        logger: debug
     });
 
 let collectionCars = undefined;
@@ -35,12 +36,12 @@ const GetCarsByReservado = async (taken) =>
 {
 
     try {
-        return { 
-            "uri": process.env.MONGO_DB_URI,
-            "dbname": process.env.MONGO_DB_NAME,
-            "colcar": process.env.MONGO_COLECCION_CARS,
-            "expressport": process.env.NODE_EXPRESS_PORT
-        };
+        // return { 
+        //     "uri": process.env.MONGO_DB_URI,
+        //     "dbname": process.env.MONGO_DB_NAME,
+        //     "colcar": process.env.MONGO_COLECCION_CARS,
+        //     "expressport": process.env.NODE_EXPRESS_PORT
+        // };
         let resultados = await collectionCars.find(
             {
                 "reservado": taken
@@ -49,7 +50,7 @@ const GetCarsByReservado = async (taken) =>
         .project({ _id: 0 })
         .toArray();
         
-
+        console.log(JSON.stringify(resultados));
         if (resultados !== undefined)
         {
             return resultados;
