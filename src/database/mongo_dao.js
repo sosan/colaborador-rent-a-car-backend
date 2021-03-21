@@ -7,7 +7,7 @@ const client = new MongoClient(process.env.MONGO_DB_URI,
         useUnifiedTopology: true
     });
 
-let collectionCars = null;
+let collectionCars = undefined;
 
 async function conectDb() {
     try {
@@ -49,7 +49,7 @@ const GetCarsByReservado = async (taken) =>
         }
         else
         {
-            return null;
+            return undefined;
         }
 
     }
