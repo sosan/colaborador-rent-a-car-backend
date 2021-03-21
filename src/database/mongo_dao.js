@@ -7,14 +7,14 @@ const client = new MongoClient(process.env.MONGO_DB_URI,
         useUnifiedTopology: true
     });
 
-let collectionProductos = null;
+let collectionCars = null;
 
 async function conectDb() {
     try {
         const connect = await client.connect();
         const currentDb = client.db(process.env.MONGO_DB_NAME);
 
-        collectionProductos = currentDb.collection(process.env.MONGO_COLECCION_CARS);
+        collectionCars = currentDb.collection(process.env.MONGO_COLECCION_CARS);
         console.log(`[process ${process.pid}] CONNECTED TO DB`);
     }
     catch (err) {
@@ -31,21 +31,21 @@ async function conectDb() {
  * @returns {null|Array} nulo o listado de resultados
  */
 
-const GetCarsByTaken = async (taken) =>
+const GetCarsByReservado = async (taken) =>
 {
 
     try {
-        let cursorResultados = await collectionProductos.find(
+        let resultados = await collectionCars.find(
             {
-                "ocupado": taken
+                "reservado": taken
             }
         )
         .project({ _id: 0 })
         .toArray();
 
-        if (cursorResultados !== undefined)
+        if (resultados !== undefined)
         {
-            return cursorResultados;
+            return resultados;
         }
         else
         {
@@ -64,5 +64,5 @@ const GetCarsByTaken = async (taken) =>
 
 module.exports = {
     conectDb,
-    GetCarsByTaken
+    GetCarsByReservado
 }

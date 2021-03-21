@@ -7,13 +7,13 @@ const mongo_dao = require('../database/mongo_dao');
  * @returns {null|Array} nulo o listado de resultados
  */
 
-const GetCarsByTaken = async (data) => {
+const GetCarsByReservado = async (data) => {
 
-    const resultados = await mongo_dao.GetCarsByTaken(false);
+    const resultados = await mongo_dao.GetCarsByReservado(false);
     return resultados;
 
 };
 
 module.exports = {
-    GetCarsByTaken
+    GetCarsByReservado
 }

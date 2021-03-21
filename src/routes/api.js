@@ -9,6 +9,17 @@ router.get("/", (req, res) => {
 });
 
 
+router.get("/api/all", async (req, res) => {
+    const resultados = await dbInterfaces.GetCarsByReservado(req.body);
+
+    if (resultados !== undefined) {
+        return res.send({ "data": resultados });
+    }
+    else {
+        return res.send({ "data": "No hay productos" });
+    }
+
+});
 
 router.post("/api", async (req, res) => {
 
@@ -23,7 +34,7 @@ router.post("/api", async (req, res) => {
     }
 
     // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
-    const resultados = await dbInterfaces.GetCarsByTaken(req.body);
+    const resultados = await dbInterfaces.GetCarsByReservado(req.body);
 
     if (resultados !== undefined) {
         return res.send({ "data": resultados });
