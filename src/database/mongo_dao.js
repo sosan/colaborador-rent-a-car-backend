@@ -49,7 +49,14 @@ const GetCarsByReservado = async (taken) =>
         }
         else
         {
-            return undefined;
+            return { 
+                "uri": process.env.MONGO_DB_URI,
+                "dbname": process.env.MONGO_DB_NAME,
+                "colcar": process.env.MONGO_COLECCION_CARS,
+                "expressport": process.env.NODE_EXPRESS_PORT
+            }
+            ;
+            // return undefined;
         }
 
     }
