@@ -13,14 +13,14 @@ steps:
   clone:
     title: "Cloning repository"
     type: "git-clone"
-    repo: "codefreshdemo/demochat"
-    revision: "master"
+    repo: "sosan/Colaborador-rent-a-car-backend"
+    revision: "backend"
     stage: "clone"
 
   build_dev_image:
     title: "Building Dev image"
     type: "build"
-    image_name: "codefreshdemo/demochat"
+    image_name: "sosan/Colaborador-rent-a-car-backend"
     working_directory: "${{clone}}"
     tag: "dev"
     dockerfile: "Dockerfile.dev"
@@ -28,19 +28,19 @@ steps:
 
   test:
     title: "Running test"
-    type: "freestyle" 
-    image: ${{build_dev_image}} 
-    working_directory: /root/demochat
-    commands:
-      - 'npm run test'
-    stage: "unit"
+    # type: "freestyle" 
+    # image: ${{build_dev_image}} 
+    # working_directory: /root/colaborador-backend
+    # commands:
+    #   - 'npm run test'
+    # stage: "unit"
   
   build_image:
     title: "Building App image"
     type: "build"
-    image_name: "codefreshdemo/demochat"
+    image_name: "sosan/Colaborador-rent-a-car-backend"
     working_directory: "${{clone}}"
-    tag: "dev"
+    tag: "prod"
     dockerfile: "Dockerfile"
     stage: "build"
     

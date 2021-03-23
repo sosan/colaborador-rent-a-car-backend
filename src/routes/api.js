@@ -9,18 +9,6 @@ router.get("/", (req, res) => {
 });
 
 
-router.get("/api/all", async (req, res) => {
-    const resultados = await dbInterfaces.GetCarsByReservado(req.body);
-
-    if (resultados !== undefined) {
-        return res.send({ "data": resultados });
-    }
-    else {
-        return res.send({ "data": "No hay productos" });
-    }
-
-});
-
 router.post("/api", async (req, res) => {
 
     const isSchemaValid = await ControlSchema(req.body);
@@ -36,7 +24,6 @@ router.post("/api", async (req, res) => {
     // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
     const resultados = await dbInterfaces.GetCarsByReservado(req.body);
 
-    console.log(JSON.stringify(resultados));
     if (resultados !== undefined) {
         return res.send({ "data": resultados });
     }
@@ -49,35 +36,33 @@ router.post("/api", async (req, res) => {
 
 // control de schema para comprobar que lo que envia el frontend
 // cumple con el schema
-const ControlSchema = async (body) =>
-{
+const ControlSchema = async (body) => {
 
-    for (key in body)
-    {
-        if (body[key] === "" || body[key] === undefined)
-        {
+    const tamanyoBody = Object.keys(body).length;
+    if (tamanyoBody <= 0 || tamanyoBody > apiSchema.length) return false;
+
+    let isValid = false;
+    for (key in body) {
+        if (body[key] === "" || body[key] === undefined) {
             return false;
         }
-        
-        
-        let schemaValid = false;
-        for (let i = 0; i < apiSchema.length; i++)
-        {
-            if (key === apiSchema[i])
-            {
+
+        let schemaValid = isValid = false;
+        for (let i = 0; i < apiSchema.length; i++) {
+            if (key === apiSchema[i]) {
                 schemaValid = true;
+                isValid = true;
                 break;
             }
         }
 
-        if (schemaValid === false)
-        {
+        if (schemaValid === false) {
             return false;
         }
 
     }
 
-    return true;
+    return isValid;
 }
 
 module.exports = router;
