@@ -24,12 +24,24 @@ router.post("/api", async (req, res) => {
     // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
     const resultadosCoches = await dbInterfaces.GetCarsByReservado(req.body);
     const preciosPorClase = await dbInterfaces.GetPreciosPorClase();
-    //comprobar los dias de reserva, si es mayor a 7 dias, aplicar PRECIOMAS7 * DIAS
-
+    
     if (resultadosCoches !== undefined) {
-
+        
         for (let i = 0; i < resultadosCoches.length; i++)
         {
+
+            const fechaRecogidaFormSplitted = req.body.fechaRecogida.split(",")[1].split("-");
+            const anyo = fechaRecogidaFormSplitted[2];
+            const mes = fechaRecogidaFormSplitted[1];
+            const dia = fechaRecogidaFormSplitted[0];
+            const textoFecha = `${anyo}-${mes}-${dia}T${req.body.horaRecogida}:00Z`;
+            const fechaRecogida = new Date('2011-04-11T10:20:30Z')
+            // req.body.fechaRecogida.split("-");
+            //comprobar los dias de reserva, si es mayor a 7 dias, aplicar PRECIOMAS7 * DIAS
+            const fecha = req.body.fechaRecogida;
+
+            const claseVehiculo = resultadosCoches[i].clasevehiculo;
+            const listadoPrecios = preciosPorClase[claseVehiculo];
 
 
          
@@ -66,6 +78,8 @@ const ControlSchema = async (body) => {
                 break;
             }
         }
+
+        //TODO: controla hora y fecha introducidas
 
         if (schemaValid === false) {
             return false;

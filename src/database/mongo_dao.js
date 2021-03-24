@@ -48,7 +48,7 @@ exports.GetCarsByReservado = async (taken) =>
         .project({ _id: 0 })
         .toArray();
         
-        if (resultados !== undefined)
+        if (resultados !== undefined || resultados !== [])
         {
             return resultados;
         }

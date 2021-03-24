@@ -50,15 +50,18 @@ const TransformarPreciosPorClase = async (preciosPorClase) =>
 
     let schema = {};
 
-    for (let i = 0; i < preciosPorClase.lenght(); i++ )
+    for (let i = 0; i < preciosPorClase.length; i++ )
     {
 
         const key = preciosPorClase[i]["CLASE"];
-        // const currentValues = preciosPorClase[i]["CLASE"];
+        
         let arrayPrecios = [];
-        for (let j = 0; j < preciosPorClase[i].lenght(); j++ )
+        
+        for (let key in preciosPorClase[i])
         {
-            arrayPrecios.push[currentValues[j]];
+            if (key === "CLASE") continue;
+            const valorPrecio = preciosPorClase[i][key];
+            arrayPrecios.push(valorPrecio);
 
         }
         
@@ -66,84 +69,7 @@ const TransformarPreciosPorClase = async (preciosPorClase) =>
 
     }
 
-
-    const x = {
-        basico: [30, 55, 80,],
-        openAutomatic: [32]
-    };
-    /**
-     * [
-  {
-    CLASE: "basico",
-    PRECIO920: 30,
-    PRECIO2: 55,
-    PRECIO3: 80,
-    PRECIO4: 105,
-    PRECIO5: 125,
-    PRECIO6: 145,
-    PRECIO7: 165,
-    PRECIOMAS7: 23,
-  },
-  {
-    CLASE: "openAutomatic",
-    PRECIO920: 32,
-    PRECIO2: 58,
-    PRECIO3: 87,
-    PRECIO4: 112,
-    PRECIO5: 135,
-    PRECIO6: 162,
-    PRECIO7: 180,
-    PRECIOMAS7: 25,
-  },
-  {
-    CLASE: "5pax",
-    PRECIO920: 35,
-    PRECIO2: 65,
-    PRECIO3: 95,
-    PRECIO4: 125,
-    PRECIO5: 150,
-    PRECIO6: 175,
-    PRECIO7: 200,
-    PRECIOMAS7: 28,
-  },
-  {
-    CLASE: "7pax",
-    PRECIO920: 50,
-    PRECIO2: 95,
-    PRECIO3: 130,
-    PRECIO4: 170,
-    PRECIO5: 210,
-    PRECIO6: 240,
-    PRECIO7: 270,
-    PRECIOMAS7: 38,
-  },
-  {
-    CLASE: "motos1",
-    PRECIO920: 30,
-    PRECIO2: 55,
-    PRECIO3: 80,
-    PRECIO4: 105,
-    PRECIO5: 125,
-    PRECIO6: 145,
-    PRECIO7: 165,
-    PRECIOMAS7: 0,
-  },
-  {
-    CLASE: "motos2",
-    PRECIO920: 32,
-    PRECIO2: 58,
-    PRECIO3: 87,
-    PRECIO4: 112,
-    PRECIO5: 135,
-    PRECIO6: 162,
-    PRECIO7: 180,
-    PRECIOMAS7: 0,
-  },
-]
-     *
-     *
-     */
-
+    return schema;
 
 
 };
