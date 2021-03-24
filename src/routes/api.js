@@ -22,10 +22,21 @@ router.post("/api", async (req, res) => {
     }
 
     // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
-    const resultados = await dbInterfaces.GetCarsByReservado(req.body);
+    const resultadosCoches = await dbInterfaces.GetCarsByReservado(req.body);
+    const preciosPorClase = await dbInterfaces.GetPreciosPorClase();
+    //comprobar los dias de reserva, si es mayor a 7 dias, aplicar PRECIOMAS7 * DIAS
 
-    if (resultados !== undefined) {
-        return res.send({ "data": resultados });
+    if (resultadosCoches !== undefined) {
+
+        for (let i = 0; i < resultadosCoches.length; i++)
+        {
+
+
+         
+
+        }
+
+        return res.send({ "data": resultadosCoches });
     }
     else {
         return res.send({ "data": "No hay productos" });

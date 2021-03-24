@@ -10,13 +10,15 @@ const client = new MongoClient(process.env.MONGO_DB_URI,
     });
 
 let collectionCars = undefined;
+let collectionPrecios = undefined;
 
-async function conectDb() {
+exports.conectDb = async () => {
     try {
         const connect = await client.connect();
         const currentDb = client.db(process.env.MONGO_DB_NAME);
 
         collectionCars = currentDb.collection(process.env.MONGO_COLECCION_CARS);
+        collectionPrecios = currentDb.collection(process.env.MONGO_COLECCION_PRECIOS);
         console.log(`[process ${process.pid}] CONNECTED TO DB`);
     }
     catch (err) {
@@ -25,7 +27,7 @@ async function conectDb() {
         //TODO: enviar a la db Redis para recoger los errores.
     }
 
-}
+};
 
 /**
  * Devuelve listado de resultados por fecha
@@ -33,7 +35,7 @@ async function conectDb() {
  * @returns {null|Array} nulo o listado de resultados
  */
 
-const GetCarsByReservado = async (taken) =>
+exports.GetCarsByReservado = async (taken) =>
 {
 
     try {
@@ -63,9 +65,58 @@ const GetCarsByReservado = async (taken) =>
     }
 
 
-}
+};
 
-module.exports = {
-    conectDb,
-    GetCarsByReservado
-}
+
+exports.GetTiposClases = async () =>
+{
+    
+    const tiposClases = await collectionPrecios.find(
+        {
+            "id": "clases"
+        }
+    )
+    .project({ _id: 0 })
+    .toArray();
+    
+    if (tiposClases === undefined)
+    {
+        console.error("Insertar TIPO DE CLASES");
+        return undefined;
+    }
+    
+    return tiposClases[0].clases;
+};
+
+exports.GetPreciosPorClase = async (tiposClases) =>
+{
+    try {
+        
+        const resultados = await collectionPrecios.find(
+            {
+                "CLASE": { $in: tiposClases }
+                //  "CLASE": { $in: ["motos1", "motos2"] } 
+            }
+        ).project({_id: 0}).toArray();
+
+        if (resultados === undefined)
+        {
+            console.error("NO HAY TIPO DE CLASES");
+            return undefined;
+        }
+
+        return resultados;
+
+    }
+    catch(error)
+    {
+        console.error(error);
+    }
+
+};
+
+// module.exports = {
+//     conectDb,
+//     GetCarsByReservado,
+//     GetPreciosPorClase
+// }
