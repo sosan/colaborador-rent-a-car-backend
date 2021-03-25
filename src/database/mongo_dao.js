@@ -11,6 +11,9 @@ const client = new MongoClient(process.env.MONGO_DB_URI,
 
 let collectionCars = undefined;
 let collectionPrecios = undefined;
+let collectionHelper = undefined;
+const EDAD_MINIMO_FORMULARIO = 26;
+const EDAD_MAXIMA_FORMULARIO = 69;
 
 exports.conectDb = async () => {
     try {
@@ -19,6 +22,7 @@ exports.conectDb = async () => {
 
         collectionCars = currentDb.collection(process.env.MONGO_COLECCION_CARS);
         collectionPrecios = currentDb.collection(process.env.MONGO_COLECCION_PRECIOS);
+        collectionHelper = currentDb.collection(process.env.MONGO_COLECCION_HELPER);
         console.log(`[process ${process.pid}] CONNECTED TO DB`);
     }
     catch (err) {
@@ -35,16 +39,15 @@ exports.conectDb = async () => {
  * @returns {null|Array} nulo o listado de resultados
  */
 
-exports.GetCarsByReservado = async (taken) =>
+exports.GetCarsByReservado = async (taken, edadChofer) =>
 {
 
     try {
 
-        let resultados = await collectionCars.find(
-            {
-                "reservado": taken
-            }
-        )
+        //filtrar por checked del formulario
+        // const cochesBuscar = GenerarParametros(edadChofer);
+        
+        const resultados = await collectionCars.find({ "reservado": taken })
         .project({ _id: 0 })
         .toArray();
         
@@ -67,11 +70,28 @@ exports.GetCarsByReservado = async (taken) =>
 
 };
 
+const GenerarParametros = async (edadChofer) =>
+{
+
+    if (edadChofer === "on") {
+        return {
+            "reservado": taken,
+            "edadChofer": { $lte: EDAD_MAXIMA_FORMULARIO }
+        };
+    }
+    else {
+        return {
+            "reservado": taken,
+            "edadChofer": { $lt: EDAD_MINIMO_FORMULARIO }
+        };
+    }
+
+};
 
 exports.GetTiposClases = async () =>
 {
     
-    const tiposClases = await collectionPrecios.find(
+    const tiposClases = await collectionHelper.find(
         {
             "id": "clases"
         }
@@ -95,7 +115,6 @@ exports.GetPreciosPorClase = async (tiposClases) =>
         const resultados = await collectionPrecios.find(
             {
                 "CLASE": { $in: tiposClases }
-                //  "CLASE": { $in: ["motos1", "motos2"] } 
             }
         ).project({_id: 0}).toArray();
 

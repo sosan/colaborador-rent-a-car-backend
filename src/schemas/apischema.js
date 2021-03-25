@@ -11,8 +11,8 @@ const apiSchema = [
 const claveVehiculo = [
     "basico",
     "openAutomatic",
-    "5px",
-    "7px",
+    "5pax",
+    "7pax",
     "motos1",
     "motos2"
 ];
