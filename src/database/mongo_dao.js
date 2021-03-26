@@ -1,5 +1,5 @@
 const { MongoClient } = require("mongodb");
-// const { CustomExceptions } = require("../errors/Exceptions");
+const { EnumTiposErrores } = require("../errors/exceptions");
 
 const client = new MongoClient(process.env.MONGO_DB_URI,
     {
@@ -51,20 +51,23 @@ exports.GetCarsByReservado = async (taken, edadChofer) =>
         .project({ _id: 0 })
         .toArray();
         
-        if (resultados !== undefined || resultados !== [])
+        if (resultados !== undefined)
         {
-            return resultados;
+            return {isOk: true, resultados: resultados, errores: ""}
         }
         else
         {
-            return undefined;
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Cars`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
         }
 
     }
     catch (err) {
         //TODO: enviar a otra db error, redis
-        console.error(err);
-        // throw new CustomExceptions("no posible conexion con la db")
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+
     }
 
 
@@ -90,22 +93,32 @@ const GenerarParametros = async (edadChofer) =>
 
 exports.GetTiposClases = async () =>
 {
-    
-    const tiposClases = await collectionHelper.find(
-        {
-            "id": "clases"
-        }
-    )
-    .project({ _id: 0 })
-    .toArray();
-    
-    if (tiposClases === undefined)
+    try
     {
-        console.error("Insertar TIPO DE CLASES");
-        return undefined;
+        const tiposClases = await collectionHelper.find(
+            {
+                "id": "clases"
+            }
+        )
+        .project({ _id: 0 })
+        .toArray();
+        
+        if (tiposClases !== undefined)
+        {
+            return { isOk: true, resultados: tiposClases[0].clases, errores: "" };
+        }
+        else
+        {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Tipos Clases`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
     }
-    
-    return tiposClases[0].clases;
+    catch(error)
+    {
+        console.error(error);
+    }
 };
 
 exports.GetPreciosPorClase = async (tiposClases) =>
@@ -118,13 +131,14 @@ exports.GetPreciosPorClase = async (tiposClases) =>
             }
         ).project({_id: 0}).toArray();
 
-        if (resultados === undefined)
-        {
-            console.error("NO HAY TIPO DE CLASES");
-            return undefined;
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados, errores: "" };
         }
-
-        return resultados;
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Precios`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
 
     }
     catch(error)

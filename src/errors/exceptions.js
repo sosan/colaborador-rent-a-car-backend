@@ -1,11 +1,10 @@
-function CustomExceptions(message) {
-    const error = new Error(message);
+const EnumMensajesErrores = {
+    "ErrorDB_TipoClases": "ErrorDB_TipoClases",
+    "SinProductos": "Sin Productos",
+    "SinDatos": "Sin Datos",
+    "EsquemaInvalido": "Esquema Invalido",
+    
 
-    error.code = "ERROR CODIGO CUSTOM";
-    return error;
+};
 
-}
-
-// CustomExceptions.prototype = Object.create(Error.prototype);
-
-module.exports = { CustomExceptions }
+module.exports = { EnumMensajesErrores }

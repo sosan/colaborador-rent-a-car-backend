@@ -1,7 +1,8 @@
-const { ResumeToken } = require('mongodb');
 const mongo_dao = require('../database/mongo_dao');
+const { EnumTiposErrores } = require("../errors/exceptions");
 
 const DAY_IN_MILISECONDS = 86400000;
+const DIA_DATE = new Date(DAY_IN_MILISECONDS);
 
 /**
  * Devuelve listado de resultados por fecha
@@ -20,28 +21,28 @@ exports.GetPreciosPorClase = async () =>
 {
     const tiposClases = await mongo_dao.GetTiposClases();
 
-    if (tiposClases === undefined)
+    if (tiposClases.isOk === false)
     {
-        console.error("FALTA TIPO DE CLASES")
-        return undefined;
+        console.error(tiposClases.errores);
+        return tiposClases;
     }
+    
+    const preciosPorClase = await mongo_dao.GetPreciosPorClase(tiposClases.resultados);
 
-    const preciosPorClase = await mongo_dao.GetPreciosPorClase(tiposClases);
-
-    if (preciosPorClase === undefined)
+    if (preciosPorClase.isOk === false)
     {
-        console.error("FALTA TIPO DE CLASES")
-        return undefined;
+        console.error(`|- ${preciosPorClase.errores}`);
+        return preciosPorClase;
     }
 
-    const transformadosPreciosPorClase = await TransformarPreciosPorClase(preciosPorClase);
+    const transformadosPreciosPorClase = await TransformarPreciosPorClase(preciosPorClase.resultados);
 
-    if (transformadosPreciosPorClase === undefined) {
-        console.error("FALTA TIPO DE CLASES")
-        return undefined;
+    if (transformadosPreciosPorClase === undefined || transformadosPreciosPorClase === {}) {
+        console.error(`|- ${transformadosPreciosPorClase}`);
+        return { isOk: false, resultados: transformadosPreciosPorClase, errores: "Transformacion no posible" };
     }
 
-    return transformadosPreciosPorClase;
+    return { isOk: true, resultados: transformadosPreciosPorClase, errores: "" };
 
 
 };
@@ -83,13 +84,24 @@ exports.TransformarResultadosCoche = async (resultadosCoches, preciosPorClase, f
 
     if (diasEntreRecogidaDevolucion === undefined)
     {
-        return [undefined, "Fecha Recogida Incorrecta"];
+        return {
+            isOk: false,
+            resultadosCoches: undefined, 
+            errorFormulario: "Fecha Recogida Incorrecta", 
+            diasEntreRecogidaDevolucion: undefined
+        };
+
     }
 
     if (diasEntreRecogidaDevolucion === 0)
     {
-        console.error("SEPARACION DE DIAS ES MENOR A 1 DIA");
-        return [undefined, "Separacion de dias menor a 1 dia"];
+        console.error("SEPARACION DE DIAS ES MENOR A 1 DIA - TransformarResultadosCoche");
+        return {
+            isOk: false,
+            resultadosCoches: undefined,
+            errorFormulario: "Separacion de dias menor a 1 dia",
+            diasEntreRecogidaDevolucion: undefined
+        };
     }
 
     for (let i = 0; i < resultadosCoches.length; i++) {
@@ -120,14 +132,23 @@ exports.TransformarResultadosCoche = async (resultadosCoches, preciosPorClase, f
 
     }
 
-    return [resultadosCoches, "", diasEntreRecogidaDevolucion];
+    return {
+        isOk: true,
+        resultadosCoches: resultadosCoches,
+        errorFormulario: "",
+        diasEntreRecogidaDevolucion: diasEntreRecogidaDevolucion
+    };
 
 
 };
 
 const DiferenciaFechaRecogidaDevolucion = async (formulario) =>
 {
-    const fechaRecogida = await ObtenerConversionFecha(formulario.fechaRecogida, formulario.horaRecogida);
+    const fechaRecogida = await ObtenerConversionFecha(
+        formulario.fechaRecogida,
+        formulario.horaRecogida,
+        
+    );
 
     if (fechaRecogida === undefined) {
         //TODO: mejorar con un redirect etc
@@ -135,7 +156,11 @@ const DiferenciaFechaRecogidaDevolucion = async (formulario) =>
         return undefined;
     }
 
-    const fechaDevolucion = await ObtenerConversionFecha(formulario.fechaDevolucion, formulario.horaDevolucion);
+    let fechaDevolucion = await ObtenerConversionFecha(
+        formulario.fechaDevolucion, 
+        formulario.horaDevolucion,
+        
+    );
 
     if (fechaDevolucion === undefined) {
         //TODO: mejorar con un redirect etc
@@ -152,7 +177,7 @@ const DiferenciaFechaRecogidaDevolucion = async (formulario) =>
     const milisecondsEntreRecogidaDevolucion = fechaDevolucion - fechaRecogida;
     const diasEntreRecogidaDevolucion = Math.round(milisecondsEntreRecogidaDevolucion / DAY_IN_MILISECONDS);
 
-    console.log("diasetre" + diasEntreRecogidaDevolucion);
+    console.log("dias=" + diasEntreRecogidaDevolucion);
 
     return diasEntreRecogidaDevolucion;
 };
@@ -165,6 +190,10 @@ const ObtenerConversionFecha = async (fechaRaw, horaRaw) => {
     const anyo = fechaRecogidaFormSplitted[2] - 0;
     const mes = fechaRecogidaFormSplitted[1] - 0;
     const dia = fechaRecogidaFormSplitted[0] - 0;
+
+    // const horaSplitted = horaRaw.split(":");
+    // const hora = horaSplitted[0] - 0;
+
 
     //comprobar que el mes este entre 0 y 11, dia entre 1 y 30 y 1900-
     if (mes < 1 || mes > 12) {
@@ -181,14 +210,8 @@ const ObtenerConversionFecha = async (fechaRaw, horaRaw) => {
         console.error("Dia - Conversion erronea");
         return undefined;
     }
-
-    //comprobar que el tick marcado concuerde con la edad y la experiencia
-
-
-
-    const textoFecha = `${anyo}-${mes}-${dia} ${horaRaw}:00Z`;
+    
     const fechaRecogida = new Date(`${anyo}-${mes}-${dia} ${horaRaw}:00Z`);
-    // const fechaRecogida = new Date('2011-04-11T10:20:30Z');
 
     return fechaRecogida;
 
