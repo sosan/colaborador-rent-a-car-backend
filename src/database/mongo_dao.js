@@ -12,18 +12,22 @@ const client = new MongoClient(process.env.MONGO_DB_URI,
 let collectionCars = undefined;
 let collectionPrecios = undefined;
 let collectionHelper = undefined;
-const EDAD_MINIMO_FORMULARIO = 26;
-const EDAD_MAXIMA_FORMULARIO = 69;
+
 
 exports.conectDb = async () => {
     try {
         const connect = await client.connect();
-        const currentDb = client.db(process.env.MONGO_DB_NAME);
 
-        collectionCars = currentDb.collection(process.env.MONGO_COLECCION_CARS);
-        collectionPrecios = currentDb.collection(process.env.MONGO_COLECCION_PRECIOS);
-        collectionHelper = currentDb.collection(process.env.MONGO_COLECCION_HELPER);
-        console.log(`[process ${process.pid}] CONNECTED TO DB`);
+        if (connect.isConnected() === true)
+        {
+            console.log(`[process ${process.pid}] CONNECTED TO DB`);
+            const currentDb = client.db(process.env.MONGO_DB_NAME);
+    
+            collectionCars = currentDb.collection(process.env.MONGO_COLECCION_CARS);
+            collectionPrecios = currentDb.collection(process.env.MONGO_COLECCION_PRECIOS);
+            collectionHelper = currentDb.collection(process.env.MONGO_COLECCION_HELPER);
+        }
+
     }
     catch (err) {
         console.error(err);
@@ -39,15 +43,12 @@ exports.conectDb = async () => {
  * @returns {null|Array} nulo o listado de resultados
  */
 
-exports.GetCarsByReservado = async (taken, edadChofer) =>
+exports.GetCarsByReservado = async (filtro) =>
 {
 
     try {
 
-        //filtrar por checked del formulario
-        // const cochesBuscar = GenerarParametros(edadChofer);
-        
-        const resultados = await collectionCars.find({ "reservado": taken })
+        const resultados = await collectionCars.find(filtro)
         .project({ _id: 0 })
         .toArray();
         
@@ -73,23 +74,7 @@ exports.GetCarsByReservado = async (taken, edadChofer) =>
 
 };
 
-const GenerarParametros = async (edadChofer) =>
-{
 
-    if (edadChofer === "on") {
-        return {
-            "reservado": taken,
-            "edadChofer": { $lte: EDAD_MAXIMA_FORMULARIO }
-        };
-    }
-    else {
-        return {
-            "reservado": taken,
-            "edadChofer": { $lt: EDAD_MINIMO_FORMULARIO }
-        };
-    }
-
-};
 
 exports.GetTiposClases = async () =>
 {
@@ -120,7 +105,7 @@ exports.GetTiposClases = async () =>
         console.error(error);
     }
 };
-
+//TODO: ahora recoge en collectionPRecios, pero hay un array optimizado para los precios modificar
 exports.GetPreciosPorClase = async (tiposClases) =>
 {
     try {
@@ -147,9 +132,3 @@ exports.GetPreciosPorClase = async (tiposClases) =>
     }
 
 };
-
-// module.exports = {
-//     conectDb,
-//     GetCarsByReservado,
-//     GetPreciosPorClase
-// }

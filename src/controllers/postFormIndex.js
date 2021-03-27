@@ -1,54 +1,76 @@
 const apiSchema = require("../schemas/apischema");
-const dbInterfaces = require("../database/dbInterfaces");
-const { EnumTiposErrores } = require("../errors/exceptions");
- 
+const { EnumMensajesErrores } = require("../errors/exceptions");
+const logicInterface = require("../logicinterface/logic_postFormIndex");  
 
 exports.postFormIndex = async (req, res) =>
 {
 
-    const isSchemaValid = await ControlSchema(req.body);
+    let formulario = req.body;
+    if (formulario.conductor_con_experiencia === undefined)
+    {
+        formulario["conductor_con_experiencia"] = "off";
+    }
+
+    const isSchemaValid = await ControlSchema(formulario);
 
     if (isSchemaValid === false) {
         //TODO: mejorar a redireccion ?
         // blocklist?
         console.error(EnumTiposErrores.EsquemaInvalido);
-        return res.send({ "data": "" });
+        res.redirect(404, "/");
     }
 
+    
+
     // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
-    const cochesPreciosRaw = await dbInterfaces.GetCarsByReservado(req.body);
+    const cochesPreciosRaw = await logicInterface.GetCarsByReservado(formulario);
 
     if (cochesPreciosRaw.isOk === false)
     {
         console.error(`|- ${cochesPreciosRaw.errores}`);
-        return res.send({ "data": [] });
+        return res.send({
+            "isOk": false,
+            "data": [],
+            "errorFormulario": "Disculpe las molestias. Gracias.",
+            "diasEntreRecogidaDevolucion": undefined
+        });
+
     }
 
     if (cochesPreciosRaw.resultados.length <= 0)
     {
-        return res.send({"data": [] })
+        return res.send({
+            "isOk": true,
+            "data": [],
+            "errorFormulario": "Sentimos informarle que no disponemos de ningún vehículo para las fechas solicitadas. Disculpe las molestias. Gracias.",
+            "diasEntreRecogidaDevolucion": undefined 
+        });
     }
 
-    const preciosPorClase = await dbInterfaces.GetPreciosPorClase();
+    const preciosPorClase = await logicInterface.GetPreciosPorClase();
 
     if (preciosPorClase.isOk === false)
     {
         console.error(`|- ${preciosPorClase.errores}`);
-        return res.send({ "data": [] });
+        return res.send({
+            "isOk": false,
+            "data": [],
+            "errorFormulario": "Disculpe las molestias. Gracias.",
+            "diasEntreRecogidaDevolucion": ""
+        });
     }
 
-    const resultadosObjetoCoches = await dbInterfaces.TransformarResultadosCoche(
+    const resultadosObjetoCoches = await logicInterface.TransformarResultadosCoche(
         cochesPreciosRaw.resultados, 
         preciosPorClase.resultados, 
-        req.body
+        formulario
     );
     
-    // const [resultadosCoches, errorFormulario, diasEntreRecogidaDevolucion]
-
     if (resultadosObjetoCoches.isOk === false) {
         
         console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
         return res.send({
+            "isOk": false,
             "data": [],
             "errorFormulario": resultadosObjetoCoches.errorFormulario,
             "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
@@ -56,6 +78,7 @@ exports.postFormIndex = async (req, res) =>
     }
 
     return res.send({
+        "isOk": true,
         "data": resultadosObjetoCoches.resultadosCoches,
         "errorFormulario": resultadosObjetoCoches.errorFormulario,
         "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
