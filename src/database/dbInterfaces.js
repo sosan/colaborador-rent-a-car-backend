@@ -16,8 +16,33 @@ const EDAD_MAXIMA_FORMULARIO = 68;
 exports.GetCarsByReservado = async (reservado, conductor_con_experiencia) => {
 
     const filtrado = await GenerarParametros(reservado, conductor_con_experiencia);
-    const resultados = await mongo_dao.GetCarsByReservado(filtrado);
-    return resultados;
+    const datos = await mongo_dao.GetCarsByReservado(filtrado);
+
+    let finales = [];
+    const ordenacion = [
+        "basico",
+        "openAutomatic",
+        "5pax",
+        "7pax",
+        "motos1",
+        "motos2"
+    ];
+
+    // ordenar por claseVehiculo
+    for (let j = 0; j < ordenacion.length; j++)
+    {
+        for (let i = 0; i < datos.resultados.length; i++)
+        {
+            if (datos.resultados[i].clasevehiculo === ordenacion[j])
+            {
+                finales.push(datos.resultados[i]);
+            }
+        }
+
+    }
+
+    datos.resultados = finales;
+    return datos;
 
 };
 
