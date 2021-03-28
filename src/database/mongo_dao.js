@@ -75,6 +75,35 @@ exports.GetCarsByReservado = async (filtro) =>
 
 };
 
+exports.GetClaseVehiculosOrdenados = async () =>
+{
+
+    try {
+
+        const resultados = await collectionHelper.find({ id: "ordenacion"})
+            .project({ _id: 0 })
+            .toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados[0].clases, errores: "" }
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Cars`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+
+    }
+
+
+};
+
 
 
 exports.GetTiposClases = async () =>

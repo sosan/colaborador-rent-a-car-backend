@@ -18,25 +18,25 @@ exports.GetCarsByReservado = async (reservado, conductor_con_experiencia) => {
     const filtrado = await GenerarParametros(reservado, conductor_con_experiencia);
     const datos = await mongo_dao.GetCarsByReservado(filtrado);
 
+    const datosOrdenacion = await mongo_dao.GetClaseVehiculosOrdenados();
+    if (datosOrdenacion.isOk === false)
+    {
+        const error = `NO hay collecion datos ordenados `;
+        console.error(error);
+        return { isOk: false, resultados: undefined, errores: error };
+    }
+
     let finales = [];
-    const ordenacion = [
-        "basico",
-        "openAutomatic",
-        "5pax",
-        "7pax",
-        "motos1",
-        "motos2"
-    ];
 
     // ordenar por claseVehiculo
-    for (let j = 0; j < ordenacion.length; j++)
+    for (let j = 0; j < datosOrdenacion.resultados.length; j++)
     {
         for (let i = 0; i < datos.resultados.length; i++)
         {
-            if (datos.resultados[i].clasevehiculo === ordenacion[j])
-            {
-                finales.push(datos.resultados[i]);
-            }
+            if (datos.resultados[i].clasevehiculo !== datosOrdenacion.resultados[j]) continue;
+            
+            finales.push(datos.resultados[i]);
+
         }
 
     }
