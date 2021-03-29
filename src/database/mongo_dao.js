@@ -50,7 +50,6 @@ exports.GetCarsByReservado = async (filtro) =>
 
         const resultados = await collectionCars.find(filtro)
         .project({ _id: 0 })
-        .sort({ clasevehiculo: 1 })
         .toArray();
         
         if (resultados !== undefined)

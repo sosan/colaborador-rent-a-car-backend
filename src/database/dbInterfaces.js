@@ -26,22 +26,9 @@ exports.GetCarsByReservado = async (reservado, conductor_con_experiencia) => {
         return { isOk: false, resultados: undefined, errores: error };
     }
 
-    let finales = [];
+    datos["datosOrdenacion"] = datosOrdenacion;
 
-    // ordenar por claseVehiculo
-    for (let j = 0; j < datosOrdenacion.resultados.length; j++)
-    {
-        for (let i = 0; i < datos.resultados.length; i++)
-        {
-            if (datos.resultados[i].clasevehiculo !== datosOrdenacion.resultados[j]) continue;
-            
-            finales.push(datos.resultados[i]);
-
-        }
-
-    }
-
-    datos.resultados = finales;
+    
     return datos;
 
 };

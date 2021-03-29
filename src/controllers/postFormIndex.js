@@ -80,6 +80,7 @@ exports.postFormIndex = async (req, res) =>
     return res.send({
         "isOk": true,
         "data": resultadosObjetoCoches.resultadosCoches,
+        "datosOrdenacion": cochesPreciosRaw.datosOrdenacion.resultados,
         "errorFormulario": resultadosObjetoCoches.errorFormulario,
         "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
     });
