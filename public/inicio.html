@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/index.css">
+
+    <title>Login</title>
+</head>
+<body>
+
+    <div class="container">
+        <main class="session">
+            <section class="left">
+            </section>
+            <section class="right">
+                
+                <form action="/login" method="post" class="formulario">
+                    <input type="hidden" name="username" value="" id="username" />
+                    <h1 class="titulo">Login</h1>
+                    <p class="parrafo">Para poder entrar escribe el usuario y la contraseña</p>
+                    <div class="floating-label">
+                        <input id="email" class="inputs" placeholder="Email" type="email" name="email"
+                            autoComplete="off" autoFocus required />
+                        <label htmlFor="email">Email:</label>
+                        <div class="icon">
+                            <img id="cartaicono" src="./img/svg/email.svg" class="tam-icono rellenar-rosa" alt="icono email">
+                        </div>
+                    </div>
+                    <div class="floating-label">
+                        <input id="password" class="inputs" placeholder="Password" type="password" name="password"
+                            autoComplete="off" required />
+                        <label htmlFor="password">Contraseña:</label>
+                        <div class="icon">
+                            <img id="claveicono" src="./img/svg/password.svg" class="tam-icono " alt="icono clave">
+                        </div>
+                    </div>
+                    <button type="submit">Entrar</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+
+    <footer>
+
+    </footer>
+
+    <script src="./js/index.js"></script>
+    
+</body>
+</html>
