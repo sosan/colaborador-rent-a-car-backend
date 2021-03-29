@@ -8,6 +8,7 @@ const userAgent = require('express-useragent')
 const rateLimit = require('express-rate-limit');
 const db = require("./database/mongo_dao");
 const router = require('./routes/api');
+const cookieParser = require('cookie-parser');
 
 db.conectDb();
 
@@ -18,6 +19,7 @@ const apiLimiter = rateLimit({
     max: 20
 });
 
+app.use(cookieParser());
 app.use(compression());
 app.use(userAgent.express())
 app.use(helmet());

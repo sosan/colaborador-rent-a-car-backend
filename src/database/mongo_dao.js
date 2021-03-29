@@ -13,6 +13,8 @@ let collectionCars = undefined;
 let collectionPrecios = undefined;
 let collectionHelper = undefined;
 
+let collectionUsers = undefined;
+
 
 exports.conectDb = async () => {
     try {
@@ -26,6 +28,7 @@ exports.conectDb = async () => {
             collectionCars = currentDb.collection(process.env.MONGO_COLECCION_CARS);
             collectionPrecios = currentDb.collection(process.env.MONGO_COLECCION_PRECIOS);
             collectionHelper = currentDb.collection(process.env.MONGO_COLECCION_HELPER);
+            collectionUsers = currentDb.collection(process.env.MONGO_COLECCION_USUARIOS);
         }
 
     }
@@ -157,6 +160,32 @@ exports.GetPreciosPorClase = async (tiposClases) =>
     }
     catch(error)
     {
+        console.error(error);
+    }
+
+};
+
+
+exports.CheckUserPassword = async (email, password) => {
+    try {
+
+        const resultados = await collectionUsers.find(
+            {
+                "email": email, "password": password
+            }
+        ).project({ _id: 0 }).toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados, errores: "" };
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Precios`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (error) {
         console.error(error);
     }
 
