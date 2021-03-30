@@ -1,0 +1,7 @@
+﻿CLASE,descripcionclasevehiculo,PRECIO920,PRECIO2,PRECIO3,PRECIO4,PRECIO5,PRECIO6,PRECIO7,PRECIOMAS7
+basico,Pequeños,30,55,80,105,125,145,165,23
+openAutomatic,Automaticos,32,58,87,112,135,162,180,25
+5pax,5 puertas,35,65,95,125,150,175,200,28
+7pax,7 puertas,50,95,130,170,210,240,270,38
+mostos1,Motos pequeñas,30,55,80,105,125,145,165,0
+motos2,Motos grandes,32,58,87,112,135,162,180,0
