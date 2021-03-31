@@ -7,6 +7,28 @@ const DIA_DATE = new Date(DAY_IN_MILISECONDS);
 const EDAD_MINIMA_FORMULARIO = 27;
 const EDAD_MAXIMA_FORMULARIO = 68;
 
+let tokenFromFrontend = "incial";
+
+exports.ConnectDB = async () =>
+{
+    await mongo_dao.conectDb();
+    this.tokenFromFrontend = await mongo_dao.GetTokenFrontendToBackend();
+    
+    if (this.tokenFromFrontend === undefined || this.tokenFromFrontend === "")
+    {
+        throw new Error("token no seteado")
+    }
+    
+    console.log("Token seteado");
+    
+};
+
+exports.GetTokenFromFrontend = () =>
+{
+    return tokenFromFrontend;
+};
+
+
 /**
  * Devuelve listado de resultados por fecha
  * @param {Array} fecha

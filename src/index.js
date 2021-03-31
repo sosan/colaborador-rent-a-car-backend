@@ -6,11 +6,13 @@ const express = require('express');
 var compression = require('compression');
 const userAgent = require('express-useragent')
 const rateLimit = require('express-rate-limit');
-const db = require("./database/mongo_dao");
+const dbInterfaces = require("./database/dbInterfaces");
 const router = require('./routes/api');
 const cookieParser = require('cookie-parser');
 
-db.conectDb();
+// ---
+dbInterfaces.ConnectDB();
+
 
 const app = express();
 

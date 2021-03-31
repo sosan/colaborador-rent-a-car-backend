@@ -4,6 +4,15 @@ const { EnumTiposErrores } = require("../errors/exceptions");
 const DAY_IN_MILISECONDS = 86400000;
 const DIA_DATE = new Date(DAY_IN_MILISECONDS);
 
+// TODO: generar string a partir del secreto
+exports.GenerateTokenBackendToFrontend = async () =>
+{
+
+    return process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET;
+};
+
+
+
 exports.GetCarsByReservado = async (formulario) => {
 
     const resultados = await dbInterfaces.GetCarsByReservado(0, formulario.conductor_con_experiencia);
@@ -125,7 +134,7 @@ exports.TransformarResultadosCoche = async (resultadosCoches, preciosPorClase, f
 
         //si no existe la clase
         if (!preciosPorClase[claseVehiculo]) {
-            console.error(`resultadoscoche ${resultadosCoches[i]} clasevehiculo ${clasevehiculo}`);
+            console.error(`resultadoscoche ${resultadosCoches[i]} clasevehiculo ${claseVehiculo}`);
             continue;
         }
 
@@ -133,7 +142,7 @@ exports.TransformarResultadosCoche = async (resultadosCoches, preciosPorClase, f
 
         let precioDiaPorClase = 0;
         let precioTotalDias = 0;
-        let precioDiaSinDescuento = listadoPrecios[0];
+        let precioDiaSinDescuento = listadoPrecios[1];
         
         if (numeroDiasRecogidaDevolucion > 7) {
             precioDiaPorClase = listadoPrecios[listadoPrecios.length - 1];
@@ -141,8 +150,8 @@ exports.TransformarResultadosCoche = async (resultadosCoches, preciosPorClase, f
             
         }
         else {
-            precioDiaPorClase = listadoPrecios[0];
-            precioTotalDias = listadoPrecios[diasEntreRecogidaDevolucion];
+            precioDiaPorClase = listadoPrecios[1];
+            precioTotalDias = listadoPrecios[numeroDiasRecogidaDevolucion];
             resultadosCoches[i]["preciototalsindescuento"] = precioDiaPorClase * numeroDiasRecogidaDevolucion;
             
         }

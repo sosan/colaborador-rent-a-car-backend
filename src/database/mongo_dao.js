@@ -14,7 +14,8 @@ let collectionPrecios = undefined;
 let collectionHelper = undefined;
 
 let collectionUsers = undefined;
-
+let collectionTokens = undefined;
+let tokenFromFrontend = "";
 
 exports.conectDb = async () => {
     try {
@@ -29,6 +30,10 @@ exports.conectDb = async () => {
             collectionPrecios = currentDb.collection(process.env.MONGO_COLECCION_PRECIOS);
             collectionHelper = currentDb.collection(process.env.MONGO_COLECCION_HELPER);
             collectionUsers = currentDb.collection(process.env.MONGO_COLECCION_USUARIOS);
+            collectionTokens = currentDb.collection(process.env.MONGO_COLECCION_TOKENS);
+
+            
+            
         }
 
     }
@@ -36,6 +41,34 @@ exports.conectDb = async () => {
         console.error(err);
         // throw new CustomExceptions("no posible conexion a la base de datos");
         //TODO: enviar a la db Redis para recoger los errores.
+    }
+
+};
+
+exports.GetTokenFrontendToBackend = async () =>
+{
+
+     if (collectionTokens !== undefined) {
+        const datos = await collectionTokens.find({ "id": "frontend" }).project({ _id: 0 }).toArray();
+        if (datos[0].isValid === false)
+        {
+            const error = `token frontendtobackend no valido`;
+            console.error(error);
+            throw new Error(error);
+        }
+
+        if (datos[0].token === "" || datos[0].token === undefined) {
+            const error = `no existe el campo token`;
+            console.error(error);
+            throw new Error(error);
+        }
+        return datos[0].token;
+
+    }
+    else {
+        const error = `colleccion tokens no existe`;
+        console.error(error);
+        throw new Error(error);
     }
 
 };

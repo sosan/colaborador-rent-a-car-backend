@@ -1,11 +1,19 @@
 const apiSchema = require("../schemas/apischema");
+const dbInterfaces = require("../database/dbInterfaces");
 const { EnumMensajesErrores } = require("../errors/exceptions");
 const logicInterface = require("../logicinterface/logic_postFormIndex");  
 
 exports.postFormIndex = async (req, res) =>
 {
 
+    if (req.body.token === undefined || req.body.token !== dbInterfaces.tokenFromFrontend)
+    {
+        return;
+    }
+
     let formulario = req.body;
+    // TODO: generar string a partir del secreto
+    formulario["token"] = await logicInterface.GenerateTokenBackendToFrontend();
     if (formulario.conductor_con_experiencia === undefined)
     {
         formulario["conductor_con_experiencia"] = "off";
@@ -16,7 +24,7 @@ exports.postFormIndex = async (req, res) =>
     if (isSchemaValid === false) {
         //TODO: mejorar a redireccion ?
         // blocklist?
-        console.error(EnumTiposErrores.EsquemaInvalido);
+        console.error("Esquema invalido");
         res.redirect(404, "/");
     }
 
