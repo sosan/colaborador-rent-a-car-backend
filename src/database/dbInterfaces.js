@@ -50,12 +50,11 @@ exports.GetClaseVehiculosOrdenados = async () =>
 
 };
 
-exports.GetSuplementoTipoChofer = async (indicesSuplementos) =>
+exports.GetSuplementosTipoChofer = async () =>
 {
 
-    const datosByIndex = await mongo_dao.GetSuplementoTipoChoferByIndex(indicesSuplementos);
-    const datosAll = await mongo_dao.GetSuplementoTipoChofer();
-    return [datosByIndex, datosAll];
+    const datosAll = await mongo_dao.GetAllSuplementosTipoChofer();
+    return datosAll;
 
 };
 

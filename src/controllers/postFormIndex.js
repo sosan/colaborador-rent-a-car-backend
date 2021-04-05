@@ -74,7 +74,6 @@ exports.postFormIndex = async (req, res) =>
         });
     }
 
-    
     return res.send({
         "isOk": true,
         "data": resultadosObjetoCoches.resultadosCoches,
@@ -82,7 +81,7 @@ exports.postFormIndex = async (req, res) =>
         "errorFormulario": resultadosObjetoCoches.errorFormulario,
         "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion,
         "suplementogenerico_base": cochesPreciosRaw.datosSuplementoGenerico.resultados,
-        "suplementotipochofer_base": cochesPreciosRaw.allDatosSuplementoTipoChofer.resultados,
+        "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
         "preciosPorClase": cochesPreciosRaw.preciosPorClase,
         "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados
     });

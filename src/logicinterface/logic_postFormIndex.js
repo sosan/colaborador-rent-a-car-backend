@@ -28,35 +28,37 @@ exports.GetCarsByReservado = async (formulario) => {
 
     datosVehiculos["datosOrdenacion"] = datosOrdenacion;
 
-    let indicesSuplementos = [];
-    // de 25+
-    if (formulario.conductor_con_experiencia === "on")
-    {
-        indicesSuplementos = ["choferPlus252Motos", "choferPlus232Cars"];
-    }
-    else
-    {
-        if (formulario.edad_conductor - 0 >= 23)
-        {
-            indicesSuplementos = ["choferPlus232Cars"];
+    // let indicesSuplementos = [];
+    // // de 25+
+    // if (formulario.conductor_con_experiencia === "on")
+    // {
+    //     indicesSuplementos = ["choferPlus252Motos", "choferPlus232Cars"];
+    // }
+    // else
+    // {
+    //     if (formulario.edad_conductor - 0 >= 23)
+    //     {
+    //         indicesSuplementos = ["choferPlus232Cars"];
             
-        }
-        else
-        {
-            indicesSuplementos = ["choferPlusNovelCars", "choferPlusNovelMotos"];
+    //     }
+        
+    //     else
+    //     {
+    //         indicesSuplementos = ["choferPlusNovelCars", "choferPlusNovelMotos"];
             
-        }
+    //     }
 
-    }
+    // }
 
-    const [ datosSuplementoTipoChofer, allDatosSuplementoTipoChofer ] = await dbInterfaces.GetSuplementoTipoChofer(indicesSuplementos);
-    if (datosSuplementoTipoChofer.isOk === false) {
+    // const [ datosSuplementoTipoChofer, allDatosSuplementoTipoChofer ] = await dbInterfaces.GetSuplementoTipoChofer(indicesSuplementos);
+    const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
+    if (allDatosSuplementoTipoChofer.isOk === false) {
         const error = `| - NO hay collecion suplemento tipo chofer`;
         console.error(error);
         return { isOk: false, resultados: undefined, errores: error };
     }
-    datosVehiculos["datosSuplementoTipoChofer"] = datosSuplementoTipoChofer;
-    datosVehiculos["allDatosSuplementoTipoChofer"] = allDatosSuplementoTipoChofer;
+    datosVehiculos["datosSuplementoTipoChofer"] = allDatosSuplementoTipoChofer;
+    // datosVehiculos["allDatosSuplementoTipoChofer"] = allDatosSuplementoTipoChofer;
 
     const datosSuplementoGenerico = await dbInterfaces.GetSuplementoGenerico();
     if (datosSuplementoGenerico.isOk === false) {
@@ -84,6 +86,7 @@ exports.GetCarsByReservado = async (formulario) => {
         return { isOk: false, resultados: undefined, errores: error };
     }
 
+    //TODO: mejorar estatico
     const transformadosPreciosPorClase = await TransformarPreciosPorClase(preciosPorClase.resultados);
 
     if (transformadosPreciosPorClase === undefined || transformadosPreciosPorClase === {}) {
@@ -110,7 +113,7 @@ const GenerarParametros = async (reservado, conductor_con_experiencia) => {
     else {
         return {
             "reservado": reservado,
-            "edadChofer": { $nin: [EDAD_MINIMA_FORMULARIO, EDAD_MAXIMA_FORMULARIO] }
+            // "edadChofer": { $in: [EDAD_MINIMA_FORMULARIO, EDAD_MAXIMA_FORMULARIO] }
         };
     }
 

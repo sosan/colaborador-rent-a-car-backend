@@ -54,8 +54,11 @@ exports.postContronPanelLogin = async (req, res) =>
 };
 
 
-exports.GenerateHMTLForGeneralConditions = async () =>
+exports.GenerateHMTLForGeneralConditions = async (req, res) =>
 {
+
+    
+
 
   
 };

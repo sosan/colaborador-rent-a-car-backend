@@ -147,7 +147,7 @@ exports.GetClaseVehiculosOrdenados = async () =>
 
 };
 
-exports.GetSuplementoTipoChoferByIndex = async (indicesSuplementos) => {
+exports.GetSuplementosTipoChoferByIndex = async (indicesSuplementos) => {
 
     try {
 
@@ -178,7 +178,7 @@ exports.GetSuplementoTipoChoferByIndex = async (indicesSuplementos) => {
 };
 
 
-exports.GetSuplementoTipoChofer = async () => {
+exports.GetAllSuplementosTipoChofer = async () => {
 
     try {
 

@@ -20,11 +20,6 @@ router.get("/api", async(req, res) => await getFormIndex(req, res));
 router.post("/controlpanel/login", async (req, res) => await controlPanelLogin.postContronPanelLogin(req, res) );
 
 // generar html
-router.post("/generar", async () =>
-{
-
-
-
-});
+router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTLForGeneralConditions(req, res));
 
 module.exports = router;
