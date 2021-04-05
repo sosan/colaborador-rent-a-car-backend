@@ -1,0 +1,23 @@
+[{
+  "id": "suplementos",
+  "nocheCar": {
+    "descripcion_anadir_suplemento": "Suplemento por noche",
+    "descripcion_no_anadir_suplemento": "Sin suplemento por noche",
+    "valor": 15
+  },
+  "nocheMoto": {
+    "descripcion_anadir_suplemento": "Suplemento por noche",
+    "descripcion_no_anadir_suplemento": "Sin suplemento por noche",
+    "valor": 10
+  },
+  "outTimeCar": {
+    "descripcion_anadir_suplemento": "Suplemento por fuera de tiempo",
+    "descripcion_no_anadir_suplemento": "Sin suplemento por fuera de tiempo",
+    "valor": 0
+  },
+  "outTimeMoto": {
+    "descripcion_anadir_suplemento": "suplemento por fuera de tiempo",
+    "descripcion_no_anadir_suplemento": "Sin suplemento por noche",
+    "valor": 0
+  }
+}]

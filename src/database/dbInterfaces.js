@@ -35,40 +35,39 @@ exports.GetTokenFromFrontend = () =>
  * @returns {null|Array} nulo o listado de resultados
  */
 
-exports.GetCarsByReservado = async (reservado, conductor_con_experiencia) => {
+exports.GetCarsByReservado = async (filtrado) => {
 
-    const filtrado = await GenerarParametros(reservado, conductor_con_experiencia);
     const datos = await mongo_dao.GetCarsByReservado(filtrado);
-
-    const datosOrdenacion = await mongo_dao.GetClaseVehiculosOrdenados();
-    if (datosOrdenacion.isOk === false)
-    {
-        const error = `NO hay collecion datos ordenados `;
-        console.error(error);
-        return { isOk: false, resultados: undefined, errores: error };
-    }
-
-    datos["datosOrdenacion"] = datosOrdenacion;
-
-    
     return datos;
 
 };
 
-// funcion donde genera el objeto para filtrar en la db
-const GenerarParametros = async (reservado, conductor_con_experiencia) => {
+exports.GetClaseVehiculosOrdenados = async () =>
+{
 
-    if (conductor_con_experiencia === "on") {
-        return { "reservado": reservado };
-    }
-    else {
-        return {
-            "reservado": reservado,
-            "edadChofer": { $nin: [EDAD_MINIMA_FORMULARIO, EDAD_MAXIMA_FORMULARIO] }
-        };
-    }
+    const datos = await mongo_dao.GetClaseVehiculosOrdenados();
+    return datos;
 
-}
+};
+
+exports.GetSuplementoTipoChofer = async (indicesSuplementos) =>
+{
+
+    const datosByIndex = await mongo_dao.GetSuplementoTipoChoferByIndex(indicesSuplementos);
+    const datosAll = await mongo_dao.GetSuplementoTipoChofer();
+    return [datosByIndex, datosAll];
+
+};
+
+
+
+exports.GetSuplementoGenerico = async () => {
+
+    const datos = await mongo_dao.GetSuplementoGenerico();
+    return datos;
+
+};
+
 
 exports.GetTiposClases = async () => {
 
@@ -82,6 +81,13 @@ exports.GetPreciosPorClase = async (tiposClases) => {
     const resultados = await mongo_dao.GetPreciosPorClase(tiposClases);
     return resultados;
 
+};
+
+exports.GetCondicionesGenerales = async () =>
+{
+
+    const resultados = await mongo_dao.GetCondicionesGenerales();
+    return resultados;
 };
 
 

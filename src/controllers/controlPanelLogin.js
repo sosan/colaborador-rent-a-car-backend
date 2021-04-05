@@ -1,4 +1,6 @@
 const logicControlPanel = require("../logicinterface/logic_controlPanel");
+const fs = require('fs');
+
 
 exports.postContronPanelLogin = async (req, res) =>
 {
@@ -49,4 +51,11 @@ exports.postContronPanelLogin = async (req, res) =>
 
 
 
+};
+
+
+exports.GenerateHMTLForGeneralConditions = async () =>
+{
+
+  
 };

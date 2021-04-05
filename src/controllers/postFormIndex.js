@@ -55,23 +55,12 @@ exports.postFormIndex = async (req, res) =>
         });
     }
 
-    const preciosPorClase = await logicInterface.GetPreciosPorClase();
-
-    if (preciosPorClase.isOk === false)
-    {
-        console.error(`|- ${preciosPorClase.errores}`);
-        return res.send({
-            "isOk": false,
-            "data": [],
-            "errorFormulario": "Disculpe las molestias. Gracias.",
-            "diasEntreRecogidaDevolucion": ""
-        });
-    }
-
     const resultadosObjetoCoches = await logicInterface.TransformarResultadosCoche(
         cochesPreciosRaw.resultados, 
-        preciosPorClase.resultados, 
-        formulario
+        cochesPreciosRaw.preciosPorClase,
+        formulario,
+        cochesPreciosRaw.datosSuplementoGenerico.resultados,
+        cochesPreciosRaw.datosSuplementoTipoChofer.resultados
     );
     
     if (resultadosObjetoCoches.isOk === false) {
@@ -85,12 +74,17 @@ exports.postFormIndex = async (req, res) =>
         });
     }
 
+    
     return res.send({
         "isOk": true,
         "data": resultadosObjetoCoches.resultadosCoches,
         "datosOrdenacion": cochesPreciosRaw.datosOrdenacion.resultados,
         "errorFormulario": resultadosObjetoCoches.errorFormulario,
-        "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
+        "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion,
+        "suplementogenerico_base": cochesPreciosRaw.datosSuplementoGenerico.resultados,
+        "suplementotipochofer_base": cochesPreciosRaw.allDatosSuplementoTipoChofer.resultados,
+        "preciosPorClase": cochesPreciosRaw.preciosPorClase,
+        "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados
     });
 
 };

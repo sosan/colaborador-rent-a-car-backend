@@ -1,0 +1,3 @@
+ImagenVehiclo,_id,aireacondicionado,clasevehiculo,conbustible,descripcion,devuelto,entregado,franquicia,pax,puertas,reservado,suplemento,suplementos,topCase,transmision,vehiculo
+Suzuki-Burgman_125cc.png,605bc7444ad9c496883ac565,0,motos2,95 oct,Suzuky Burgman 125,flase,false,150,2,0,false,,"[""noche"",""outTime""]",1,A,suzukyBurgman125
+CitroenC1_open.png,605bc7444ad9c496883ac55f,1,openAutomatic,95 oct,Citröen C1 Open,,,0,4,4,false,15,,0,M,citroenC1open

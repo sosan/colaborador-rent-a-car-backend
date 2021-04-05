@@ -17,6 +17,10 @@ let collectionUsers = undefined;
 let collectionTokens = undefined;
 let tokenFromFrontend = "";
 
+let collectionsupleGenerico = undefined;
+let collectionsupleTipochoferVehiculo = undefined;
+let collectionReservas = undefined;
+
 exports.conectDb = async () => {
     try {
         const connect = await client.connect();
@@ -31,6 +35,10 @@ exports.conectDb = async () => {
             collectionHelper = currentDb.collection(process.env.MONGO_COLECCION_HELPER);
             collectionUsers = currentDb.collection(process.env.MONGO_COLECCION_USUARIOS);
             collectionTokens = currentDb.collection(process.env.MONGO_COLECCION_TOKENS);
+            
+            collectionsupleGenerico = currentDb.collection(process.env.MONGO_COLECCION_SUPLE_GENERICO);
+            collectionsupleTipochoferVehiculo = currentDb.collection(process.env.MONGO_COLECCION_SUPLE_TIPO_CHOFER);
+            collectionReservas = currentDb.collection(process.env.MONGO_COLECCION_RESERVAS);
 
             
             
@@ -139,6 +147,95 @@ exports.GetClaseVehiculosOrdenados = async () =>
 
 };
 
+exports.GetSuplementoTipoChoferByIndex = async (indicesSuplementos) => {
+
+    try {
+
+        const resultados = await collectionsupleTipochoferVehiculo.find(
+            { "Tipo de Conductor(Experiencia)": { $in: indicesSuplementos } }
+        )
+        .project({ _id: 0 })
+        .toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados, errores: "" }
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion SuplmentoTipoChofer`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+
+    }
+
+
+};
+
+
+exports.GetSuplementoTipoChofer = async () => {
+
+    try {
+
+        const resultados = await collectionsupleTipochoferVehiculo.find()
+        .project({ _id: 0 })
+        .toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados, errores: "" }
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion SuplmentoTipoChofer`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+
+    }
+
+
+};
+
+
+exports.GetSuplementoGenerico = async () => {
+
+    try {
+
+        const resultados = await collectionsupleGenerico.find(
+            { "id": "suplementos" }
+        )
+        .project({ _id: 0 })
+        .toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados[0], errores: "" }
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion SuplmentoGenerico`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+
+    }
+
+
+};
 
 
 exports.GetTiposClases = async () =>
@@ -223,3 +320,33 @@ exports.CheckUserPassword = async (email, password) => {
     }
 
 };
+
+
+exports.GetCondicionesGenerales = async () => {
+
+    try {
+
+        const resultados = await collectionHelper.find({ id: "condicionesgenerales" })
+            .project({ _id: 0 })
+            .toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados[0], errores: "" }
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Cars`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+
+    }
+    
+};
+
+
