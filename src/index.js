@@ -35,6 +35,7 @@ app.use('/', apiLimiter);
 app.use('/', router);
 
 
+
 app.listen(process.env.NODE_EXPRESS_PORT, (error) => {
         if (error) {
             console.error(`[process ${process.pid}] Error ${error} ${process.env.NODE_EXPRESS_PORT}`);
@@ -42,3 +43,5 @@ app.listen(process.env.NODE_EXPRESS_PORT, (error) => {
         console.info(`[process ${process.pid}] Listening at port ${process.env.NODE_EXPRESS_PORT}`);
     }
 );
+
+module.exports = app

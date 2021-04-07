@@ -8,7 +8,7 @@ exports.postFormIndex = async (req, res) =>
 
     if (req.body.token === undefined || req.body.token !== dbInterfaces.tokenFromFrontend)
     {
-        return;
+        return res.status(404).send({});
     }
 
     let formulario = req.body;

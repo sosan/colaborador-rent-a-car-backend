@@ -56,7 +56,7 @@ exports.conectDb = async () => {
 exports.GetTokenFrontendToBackend = async () =>
 {
 
-     if (collectionTokens !== undefined) {
+    if (collectionTokens !== undefined) {
         const datos = await collectionTokens.find({ "id": "frontend" }).project({ _id: 0 }).toArray();
         if (datos[0].isValid === false)
         {

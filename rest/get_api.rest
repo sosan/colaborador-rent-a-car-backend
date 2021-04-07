@@ -1,0 +1,27 @@
+GET http://localhost:3000/api/ HTTP/1.1
+
+# HTTP/1.1 200 OK
+# Content-Security-Policy: default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+# X-DNS-Prefetch-Control: off
+# Expect-CT: max-age=0
+# X-Frame-Options: SAMEORIGIN
+# Strict-Transport-Security: max-age=15552000; includeSubDomains
+# X-Download-Options: noopen
+# X-Content-Type-Options: nosniff
+# X-Permitted-Cross-Domain-Policies: none
+# Referrer-Policy: no-referrer
+# X-XSS-Protection: 0
+# Access-Control-Allow-Origin: *
+# X-RateLimit-Limit: 20
+# X-RateLimit-Remaining: 13
+# Date: Wed, 07 Apr 2021 09:36:48 GMT
+# X-RateLimit-Reset: 1617788214
+# Content-Type: application/json; charset=utf-8
+# Content-Length: 28
+# ETag: W/"1c-loBxQ4oraXDsUVRJJzRimDlIB+w"
+# Vary: Accept-Encoding
+# Connection: close
+
+# {
+#   "message": "SERVER RUNNING"
+# }

@@ -2,13 +2,9 @@
     "id": "condicionesgenerales",
     "edad_minima_para_conductor_plus_coche": 23,
     "edad_minima_para_conductor_plus_motos": 25,
-    "edad_conductor_novel_coches": "18-22 años",
-    "edad_conductor_novel_motos": "18-24 años",
-    "edad_conductor_plus_coche": "23 años con 2 años de carnet de conducir",
-    "edad_conductor_plus_moto": "25 años con 2 años de carnet de conducir",
     "choferPlusNovelCars": {
 
-        "descripcion": "Suplemento para conductor entre 18 y 22 años",
+        "descripcion": "Conductor entre 18 y 22 años con carnet de conducir.",
         "datos":
         [
             {
@@ -30,7 +26,7 @@
         ]
     },
     "choferPlusNovelMotos": {
-        "descripcion": "Suplemento para conductor entre 18 y 24 años",
+        "descripcion": "Conductor entre 18 y 24 años con carnet de conducir.",
         "datos":
         [
             {
@@ -44,7 +40,7 @@
         ]
     },
     "choferPlus232Cars": {
-        "descripcion": "Suplemento para conductor de 23 años y con 2 años de carnet de conducir",
+        "descripcion": "Conductor de 23 años o mas con minimo 2 años de carnet de conducir.",
         "datos":
         [
             {
@@ -67,7 +63,7 @@
         ]
     },
     "choferPlus252Motos": {
-        "descripcion": "Suplemento para conductor de 25 años y con 2 años de carnet de conducir",
+        "descripcion": "Conductor de 25 años o mas con minimo 2 años de carnet de conducir.",
         "datos":
         [
             {

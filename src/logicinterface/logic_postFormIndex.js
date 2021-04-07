@@ -181,30 +181,15 @@ exports.TransformarResultadosCoche = async (
     // }
 
     // let resultadosCochesTemporal = [];
-    for (let i = 0; i < resultadosCoches.length; i++) {
-
-        
-        // en teoria la db nos ha traido los coches correctos segun la edad
-        //comprobar si tiene la experiencia/edad minima
-        // if (formulario.conductor_con_experiencia === "off")
-        // {
-        //     const edadChoferFormulario = resultadosCoches[i].edadChofer - 0;
-        //     if (edadChoferFormulario > 26 && edadChoferFormulario < 69)
-        //     {
-        //         continue;
-        //     }
-        // }
-        // else
-        // {
-        //     resultadosCochesTemporal.push(resultadosCoches[i]);
-        // }
-        
+    for (let i = 0; i < resultadosCoches.length; i++)
+    {
 
         //comprobar los dias de reserva, si es mayor a 7 dias, aplicar PRECIOMAS7 * DIAS
         const claseVehiculo = resultadosCoches[i].clasevehiculo;
 
         //si no existe la clase
-        if (!preciosPorClase[claseVehiculo]) {
+        if (!preciosPorClase[claseVehiculo])
+        {
             console.error(`resultadoscoche ${resultadosCoches[i]} clasevehiculo ${claseVehiculo}`);
             continue;
         }
@@ -215,15 +200,16 @@ exports.TransformarResultadosCoche = async (
         let precioTotalDias = 0;
         let precioDiaSinDescuento = listadoPrecios[1];
         
-        if (numeroDiasRecogidaDevolucion > 7) {
+        if (numeroDiasRecogidaDevolucion > 7) 
+        {
             precioDiaPorClase = listadoPrecios[listadoPrecios.length - 1];
             precioTotalDias = precioDiaPorClase * numeroDiasRecogidaDevolucion;
             
         }
-        else {
+        else 
+        {
             precioDiaPorClase = listadoPrecios[1];
             precioTotalDias = listadoPrecios[numeroDiasRecogidaDevolucion];
-            //resultadosCoches[i]["preciototalsindescuento"] = precioDiaPorClase * numeroDiasRecogidaDevolucion;
             
         }
         
@@ -232,56 +218,26 @@ exports.TransformarResultadosCoche = async (
         resultadosCoches[i]["preciopordiasindescuento"] = precioDiaSinDescuento;
         resultadosCoches[i]["preciototalsindescuento"] = precioDiaSinDescuento * numeroDiasRecogidaDevolucion;
 
-
-        let preciosSuplementoPorTipoChofer = [];
-        // suplementoPorTipoChofer rehacer
-        for (let j = 0; j < suplementoTipoChofer.length; j++)
-        {
-            if (claseVehiculo === "motos2" || claseVehiculo === "motos1")
-            {
-                if (suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlus252Motos")
-                {
-                    let objSuplemento = {};
-                    objSuplemento[claseVehiculo] = suplementoTipoChofer[j][claseVehiculo];
-                    preciosSuplementoPorTipoChofer.push(objSuplemento);
-                    
-                }
-            }
-            else
-            {
-                if (suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] !== "choferPlus252Motos")
-                {
-                    let objSuplemento = {};
-                    objSuplemento[claseVehiculo] = suplementoTipoChofer[j][claseVehiculo];
-                    preciosSuplementoPorTipoChofer.push(objSuplemento);
-
-                }
-            }
-        }
+        
+        const preciosSuplementoPorTipoChofer =  await GenerarSuplementosPorTipoChofer(
+            suplementoTipoChofer, 
+            formulario.conductor_con_experiencia,
+            claseVehiculo
+        );
 
         resultadosCoches[i]["preciosSuplementoPorTipoChofer"] = preciosSuplementoPorTipoChofer;
 
-        let suplementosGenericos = {};
-        let sumaSuplementosGenericos = 0;
-        for (let j = 0; j < resultadosCoches[i].suplemento.length; j++)
-        {
-            
-            const keySuplemento = resultadosCoches[i].suplemento[j];
-            const contenidoSuplemento = suplementoGenerico[keySuplemento];
-            
-            suplementosGenericos[keySuplemento] = contenidoSuplemento;
-            if (contenidoSuplemento.valor > 0)
-            {
-                sumaSuplementosGenericos++;
-            }
+        const [suplementosGenericos, sumaSuplementosGenericos ] = await GenerarSuplementosVehiculos(
+            resultadosCoches[i].suplemento,
+            suplementoGenerico
 
-        }
+        );
 
         resultadosCoches[i]["suplementosgenericos"] = suplementosGenericos;
         resultadosCoches[i]["sumaSuplementosGenericos"] = sumaSuplementosGenericos;
 
     }
-
+    
     return {
         isOk: true,
         resultadosCoches: resultadosCoches,
@@ -289,6 +245,74 @@ exports.TransformarResultadosCoche = async (
         diasEntreRecogidaDevolucion: numeroDiasRecogidaDevolucion
     };
 
+
+};
+
+
+const GenerarSuplementosPorTipoChofer = async (
+    suplementoTipoChofer, 
+    conductor_con_experiencia,
+    claseVehiculo
+) =>
+{
+    let preciosSuplementoPorTipoChofer = [];
+
+    for (let j = 0; j < suplementoTipoChofer.length; j++) {
+        let objSuplemento = {};
+        if (conductor_con_experiencia === "on") {
+            if (
+                suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlus232Cars" ||
+                suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlus232Motos"
+            ) {
+                if (suplementoTipoChofer[j][claseVehiculo] > 0) {
+                    objSuplemento["codigo"] = "no-oferta";
+                    objSuplemento["descripcion"] = `Suplemento de ${suplementoTipoChofer[j][claseVehiculo]} € por dia.`;
+                    preciosSuplementoPorTipoChofer.push(objSuplemento);
+                }
+            }
+
+        }
+        else {
+
+            if (
+                suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlusNovelCars" ||
+                suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlusNovelMotos"
+            ) {
+                if (suplementoTipoChofer[j][claseVehiculo] <= 0) {
+                    objSuplemento["codigo"] = "oferta";
+                    objSuplemento["descripcion"] = "Sin suplemento por conductor joven";
+                    preciosSuplementoPorTipoChofer.push(objSuplemento);
+                }
+            }
+        }
+
+    }
+
+    return preciosSuplementoPorTipoChofer;
+
+
+};
+
+
+const GenerarSuplementosVehiculos = async (suplementos, suplementoGenerico) =>
+{
+
+    let suplementosGenericos = {};
+    let sumaSuplementosGenericos = 0;
+
+    for (let j = 0; j < suplementos.length; j++) {
+
+        const keySuplemento = suplementos[j];
+        const contenidoSuplemento = suplementoGenerico[keySuplemento];
+
+        suplementosGenericos[keySuplemento] = contenidoSuplemento;
+        if (contenidoSuplemento.valor > 0) {
+            sumaSuplementosGenericos++;
+        }
+
+    }
+
+    return [suplementoGenerico, sumaSuplementosGenericos];
 
 };
 
