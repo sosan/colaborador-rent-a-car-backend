@@ -1,4 +1,4 @@
-FROM node:15.12.0-alpine3.13
+FROM node:15.14-alpine3.13
 
 # set NODE_ENV 
 ENV NODE_ENV=development && \
