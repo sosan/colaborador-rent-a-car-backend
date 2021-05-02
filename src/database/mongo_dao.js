@@ -182,12 +182,12 @@ exports.GetAllSuplementosTipoChofer = async () => {
 
     try {
 
-        const resultados = await collectionsupleTipochoferVehiculo.find()
-        .project({ _id: 0 })
+        const resultados = await collectionsupleTipochoferVehiculo.find({"id": "experienciaConductor"})
+        .project({ _id: 0, id: 0 })
         .toArray();
 
         if (resultados !== undefined) {
-            return { isOk: true, resultados: resultados, errores: "" }
+            return { isOk: true, resultados: resultados[0], errores: "" }
         }
         else {
             const error = `${EnumTiposErrores.SinDatos} Coleccion SuplmentoTipoChofer`;
@@ -214,7 +214,7 @@ exports.GetSuplementoGenerico = async () => {
         const resultados = await collectionsupleGenerico.find(
             { "id": "suplementos" }
         )
-        .project({ _id: 0 })
+        .project({ _id: 0, id: 0 })
         .toArray();
 
         if (resultados !== undefined) {
