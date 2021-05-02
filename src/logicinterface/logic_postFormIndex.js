@@ -1,3 +1,4 @@
+const { text } = require("body-parser");
 const dbInterfaces = require("../database/dbInterfaces");
 const { EnumTiposErrores } = require("../errors/exceptions");
 
@@ -169,17 +170,6 @@ exports.TransformarResultadosCoche = async (
 
     const numeroDiasRecogidaDevolucion = diasEntreRecogidaDevolucion + 1;
     
-    // no controlamos si hay solo 1 dia de separacion
-    // if (diasEntreRecogidaDevolucion === 0) {
-    //     console.error("SEPARACION DE DIAS ES MENOR A 1 DIA - TransformarResultadosCoche");
-    //     return {
-    //         isOk: false,
-    //         resultadosCoches: undefined,
-    //         errorFormulario: "Separacion de dias menor a 1 dia",
-    //         diasEntreRecogidaDevolucion: undefined
-    //     };
-    // }
-
     // let resultadosCochesTemporal = [];
     for (let i = 0; i < resultadosCoches.length; i++)
     {
@@ -227,14 +217,20 @@ exports.TransformarResultadosCoche = async (
 
         resultadosCoches[i]["preciosSuplementoPorTipoChofer"] = preciosSuplementoPorTipoChofer;
 
-        const [suplementosGenericos, sumaSuplementosGenericos ] = await GenerarSuplementosVehiculos(
+        // const [suplementosGenericos, sumaSuplementosGenericos ] = await GenerarSuplementosVehiculos(
+        //     resultadosCoches[i].suplemento,
+        //     suplementoGenerico
+
+        // );
+
+        const suplementosGenericos = await GenerarSuplementosVehiculos(
             resultadosCoches[i].suplemento,
             suplementoGenerico
-
         );
 
+
         resultadosCoches[i]["suplementosgenericos"] = suplementosGenericos;
-        resultadosCoches[i]["sumaSuplementosGenericos"] = sumaSuplementosGenericos;
+        // resultadosCoches[i]["sumaSuplementosGenericos"] = sumaSuplementosGenericos;
 
     }
     
@@ -255,37 +251,31 @@ const GenerarSuplementosPorTipoChofer = async (
     claseVehiculo
 ) =>
 {
-    let preciosSuplementoPorTipoChofer = [];
 
-    for (let j = 0; j < suplementoTipoChofer.length; j++) {
-        let objSuplemento = {};
-        if (conductor_con_experiencia === "on") {
-            if (
-                suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlus232Cars" ||
-                suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlus232Motos"
-            ) {
-                if (suplementoTipoChofer[j][claseVehiculo] > 0) {
-                    objSuplemento["codigo"] = "no-oferta";
-                    objSuplemento["descripcion"] = `Suplemento de ${suplementoTipoChofer[j][claseVehiculo]} € por dia.`;
-                    preciosSuplementoPorTipoChofer.push(objSuplemento);
-                }
-            }
+    let preciosSuplementoPorTipoChofer = {
+        "no-oferta": [],
+        "oferta": []
+    };
 
-        }
-        else {
+    const currentTipoChofer = await ObtenerListadoTipoChofer(claseVehiculo, conductor_con_experiencia, suplementoTipoChofer);
+    let objSuplemento = {};
 
-            if (
-                suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlusNovelCars" ||
-                suplementoTipoChofer[j]["Tipo de Conductor(Experiencia)"] === "choferPlusNovelMotos"
-            ) {
-                if (suplementoTipoChofer[j][claseVehiculo] <= 0) {
-                    objSuplemento["codigo"] = "oferta";
-                    objSuplemento["descripcion"] = "Sin suplemento por conductor joven";
-                    preciosSuplementoPorTipoChofer.push(objSuplemento);
-                }
-            }
-        }
-
+    if (currentTipoChofer[claseVehiculo] > 0) 
+    {
+        
+        objSuplemento["descripcion"] = `Cargo Conductor Joven: ${currentTipoChofer[claseVehiculo]} € por dia.`;
+        objSuplemento["tooltip"] = `El usuario debe pagar un suplmento por conductor joven de ${currentTipoChofer[claseVehiculo]} € por dia`;
+        preciosSuplementoPorTipoChofer["no-oferta"].push(objSuplemento);
+        
+    }
+    else
+    {
+        
+        objSuplemento["descripcion"] = "Sin suplemento por conductor joven";
+        objSuplemento["tooltip"] = `El usuario no pagara un suplemento por ser un conductor joven`;
+        objSuplemento["valor"] = 0;
+        preciosSuplementoPorTipoChofer["oferta"].push(objSuplemento);
+        
     }
 
     return preciosSuplementoPorTipoChofer;
@@ -294,25 +284,74 @@ const GenerarSuplementosPorTipoChofer = async (
 };
 
 
-const GenerarSuplementosVehiculos = async (suplementos, suplementoGenerico) =>
+const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia, suplementoTipoChofer) =>
 {
 
-    let suplementosGenericos = {};
-    let sumaSuplementosGenericos = 0;
+    let currentTipoChofer = {};
 
-    for (let j = 0; j < suplementos.length; j++) {
-
-        const keySuplemento = suplementos[j];
-        const contenidoSuplemento = suplementoGenerico[keySuplemento];
-
-        suplementosGenericos[keySuplemento] = contenidoSuplemento;
-        if (contenidoSuplemento.valor > 0) {
-            sumaSuplementosGenericos++;
+    if (conductor_con_experiencia === "on")
+    {
+        if (claseVehiculo === "motos2")
+        {
+            currentTipoChofer = suplementoTipoChofer["choferPlus252Motos"];
+        }
+        else
+        {
+            currentTipoChofer = suplementoTipoChofer["choferPlus232Cars"];
+        }
+    }
+    else
+    {
+        if (claseVehiculo === "motos2")
+        {
+            currentTipoChofer = suplementoTipoChofer["choferPlusNovelMotos"];
+        }
+        else
+        {
+            currentTipoChofer = suplementoTipoChofer["choferPlusNovelCars"];
         }
 
     }
 
-    return [suplementoGenerico, sumaSuplementosGenericos];
+    return currentTipoChofer;
+
+};
+
+
+const GenerarSuplementosVehiculos = async (suplementos, suplementoGenerico) =>
+{
+
+    let suplementosGenericos = [];
+
+    for (let j = 0; j < suplementos.length; j++) 
+    {
+
+        const keySuplemento = suplementos[j];
+        const contenidoSuplemento = suplementoGenerico[keySuplemento];
+        
+        if (contenidoSuplemento.valor > 0)
+        {
+            let texto = contenidoSuplemento["tooltip_pagar"];
+            contenidoSuplemento["tooltip_pagar"] = texto.replace("X", contenidoSuplemento["valor"] );
+            
+            suplementosGenericos.push({
+                "titulo": contenidoSuplemento["titulo_pagar"],
+                "tooltip": contenidoSuplemento["tooltip_pagar"],
+                "valor": contenidoSuplemento["valor"]
+            });
+        }
+        else
+        {
+            suplementosGenericos.push({
+                "titulo": contenidoSuplemento["titulo_gratis"],
+                "tooltip": contenidoSuplemento["tooltip_gratis"],
+                "valor": 0
+            });
+        }
+        
+    }
+
+    return suplementosGenericos;
 
 };
 
