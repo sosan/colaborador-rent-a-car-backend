@@ -27,7 +27,7 @@ exports.conectDb = async () => {
 
         if (connect.isConnected() === true)
         {
-            console.log(`[process ${process.pid}] CONNECTED TO DB`);
+            console.log(`[process ${process.pid}] CONNECTED TO MONGO DB`);
             const currentDb = client.db(process.env.MONGO_DB_NAME);
     
             collectionCars = currentDb.collection(process.env.MONGO_COLECCION_CARS);

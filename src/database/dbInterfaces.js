@@ -1,4 +1,5 @@
 const mongo_dao = require('../database/mongo_dao');
+const redis_dao = require("../database/redis_dao");
 const { EnumTiposErrores } = require("../errors/exceptions");
 
 const DAY_IN_MILISECONDS = 86400000;
@@ -18,8 +19,13 @@ exports.ConnectDB = async () =>
     {
         throw new Error("token no seteado")
     }
+
+    await redis_dao.conectDb();
     
     console.log("Token seteado");
+
+
+
     
 };
 

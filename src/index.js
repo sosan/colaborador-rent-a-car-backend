@@ -10,7 +10,7 @@ const dbInterfaces = require("./database/dbInterfaces");
 const router = require('./routes/api');
 const cookieParser = require('cookie-parser');
 
-// ---
+// --- conexion base de datos
 dbInterfaces.ConnectDB();
 
 
