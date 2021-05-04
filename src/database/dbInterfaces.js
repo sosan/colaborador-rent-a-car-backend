@@ -96,3 +96,10 @@ exports.GetCondicionesGenerales = async () =>
 };
 
 
+exports.SumarVisitaVehiculo = async (vehiculo) =>
+{
+    const resultado = await redis_dao.SumarVisitaVehiculo(vehiculo);
+    return resultado;
+
+};
+

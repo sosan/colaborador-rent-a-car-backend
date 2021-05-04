@@ -1,4 +1,3 @@
-const { text } = require("body-parser");
 const dbInterfaces = require("../database/dbInterfaces");
 const { EnumTiposErrores } = require("../errors/exceptions");
 

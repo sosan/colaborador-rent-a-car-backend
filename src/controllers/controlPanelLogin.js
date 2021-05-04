@@ -5,11 +5,11 @@ const fs = require('fs');
 exports.postContronPanelLogin = async (req, res) =>
 {
 
-    if (req.body.email === undefined || req.body.password === undefined) return res.redirect(404, "/");
+    if (req.body.email === undefined || req.body.password === undefined) return res.send({"idOk": false});
 
-    if (req.body.email === "" || req.body.password === "") return res.redirect(404, "/");
+    if (req.body.email === "" || req.body.password === "") return res.send({ "idOk": false });
 
-    if (req.body.username !== "") return res.redirect(404, "/");
+    if (req.body.username !== "") return res.send({ "idOk": false });
 
     //comprobar el cookie device
     const deviceCookie = req.cookies['devicecookie'];

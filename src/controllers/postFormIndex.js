@@ -1,15 +1,13 @@
-const apiSchema = require("../schemas/apischema");
 const dbInterfaces = require("../database/dbInterfaces");
 const { EnumMensajesErrores } = require("../errors/exceptions");
-const logicInterface = require("../logicinterface/logic_postFormIndex");  
+const logicInterface = require("../logicinterface/logic_postFormIndex");
+const Joi = require("joi");
+
 
 exports.postFormIndex = async (req, res) =>
 {
 
-    if (req.body.token === undefined || req.body.token !== dbInterfaces.tokenFromFrontend)
-    {
-        return res.status(404).send({});
-    }
+    await CheckToken(res, req.body.token, dbInterfaces.tokenFromFrontend);
 
     let formulario = req.body;
     // TODO: generar string a partir del secreto
@@ -25,7 +23,7 @@ exports.postFormIndex = async (req, res) =>
         //TODO: mejorar a redireccion ?
         // blocklist?
         console.error("Esquema invalido");
-        res.redirect(404, "/");
+        return res.send({"isOk": false});
     }
 
     
@@ -89,37 +87,45 @@ exports.postFormIndex = async (req, res) =>
 };
 
 
+const CheckToken = async (res, token, tokenFromFrontend) => {
+    if (token === undefined || token !== tokenFromFrontend) {
+        return res.status(404).send({});
+    }
+
+};
+
+
 
 
 // control de schema para comprobar que lo que envia el frontend
 // cumple con el schema
+
 const ControlSchema = async (body) => {
 
-    const tamanyoBody = Object.keys(body).length;
-    if (tamanyoBody <= 0 || tamanyoBody > apiSchema.length) return false;
 
+    const schema = Joi.object({
+        "token": Joi.string().required(),
+        fechaDevolucion: Joi.string().required(),
+        horaDevolucion: Joi.string().required(),
+        fechaRecogida: Joi.string().required(),
+        horaRecogida: Joi.string().required(),
+        conductor_con_experiencia: Joi.string(),
+        edad_conductor: Joi.string().required(),
+    });
+
+
+    const options = {
+        abortEarly: false, // include all errors
+        allowUnknown: true, // ignore unknown props
+        stripUnknown: false // remove unknown props
+    };
+    const validation = schema.validate(body, options);
     let isValid = false;
-    for (key in body) {
-        if (body[key] === "" || body[key] === undefined) {
-            return false;
-        }
 
-        let schemaValid = isValid = false;
-        for (let i = 0; i < apiSchema.length; i++) {
-            if (key === apiSchema[i]) {
-                schemaValid = true;
-                isValid = true;
-                break;
-            }
-        }
-
-        //TODO: controla hora y fecha introducidas
-
-        if (schemaValid === false) {
-            return false;
-        }
-
+    if (validation.error === undefined) {
+        isValid = true;
     }
 
     return isValid;
+
 }

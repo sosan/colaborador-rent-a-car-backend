@@ -30,6 +30,7 @@
     "express-useragent": "^1.0.15",
     "helmet": "^4.4.1",
     "ioredis": "^4.27.1",
+    "joi": "^17.4.0",
     "mongodb": "^3.6.6",
     "morgan": "^1.10.0"
   },
