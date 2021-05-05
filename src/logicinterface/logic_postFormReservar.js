@@ -1,3 +1,4 @@
+const Joi = require("joi");
 const dbInterfaces = require("../database/dbInterfaces");
 
 
@@ -8,6 +9,65 @@ exports.GenerateTokenBackendToFrontend = async () => {
 };
 
 
+exports.CheckToken = async (res, req, tokenFromFrontend) =>
+{
+
+    let isValid = false;
+
+    if (req.useragent.browser === "node-fetch") 
+    {
+        isValid = true;
+    }
+    else
+    {
+        isValid = false;
+    }
+
+    if (req.body.token !== undefined || req.body.token === tokenFromFrontend) {
+        isValid = true;
+    }
+    else
+    {
+        isValid = false;
+    }
+
+    return isValid;
+
+};
+
+
+
+
+
+exports.ControlSchema = async (body) => {
+
+    const schema = Joi.object({
+        "success": Joi.string().required(),
+        "conductor_con_experiencia": Joi.string().required(),
+        "location": Joi.object().required(),
+        "token": Joi.string().required(),
+        "useragent": Joi.object().required(),
+        "vehiculo": Joi.string().required()
+    });
+
+    const options = {
+        abortEarly: false,
+        allowUnknown: false,
+        stripUnknown: false
+    };
+    const validation = schema.validate(body, options);
+    let isValid = false;
+
+    if (validation.error === undefined) {
+        isValid = true;
+    }
+
+    return isValid;
+
+}
+
+
+
 exports.SumarVisitaVehiculo = async (vehiculo) =>
 {
 
@@ -15,3 +75,5 @@ exports.SumarVisitaVehiculo = async (vehiculo) =>
     return resultado;
 
 };
+
+

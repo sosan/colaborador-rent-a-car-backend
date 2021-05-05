@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const express = require('express');
 var compression = require('compression');
-const userAgent = require('express-useragent')
+const userAgent = require('express-useragent');
 const rateLimit = require('express-rate-limit');
 const dbInterfaces = require("./database/dbInterfaces");
 const router = require('./routes/api');
@@ -23,7 +23,7 @@ const apiLimiter = rateLimit({
 
 app.use(cookieParser());
 app.use(compression());
-app.use(userAgent.express())
+app.use(userAgent.express());
 app.use(helmet());
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(express.json({ limit: '2mb' }));

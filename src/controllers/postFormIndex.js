@@ -7,7 +7,13 @@ const Joi = require("joi");
 exports.postFormIndex = async (req, res) =>
 {
 
-    await CheckToken(res, req.body.token, dbInterfaces.tokenFromFrontend);
+    const isTokenValid = await CheckToken(res, req.body.token, dbInterfaces.tokenFromFrontend);
+
+    if (isTokenValid === false)
+    {
+        console.error("token invalido");
+        return res.send({ "isOk": false });
+    }
 
     let formulario = req.body;
     // TODO: generar string a partir del secreto
@@ -24,6 +30,7 @@ exports.postFormIndex = async (req, res) =>
         // blocklist?
         console.error("Esquema invalido");
         return res.send({"isOk": false});
+
     }
 
     
@@ -87,11 +94,17 @@ exports.postFormIndex = async (req, res) =>
 };
 
 
-const CheckToken = async (res, token, tokenFromFrontend) => {
-    if (token === undefined || token !== tokenFromFrontend) {
-        return res.status(404).send({});
+const CheckToken = async (res, token, tokenFromFrontend) => 
+{
+
+    let isValid = false;
+
+    if (token !== undefined || token === tokenFromFrontend) 
+    {
+        isValid = true;
     }
 
+    return isValid;
 };
 
 
@@ -105,6 +118,7 @@ const ControlSchema = async (body) => {
 
     const schema = Joi.object({
         "token": Joi.string().required(),
+        "success": Joi.string().required(),
         fechaDevolucion: Joi.string().required(),
         horaDevolucion: Joi.string().required(),
         fechaRecogida: Joi.string().required(),
