@@ -21,6 +21,8 @@ let collectionsupleGenerico = undefined;
 let collectionsupleTipochoferVehiculo = undefined;
 let collectionReservas = undefined;
 
+let collectionPosiblesCompradores = undefined;
+
 exports.conectDb = async () => {
     try {
         const connect = await client.connect();
@@ -40,7 +42,7 @@ exports.conectDb = async () => {
             collectionsupleTipochoferVehiculo = currentDb.collection(process.env.MONGO_COLECCION_SUPLE_TIPO_CHOFER);
             collectionReservas = currentDb.collection(process.env.MONGO_COLECCION_RESERVAS);
 
-            
+            collectionPosiblesCompradores = currentDb.collection(process.env.MONGO_COLECCION_POSIBLES_COMPRADORES);
             
         }
 
@@ -350,3 +352,30 @@ exports.GetCondicionesGenerales = async () => {
 };
 
 
+exports.InsertarPosibleComprador = async (comprador) =>
+{
+
+    try {
+        
+        const x = client.db(process.env.MONGO_DB_NAME).collection(process.env.MONGO_COLECCION_POSIBLES_COMPRADORES);
+        // { $push: { "violations": { "hola": "hola" } } 
+        const s = await x.findOneAndUpdate(
+            { "compradorId": "dR2nS-afgqJDnOLjVf16M" }, //comprador.compradorId },
+            { 
+                $set: { "faseActual": comprador.faseActual } , 
+                $push: { "rutaDatos": {  ...comprador.rutaDatos } }
+                
+            }
+        );
+        
+        console.log("s" + s);
+
+    } catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion posibles_compradores`;
+        console.error(error);
+    }
+
+
+
+};

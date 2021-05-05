@@ -43,6 +43,7 @@ exports.ControlSchema = async (body) => {
 
     const schema = Joi.object({
         "success": Joi.string().required(),
+        "fase": Joi.string().required(),
         "conductor_con_experiencia": Joi.string().required(),
         "location": Joi.object().required(),
         "token": Joi.string().required(),
@@ -76,4 +77,23 @@ exports.SumarVisitaVehiculo = async (vehiculo) =>
 
 };
 
+
+exports.AñadirComprador = async (formulario) =>
+{
+
+    formulario["alta"] = new Date(new Date().toUTCString()); //new Date()
+    const comprador = {
+        "compradorId": formulario.success,
+        "faseActual": formulario.fase,
+        "rutaDatos": 
+            {
+                "fase": formulario.fase,
+                ...formulario
+            }
+        
+    }
+
+    const resultado = dbInterfaces.InsertarPosibleComprador(comprador);
+
+};
 

@@ -103,3 +103,11 @@ exports.SumarVisitaVehiculo = async (vehiculo) =>
 
 };
 
+exports.InsertarPosibleComprador = async (comprador) =>
+{
+
+    const resultado = await mongo_dao.InsertarPosibleComprador(comprador);
+    return resultado;
+
+
+};

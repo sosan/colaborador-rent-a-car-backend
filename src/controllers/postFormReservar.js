@@ -25,7 +25,8 @@ exports.postFormReservar = async (req, res) =>
 
     const isSchemaValid = await logicInterface.ControlSchema(formulario);
 
-    if (isSchemaValid === false) {
+    if (isSchemaValid === false) 
+    {
         //TODO: mejorar a redireccion ?
         // blocklist?
         console.error("Esquema invalido");
@@ -40,7 +41,11 @@ exports.postFormReservar = async (req, res) =>
         console.log(`no se ha sumado +1 al vehiculo ${vehiculo}`);
     }
 
+    const x = logicInterface.AñadirComprador(formulario);
+
     
+    // x["rutaDatos"].push(rutaDatos);
+
 
 
 };
