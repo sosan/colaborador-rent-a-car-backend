@@ -44,8 +44,8 @@ test("post /api", async () => {
         body: JSON.stringify(formularioOk)
     });
     const json = await response.json();
-    const result = json.isOk;
-    expect(expected).toBe(result);
+    const recieved = json.isOk;
+    expect(recieved).toBe(false);
 
 });
 

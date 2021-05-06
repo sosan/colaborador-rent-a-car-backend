@@ -351,8 +351,28 @@ exports.GetCondicionesGenerales = async () => {
     
 };
 
+exports.InsertarPosibleComprador = async (comprador) => {
 
-exports.InsertarPosibleComprador = async (comprador) =>
+    try {
+
+        // const x = client.db(process.env.MONGO_DB_NAME).collection(process.env.MONGO_COLECCION_POSIBLES_COMPRADORES);
+        // x.insertOne()
+
+        // { $push: { "violations": { "hola": "hola" } } 
+        const s = await collectionPosiblesCompradores.insertOne(comprador);
+        console.log("s" + s);
+
+    } catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion posibles_compradores`;
+        console.error(error);
+    }
+
+
+};
+
+
+exports.ActualizarPosibleComprador = async (comprador) =>
 {
 
     try {

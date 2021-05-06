@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/index.js",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll --detectOpenHandles"
   },
   "repository": {
     "type": "git",

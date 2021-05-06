@@ -1,5 +1,7 @@
 const Joi = require("joi");
 const dbInterfaces = require("../database/dbInterfaces");
+const logicStats = require("../logicinterface/logic_stats");
+
 
 
 // TODO: generar string a partir del secreto
@@ -23,7 +25,7 @@ exports.CheckToken = async (res, req, tokenFromFrontend) =>
         isValid = false;
     }
 
-    if (req.body.token !== undefined || req.body.token === tokenFromFrontend) {
+    if (req.body.token === tokenFromFrontend) {
         isValid = true;
     }
     else
@@ -78,22 +80,17 @@ exports.SumarVisitaVehiculo = async (vehiculo) =>
 };
 
 
-exports.AñadirComprador = async (formulario) =>
+exports.AñadirEstadisticas = async (formulario) =>
 {
 
-    formulario["alta"] = new Date(new Date().toUTCString()); //new Date()
-    const comprador = {
-        "compradorId": formulario.success,
-        "faseActual": formulario.fase,
-        "rutaDatos": 
-            {
-                "fase": formulario.fase,
-                ...formulario
-            }
-        
-    }
-
-    const resultado = dbInterfaces.InsertarPosibleComprador(comprador);
-
+    const resultado = await logicStats.AñadirEstadisticas(formulario);
+    
 };
 
+
+
+exports.ActualizarEstadisticas = async (formulario) => {
+
+    const resultado = await logicStats.ActualizarEstadisticas(formulario);
+
+};

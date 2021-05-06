@@ -10,9 +10,7 @@ exports.postFormReservar = async (req, res) =>
     if (isValidToken === false)
     {
         return res.send({"isOk": false});
-
     }
-
 
     
     let formulario = req.body;
@@ -41,7 +39,7 @@ exports.postFormReservar = async (req, res) =>
         console.log(`no se ha sumado +1 al vehiculo ${vehiculo}`);
     }
 
-    const x = logicInterface.AñadirComprador(formulario);
+    const x = logicInterface.ActualizarEstadisticas(formulario);
 
     
     // x["rutaDatos"].push(rutaDatos);
