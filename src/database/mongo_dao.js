@@ -354,11 +354,6 @@ exports.GetCondicionesGenerales = async () => {
 exports.InsertarPosibleComprador = async (comprador) => {
 
     try {
-
-        // const x = client.db(process.env.MONGO_DB_NAME).collection(process.env.MONGO_COLECCION_POSIBLES_COMPRADORES);
-        // x.insertOne()
-
-        // { $push: { "violations": { "hola": "hola" } } 
         
         const result = await collectionPosiblesCompradores.insertOne(comprador);
         const isInserted = await GenerarDataInserted(result.insertedCount);

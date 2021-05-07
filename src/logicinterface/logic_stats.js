@@ -54,6 +54,36 @@ exports.AñadirEstadisticas = async (formulario) => {
 };
 
 
+
+exports.AñadirEstadisticasTest = async (formulario, collection) => {
+
+    formulario["alta"] = new Date(new Date().toUTCString());
+    const comprador = {
+        "compradorId": formulario.id,
+        "faseActual": 1,
+        "rutaDatos": [
+            {
+                "fase": 1,
+                ...formulario
+            }
+        ]
+
+    }
+
+    let isInserted = false;
+    let incrementalCount = 1;
+    while (isInserted === false) {
+        isInserted = await dbInterfaces.InsertarPosibleComprador(comprador);
+        if (isInserted === false) {
+            await sleep(5000 * incrementalCount);
+            incrementalCount++;
+        }
+    }
+    return isInserted;
+
+};
+
+
 const sleep = async (ms) => {
     return new Promise((resolve) => {
         setTimeout(resolve, ms);

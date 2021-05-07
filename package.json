@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/index.js",
-    "test": "jest --watchAll --detectOpenHandles --testTimeout 60000"
+    "test": "jest --detectOpenHandles --testTimeout 60000"
   },
   "repository": {
     "type": "git",
