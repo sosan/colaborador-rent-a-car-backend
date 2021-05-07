@@ -1,7 +1,8 @@
+require('dotenv').config();
 const fetch = require("node-fetch");
 
 
-const URI_API = "http://localhost:3000/7HNH9bkz57LHwa_framLQ";
+const URI_STATS_BACKEND = `${process.env.URL_BASE}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_STATS_BACKEND}`;
 
 
 const data =
@@ -80,7 +81,7 @@ test("post añadir stats token incorrecto /7HNH9bkz57LHwa_framLQ", async () => {
 
     const expected = false;
     data["token"] = "token incorrecto";
-    const response = await fetch(URI_API, {
+    const response = await fetch(URI_STATS_BACKEND, {
         method: "POST",
         headers: {
             "Content-type": "application/json"
@@ -99,7 +100,7 @@ test("post añadir stats token correcto /7HNH9bkz57LHwa_framLQ", async () => {
 
     const expected = true;
     data["token"] = "eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.hZnl5amPk_I3tb4O-Otci_5XZdVWhPlFyVRvcqSwnDo_srcysDvhhKOD01DigPK1lJvTSTolyUgKGtpLqMfRDXQlekRsF4XhAjYZTmcynf-C-6wO5EI4wYewLNKFGGJzHAknMgotJFjDi_NCVSjHsW3a10nTao1lB82FRS305T226Q0VqNVJVWhE4G0JQvi2TssRtCxYTqzXVt22iDKkXeZJARZ1paXHGV5Kd1CljcZtkNZYIGcwnj65gvuCwohbkIxAnhZMJXCLaVvHqv9l-AAUV7esZvkQR1IpwBAiDQJh4qxPjFGylyXrHMqh5NlT_pWL2ZoULWTg_TJjMO9TuQ";
-    const response = await fetch(URI_API, {
+    const response = await fetch(URI_STATS_BACKEND, {
         method: "POST",
         headers: {
             "Content-type": "application/json"

@@ -99,7 +99,7 @@ const CheckToken = async (res, token, tokenFromFrontend) =>
 
     let isValid = false;
 
-    if (token !== undefined || token === tokenFromFrontend) 
+    if (token === tokenFromFrontend) 
     {
         isValid = true;
     }
@@ -125,7 +125,8 @@ const ControlSchema = async (body) => {
         fechaRecogida: Joi.string().required(),
         horaRecogida: Joi.string().required(),
         conductor_con_experiencia: Joi.string(),
-        edad_conductor: Joi.string().required(),
+        edad_conductor: Joi.number().required(),
+        
     });
 
 

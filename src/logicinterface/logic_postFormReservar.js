@@ -45,7 +45,7 @@ exports.ControlSchema = async (body) => {
 
     const schema = Joi.object({
         "success": Joi.string().required(),
-        "fase": Joi.string().required(),
+        "fase": Joi.number().required(),
         "conductor_con_experiencia": Joi.string().required(),
         "location": Joi.object().required(),
         "token": Joi.string().required(),
