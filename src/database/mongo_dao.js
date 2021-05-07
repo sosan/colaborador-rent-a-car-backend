@@ -359,15 +359,36 @@ exports.InsertarPosibleComprador = async (comprador) => {
         // x.insertOne()
 
         // { $push: { "violations": { "hola": "hola" } } 
-        const s = await collectionPosiblesCompradores.insertOne(comprador);
-        console.log("s" + s);
-
+        
+        const result = await collectionPosiblesCompradores.insertOne(comprador);
+        const isInserted = await GenerarDataInserted(result.insertedCount);
+        return isInserted;
+        
     } catch (err) {
         //TODO: enviar a otra db error, redis
         const error = `${err} Coleccion posibles_compradores`;
         console.error(error);
     }
+    
+    
+};
 
+const GenerarDataInserted = async (insertedCount) =>
+{
+
+    if (insertedCount > 1) {
+        throw new Error(`insercion duplicada en insertarposiblecomprador: ${comprador}`);
+    }
+
+    let isInserted = true ;
+
+    if (insertedCount === 0)
+    {
+        console.log(`insercion no posible en insertarposiblecomprador: ${comprador}`);
+        isInserted = false;
+    }
+    
+    return isInserted;
 
 };
 

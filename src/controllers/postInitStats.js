@@ -24,7 +24,7 @@ exports.PostInitStats = async(req, res) =>
         res.send({"isOk": true});
     }
 
-    logicInterface.AñadirEstadisticas(req.body);
+    await logicInterface.AñadirEstadisticas(req.body);
 
 };
 

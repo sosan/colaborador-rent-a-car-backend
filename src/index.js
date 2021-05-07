@@ -7,7 +7,7 @@ var compression = require('compression');
 const userAgent = require('express-useragent');
 const rateLimit = require('express-rate-limit');
 const dbInterfaces = require("./database/dbInterfaces");
-const router = require('./routes/api');
+const router = require('./routes/routes');
 const cookieParser = require('cookie-parser');
 
 // --- conexion base de datos
