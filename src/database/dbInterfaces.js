@@ -112,10 +112,10 @@ exports.InsertarPosibleComprador = async (comprador) => {
 
 };
 
-exports.ActualizarPosibleComprador = async (comprador) =>
+exports.ActualizarPosibleComprador = async (idVisitante, faseActual, visitanteActualizado) =>
 {
 
-    const resultado = await mongo_dao.ActualizarPosibleComprador(comprador);
+    const resultado = await mongo_dao.ActualizarPosibleComprador(idVisitante, faseActual, visitanteActualizado);
     return resultado;
 
 

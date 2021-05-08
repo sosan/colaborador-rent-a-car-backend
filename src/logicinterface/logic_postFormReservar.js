@@ -44,10 +44,10 @@ exports.CheckToken = async (res, req, tokenFromFrontend) =>
 exports.ControlSchema = async (body) => {
 
     const schema = Joi.object({
-        "success": Joi.string().required(),
-        "fase": Joi.number().required(),
         "conductor_con_experiencia": Joi.string().required(),
+        "fase": Joi.number().required(),
         "location": Joi.object().required(),
+        "success": Joi.string().required(),
         "token": Joi.string().required(),
         "useragent": Joi.object().required(),
         "vehiculo": Joi.string().required()
@@ -92,5 +92,10 @@ exports.AñadirEstadisticas = async (formulario) =>
 exports.ActualizarEstadisticas = async (formulario) => {
 
     const resultado = await logicStats.ActualizarEstadisticas(formulario);
+
+
+    // const resultado = await logicStats.ActualizarEstadisticas(formulario);
+
+
 
 };

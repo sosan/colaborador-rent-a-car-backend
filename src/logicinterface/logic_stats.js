@@ -97,20 +97,53 @@ const sleep = async (ms) => {
 
 exports.ActualizarEstadisticas = async (formulario) => {
 
+    // formulario["alta"] = new Date(new Date().toUTCString());
+    // formulario.fase = formulario.fase - 0;
+
+    // const comprador = {
+    //     "compradorId": formulario.success,
+    //     "faseActual": formulario.fase,
+    //     "rutaDatos":
+    //     {
+    //         "fase": formulario.fase,
+    //         ...formulario
+    //     }
+
+    // }
+
+    // const resultado = dbInterfaces.ActualizarPosibleComprador(comprador);
+
+
+
     formulario["alta"] = new Date(new Date().toUTCString());
-    formulario.fase = formulario.fase - 0;
+    formulario["fase"] = formulario["fase"] - 0;
 
-    const comprador = {
-        "compradorId": formulario.success,
-        "faseActual": formulario.fase,
-        "rutaDatos":
-        {
-            "fase": formulario.fase,
-            ...formulario
+    // const visitanteActualizado = {
+    //     // "faseActual": formulario["fase"],
+    //     "rutaDatos": [
+    //         {
+    //             ...formulario
+    //         }
+    //     ]
+
+    // };
+
+    const visitanteActualizado = {
+        ...formulario
+    };
+
+
+    let isInserted = false;
+    let incrementalCount = 1;
+    while (isInserted === false) {
+        isInserted = await dbInterfaces.ActualizarPosibleComprador(formulario.success, formulario["fase"], visitanteActualizado);
+        if (isInserted === false) {
+            await sleep(5000 * incrementalCount);
+            incrementalCount++;
         }
-
     }
+    return isInserted;
 
-    const resultado = dbInterfaces.ActualizarPosibleComprador(comprador);
+
 
 };

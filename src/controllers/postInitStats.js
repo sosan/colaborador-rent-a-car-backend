@@ -19,11 +19,8 @@ exports.PostInitStats = async(req, res) =>
         return res.status(404).send("Not found");
         
     }
-    else
-    {
-        res.send({"isOk": true});
-    }
-
+    
+    res.send({"isOk": true});
     await logicInterface.AñadirEstadisticas(req.body);
 
 };

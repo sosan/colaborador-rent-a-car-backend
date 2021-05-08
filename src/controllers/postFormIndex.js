@@ -117,15 +117,15 @@ const ControlSchema = async (body) => {
 
 
     const schema = Joi.object({
-        "token": Joi.string().required(),
-        "success": Joi.string().required(),
-        "fase": Joi.string().required(),
+        conductor_con_experiencia: Joi.string().required(),
+        edad_conductor: Joi.number().required(),
+        "fase": Joi.number().required(),
         fechaDevolucion: Joi.string().required(),
         horaDevolucion: Joi.string().required(),
         fechaRecogida: Joi.string().required(),
         horaRecogida: Joi.string().required(),
-        conductor_con_experiencia: Joi.string(),
-        edad_conductor: Joi.number().required(),
+        "success": Joi.string().required(),
+        token: Joi.string().required()
         
     });
 

@@ -27,10 +27,13 @@ exports.postFormReservar = async (req, res) =>
     {
         //TODO: mejorar a redireccion ?
         // blocklist?
-        console.error("Esquema invalido");
-        return res.send({ "isOk": false });
+        console.error("postFormReservar > Esquema invalido");
+        return res.status(404).send("Not found");
+        // return res.send({ "isOk": false });
 
     }
+
+    res.send({ "isOk": true });
     
     const resultado = await logicInterface.SumarVisitaVehiculo(formulario.vehiculo);
 
@@ -39,7 +42,7 @@ exports.postFormReservar = async (req, res) =>
         console.log(`no se ha sumado +1 al vehiculo ${vehiculo}`);
     }
 
-    const x = logicInterface.ActualizarEstadisticas(formulario);
+    const x = await logicInterface.ActualizarEstadisticas(formulario);
 
     
     // x["rutaDatos"].push(rutaDatos);

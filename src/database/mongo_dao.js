@@ -351,12 +351,12 @@ exports.GetCondicionesGenerales = async () => {
     
 };
 
-exports.InsertarPosibleComprador = async (comprador) => {
+exports.InsertarPosibleComprador = async (visitante) => {
 
     try {
         
-        const result = await collectionPosiblesCompradores.insertOne(comprador);
-        const isInserted = await GenerarDataInserted(result.insertedCount);
+        const result = await collectionPosiblesCompradores.insertOne(visitante);
+        const isInserted = await GenerarDataInserted(result.insertedCount, visitante);
         return isInserted;
         
     } catch (err) {
@@ -368,18 +368,18 @@ exports.InsertarPosibleComprador = async (comprador) => {
     
 };
 
-const GenerarDataInserted = async (insertedCount) =>
+const GenerarDataInserted = async (insertedCount, visitante) =>
 {
 
     if (insertedCount > 1) {
-        throw new Error(`insercion duplicada en insertarposiblecomprador: ${comprador}`);
+        throw new Error(`insercion duplicada en insertarposiblecomprador: ${visitante}`);
     }
 
     let isInserted = true ;
 
     if (insertedCount === 0)
     {
-        console.log(`insercion no posible en insertarposiblecomprador: ${comprador}`);
+        console.log(`insercion no posible en insertarposiblecomprador: ${visitante}`);
         isInserted = false;
     }
     
@@ -388,23 +388,24 @@ const GenerarDataInserted = async (insertedCount) =>
 };
 
 
-exports.ActualizarPosibleComprador = async (comprador) =>
+exports.ActualizarPosibleComprador = async (idVisitante, faseActual, visitanteActualizado) =>
 {
 
     try {
         
-        const x = client.db(process.env.MONGO_DB_NAME).collection(process.env.MONGO_COLECCION_POSIBLES_COMPRADORES);
         // { $push: { "violations": { "hola": "hola" } } 
-        const s = await x.findOneAndUpdate(
-            { "compradorId": "dR2nS-afgqJDnOLjVf16M" }, //comprador.compradorId },
+        const result = await collectionPosiblesCompradores.findOneAndUpdate(
+            { "compradorId": idVisitante }, //comprador.compradorId },
             { 
-                $set: { "faseActual": comprador.faseActual } , 
-                $push: { "rutaDatos": {  ...comprador.rutaDatos } }
+                $set: { "faseActual": faseActual } , 
+                $push: { "rutaDatos": {  ...visitanteActualizado } }
                 
             }
         );
         
-        console.log("s" + s);
+        const isUpdated = await GenerarDataUpdated(result.ok, visitanteActualizado);
+        return isUpdated;
+
 
     } catch (err) {
         //TODO: enviar a otra db error, redis
@@ -412,6 +413,22 @@ exports.ActualizarPosibleComprador = async (comprador) =>
         console.error(error);
     }
 
+};
 
+
+const GenerarDataUpdated = async (updatedCount, visitante) => {
+
+    if (updatedCount > 1) {
+        throw new Error(`insercion duplicada en insertarposiblecomprador: ${visitante}`);
+    }
+
+    let isUpdated = true;
+
+    if (updatedCount === 0) {
+        console.log(`insercion no posible en insertarposiblecomprador: ${visitante}`);
+        isUpdated = false;
+    }
+
+    return isUpdated;
 
 };
