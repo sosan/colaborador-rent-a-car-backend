@@ -28,29 +28,6 @@ exports.GetCarsByReservado = async (formulario) => {
 
     datosVehiculos["datosOrdenacion"] = datosOrdenacion;
 
-    // let indicesSuplementos = [];
-    // // de 25+
-    // if (formulario.conductor_con_experiencia === "on")
-    // {
-    //     indicesSuplementos = ["choferPlus252Motos", "choferPlus232Cars"];
-    // }
-    // else
-    // {
-    //     if (formulario.edad_conductor - 0 >= 23)
-    //     {
-    //         indicesSuplementos = ["choferPlus232Cars"];
-            
-    //     }
-        
-    //     else
-    //     {
-    //         indicesSuplementos = ["choferPlusNovelCars", "choferPlusNovelMotos"];
-            
-    //     }
-
-    // }
-
-    // const [ datosSuplementoTipoChofer, allDatosSuplementoTipoChofer ] = await dbInterfaces.GetSuplementoTipoChofer(indicesSuplementos);
     const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
     if (allDatosSuplementoTipoChofer.isOk === false) {
         const error = `| - NO hay collecion suplemento tipo chofer`;
@@ -58,7 +35,6 @@ exports.GetCarsByReservado = async (formulario) => {
         return { isOk: false, resultados: undefined, errores: error };
     }
     datosVehiculos["datosSuplementoTipoChofer"] = allDatosSuplementoTipoChofer;
-    // datosVehiculos["allDatosSuplementoTipoChofer"] = allDatosSuplementoTipoChofer;
 
     const datosSuplementoGenerico = await dbInterfaces.GetSuplementoGenerico();
     if (datosSuplementoGenerico.isOk === false) {
@@ -151,7 +127,8 @@ exports.TransformarResultadosCoche = async (
     preciosPorClase, 
     formulario, 
     suplementoGenerico, 
-    suplementoTipoChofer
+    suplementoTipoChofer,
+    masValorados
 ) => 
 {
 
@@ -221,6 +198,10 @@ exports.TransformarResultadosCoche = async (
         //     suplementoGenerico
 
         // );
+
+
+        const isValorado = await CheckIsMasValorado(resultadosCoches[i]["vehiculo"], masValorados);
+        resultadosCoches[i]["masvalorado"] = isValorado;
 
         const suplementosGenericos = await GenerarSuplementosVehiculos(
             resultadosCoches[i].suplemento,
@@ -424,6 +405,35 @@ const ObtenerConversionFecha = async (fechaRaw, horaRaw) => {
     const fechaRecogida = new Date(`${anyo}-${mes}-${dia} ${horaRaw}:00Z`);
 
     return fechaRecogida;
+
+
+};
+
+
+const CheckIsMasValorado = async (vehiculo, masvalorados) =>
+{
+
+    let isValorado = false;
+    for (let i = 0; i < masvalorados.length; i++)
+    {
+
+        if (vehiculo === masvalorados[i])
+        {
+            isValorado = true;
+            break;
+        }
+
+    }
+
+    return isValorado;
+
+};
+
+exports.GetMasValorados = async () =>
+{
+
+    const result = await dbInterfaces.GetMasValorados();
+    return result;
 
 
 };

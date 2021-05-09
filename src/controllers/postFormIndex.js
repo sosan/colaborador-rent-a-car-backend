@@ -33,8 +33,6 @@ exports.postFormIndex = async (req, res) =>
 
     }
 
-    
-
     // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
     const cochesPreciosRaw = await logicInterface.GetCarsByReservado(formulario);
 
@@ -60,15 +58,19 @@ exports.postFormIndex = async (req, res) =>
         });
     }
 
+    const masValorados = await logicInterface.GetMasValorados();
+
     const resultadosObjetoCoches = await logicInterface.TransformarResultadosCoche(
         cochesPreciosRaw.resultados, 
         cochesPreciosRaw.preciosPorClase,
         formulario,
         cochesPreciosRaw.datosSuplementoGenerico.resultados,
-        cochesPreciosRaw.datosSuplementoTipoChofer.resultados
+        cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
+        masValorados
     );
     
-    if (resultadosObjetoCoches.isOk === false) {
+    if (resultadosObjetoCoches.isOk === false) 
+    {
         
         console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
         return res.send({

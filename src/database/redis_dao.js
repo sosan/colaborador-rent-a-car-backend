@@ -37,3 +37,15 @@ exports.SumarVisitaVehiculo = async (vehiculo) =>
     return resultado;
 
 };
+
+exports.GetMasValorados = async () =>
+{
+
+    // const result = await redisClient.zrange("visitas_vehiculos", );
+    //zrevrange deprecated 6.2+
+    const result = await redisClient.zrevrange("visitas_vehiculos", 0, 4);
+    return result;
+    
+
+
+};

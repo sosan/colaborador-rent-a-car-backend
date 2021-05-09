@@ -96,6 +96,14 @@ exports.GetCondicionesGenerales = async () =>
 };
 
 
+exports.GetMasValorados = async () => 
+{
+    const result = await redis_dao.GetMasValorados();
+    return result;
+
+
+};
+
 exports.SumarVisitaVehiculo = async (vehiculo) =>
 {
     const resultado = await redis_dao.SumarVisitaVehiculo(vehiculo);
@@ -120,3 +128,5 @@ exports.ActualizarPosibleComprador = async (idVisitante, faseActual, visitanteAc
 
 
 };
+
+
