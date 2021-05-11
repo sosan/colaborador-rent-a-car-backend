@@ -7,7 +7,7 @@ const Joi = require("joi");
 exports.postFormIndex = async (req, res) =>
 {
 
-    const isTokenValid = await CheckToken(res, req.body.token, dbInterfaces.tokenFromFrontend);
+    const isTokenValid = await CheckToken(req.body.token, dbInterfaces.tokenFromFrontend);
 
     if (isTokenValid === false)
     {
@@ -42,7 +42,7 @@ exports.postFormIndex = async (req, res) =>
         return res.send({
             "isOk": false,
             "data": [],
-            "errorFormulario": "Disculpe las molestias. Gracias.",
+            "errorFormulario": "error_formulario1",
             "diasEntreRecogidaDevolucion": undefined
         });
 
@@ -53,7 +53,7 @@ exports.postFormIndex = async (req, res) =>
         return res.send({
             "isOk": true,
             "data": [],
-            "errorFormulario": "Sentimos informarle que no disponemos de ningún vehículo para las fechas solicitadas. Disculpe las molestias. Gracias.",
+            "errorFormulario": "error_formulario2",
             "diasEntreRecogidaDevolucion": undefined 
         });
     }
@@ -96,7 +96,7 @@ exports.postFormIndex = async (req, res) =>
 };
 
 
-const CheckToken = async (res, token, tokenFromFrontend) => 
+const CheckToken = async (token, tokenFromFrontend) => 
 {
 
     let isValid = false;

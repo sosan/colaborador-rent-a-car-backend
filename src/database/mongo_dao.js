@@ -3,6 +3,7 @@ const { EnumTiposErrores } = require("../errors/exceptions");
 
 const client = new MongoClient(process.env.MONGO_DB_URI,
     {
+        poolSize: 5,
         useNewUrlParser: true,
         useUnifiedTopology: true,
         
@@ -20,6 +21,7 @@ let tokenFromFrontend = "";
 let collectionsupleGenerico = undefined;
 let collectionsupleTipochoferVehiculo = undefined;
 let collectionReservas = undefined;
+let collectionLocations = undefined;
 
 let collectionPosiblesCompradores = undefined;
 
@@ -43,7 +45,10 @@ exports.conectDb = async () => {
             collectionReservas = currentDb.collection(process.env.MONGO_COLECCION_RESERVAS);
 
             collectionPosiblesCompradores = currentDb.collection(process.env.MONGO_COLECCION_POSIBLES_COMPRADORES);
+            collectionLocations = currentDb.collection(process.env.MONGO_COLECCION_LOCATIONS);
             
+
+
         }
 
     }
@@ -332,21 +337,25 @@ exports.GetCondicionesGenerales = async () => {
             .project({ _id: 0 })
             .toArray();
 
+        let data = {};
         if (resultados !== undefined) {
-            return { isOk: true, resultados: resultados[0], errores: "" }
+            data = { isOk: true, resultados: resultados[0], errores: "" };
+            // return { isOk: true, resultados: resultados[0], errores: "" };
         }
-        else {
+        else
+        {
             const error = `${EnumTiposErrores.SinDatos} Coleccion Cars`;
             console.error(error);
-            return { isOk: false, resultados: undefined, errores: error };
+            data = { isOk: false, resultados: undefined, errores: error };
+            // return { isOk: false, resultados: undefined, errores: error };
         }
 
+        return data;
     }
     catch (err) {
         //TODO: enviar a otra db error, redis
         const error = `${err} Coleccion Cars`;
         console.error(error);
-
     }
     
 };
@@ -430,5 +439,20 @@ const GenerarDataUpdated = async (updatedCount, visitante) => {
     }
 
     return isUpdated;
+
+};
+
+
+exports.GetLocation = async () =>
+{
+
+    try {
+        const datos = await collectionLocations.find({ "id": "locations" }).project({ _id: 0, id: 0 }).toArray();
+        return datos[0];
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
 
 };

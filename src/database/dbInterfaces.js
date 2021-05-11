@@ -24,9 +24,13 @@ exports.ConnectDB = async () =>
     
     console.log("Token seteado");
 
+};
 
+exports.GetLocation = async () =>
+{
+    const datos = await mongo_dao.GetLocation();
+    return datos;
 
-    
 };
 
 exports.GetTokenFromFrontend = () =>
