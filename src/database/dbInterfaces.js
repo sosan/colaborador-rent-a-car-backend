@@ -24,9 +24,13 @@ exports.ConnectDB = async () =>
     
     console.log("Token seteado");
 
+};
 
+exports.GetLocation = async () =>
+{
+    const datos = await mongo_dao.GetLocation();
+    return datos;
 
-    
 };
 
 exports.GetTokenFromFrontend = () =>
@@ -96,6 +100,14 @@ exports.GetCondicionesGenerales = async () =>
 };
 
 
+exports.GetMasValorados = async () => 
+{
+    const result = await redis_dao.GetMasValorados();
+    return result;
+
+
+};
+
 exports.SumarVisitaVehiculo = async (vehiculo) =>
 {
     const resultado = await redis_dao.SumarVisitaVehiculo(vehiculo);
@@ -120,3 +132,5 @@ exports.ActualizarPosibleComprador = async (idVisitante, faseActual, visitanteAc
 
 
 };
+
+

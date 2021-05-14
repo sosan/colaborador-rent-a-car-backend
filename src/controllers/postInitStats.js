@@ -16,7 +16,8 @@ exports.PostInitStats = async(req, res) =>
     if (isSchemaValid === false) {
         //TODO: mejorar
         console.error("control schema invalido");
-        return res.status(404).send("Not found");
+        return res.send({"isOk": false});
+        // return res.status(404).send("Not found");
         
     }
     

@@ -7,7 +7,7 @@ const Joi = require("joi");
 exports.postFormIndex = async (req, res) =>
 {
 
-    const isTokenValid = await CheckToken(res, req.body.token, dbInterfaces.tokenFromFrontend);
+    const isTokenValid = await CheckToken(req.body.token, dbInterfaces.tokenFromFrontend);
 
     if (isTokenValid === false)
     {
@@ -29,11 +29,9 @@ exports.postFormIndex = async (req, res) =>
         //TODO: mejorar a redireccion ?
         // blocklist?
         console.error("Esquema invalido");
-        return res.send({"isOk": false});
+        return res.send({ "isOk": false, "errorFormulario": "" });
 
     }
-
-    
 
     // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
     const cochesPreciosRaw = await logicInterface.GetCarsByReservado(formulario);
@@ -44,7 +42,7 @@ exports.postFormIndex = async (req, res) =>
         return res.send({
             "isOk": false,
             "data": [],
-            "errorFormulario": "Disculpe las molestias. Gracias.",
+            "errorFormulario": "error_formulario1",
             "diasEntreRecogidaDevolucion": undefined
         });
 
@@ -55,20 +53,24 @@ exports.postFormIndex = async (req, res) =>
         return res.send({
             "isOk": true,
             "data": [],
-            "errorFormulario": "Sentimos informarle que no disponemos de ningún vehículo para las fechas solicitadas. Disculpe las molestias. Gracias.",
+            "errorFormulario": "error_formulario2",
             "diasEntreRecogidaDevolucion": undefined 
         });
     }
+
+    const masValorados = await logicInterface.GetMasValorados();
 
     const resultadosObjetoCoches = await logicInterface.TransformarResultadosCoche(
         cochesPreciosRaw.resultados, 
         cochesPreciosRaw.preciosPorClase,
         formulario,
         cochesPreciosRaw.datosSuplementoGenerico.resultados,
-        cochesPreciosRaw.datosSuplementoTipoChofer.resultados
+        cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
+        masValorados
     );
     
-    if (resultadosObjetoCoches.isOk === false) {
+    if (resultadosObjetoCoches.isOk === false) 
+    {
         
         console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
         return res.send({
@@ -94,7 +96,7 @@ exports.postFormIndex = async (req, res) =>
 };
 
 
-const CheckToken = async (res, token, tokenFromFrontend) => 
+const CheckToken = async (token, tokenFromFrontend) => 
 {
 
     let isValid = false;

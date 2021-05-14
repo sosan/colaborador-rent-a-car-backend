@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 
 // Controladores
@@ -8,6 +10,8 @@ const statsInitPost = require("../controllers/postInitStats");
 
 const reservarPost = require("../controllers/postFormReservar");
 const reservarGet = require("../controllers/getFormReservar");
+
+const location = require("../controllers/location");
 
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
@@ -30,5 +34,10 @@ router.post("/controlpanel/login", async (req, res) => await controlPanelLogin.p
 
 // generar html
 router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTLForGeneralConditions(req, res));
+
+//location
+// TODO: deberia ser post, cambiarlo al realizar el backoffice
+router.get(process.env.ENDPOINT_LOCATION, async (req, res) => await location.GetLocations(req, res));
+router.post(process.env.ENDPOINT_LOCATION, async (req, res) => await location.GetLocations(req, res));
 
 module.exports = router;
