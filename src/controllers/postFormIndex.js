@@ -29,7 +29,7 @@ exports.postFormIndex = async (req, res) =>
         //TODO: mejorar a redireccion ?
         // blocklist?
         console.error("Esquema invalido");
-        return res.send({"isOk": false});
+        return res.send({ "isOk": false, "errorFormulario": "" });
 
     }
 
