@@ -27,7 +27,6 @@ exports.postFormIndex = async (req, res) =>
 
     if (isSchemaValid === false) {
         //TODO: mejorar a redireccion ?
-        // blocklist?
         console.error("Esquema invalido");
         return res.send({ "isOk": false, "errorFormulario": "" });
 

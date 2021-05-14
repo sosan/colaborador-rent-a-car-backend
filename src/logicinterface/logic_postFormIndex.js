@@ -138,7 +138,7 @@ exports.TransformarResultadosCoche = async (
         return {
             isOk: false,
             resultadosCoches: undefined,
-            errorFormulario: "Fecha Recogida Incorrecta",
+            errorFormulario: "error_formulario3",
             diasEntreRecogidaDevolucion: undefined
         };
 
@@ -243,16 +243,19 @@ const GenerarSuplementosPorTipoChofer = async (
     if (currentTipoChofer[claseVehiculo] > 0) 
     {
         
-        objSuplemento["descripcion"] = `Cargo Conductor Joven: ${currentTipoChofer[claseVehiculo]} € por dia.`;
-        objSuplemento["tooltip"] = `El usuario debe pagar un suplmento por conductor joven de ${currentTipoChofer[claseVehiculo]} € por dia`;
+        // objSuplemento["descripcion"] = `Cargo Conductor Joven: ${currentTipoChofer[claseVehiculo]} € por dia.`;
+        // objSuplemento["tooltip"] = `El usuario debe pagar un suplmento por conductor joven de ${currentTipoChofer[claseVehiculo]} € por dia`;
+        objSuplemento["descripcion"] = "cargo_conductor_joven";
+        objSuplemento["tooltip"] = "tooltip_cargo_conductor_joven";
+        objSuplemento["valor"] = currentTipoChofer[claseVehiculo];
         preciosSuplementoPorTipoChofer["no-oferta"].push(objSuplemento);
         
     }
     else
     {
         
-        objSuplemento["descripcion"] = "Sin suplemento por conductor joven";
-        objSuplemento["tooltip"] = `El usuario no pagara un suplemento por ser un conductor joven`;
+        objSuplemento["descripcion"] = "sin_cargo_conductor_joven";
+        objSuplemento["tooltip"] = "tooltip_sin_cargo_conductor_joven";
         objSuplemento["valor"] = 0;
         preciosSuplementoPorTipoChofer["oferta"].push(objSuplemento);
         
@@ -311,8 +314,8 @@ const GenerarSuplementosVehiculos = async (suplementos, suplementoGenerico) =>
         
         if (contenidoSuplemento.valor > 0)
         {
-            let texto = contenidoSuplemento["tooltip_pagar"];
-            contenidoSuplemento["tooltip_pagar"] = texto.replace("X", contenidoSuplemento["valor"] );
+            // let texto = contenidoSuplemento["tooltip_pagar"];
+            // contenidoSuplemento["tooltip_pagar"] = texto.replace("X", contenidoSuplemento["valor"] );
             
             suplementosGenericos.push({
                 "titulo": contenidoSuplemento["titulo_pagar"],
