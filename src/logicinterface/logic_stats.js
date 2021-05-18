@@ -1,5 +1,64 @@
+const Joi = require("joi");
 const dbInterfaces = require("../database/dbInterfaces");
 
+// TODO: generar string a partir del secreto
+exports.GenerateTokenBackendToFrontend = async () => {
+
+    return process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET;
+};
+
+
+exports.ControlSchemaInit = async (body) => {
+
+    const schema = Joi.object({
+        "id": Joi.string().required(),
+        "location": Joi.object().required(),
+        "token": Joi.string().required(),
+        "useragent": Joi.object().required()
+    });
+
+    const options = {
+        abortEarly: false,
+        allowUnknown: false,
+        stripUnknown: false
+    };
+    const validation = schema.validate(body, options);
+    let isValid = false;
+
+    if (validation.error === undefined) {
+        isValid = true;
+    }
+
+    return isValid;
+
+}
+
+exports.ControlSchema = async (body) => {
+
+    const schema = Joi.object({
+        "id": Joi.string().required(),
+        "location": Joi.object().required(),
+        "token": Joi.string().required(),
+        "useragent": Joi.object().required(),
+        "conductor_con_experiencia": Joi.string(),
+        "fase": Joi.number()
+    });
+
+    const options = {
+        abortEarly: false,
+        allowUnknown: false,
+        stripUnknown: false
+    };
+    const validation = schema.validate(body, options);
+    let isValid = false;
+
+    if (validation.error === undefined) {
+        isValid = true;
+    }
+
+    return isValid;
+
+}
 
 
 exports.CheckToken = async (res, req, tokenFromFrontend) => {
@@ -21,6 +80,12 @@ exports.CheckToken = async (res, req, tokenFromFrontend) => {
     }
 
     return isValid;
+
+};
+
+exports.SumarVisitaVehiculo = async (vehiculo) => {
+    const resultado = await redis_dao.SumarVisitaVehiculo(vehiculo);
+    return resultado;
 
 };
 

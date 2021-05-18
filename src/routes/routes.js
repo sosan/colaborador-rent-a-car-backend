@@ -6,7 +6,7 @@ const express = require('express');
 const index = require("../controllers/showIndex");
 const indexPost = require("../controllers/postFormIndex");
 const indexGet = require("../controllers/getFormIndex");
-const statsInitPost = require("../controllers/postInitStats");
+const statsPost = require("../controllers/postStats");
 
 const reservarPost = require("../controllers/postFormReservar");
 const reservarGet = require("../controllers/getFormReservar");
@@ -27,7 +27,8 @@ router.post("/reservar", async (req, res) => await  reservarPost.postFormReserva
 router.get("/reservar", async (req, res) => await reservarGet.getFormReservar(req, res));
 
 //inicio stat
-router.post("/7HNH9bkz57LHwa_framLQ", async (req, res) => await statsInitPost.PostInitStats(req, res) );
+router.post("/7HNH9bkz57LHwa_framLQ", async (req, res) => await statsPost.PostInitStats(req, res) );
+router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.ActualizarStats(req, res));
 
 // admin
 router.post("/controlpanel/login", async (req, res) => await controlPanelLogin.postContronPanelLogin(req, res) );
