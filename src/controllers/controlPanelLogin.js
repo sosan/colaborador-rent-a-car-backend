@@ -2,6 +2,14 @@ const logicControlPanel = require("../logicinterface/logic_controlPanel");
 const fs = require('fs');
 
 
+exports.GetPanelLogin = async (req, res) =>
+{
+
+    
+
+};
+
+
 exports.postContronPanelLogin = async (req, res) =>
 {
 

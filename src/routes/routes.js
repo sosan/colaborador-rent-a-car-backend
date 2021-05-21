@@ -31,6 +31,7 @@ router.post("/7HNH9bkz57LHwa_framLQ", async (req, res) => await statsPost.PostIn
 router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.ActualizarStats(req, res));
 
 // admin
+router.get("/0_QJFs2NH9a_f_a_BQ", async (req, res) => await controlPanelLogin.GetPanelLogin(req, res));
 router.post("/controlpanel/login", async (req, res) => await controlPanelLogin.postContronPanelLogin(req, res) );
 
 // generar html
