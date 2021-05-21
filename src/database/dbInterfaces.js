@@ -99,6 +99,14 @@ exports.GetCondicionesGenerales = async () =>
     return resultados;
 };
 
+exports.GetPagoRecogida = async () =>
+{
+
+    const resultados = await mongo_dao.GetPagoRecogida();
+    return resultados;
+
+};
+
 
 exports.GetMasValorados = async () => 
 {

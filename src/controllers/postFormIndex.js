@@ -89,7 +89,8 @@ exports.postFormIndex = async (req, res) =>
         "suplementogenerico_base": cochesPreciosRaw.datosSuplementoGenerico.resultados,
         "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
         "preciosPorClase": cochesPreciosRaw.preciosPorClase,
-        "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados
+        "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados,
+        "pagoRecogida": cochesPreciosRaw.pagoRecogida.resultados.pago_recogida
     });
 
 };

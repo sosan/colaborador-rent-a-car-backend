@@ -76,6 +76,9 @@ exports.GetCarsByReservado = async (formulario) => {
     const condicionesGenerales = await dbInterfaces.GetCondicionesGenerales();
     datosVehiculos["condicionesgenerales"] = condicionesGenerales;
 
+    const pagoRecogida = await dbInterfaces.GetPagoRecogida();
+    datosVehiculos["pagoRecogida"] = pagoRecogida;
+
     return datosVehiculos;
 
 };

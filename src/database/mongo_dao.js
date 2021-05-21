@@ -360,6 +360,36 @@ exports.GetCondicionesGenerales = async () => {
     
 };
 
+exports.GetPagoRecogida = async () =>
+{
+    try
+    {
+        const resultados = await collectionHelper.find({ id: "pago_recogida" })
+            .project({ _id: 0 })
+            .toArray();
+
+        let data = {};
+        if (resultados !== undefined) {
+            data = { isOk: true, resultados: resultados[0], errores: "" };
+            // return { isOk: true, resultados: resultados[0], errores: "" };
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Helper`;
+            console.error(error);
+            data = { isOk: false, resultados: undefined, errores: error };
+            // return { isOk: false, resultados: undefined, errores: error };
+        }
+
+        return data;
+    }
+        catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+    }
+
+};
+
 exports.InsertarPosibleComprador = async (visitante) => {
 
     try {
