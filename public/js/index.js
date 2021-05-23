@@ -8,7 +8,7 @@ const botonRegistro = document.getElementById("registro");
 const botonLogin = document.getElementById("login");
 
 
-botonRegistro.addEventListener("submit", async (evento) =>
+botonRegistro.addEventListener("click", async (evento) =>
 {
 
     evento.preventDefault();
@@ -22,7 +22,7 @@ botonRegistro.addEventListener("submit", async (evento) =>
 
     const body = {
         "username": username,
-        "success": sucess,
+        "success": success,
         "email": email,
         "password": password,
         "boton": registro
@@ -38,7 +38,6 @@ botonRegistro.addEventListener("submit", async (evento) =>
     });
 
     const dataResponse = await responseRaw.json();
-
     const publicKeyCredentialCreationOptions = {
         challenge: dataResponse.success,
         rp: {
@@ -62,6 +61,7 @@ botonRegistro.addEventListener("submit", async (evento) =>
     const credential = await navigator.credentials.create({
         publicKey: publicKeyCredentialCreationOptions
     });
+
 
 
 });
