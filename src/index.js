@@ -18,7 +18,7 @@ const apiLimiter = rateLimit({
     max: 20
 });
 
-const allowlist = [`${process.env.URL_FRONTEND}:${process.env.NODE_EXPRESS_PORT}`];
+const allowlist = [`${process.env.URL_FRONTEND}:${process.env.PORT_BACKEND}`];
 
 app.use(session({ secret: process.env.SECRET_SESSION, resave: false, saveUninitialized: false }));
 app.use(compression());
@@ -45,10 +45,10 @@ app.use("/", apiLimiter);
 app.use("/", router);
 
 
-app.listen(process.env.NODE_EXPRESS_PORT, (error) => {
+app.listen(process.env.PORT_BACKOFFICE, (error) => {
         if (error) {
-            console.error(`[process ${process.pid}] Error ${error} ${process.env.NODE_EXPRESS_PORT}`);
+            console.error(`[process ${process.pid}] Error ${error} ${process.env.PORT_BACKOFFICE}`);
         }
-        console.info(`[process ${process.pid}] Listening at port ${process.env.NODE_EXPRESS_PORT}`);
+    console.info(`[process ${process.pid}] Listening at port ${process.env.PORT_BACKOFFICE}`);
     }
 );

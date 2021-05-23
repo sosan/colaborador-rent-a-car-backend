@@ -4,6 +4,69 @@ const passwordInput = document.getElementById("password");
 const cartaIcono = document.getElementById("cartaicono");
 const claveIcono = document.getElementById("claveicono");
 
+const botonRegistro = document.getElementById("registro");
+const botonLogin = document.getElementById("login");
+
+
+botonRegistro.addEventListener("submit", async (evento) =>
+{
+
+    evento.preventDefault();
+    
+    const username = document.getElementById("username").value;
+    const success = document.getElementById("success").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const registro = document.getElementById("registro").value;
+
+
+    const body = {
+        "username": username,
+        "success": sucess,
+        "email": email,
+        "password": password,
+        "boton": registro
+    };
+
+    const responseRaw = await fetch("/0_QJFs2NH9a_f_a_BQ", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(body)
+    });
+
+    const dataResponse = await responseRaw.json();
+
+    const publicKeyCredentialCreationOptions = {
+        challenge: dataResponse.success,
+        rp: {
+            name: "nombre seguridad",
+            id: "duosecurity.com",
+        },
+        user: {
+            id: Uint8Array.from(
+                "UZSL85T9AFC", c => c.charCodeAt(0)),
+            name: "lee@webauthn.guide",
+            displayName: "Lee",
+        },
+        pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+        authenticatorSelection: {
+            authenticatorAttachment: "cross-platform",
+        },
+        timeout: 60000,
+        attestation: "direct"
+    };
+
+    const credential = await navigator.credentials.create({
+        publicKey: publicKeyCredentialCreationOptions
+    });
+
+
+});
+
+
 emailInput.addEventListener("focusin", (evento) => {
 
     cartaIcono.classList.remove("rellenar-blanco");

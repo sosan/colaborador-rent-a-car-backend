@@ -93,7 +93,7 @@ button {
   background-color: rgb(87, 0, 255);
   color: #fff;
   font-size: 14px;
-  margin-left: auto;
+  /* margin-left: auto; */
   font-weight: 500;
   box-shadow: 0px 2px 6px -1px rgba(0, 0, 0, 0.13);
   border: none;
@@ -302,4 +302,11 @@ input:focus {
 .right
 {
   grid-area: d;
+}
+
+.botones
+{
+  display: flex;
+  justify-content: space-between;
+  width: 106%;
 }

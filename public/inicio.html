@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/index.css">
 
-    <title>Login</title>
+    <title>Panel</title>
 </head>
 <body>
 
@@ -17,9 +17,11 @@
             </section>
             <section class="right">
                 
-                <form action="/login" method="post" class="formulario">
+                <form action="/0_QJFs2NH9a_f_a_BQ" method="post" class="formulario">
                     <input type="hidden" name="username" value="" id="username" />
-                    <h1 class="titulo">Login</h1>
+                    <input type="hidden" id="success" name="success" value="<%= it.success %>">
+                    
+                    <h1 class="titulo">Panel</h1>
                     <p class="parrafo">Para poder entrar escribe el usuario y la contraseña</p>
                     <div class="floating-label">
                         <input id="email" class="inputs" placeholder="Email" type="email" name="email"
@@ -37,7 +39,10 @@
                             <img id="claveicono" src="./img/svg/password.svg" class="tam-icono " alt="icono clave">
                         </div>
                     </div>
-                    <button type="submit">Entrar</button>
+                    <div class="botones">
+                        <button id="registro" type="submit" name="boton" value="registrar">Registrar</button>
+                        <button id="login" type="submit" name="boton" value="login">Entrar</button>
+                    </div>
                 </form>
             </section>
         </main>
