@@ -15,6 +15,7 @@ let collectionPrecios = undefined;
 let collectionHelper = undefined;
 
 let collectionUsers = undefined;
+let collectionAdminUsers = undefined;
 let collectionTokens = undefined;
 let tokenFromFrontend = "";
 
@@ -38,6 +39,7 @@ exports.conectDb = async () => {
             collectionPrecios = currentDb.collection(process.env.MONGO_COLECCION_PRECIOS);
             collectionHelper = currentDb.collection(process.env.MONGO_COLECCION_HELPER);
             collectionUsers = currentDb.collection(process.env.MONGO_COLECCION_USUARIOS);
+            collectionAdminUsers = currentDb.collection(process.env.MONGO_COLECCION_ADMIN_USUARIOS);
             collectionTokens = currentDb.collection(process.env.MONGO_COLECCION_TOKENS);
             
             collectionsupleGenerico = currentDb.collection(process.env.MONGO_COLECCION_SUPLE_GENERICO);
@@ -316,7 +318,7 @@ exports.CheckUserPassword = async (email, password) => {
             return { isOk: true, resultados: resultados, errores: "" };
         }
         else {
-            const error = `${EnumTiposErrores.SinDatos} Coleccion Precios`;
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Usuarios`;
             console.error(error);
             return { isOk: false, resultados: undefined, errores: error };
         }
@@ -328,6 +330,30 @@ exports.CheckUserPassword = async (email, password) => {
 
 };
 
+exports.CheckAdminUserPassword = async (email, password) => {
+    try {
+
+        const resultados = await collectionAdminUsers.find(
+            {
+                "email": email, "password": password
+            }
+        ).project({ _id: 0 }).toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados, errores: "" };
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion admin_user`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (error) {
+        console.error(error);
+    }
+
+};
 
 exports.GetCondicionesGenerales = async () => {
 

@@ -1,9 +1,9 @@
 const mongo_dao = require("./mongo_dao");
 
-exports.CheckUserPassword = async (email, password) =>
+exports.CheckAdminUserPassword = async (email, password) =>
 {
 
-    const resultado = await mongo_dao.CheckUserPassword(email, password);
+    const resultado = await mongo_dao.CheckAdminUserPassword(email, password);
 
     if (resultado.isOk === false) {
         const error = `NO hay collecion usuarios `;

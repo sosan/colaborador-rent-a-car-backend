@@ -31,8 +31,8 @@ router.post("/7HNH9bkz57LHwa_framLQ", async (req, res) => await statsPost.PostIn
 router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.ActualizarStats(req, res));
 
 // admin
-router.get("/0_QJFs2NH9a_f_a_BQ", async (req, res) => await controlPanelLogin.GetPanelLogin(req, res));
-router.post("/controlpanel/login", async (req, res) => await controlPanelLogin.postContronPanelLogin(req, res) );
+router.post(
+    process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res) );
 
 // generar html
 router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTLForGeneralConditions(req, res));
