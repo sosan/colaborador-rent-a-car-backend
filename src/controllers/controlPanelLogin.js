@@ -22,13 +22,15 @@ exports.PanelLoginRegister = async (req, res) =>
     // comprobar credenciales
     const existeUsuario = await logicControlPanel.CheckAdminUserPassword(req.body.email, req.body.password);
     
-    const success = nanoid.nanoid();
-    
+    const stringAleatorio = nanoid.nanoid();
+    const array = Uint8Array.from(
+        stringAleatorio, c => c.charCodeAt(0));
+
     return res.send(
         {
             "isOk": isOk,
             "usuarioexiste": existeUsuario,
-            "success": success
+            "success": array
         }
     );
     // if (existeUsuario === false)
