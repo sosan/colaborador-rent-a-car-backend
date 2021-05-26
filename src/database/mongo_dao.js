@@ -26,7 +26,7 @@ let collectionLocations = undefined;
 
 let collectionPosiblesCompradores = undefined;
 
-let collectionPorcentajeClaseVehiculos = undefine;
+let collectionPorcentajeClaseVehiculos = undefined;
 
 exports.conectDb = async () => {
     try {
