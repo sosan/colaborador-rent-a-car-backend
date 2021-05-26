@@ -9,7 +9,6 @@ const rateLimit = require('express-rate-limit');
 const dbInterfaces = require("./database/dbInterfaces");
 const router = require('./routes/routes');
 const cookieParser = require('cookie-parser');
-const location = require("./controllers/location");
 
 // --- conexion base de datos
 dbInterfaces.ConnectDB();

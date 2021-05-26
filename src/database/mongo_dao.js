@@ -26,6 +26,8 @@ let collectionLocations = undefined;
 
 let collectionPosiblesCompradores = undefined;
 
+let collectionPorcentajeClaseVehiculos = undefine;
+
 exports.conectDb = async () => {
     try {
         const connect = await client.connect();
@@ -48,7 +50,7 @@ exports.conectDb = async () => {
 
             collectionPosiblesCompradores = currentDb.collection(process.env.MONGO_COLECCION_POSIBLES_COMPRADORES);
             collectionLocations = currentDb.collection(process.env.MONGO_COLECCION_LOCATIONS);
-            
+            collectionPorcentajeClaseVehiculos = currentDb.collection(process.env.MONGO_COLECCION_PORCENTAJE_CLASE_VEHICULOS);
 
 
         }
