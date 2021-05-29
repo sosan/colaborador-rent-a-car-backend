@@ -5,6 +5,34 @@ const logicInterface = require("../logicinterface/logic_postFormIndex");
 const Joi = require("joi");
 
 
+exports.GetAllVehicles = async (req, res) =>
+{
+
+    const isTokenValid = await CheckToken(req.body.token, dbInterfaces.tokenFromFrontend);
+
+    if (isTokenValid === false) {
+        console.error("token invalido");
+        return res.send({ "isOk": false });
+    }
+
+    let formulario = req.body;
+    // TODO: generar string a partir del secreto
+    formulario["token"] = await logicInterface.GenerateTokenBackendToFrontend();
+    if (formulario.conductor_con_experiencia === undefined) {
+        formulario["conductor_con_experiencia"] = "off";
+    }
+
+    const isSchemaValid = await ControlSchema(formulario);
+
+    if (isSchemaValid === false) {
+        //TODO: mejorar a redireccion ?
+        console.error("Esquema invalido");
+        return res.send({ "isOk": false, "errorFormulario": "" });
+
+    }
+
+};
+
 exports.postFormIndex = async (req, res) =>
 {
 

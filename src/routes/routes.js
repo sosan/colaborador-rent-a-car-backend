@@ -20,6 +20,10 @@ const controlPanelLogin = require("../controllers/controlPanelLogin");
 
 const router = express.Router();
 
+// obtener todos los vehiculos
+router.post(process.env.ENDPOINT_GETALL_BACKEND, async (req, res) => await indexPost.GetAllVehicles(req, res));
+
+// 
 router.get("/", async (req, res) => await index.showIndex(req, res));
 router.post("/api", async (req, res) => await indexPost.postFormIndex(req, res));
 router.get("/api", async(req, res) => await indexGet.getFormIndex(req, res));
@@ -29,7 +33,7 @@ router.post("/reservar", async (req, res) => await  reservarPost.postFormReserva
 router.get("/reservar", async (req, res) => await reservarGet.getFormReservar(req, res));
 
 //inicio stat
-router.post("/7HNH9bkz57LHwa_framLQ", async (req, res) => await statsPost.PostInitStats(req, res) );
+router.post(process.env.ENDPOINT_STATS_BACKEND, async (req, res) => await statsPost.PostInitStats(req, res) );
 router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.ActualizarStats(req, res));
 
 // admin

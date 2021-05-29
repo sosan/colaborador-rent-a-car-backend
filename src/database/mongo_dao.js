@@ -85,7 +85,7 @@ exports.GetTokenFrontendToBackend = async () =>
 
     }
     else {
-        const error = `colleccion tokens no existe`;
+        const error = `colleccion tokens no existe o conexion no existe`;
         console.error(error);
         throw new Error(error);
     }
