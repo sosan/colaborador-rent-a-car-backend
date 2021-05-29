@@ -388,35 +388,35 @@ exports.GetCondicionesGenerales = async () => {
     
 };
 
-exports.GetPagoRecogida = async () =>
-{
-    try
-    {
-        const resultados = await collectionHelper.find({ id: "pago_recogida" })
-            .project({ _id: 0 })
-            .toArray();
+// exports.GetPagoRecogida = async () =>
+// {
+//     try
+//     {
+//         const resultados = await collectionHelper.find({ id: "pago_recogida" })
+//             .project({ _id: 0 })
+//             .toArray();
 
-        let data = {};
-        if (resultados !== undefined) {
-            data = { isOk: true, resultados: resultados[0], errores: "" };
-            // return { isOk: true, resultados: resultados[0], errores: "" };
-        }
-        else {
-            const error = `${EnumTiposErrores.SinDatos} Coleccion Helper`;
-            console.error(error);
-            data = { isOk: false, resultados: undefined, errores: error };
-            // return { isOk: false, resultados: undefined, errores: error };
-        }
+//         let data = {};
+//         if (resultados !== undefined) {
+//             data = { isOk: true, resultados: resultados[0], errores: "" };
+//             // return { isOk: true, resultados: resultados[0], errores: "" };
+//         }
+//         else {
+//             const error = `${EnumTiposErrores.SinDatos} Coleccion Helper`;
+//             console.error(error);
+//             data = { isOk: false, resultados: undefined, errores: error };
+//             // return { isOk: false, resultados: undefined, errores: error };
+//         }
 
-        return data;
-    }
-        catch (err) {
-        //TODO: enviar a otra db error, redis
-        const error = `${err} Coleccion Cars`;
-        console.error(error);
-    }
+//         return data;
+//     }
+//         catch (err) {
+//         //TODO: enviar a otra db error, redis
+//         const error = `${err} Coleccion Cars`;
+//         console.error(error);
+//     }
 
-};
+// };
 
 exports.InsertarPosibleComprador = async (visitante) => {
 
@@ -483,6 +483,9 @@ exports.ActualizarPosibleComprador = async (idVisitante, faseActual, visitanteAc
 };
 
 
+
+
+
 const GenerarDataUpdated = async (updatedCount, visitante) => {
 
     if (updatedCount > 1) {
@@ -512,5 +515,20 @@ exports.GetLocation = async () =>
         console.log("error" + error);
 
     }
+
+};
+
+
+exports.GetPorcentajeTipoVehiculo = async () => 
+{
+    try {
+        const datos = await collectionPorcentajeClaseVehiculos.find({ "id": "porcentaje_clase_vehiculos" }).project({ _id: 0, id: 0 }).toArray();
+        return datos[0];
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+
 
 };

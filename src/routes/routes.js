@@ -13,6 +13,8 @@ const reservarGet = require("../controllers/getFormReservar");
 
 const location = require("../controllers/location");
 
+const porcentajeTipoVehiculo = require("../controllers/porcentajeTipoVehiculo");
+
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
 
@@ -41,5 +43,9 @@ router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTL
 // TODO: deberia ser post, cambiarlo al realizar el backoffice
 router.get(process.env.ENDPOINT_LOCATION, async (req, res) => await location.GetLocations(req, res));
 router.post(process.env.ENDPOINT_LOCATION, async (req, res) => await location.GetLocations(req, res));
+
+//porcentaje
+router.get(process.env.ENDPOINT_PORCENTAJE_VEHICULO, async (req, res) => await porcentajeTipoVehiculo.GetPorcentajeTipoVehiculo(req, res));
+
 
 module.exports = router;

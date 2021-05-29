@@ -1,6 +1,7 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const { EnumMensajesErrores } = require("../errors/exceptions");
 const logicInterface = require("../logicinterface/logic_postFormIndex");
+
 const Joi = require("joi");
 
 
@@ -59,13 +60,16 @@ exports.postFormIndex = async (req, res) =>
 
     const masValorados = await logicInterface.GetMasValorados();
 
+    const porcentajeVehiculo = await logicInterface.GetPorcentajeVehiculos();
+
     const resultadosObjetoCoches = await logicInterface.TransformarResultadosCoche(
         cochesPreciosRaw.resultados, 
         cochesPreciosRaw.preciosPorClase,
         formulario,
         cochesPreciosRaw.datosSuplementoGenerico.resultados,
         cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
-        masValorados
+        masValorados,
+        porcentajeVehiculo
     );
     
     if (resultadosObjetoCoches.isOk === false) 
@@ -90,7 +94,7 @@ exports.postFormIndex = async (req, res) =>
         "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
         "preciosPorClase": cochesPreciosRaw.preciosPorClase,
         "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados,
-        "pagoRecogida": cochesPreciosRaw.pagoRecogida.resultados.pago_recogida
+        // "pagoRecogida": cochesPreciosRaw.pagoRecogida.resultados.pago_recogida
     });
 
 };

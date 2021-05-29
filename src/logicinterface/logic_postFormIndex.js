@@ -1,5 +1,7 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const { EnumTiposErrores } = require("../errors/exceptions");
+const porcentajeVehiculo = require("../controllers/porcentajeTipoVehiculo");
+
 
 const DAY_IN_MILISECONDS = 86400000;
 const DIA_DATE = new Date(DAY_IN_MILISECONDS);
@@ -76,8 +78,8 @@ exports.GetCarsByReservado = async (formulario) => {
     const condicionesGenerales = await dbInterfaces.GetCondicionesGenerales();
     datosVehiculos["condicionesgenerales"] = condicionesGenerales;
 
-    const pagoRecogida = await dbInterfaces.GetPagoRecogida();
-    datosVehiculos["pagoRecogida"] = pagoRecogida;
+    // const pagoRecogida = await dbInterfaces.GetPagoRecogida();
+    // datosVehiculos["pagoRecogida"] = pagoRecogida;
 
     return datosVehiculos;
 
@@ -131,7 +133,8 @@ exports.TransformarResultadosCoche = async (
     formulario, 
     suplementoGenerico, 
     suplementoTipoChofer,
-    masValorados
+    masValorados,
+    porcentajeTipoVehiculo
 ) => 
 {
 
@@ -155,6 +158,7 @@ exports.TransformarResultadosCoche = async (
 
         //comprobar los dias de reserva, si es mayor a 7 dias, aplicar PRECIOMAS7 * DIAS
         const claseVehiculo = resultadosCoches[i].clasevehiculo;
+        const porcentaje = porcentajeTipoVehiculo[claseVehiculo];
 
         //si no existe la clase
         if (!preciosPorClase[claseVehiculo])
@@ -186,7 +190,7 @@ exports.TransformarResultadosCoche = async (
         resultadosCoches[i]["preciopordia"] = precioDiaPorClase;
         resultadosCoches[i]["preciopordiasindescuento"] = precioDiaSinDescuento;
         resultadosCoches[i]["preciototalsindescuento"] = precioDiaSinDescuento * numeroDiasRecogidaDevolucion;
-
+        resultadosCoches[i]["porcentaje"] = porcentaje;
         
         const preciosSuplementoPorTipoChofer =  await GenerarSuplementosPorTipoChofer(
             suplementoTipoChofer, 
@@ -444,3 +448,18 @@ exports.GetMasValorados = async () =>
 
 };
 
+exports.GetPorcentajeVehiculos = async () =>
+{
+
+    let porcentajeTipoVehiculo = await porcentajeVehiculo.GetPorcentajeTipoVehiculo();
+
+    if (porcentajeTipoVehiculo === undefined)
+    {
+        porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
+        porcentajeVehiculo.SetPorcentajeTipoVehiculo(porcentajeTipoVehiculo);
+    }
+
+    return porcentajeTipoVehiculo;
+    
+
+};

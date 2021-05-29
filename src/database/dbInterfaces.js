@@ -99,13 +99,13 @@ exports.GetCondicionesGenerales = async () =>
     return resultados;
 };
 
-exports.GetPagoRecogida = async () =>
-{
+// exports.GetPagoRecogida = async () =>
+// {
 
-    const resultados = await mongo_dao.GetPagoRecogida();
-    return resultados;
+//     const resultados = await mongo_dao.GetPagoRecogida();
+//     return resultados;
 
-};
+// };
 
 
 exports.GetMasValorados = async () => 
@@ -122,6 +122,7 @@ exports.SumarVisitaVehiculo = async (vehiculo) =>
     return resultado;
 
 };
+
 
 
 
@@ -142,3 +143,8 @@ exports.ActualizarPosibleComprador = async (idVisitante, faseActual, visitanteAc
 };
 
 
+exports.GetPorcentajeTipoVehiculo = async () =>
+{
+    const resultado = await mongo_dao.GetPorcentajeTipoVehiculo();
+    return resultado;
+};
