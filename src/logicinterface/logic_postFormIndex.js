@@ -1,21 +1,298 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const { EnumTiposErrores } = require("../errors/exceptions");
 const porcentajeVehiculo = require("../controllers/porcentajeTipoVehiculo");
-
+const Joi = require("joi");
 
 const DAY_IN_MILISECONDS = 86400000;
 const DIA_DATE = new Date(DAY_IN_MILISECONDS);
 
 // TODO: generar string a partir del secreto
-exports.GenerateTokenBackendToFrontend = async () =>
+const GenerateTokenBackendToFrontend = async () =>
 {
 
     return process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET;
 };
 
+const CheckTokenControlSchema = async (formulario) =>
+{
+
+    let respuesta = {};
+
+    const isTokenValid = await CheckToken(formulario.token, dbInterfaces.tokenFromFrontend);
+    respuesta["isTokenValid"] = isTokenValid;
+
+    if (isTokenValid === false) {
+        return respuesta;
+    }
+
+    // TODO: generar string a partir del secreto
+    formulario["token"] = await GenerateTokenBackendToFrontend();
+    if (formulario.conductor_con_experiencia === undefined) {
+        formulario["conductor_con_experiencia"] = "off";
+    }
+
+    return [respuesta, formulario];
+
+};
+
+exports.CheckTokenFromGetAllVehicles = async (formulario) =>
+{
+    const [respuesta, formularioChecked] = await CheckTokenControlSchema(formulario);
+
+    if (respuesta.isTokenValid === false)
+    {
+        return respuesta;
+    }
+
+    const isSchemaValid = await ControlSchemaGetAllVehicles(formularioChecked);
+    respuesta["isSchemaValid"] = isSchemaValid;
+
+    return [respuesta, formularioChecked];
+
+};
+
+exports.CheckTokenPostForm = async (formulario) => {
+
+    const [respuesta, formularioChecked] = await CheckTokenControlSchema(formulario);
+
+    if (respuesta.isTokenValid === false)
+    {
+        return respuesta;
+    }
+
+    const isSchemaValid = await ControlSchema(formularioChecked);
+    respuesta["isSchemaValid"] = isSchemaValid;
+
+    return [respuesta, formularioChecked];
+
+};
 
 
-exports.GetCarsByReservado = async (formulario) => {
+const CheckToken = async (token, tokenFromFrontend) => {
+
+    let isValid = false;
+
+    if (token === tokenFromFrontend) {
+        isValid = true;
+    }
+
+    return isValid;
+};
+
+
+// control de schema para comprobar que lo que envia el frontend
+// cumple con el schema
+
+const ControlSchema = async (body) => {
+
+
+    const schema = Joi.object({
+        conductor_con_experiencia: Joi.string().required(),
+        edad_conductor: Joi.number().required(),
+        "fase": Joi.number().required(),
+        fechaDevolucion: Joi.string().required(),
+        horaDevolucion: Joi.string().required(),
+        fechaRecogida: Joi.string().required(),
+        horaRecogida: Joi.string().required(),
+        "success": Joi.string().required(),
+        token: Joi.string().required()
+
+    });
+
+
+    const options = {
+        abortEarly: false, // include all errors
+        allowUnknown: true, // ignore unknown props
+        stripUnknown: false // remove unknown props
+    };
+    const validation = schema.validate(body, options);
+    let isValid = false;
+
+    if (validation.error === undefined) {
+        isValid = true;
+    }
+
+    return isValid;
+
+};
+
+
+const ControlSchemaGetAllVehicles = async (body) => {
+
+
+    const schema = Joi.object({
+        id: Joi.string().required(),
+        location: Joi.object().required(),
+        token: Joi.string().required(),
+        useragent: Joi.object().required()
+
+    });
+
+
+    const options = {
+        abortEarly: false, // include all errors
+        allowUnknown: true, // ignore unknown props
+        stripUnknown: false // remove unknown props
+    };
+    const validation = schema.validate(body, options);
+    let isValid = false;
+
+    if (validation.error === undefined) {
+        isValid = true;
+    }
+
+    return isValid;
+
+};
+
+exports.GetAllCars = async (formulario) =>
+{
+
+    const cochesPreciosRaw = await GetCarsByReservado(formulario);
+
+    if (cochesPreciosRaw.isOk === false) {
+        console.error(`|- ${cochesPreciosRaw.errores}`);
+        return res.send({
+            "isOk": false,
+            "data": [],
+            "errorFormulario": "error_formulario1",
+            "diasEntreRecogidaDevolucion": undefined
+        });
+
+    }
+
+    if (cochesPreciosRaw.resultados.length <= 0) {
+        return res.send({
+            "isOk": true,
+            "data": [],
+            "errorFormulario": "error_formulario2",
+            "diasEntreRecogidaDevolucion": undefined
+        });
+    }
+
+    const masValorados = await GetMasValorados();
+
+    const porcentajeVehiculo = await GetPorcentajeVehiculos();
+
+    const resultadosObjetoCoches = await TransformarResultadosCoche(
+        cochesPreciosRaw.resultados,
+        cochesPreciosRaw.preciosPorClase,
+        formulario,
+        cochesPreciosRaw.datosSuplementoGenerico.resultados,
+        cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
+        masValorados,
+        porcentajeVehiculo,
+        false
+    );
+
+    let datosDevueltos = { "isOk": false };
+    if (resultadosObjetoCoches.isOk === false) {
+
+        console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
+        datosDevueltos = {
+            "isOk": false,
+            "data": [],
+            "errorFormulario": resultadosObjetoCoches.errorFormulario,
+            "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
+        };
+    }
+    else {
+        datosDevueltos = {
+            "isOk": true,
+            "data": resultadosObjetoCoches.resultadosCoches,
+            "datosOrdenacion": cochesPreciosRaw.datosOrdenacion.resultados,
+            "errorFormulario": resultadosObjetoCoches.errorFormulario,
+            "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion,
+            "suplementogenerico_base": cochesPreciosRaw.datosSuplementoGenerico.resultados,
+            "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
+            "preciosPorClase": cochesPreciosRaw.preciosPorClase,
+            "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados,
+
+        };
+
+    }
+
+    return datosDevueltos;
+
+
+
+};
+
+
+exports.GetCars = async (formulario) =>
+{
+
+    const cochesPreciosRaw = await GetCarsByReservado(formulario);
+
+    if (cochesPreciosRaw.isOk === false) {
+        console.error(`|- ${cochesPreciosRaw.errores}`);
+        return res.send({
+            "isOk": false,
+            "data": [],
+            "errorFormulario": "error_formulario1",
+            "diasEntreRecogidaDevolucion": undefined
+        });
+
+    }
+
+    if (cochesPreciosRaw.resultados.length <= 0) {
+        return res.send({
+            "isOk": true,
+            "data": [],
+            "errorFormulario": "error_formulario2",
+            "diasEntreRecogidaDevolucion": undefined
+        });
+    }
+
+    const masValorados = await GetMasValorados();
+
+    const porcentajeVehiculo = await GetPorcentajeVehiculos();
+
+    const resultadosObjetoCoches = await TransformarResultadosCoche(
+        cochesPreciosRaw.resultados,
+        cochesPreciosRaw.preciosPorClase,
+        formulario,
+        cochesPreciosRaw.datosSuplementoGenerico.resultados,
+        cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
+        masValorados,
+        porcentajeVehiculo,
+        true
+    );
+
+    let datosDevueltos = { "isOk": false };
+    if (resultadosObjetoCoches.isOk === false) {
+
+        console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
+        datosDevueltos = {
+            "isOk": false,
+            "data": [],
+            "errorFormulario": resultadosObjetoCoches.errorFormulario,
+            "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
+        };
+    }
+    else
+    {
+        datosDevueltos = {
+            "isOk": true,
+            "data": resultadosObjetoCoches.resultadosCoches,
+            "datosOrdenacion": cochesPreciosRaw.datosOrdenacion.resultados,
+            "errorFormulario": resultadosObjetoCoches.errorFormulario,
+            "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion,
+            "suplementogenerico_base": cochesPreciosRaw.datosSuplementoGenerico.resultados,
+            "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
+            "preciosPorClase": cochesPreciosRaw.preciosPorClase,
+            "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados,
+    
+        };
+
+    }
+
+    return datosDevueltos;
+
+};
+
+
+const GetCarsByReservado = async (formulario) => {
 
     const filtrado = await GenerarParametros(false, formulario.conductor_con_experiencia);
     const datosVehiculos = await dbInterfaces.GetCarsByReservado(filtrado);
@@ -125,44 +402,27 @@ const TransformarPreciosPorClase = async (preciosPorClase) => {
 
 
 };
+//--
 
-
-exports.TransformarResultadosCoche = async (
-    resultadosCoches, 
-    preciosPorClase, 
-    formulario, 
-    suplementoGenerico, 
+const CheckResultadosCoches = async (
+    resultadosCoches,
+    preciosPorClase,
+    formulario,
+    suplementoGenerico,
     suplementoTipoChofer,
     masValorados,
-    porcentajeTipoVehiculo
-) => 
-{
+    porcentajeTipoVehiculo,
+    numeroDiasRecogidaDevolucion
+) => {
 
-    const diasEntreRecogidaDevolucion = await DiferenciaFechaRecogidaDevolucion(formulario);
-
-    if (diasEntreRecogidaDevolucion === undefined) {
-        return {
-            isOk: false,
-            resultadosCoches: undefined,
-            errorFormulario: "error_formulario3",
-            diasEntreRecogidaDevolucion: undefined
-        };
-
-    }
-
-    const numeroDiasRecogidaDevolucion = diasEntreRecogidaDevolucion + 1;
-    
-    // let resultadosCochesTemporal = [];
-    for (let i = 0; i < resultadosCoches.length; i++)
-    {
+    for (let i = 0; i < resultadosCoches.length; i++) {
 
         //comprobar los dias de reserva, si es mayor a 7 dias, aplicar PRECIOMAS7 * DIAS
         const claseVehiculo = resultadosCoches[i].clasevehiculo;
         const porcentaje = porcentajeTipoVehiculo[claseVehiculo];
 
         //si no existe la clase
-        if (!preciosPorClase[claseVehiculo])
-        {
+        if (!preciosPorClase[claseVehiculo]) {
             console.error(`resultadoscoche ${resultadosCoches[i]} clasevehiculo ${claseVehiculo}`);
             continue;
         }
@@ -172,40 +432,34 @@ exports.TransformarResultadosCoche = async (
         let precioDiaPorClase = 0;
         let precioTotalDias = 0;
         let precioDiaSinDescuento = listadoPrecios[1];
-        
+
         if (numeroDiasRecogidaDevolucion > 7) 
         {
             precioDiaPorClase = listadoPrecios[listadoPrecios.length - 1];
             precioTotalDias = precioDiaPorClase * numeroDiasRecogidaDevolucion;
-            
+
         }
-        else 
+        else
         {
             precioDiaPorClase = listadoPrecios[1];
             precioTotalDias = listadoPrecios[numeroDiasRecogidaDevolucion];
-            
+
         }
-        
+
+
         resultadosCoches[i]["preciototaldias"] = precioTotalDias;
         resultadosCoches[i]["preciopordia"] = precioDiaPorClase;
         resultadosCoches[i]["preciopordiasindescuento"] = precioDiaSinDescuento;
         resultadosCoches[i]["preciototalsindescuento"] = precioDiaSinDescuento * numeroDiasRecogidaDevolucion;
         resultadosCoches[i]["porcentaje"] = porcentaje;
-        
-        const preciosSuplementoPorTipoChofer =  await GenerarSuplementosPorTipoChofer(
-            suplementoTipoChofer, 
+
+        const preciosSuplementoPorTipoChofer = await GenerarSuplementosPorTipoChofer(
+            suplementoTipoChofer,
             formulario.conductor_con_experiencia,
             claseVehiculo
         );
 
         resultadosCoches[i]["preciosSuplementoPorTipoChofer"] = preciosSuplementoPorTipoChofer;
-
-        // const [suplementosGenericos, sumaSuplementosGenericos ] = await GenerarSuplementosVehiculos(
-        //     resultadosCoches[i].suplemento,
-        //     suplementoGenerico
-
-        // );
-
 
         const isValorado = await CheckIsMasValorado(resultadosCoches[i]["vehiculo"], masValorados);
         resultadosCoches[i]["masvalorado"] = isValorado;
@@ -215,15 +469,63 @@ exports.TransformarResultadosCoche = async (
             suplementoGenerico
         );
 
-
         resultadosCoches[i]["suplementosgenericos"] = suplementosGenericos;
-        // resultadosCoches[i]["sumaSuplementosGenericos"] = sumaSuplementosGenericos;
 
     }
+
+    return resultadosCoches;
+
+};
+
+
+
+//----
+const TransformarResultadosCoche = async (
+    resultadosCoches, 
+    preciosPorClase, 
+    formulario, 
+    suplementoGenerico, 
+    suplementoTipoChofer,
+    masValorados,
+    porcentajeTipoVehiculo,
+    procesarTiempo
+) => 
+{
+
+    let diasEntreRecogidaDevolucion = 0;
+    let numeroDiasRecogidaDevolucion = 1;
+
+    if (procesarTiempo === true)
+    {
+        diasEntreRecogidaDevolucion = await DiferenciaFechaRecogidaDevolucion(formulario);
+    
+        if (diasEntreRecogidaDevolucion === undefined) {
+            return {
+                isOk: false,
+                resultadosCoches: undefined,
+                errorFormulario: "error_formulario3",
+                diasEntreRecogidaDevolucion: undefined
+            };
+    
+        }
+
+        numeroDiasRecogidaDevolucion = diasEntreRecogidaDevolucion + 1;
+    }
+
+    const resultadoscochesChecked = await CheckResultadosCoches(
+        resultadosCoches,
+        preciosPorClase,
+        formulario,
+        suplementoGenerico,
+        suplementoTipoChofer,
+        masValorados,
+        porcentajeTipoVehiculo,
+        numeroDiasRecogidaDevolucion
+    );
     
     return {
         isOk: true,
-        resultadosCoches: resultadosCoches,
+        resultadosCoches: resultadoscochesChecked,
         errorFormulario: "",
         diasEntreRecogidaDevolucion: numeroDiasRecogidaDevolucion
     };
@@ -439,7 +741,7 @@ const CheckIsMasValorado = async (vehiculo, masvalorados) =>
 
 };
 
-exports.GetMasValorados = async () =>
+const GetMasValorados = async () =>
 {
 
     const result = await dbInterfaces.GetMasValorados();
@@ -448,7 +750,7 @@ exports.GetMasValorados = async () =>
 
 };
 
-exports.GetPorcentajeVehiculos = async () =>
+const GetPorcentajeVehiculos = async () =>
 {
 
     let porcentajeTipoVehiculo = await porcentajeVehiculo.GetPorcentajeTipoVehiculo();
