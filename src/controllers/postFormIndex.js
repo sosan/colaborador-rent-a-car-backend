@@ -3,8 +3,6 @@ const { EnumMensajesErrores } = require("../errors/exceptions");
 const logicInterface = require("../logicinterface/logic_postFormIndex");
 
 
-
-
 exports.GetAllVehicles = async (req, res) =>
 {
 

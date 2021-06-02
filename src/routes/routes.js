@@ -20,13 +20,14 @@ const controlPanelLogin = require("../controllers/controlPanelLogin");
 
 const router = express.Router();
 
-// obtener todos los vehiculos
-router.post(process.env.ENDPOINT_GETALL_BACKEND, async (req, res) => await indexPost.GetAllVehicles(req, res));
 
 // 
 router.get("/", async (req, res) => await index.showIndex(req, res));
 router.post("/api", async (req, res) => await indexPost.postFormIndex(req, res));
 router.get("/api", async(req, res) => await indexGet.getFormIndex(req, res));
+
+// obtener todos los vehiculos
+router.post(process.env.ENDPOINT_GETALL_BACKEND, async (req, res) => await indexPost.GetAllVehicles(req, res));
 
 //reservar
 router.post("/reservar", async (req, res) => await  reservarPost.postFormReservar(req, res));

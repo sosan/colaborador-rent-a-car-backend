@@ -13,7 +13,7 @@ const GenerateTokenBackendToFrontend = async () =>
     return process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET;
 };
 
-const CheckTokenControlSchema = async (formulario) =>
+const CheckTokenControlSchema = async (formulario, schema) =>
 {
 
     let respuesta = {};
@@ -31,21 +31,42 @@ const CheckTokenControlSchema = async (formulario) =>
         formulario["conductor_con_experiencia"] = "off";
     }
 
+    respuesta["isSchemaValid"] = await ControlSchema(formulario, schema);
+
     return [respuesta, formulario];
 
 };
 
 exports.CheckTokenFromGetAllVehicles = async (formulario) =>
 {
-    const [respuesta, formularioChecked] = await CheckTokenControlSchema(formulario);
 
-    if (respuesta.isTokenValid === false)
+    let schema = undefined;
+
+    if (formulario.direct === true)
     {
-        return respuesta;
+        schema = Joi.object({
+
+            direct: Joi.boolean().required(),
+            vehiculo: Joi.string().required(),
+            fase: Joi.number().required(),
+            idioma: Joi.string().required(),
+            success: Joi.string().required(),
+            token: Joi.string().required(),
+        });
+    }
+    else
+    {
+        schema = Joi.object({
+            id: Joi.string().required(),
+            location: Joi.object().required(),
+            token: Joi.string().required(),
+            direct: Joi.boolean().required(),
+            useragent: Joi.object().required()
+        });
     }
 
-    const isSchemaValid = await ControlSchemaGetAllVehicles(formularioChecked);
-    respuesta["isSchemaValid"] = isSchemaValid;
+
+    const [respuesta, formularioChecked] = await CheckTokenControlSchema(formulario, schema);
 
     return [respuesta, formularioChecked];
 
@@ -53,15 +74,20 @@ exports.CheckTokenFromGetAllVehicles = async (formulario) =>
 
 exports.CheckTokenPostForm = async (formulario) => {
 
-    const [respuesta, formularioChecked] = await CheckTokenControlSchema(formulario);
+    const schema = Joi.object({
+        conductor_con_experiencia: Joi.string().required(),
+        edad_conductor: Joi.number().required(),
+        "fase": Joi.number().required(),
+        fechaDevolucion: Joi.string().required(),
+        horaDevolucion: Joi.string().required(),
+        fechaRecogida: Joi.string().required(),
+        horaRecogida: Joi.string().required(),
+        "success": Joi.string().required(),
+        token: Joi.string().required()
 
-    if (respuesta.isTokenValid === false)
-    {
-        return respuesta;
-    }
+    });
 
-    const isSchemaValid = await ControlSchema(formularioChecked);
-    respuesta["isSchemaValid"] = isSchemaValid;
+    const [respuesta, formularioChecked] = await CheckTokenControlSchema(formulario, schema);
 
     return [respuesta, formularioChecked];
 
@@ -79,26 +105,7 @@ const CheckToken = async (token, tokenFromFrontend) => {
     return isValid;
 };
 
-
-// control de schema para comprobar que lo que envia el frontend
-// cumple con el schema
-
-const ControlSchema = async (body) => {
-
-
-    const schema = Joi.object({
-        conductor_con_experiencia: Joi.string().required(),
-        edad_conductor: Joi.number().required(),
-        "fase": Joi.number().required(),
-        fechaDevolucion: Joi.string().required(),
-        horaDevolucion: Joi.string().required(),
-        fechaRecogida: Joi.string().required(),
-        horaRecogida: Joi.string().required(),
-        "success": Joi.string().required(),
-        token: Joi.string().required()
-
-    });
-
+const ControlSchema = async (body, schema) => {
 
     const options = {
         abortEarly: false, // include all errors
@@ -116,34 +123,6 @@ const ControlSchema = async (body) => {
 
 };
 
-
-const ControlSchemaGetAllVehicles = async (body) => {
-
-
-    const schema = Joi.object({
-        id: Joi.string().required(),
-        location: Joi.object().required(),
-        token: Joi.string().required(),
-        useragent: Joi.object().required()
-
-    });
-
-
-    const options = {
-        abortEarly: false, // include all errors
-        allowUnknown: true, // ignore unknown props
-        stripUnknown: false // remove unknown props
-    };
-    const validation = schema.validate(body, options);
-    let isValid = false;
-
-    if (validation.error === undefined) {
-        isValid = true;
-    }
-
-    return isValid;
-
-};
 
 exports.GetAllCars = async (formulario) =>
 {
@@ -213,8 +192,6 @@ exports.GetAllCars = async (formulario) =>
     }
 
     return datosDevueltos;
-
-
 
 };
 
