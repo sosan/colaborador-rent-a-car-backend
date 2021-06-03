@@ -18,7 +18,7 @@ exports.GetAllVehicles = async (req, res) =>
     }
 
     const resultados = await logicInterface.GetAllCars(formulario);
-
+    resultados["token"] = `sdj&/k.(fk)j#.#$d.a#s%djf.l7).as!#%as/kue#$!.!.#.$!.#$`;
     return res.send(resultados);
 
 
