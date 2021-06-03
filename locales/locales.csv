@@ -1,227 +1,227 @@
-idioma_web,en,es,it,de,
-titulo,Rent a Car Mallorca,Rent a Car Mallorca,Noleggio auto Mallorca,Auto mieten Mallorca,
-contacto_reservas,Reservation contact,Contacto reservas,Contatto per la prenotazione,Kontakt buchen,
-idiomas,Language,Idioma,Lingua,Sprache,
-eslogan,Get to know Mallorca…,Conozca Mallorca...,Conoscere Mallorca...,Lernen Sie Mallorca kennen...,
-titulo_form,Rent a car,Alquiler de Coches,Noleggia un'auto,Ein Auto mieten,
-error_formulario1,"Please try again, sorry for the inconvenience. Thank you.","Reintente, disculpe las molestias. Gracias.","Prova di nuovo, scusa per l'inconveniente. Grazie.","Versuchen Sie es erneut, entschuldigen Sie die Unannehmlichkeiten. Danke!",
-error_formulario2,We are sorry to inform you that we do not have any vehicle available for the requested dates. We apologize for the inconvenience. Thank you.,Sentimos informarle que no disponemos de ningún vehículo para las fechas solicitadas. Disculpe las molestias. Gracias.,Siamo spiacenti di informarla che non abbiamo nessun veicolo disponibile per le date richieste. Ci scusiamo per l'inconveniente. Grazie.,"Es tut uns leid, Ihnen mitzuteilen, dass wir für die angefragten Daten kein Fahrzeug zur Verfügung haben. Entschuldigung für die Unannehmlichkeiten. Danke!",
-error_formulario3,Incorrect Pickup Date,Fecha Recogida Incorrecta,Data di ritiro errata,Falsches Abholdatum,
-error_formulario4,x,x,x,x,
-recogida,Pickup:,Recogida:,Ritiro,Abholen,
-hora,At :,Hora :,Tempo,Uhrzeit ,
-devolucion,Return :,Devolucion :,Ritorno,Rückgabe ,
-conductor_experiencia,Driver is 23 years old or older,Conductor tiene 23 años o mas,Il conducente ha 23 anni o più,Der Fahrer ist 23 Jahre alt oder älter,
-edad_conductor,Driver's age,Edad del conductor,Età dell'autista,Alter des Fahrers,
-ver_precios,View prices,Ver precios,Vedere i prezzi,Siehe Preise,
-informacion,Information,Información,Informazioni,Informationen,
-copyright,@lvaro Ruiz WEB ,@lvaro Ruiz WEB ,@lvaro Ruiz WEB ,@lvaro Ruiz WEB ,
-idioma_italiano,Italiano,Italiano,Italiano,Italienisch,
-idioma_espanol,Español,Español,Inglese,Englisch,
-idioma_aleman,Deutsch,Deutsch,Deutsch,Deutsch,
-idioma_ingles,English,English,Español,Español,
-idioma_frances,Français,Français,Français,Französisch,
-bandera_italiana,bandiera tedesca,bandiera tedesca,bandiera tedesca,tedesca-Flagge,
-bandera_espanola,bandera española,bandera española,Bandiera spagnola,Spanische Flagge,
-bandera_alemana,deutsche flagge,deutsche flagge,deutsche flagge,deutsche Flagge,
-bandera_inglesa,english flag,english flag,bandiera inglese,englische Flagge,
-bandera_francesa,drapeau français,drapeau français,drappeggio francese,drapeau français,
-ofertas_encontradas_titulo,Show Offers found,Muestra Ofertas encontradas,Esempi di offerte trovate,Beispielangebote gefunden,
-datos_busqueda,Search data,Datos busqueda,Dati di ricerca,Daten suchen,
-cambiar,Change,Cambiar,Cambia,Ändern,
-desde,from,desde,da,von,
-titulo_ofertas,O F F E R S,O F E R T A S,O F F E R T A S,O F F E R T A S,
-aviso_edad1,Drivers aged 18 to 22 ,Es posible que los conductores de 18 a 22,Ai conducenti di età compresa tra i 18 e i 22 anni ,Bei Fahrern zwischen 18 und 22 Jahren ,
-aviso_edad2,"may be charged an additional fee when collecting the vehicle. If the selected vehicle requires a young driver charge, we will inform you of this.","años deban abonar un cargo adicional cuando vayan a retirar el vehículo. Si el vehículo seleccionado requiere un cargo por conductor joven, le informaremos de ello.","può essere addebitata una tassa aggiuntiva al momento del ritiro del veicolo. Se il veicolo selezionato richiede una tassa per giovani conducenti, vi informeremo di questo."," kann bei der Abholung des Fahrzeugs eine zusätzliche Gebühr anfallen. Sollte für das ausgewählte Fahrzeug eine Jungfahrergebühr anfallen, werden wir Sie darüber informieren.",
-reservar,/reserve,/reservar,/prenotazione,/Buchen,
-elmasvalorado,Highest rated,El mas valorado,I più votati,Höchste Bewertung,
-elpreciomasbajo,Lowest price,El precio mas bajo,Prezzo più basso,Niedrigster Preis,
-condiciones,Conditions,Condiciones,Condizioni,Bedingungen,
-tooltip_condiciones,General terms and conditions,Condiciones generales,Termini e condizioni,Bedingungen und Konditionen,
-tooltip_vehiculo_asientos1,vehicle has,vehiculo tiene,il veicolo ha,Fahrzeug hat,
-tooltip_vehiculo_asientos2,seats,asientos,posti a sedere,Sitze,
-tooltip_vehiculo_tiene,vehicle has,vehiculo tiene,il veicolo ha,Fahrzeug hat,
-tooltip_vehiculo_puertas,doors,puertas,porte,Türen,
-tooltip_aire_acondicionado,air conditioning,aire acondicionado,aria condizionata,Klimatisierung,
-tooltip_cambio_manual,manual transmission,cambio manual,trasmissione manuale,Schaltgetriebe,
-tooltip_cambio_automatico,automatic transmission,cambio automatico,trasmissione automatica,Automatikgetriebe,
-tooltip_kilometraje,unlimited mileage,kilometraje ilimitado,chilometraggio illimitato,unbegrenzte Kilometerleistung,
-tooltip_cancelaciones,FREE Cancelation,cancelación gratuita,cancellazione gratuita,kostenlose Stornierung,
-tooltip_modificaciones,free modification,modificación gratuita,modifica gratuita,freie Änderung,
-kilometraje,Unlimited mileage,Kilometraje Ilimitado,Chilometraggio illimitato,Unbegrenzte Kilometerleistung,
-cancelaciones,FREE Cancelation,Cancelación gratuita,Cancellazione gratuita,Kostenlose Stornierung,
-modificaciones,Free modification,Modificación gratuita,Modifica gratuita,Freie Änderung,
-suplemento_noche_fuera_entrega,Out of day supplement,Suplemento fuera de entrega,Supplemento per mancata consegna,Aufpreis bei Nichtlieferung,
-sin_suplemento_noche_fuera_entrega,No extra charge out of day,Sin suplemento fuera de dia,Nessun costo aggiuntivo fuori dal giorno,Kein Aufpreis außerhalb des Tages,
-tooltip_suplemento_noche_fuera_entrega,The user must pay a supplement of X € for the delivery of the vehicle outside the scheduled day,El usuario debe pagar un suplmento de X € por entregar el vehiculo fuera del dia señalado,L'utente deve pagare un supplemento di X € per la consegna del veicolo al di fuori del giorno stabilito.,Für die Anlieferung des Fahrzeugs außerhalb des vorgesehenen Tages hat der Nutzer einen Zuschlag von X € zu zahlen.,
-tooltip_sin_suplemento_noche_fuera_entrega,The user will not pay for the delivery the vehicle on the scheduled day,El usuario no pagara por entregar el vehiculo en el dia señalado,L'utente non pagherà per la consegna del veicolo nel giorno stabilito.,Der Benutzer zahlt nicht für die Zustellung des Fahrzeugs am vereinbarten Tag.,
-suplemento_tiempo_fuera_entrega,Out of hour supplement,Suplemento fuera de hora,Supplemento fuori orario,Zuschlag außerhalb der Stunde,
-sin_suplemento_tiempo_fuera_entrega,No supplement out of time,Sin suplemento fuera hora,Nessun supplemento fuori orario,Kein Außer-Stunden-Zuschlag,
-tooltip_suplemento_tiempo_fuera_entrega,The user must pay a supplement of X € for the delivery of the vehicle outside the scheduled time.,El usuario debe pagar un suplmento de X € por entregar el vehiculo fuera de la hora señalada,Il noleggiatore deve pagare un supplemento di X € per il ritiro o la riconsegna tardiva del veicolo,Für eine verspätete Abholung oder Rückgabe des Fahrzeugs muss der Mieter einen Aufpreis von X € zahlen,
-tooltip_sin_suplemento_tiempo_fuera_entrega,The user does not have to pay for out of hours delivery,El usuario no pagara por entregar el vehiculo fuera de horas,L'utente non deve pagare per la consegna fuori orario,Der Benutzer muss nicht für die Zustellung außerhalb der Öffnungszeiten bezahlen,
-cargo_conductor_joven,Young driver charge: X € per day.,Cargo Conductor Joven: X € por dia.,Tariffa per giovani conducenti,Gebühr für junge Fahrer, X € pro Tag.
-tooltip_cargo_conductor_joven,The user must pay a supplement for young driver of X € per day,El usuario debe pagar un suplmento por conductor joven de X € por dia,L'utente deve pagare un supplemento per giovani conducenti di X € al giorno.,Der Benutzer muss einen Jungfahrerzuschlag von X € pro Tag zahlen.,
-sin_cargo_conductor_joven,No supplement for young driver,Sin suplemento por conductor joven,Nessun supplemento per i giovani guidatori,Kein Jungfahrerzuschlag,
-tooltip_sin_cargo_conductor_joven,The user will not pay a supplement for being a young driver,El usuario no pagara un suplemento por ser un conductor joven,L'utente non pagherà un supplemento per i giovani conducenti.,Der Benutzer zahlt keinen Jungfahrerzuschlag.,
-ofertas_especiales,Special offers:,Ofertas Especiales:,Offerte speciali,Besondere Angebote,
-consultar_precio,Price on request,Consultar Precio,Prezzo su richiesta,Preis auf Anfrage,
-precio_por,Price per,Precio por,Prezzo per,Preis pro,
-dias,days,dias,giorni,Tage,
-dia,day,dia,giorno,Tag,
-boton_reservar,Reserve,Reservar,Libro,Buchen Sie,
-enero,January,Enero,Gennaio,Januar,
-febrero,February,Febrero,Febbraio,Februar,
-marzo,March,Marzo,Marzo,März,
-abril,April,Abril,Aprile,April,
-mayo,May,Mayo,Maggio,Mai,
-junio,June,Junio,Giugno,Juni,
-julio,July,Julio,Luglio,Juli,
-agosto,August,Agosto,Agosto,August,
-septiembre,September,Septiembre,Settembre,September,
-octubre,October,Octubre,Ottobre,Oktober,
-noviembre,November,Noviembre,Novembre,November,
-diciembre,December,Diciembre,Dicembre,Dezember,
-corto_enero,Jan,Ene,Jan,Jan,
-corto_febrero,Feb,Feb,Feb,Feb,
-corto_marzo,Mar,Mar,Mar,Mar,
-corto_abril,Apr,Abr,Apr,Apr,
-corto_mayo,May,May,Maggio,Mai,
-corto_junio,Jun,Jun,Jun,Jun,
-corto_julio,Jul,Jul,Jul,Jul,
-corto_agosto,Aug,Ago,Agosto,Aug,
-corto_septiembre,Sep,Sep,Sep,Sep,
-corto_octubre,Oct,Oct,Ott,Okt.,
-corto_noviembre,Nov,Nov,Nov,Nov,
-corto_diciembre,Dec,Dic,Dic,Dez.,
-domingo,Sunday,Domingo,Domenica,Sonntag,
-lunes,Monday,Lunes,Lunedì,Montag,
-martes,Tuesday,Martes,Martedì,Dienstag,
-miercoles,Wednesday,Miércoles,Mercoledì,Mittwoch,
-jueves,Thursday,Jueves,Giovedì,Donnerstag,
-viernes,Friday,Viernes,Venerdì,Freitag,
-sabado,Saturday,Sábado,Sabato,Samstag,
-corto_domingo,Sun,Dom,Sole,Sonne,
-corto_lunes,Mon,Lun,Mon,Mo,
-corto_martes,Tue,Mar,Mar,Di,
-corto_miercoles,Wed,Mie,Mer,Mi,
-corto_jueves,Thu,Jue,Thu,Thu,
-corto_viernes,Fri,Vie,Ven,Fr,
-corto_sabado,Sat,Sab,Sat,Sat,
-min_domingo,Su,Do,Sole,Sonne,
-min_lunes,Mo,Lu,Mon,Mo,
-min_martes,Tu,Ma,Mar,Di,
-min_miercoles,We,Mi,Mer,Mi,
-min_jueves,Th,Ju,Thu,Thu,
-min_viernes,Fr,Vi,Ven,Fr,
-min_sabado,Sa,Sa,Sa,Sa,
-cerrar_clock,Close,Cerrar,Chiudere,Schließen,
-anterior_clock,< Prev,< Ant,< Formica,< Ameise,
-siguiente_clock,Next >,Sig >,Prossimo >,Nächste >,
-hoy_clock,Today,Hoy,Oggi,Heute,
-alt_reloj_recogida,Clock Pickup,Reloj Recogida,Ritiro dell'orologio,Uhr Pickup,
-modificar,Modify,Modificar,Modificare,Ändern Sie,
-alt_siguiente,next,siguente,prossimo,nächste,
-alt_anterior,previous,anterior,precedente,vorherige,
-alt_icono_edad_conductor,driver age icon,icono edad conductor,icona dell'età del conducente,Symbol für das Alter des Fahrers,
-alt_marca,mark,marca,segnare,markieren,
-alt_icono_condiciones,icon conditions,icono condiciones,condizioni dell'icona,Symbolbedingungen,
-alt_persona,Maximum number of persons,Maximo personas,Numero massimo di persone,Maximale Anzahl von Personen,
-alt_puerta,Number of doors,Numero de puertas,Numero di porte,Anzahl der Türen,
-alt_aire,air conditioning icon,icono de aire acondicionado,icona dell'aria condizionata,Klimaanlagen-Symbol,
-alt_cambio_manual,manual transmission,cambio manual,cambio manuale,Handschaltgetriebe,
-alt_cambio_auto,automatic transmission,cambio automatico,cambio automatico,Automatik-Getriebe,
-alt_kilometraje,mileage,kilometraje,chilometraggio,Kilometerstand,
-alt_cancelaciones,cancellation,cancelacion,cancellazione,Stornierung,
-alt_modificacion,modification,modificacion,cambiare,ändern,
-alt_icono_hecho,icon completed,icono completado,icona completata,Symbol abgeschlossen,
-alt_precio_total,Total price for,Precio total para,Prezzo totale per,Gesamtpreis für,
-titulo_condiciones_generales,GENERAL CONDITIONS,CONDICIONES GENERALES,CONDIZIONI GENERALI,ALLGEMEINE BEDINGUNGEN,
-requisitos_conductor_plus,Driver Plus Requirements:,Requisitos Conductor Plus:,Requisiti di Driver Plus,Treiber Plus Anforderungen,
-conductor_plus_coche,Driver Plus Car:,Conductor Plus Coche:,Auto più conducente,Fahrer Plus Auto,
-conductor_plus_moto,Driver Plus Motorcycle,Conductor Plus Moto:,Autista più moto,Fahrer Plus Motorrad,
-suplemento_conductor_plus_coche,Supplement Driver Plus Car:,Suplemento Conductor Plus Coche:,Supplemento Driver Plus Car,Ergänzung Fahrer Plus Auto,
-suplemento_conductor_plus_moto,Supplement Driver Plus Motorcycle:,Suplemento Conductor Plus Motos:,Supplemento autista più moto,Ergänzung Fahrer Plus Motorrad,
-coche_conductor,Car,Coche,Auto,Auto,
-descripcionclase_coche_pequenos,Small cars,Coches pequeños,Auto piccole,Kleinwagen,
-descripcionclase_coche_automaticos,Automatic cars,Coches automaticos,Auto automatiche,Automatische Autos,
-descripcionclase_coche_cincopuertas,5-door cars,Coches 5 puertas,5 porte auto,5-türige Autos,
-descripcionclase_coche_sietepuertas,7-door cars,Coches 7 puertas,7 porte auto,7-türige Autos,
-descripcionclasemoto_pequena,Small motorcycles,Motos pequeñas,Piccole motociclette,Kleine Motorräder,
-descripcionclasemoto_grande,Big motorcycles,Motos grandes,Grandi motociclette,Große Motorräder,
-pordia,per day.,por día.,al giorno.,pro Tag.,
-edad_conductor_joven,Young driver age:,Edad conductor joven:,Età del giovane guidatore,Alter des jungen Fahrers,
-conductor_joven_coche,Young Car Driver:,Conductor joven de Coches:,Giovane guidatore di auto,Junge Fahrer von Autos,
-conductor_joven_moto,Young Motorcycle Driver:,Conductor joven de Motos:,Giovane motociclista,Junger Motorradfahrer,
-from_deciocho_a,from 18 years to,de 18 años a ,18 anni a ,18 Jahre bis ,
-anos_final,years old.,años.,anni.,Jahre alt.,
-suplemento_conductor_joven_coches,Young card driver supplement:,Suplemento conductor joven de Coches:,Supplemento per giovani automobilisti,Zuschlag für junge Autofahrer,
-suplemento_conductor_joven_motos,Young motorcycle driver supplement:,Suplemento conductor joven de Motos:,Supplemento per giovani motociclisti,Zuschlag für junge Motorradfahrer,
-permiso_conducir_internacional,International driving license:,Permiso de conducir internacional:,Patente di guida internazionale,Internationaler Führerschein,
-permiso_conducir_internacional_descripcion,"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit Mollitia, dicta.",
-conductor_adicional_descripcion,"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.",
-pago_condiciones_descripcion,"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.",
-conductor_adicional,Aditional driver:,Conductor adicional:,Driver aggiuntivo,Zusätzlicher Treiber,
-pago_condiciones,Payment:,Pago:,Pagamento,Bezahlung,
-seguro_condiciones,Insurance:,Seguro:,Assicurazione,Versicherung,
-seguro_precio_coches_condiciones,Car price includes comprehensive insurance (but does not cover lost or broken keys).,El precio de los coches incluye seguro a todo riesgo (pero no cubre pérdida o rotura de llaves).,Il prezzo dell'auto include l'assicurazione completa (ma non copre le chiavi perse o rotte).,Der Fahrzeugpreis beinhaltet eine Vollkaskoversicherung (deckt jedoch keine verlorenen oder abgebrochenen Schlüssel ab).,
-seguro_precio_motos_condiciones,Motorcycle price includes a warranty (but does not cover loss or breakage of keys).,El precio de las motos incluye una garantia (pero no cubre pérdida o rotura de llaves).,Il prezzo della moto include una garanzia (ma non copre la perdita o la rottura delle chiavi).,Der Motorradpreis beinhaltet eine Garantie (deckt jedoch nicht den Verlust oder Bruch von Schlüsseln ab).,
-noche_fuera_condiciones,Overnight outside delivery:,Noche por fuera de entrega:,Notte fuori dalla consegna,Über Nacht außerhalb der Lieferung,
-coches_condiciones,Cars:,Coches:,Auto,Autos,
-motos_condiciones,Motorcycles:,Motos:,Motociclette,Motorräder,
-fuera_tiempo_entrega,Out of time on delivery:,Fuera de tiempo en la entrega:,Fuori tempo massimo per la consegna,Außerhalb der Zeit bei Lieferung,
-detalles,/details,/detalles,/dettagli,/einzelheiten,
-osimilar,or similar,o similar,o simile,oder ähnlich,
-dias_titulo,Days,Días,Giorni,Tage,
-alquiler_titulo,Rental,Alquiler,Noleggio,Vermietung,
-seguro_titulo,Insurance,Seguro,Assicurazione,Versicherung,
-seguro_descripcion,The price includes comprehensive insurance,El precio incluye seguro a todo riesgo,Il prezzo include l'assicurazione contro tutti i rischi,Der Preis beinhaltet eine Vollkaskoversicherung,
-conductor_joven_titulo,Young Driver,Conductor Joven,Giovane autista,Junger Fahrer,
-total_titulo,Total,Total:,Totale,Gesamt,
-pago_recogida_titulo,Payment on collection,Pago a la recogida,Pagamento all'incasso,Zahlung bei Abholung,
-pago_online_titulo,Online Payment,Pago Online,Pagamento online,Online-Zahlung,
-incluido_precio_titulo,Included in the price,Incluido en el Precio:,Incluso nel prezzo,Im Preis inbegriffen,
-seguro_incluido_titulo,Fully comprehensive insurance,Seguro todo riesgo,Assicurazione completa,Vollkasko-Versicherung,
-sillas_elevadores_titulo,Child seats and boosters,Sillas y Elevadores de niños,Seggiolini per bambini e seggiolini,Kindersitze und Sitzerhöhungen,
-cancelacion_titulo,Free cancellation,Cancelación gratuita,Cancellazione gratuita,Kostenlose Stornierung,
-impuestos_titulo,Local taxes,Impuestos locales,Tasse locali,Lokale Steuern,
-asientos_titulo,Child seats,Asientos niños,Seggiolini per bambini,Kindersitze,
-info_asientos,info,info,info,Infos,
-descripcion_asientos,Child seats are for children from 1 to 3 years old,"Los asientos de niños, son para niños de 1 a 3 años",I seggiolini sono per bambini da 1 a 3 anni,Die Kindersitze sind für Kinder im Alter von 1 bis 3 Jahren,
-descripcion_asientos_dos,(weighing between 9-18kg).,(con un peso entre 9-18kg).,(peso tra 9-18 kg).,(mit einem Gewicht zwischen 9-18 kg).,
-title_seguro_todoriesgo,Offer at the best price guaranteed,Oferta al mejor precio garantizado,Offerta al miglior prezzo garantito,Angebot zum garantiert besten Preis,
-title_sillas,The offer includes CE approved seats and boosters.,La oferta incluye sillas y elevadores homologados CE,L'offerta include seggiolini e rialzi approvati CE.,Das Angebot umfasst CE-geprüfte Sitze und Sitzerhöhungen.,
-title_cancelar,The offer also includes the possibility to cancel the booking 24 hours before collection,Además la oferta incluye la posibilidad de cancelar la reserva 24 Horas antes de la recogida,L'offerta include anche la possibilità di cancellare la prenotazione 24 ore prima dell'orario di ritiro,"Das Angebot beinhaltet auch die Möglichkeit, die Buchung 24 Stunden vor der Abholzeit zu stornieren",
-title_impuestos,offer includes local taxes,la oferta incluye los impuestos locales,l'offerta include le tasse locali,das Angebot enthält lokale Steuern,
-alt_icono_reservar,Icon made small,Icono hecho pequeño,Icona resa piccola,Icon klein gemacht,
-reservar_titulopagina,Booking,Reservar,Riserva,Reserve,
-datos_reserva,Booking Data,Datos de la Reserva,Dati di prenotazione,Buchungsdaten,
-icono_reserva,booking icon,icono reserva,icona di prenotazione,Buchungssymbol,
-elevadores_titulo,Children lifts,Elevadores niños,Ascensori per bambini,Kinderlifte,
-elevadores_descripcion,The boosters are recommended for children aged 4-11 years,Los elevadores son recomendados para niños de 4-11 años,I booster sono raccomandati per i bambini dai 4 agli 11 anni,Die Booster werden für Kinder im Alter von 4-11 Jahren,
-elevadores_descripcion_dos,(weighing between 18-45kg).,(con un peso entre 18-45kg).,(con un peso tra i 18 e i 45 kg).,(mit einem Gewicht zwischen 18-45kg).,
-pordia,per day,por dia,al giorno,pro Tag,
-datos_conductor_titulo,Main Driver Data,Datos Conductor Principal,Dati principali dell'autista,Haupttreiberdaten,
-datos_titulo_titulo,Title ,Título :,Titolo,Titel ,
-sr_titulo,Mr,Sr,Signor,Herr,
-sra_titulo,Ms,Sra,Signora,Frau,
-nombre_titulo,First name ,Nombre,Nome,Name ,
-apellidos_titulo,Surname ,Apellidos,Cognome ,Nachname ,
-email_titulo,E-mail ,E-mail,E-mail ,E-Mail ,
-email_descripcion,This is the e-mail address where we will send you your confirmation.,A este E-mail es donde te enviaremos tu confirmación,Questo è l'indirizzo e-mail dove ti invieremo la tua conferma.,"Dies ist die E-Mail-Adresse, an die wir Ihnen Ihre Bestätigung senden werden.",
-email_descripcion_dos,This is where we will send you the booking confirmation with all the information for the pick up of your car.,Aquí es donde te enviaremos la confirmación de la reserva con toda la informacion para la recogida de tu coche,Qui vi invieremo la conferma della prenotazione con tutte le informazioni per il ritiro della vostra auto.,Hier senden wir Ihnen die Buchungsbestätigung mit allen Informationen für die Abholung Ihres Autos.,
-,,,,,
-tooltip_terminos_condiciones,Terms and Conditions,Términos y condiciones,Termini e condizioni,Bedingungen und Konditionen,
-terminos_condiciones,Terms and Conditions,Términos y condiciones,Termini e condizioni,Bedingungen und Konditionen,
-tooltip_politicia_privacidad,Privacy Policy,Protección de datos,Politica sulla privacy,Datenschutzrichtlinie,
-politica_privacidad,privacy policy,política de privacidad,informativa sulla privacy,Datenschutzbestimmungen,
-leido_acepto,I have read and accept,He leído y acepto,Ho letto e accetto,Ich habe gelesen und akzeptiere,
-and,and,y,e,und,
-titulo_terminos_condiciones,Terms and Conditions,Términos y condiciones,Termini e condizioni,Bedingungen und Konditionen,
-titulo_privacidad,Privacy policy,Protección de datos,Politica sulla privacy,Datenschutzrichtlinie,
-campos_requeridos,* Required fields,* Campos requeridos,* Campi obbligatori,* Erforderliche Felder,
-telefono,Phone,Teléfono,Telefono,Telefon,
-telefono_placeholder,In case we need to reach you urgently,Por si tenemos que contactar contigo,Se abbiamo bisogno di contattarti urgentemente,"Im Fall, dass wir Sie dringend erreichen müssen",
-reservar_ahora,Book now,Reservar ahora,Prenota ora,Jetzt buchen,
+idioma_web,en,es,it,de
+titulo,Rent a Car Mallorca,Rent a Car Mallorca,Noleggio auto Mallorca,Auto mieten Mallorca
+contacto_reservas,Reservation contact,Contacto reservas,Contatto per la prenotazione,Kontakt buchen
+idiomas,Language,Idioma,Lingua,Sprache
+eslogan,Get to know Mallorca…,Conozca Mallorca...,Conoscere Mallorca...,Lernen Sie Mallorca kennen...
+titulo_form,Rent a car,Alquiler de Coches,Noleggia un'auto,Ein Auto mieten
+error_formulario1,"Please try again, sorry for the inconvenience. Thank you.","Reintente, disculpe las molestias. Gracias.","Prova di nuovo, scusa per l'inconveniente. Grazie.","Versuchen Sie es erneut, entschuldigen Sie die Unannehmlichkeiten. Danke!"
+error_formulario2,We are sorry to inform you that we do not have any vehicle available for the requested dates. We apologize for the inconvenience. Thank you.,Sentimos informarle que no disponemos de ningún vehículo para las fechas solicitadas. Disculpe las molestias. Gracias.,Siamo spiacenti di informarla che non abbiamo nessun veicolo disponibile per le date richieste. Ci scusiamo per l'inconveniente. Grazie.,"Es tut uns leid, Ihnen mitzuteilen, dass wir für die angefragten Daten kein Fahrzeug zur Verfügung haben. Entschuldigung für die Unannehmlichkeiten. Danke!"
+error_formulario3,Incorrect Pickup Date,Fecha Recogida Incorrecta,Data di ritiro errata,Falsches Abholdatum
+error_formulario4,x,x,x,x
+recogida,Pickup:,Recogida:,Ritiro,Abholen
+hora,At :,Hora :,Tempo,Uhrzeit 
+devolucion,Return :,Devolucion :,Ritorno,Rückgabe 
+conductor_experiencia,Driver is 23 years old or older,Conductor tiene 23 años o mas,Il conducente ha 23 anni o più,Der Fahrer ist 23 Jahre alt oder älter
+edad_conductor,Driver's age,Edad del conductor,Età dell'autista,Alter des Fahrers
+ver_precios,View prices,Ver precios,Vedere i prezzi,Siehe Preise
+informacion,Information,Información,Informazioni,Informationen
+copyright,@lvaro Ruiz WEB ,@lvaro Ruiz WEB ,@lvaro Ruiz WEB ,@lvaro Ruiz WEB 
+idioma_italiano,Italiano,Italiano,Italiano,Italienisch
+idioma_espanol,Español,Español,Inglese,Englisch
+idioma_aleman,Deutsch,Deutsch,Deutsch,Deutsch
+idioma_ingles,English,English,Español,Español
+idioma_frances,Français,Français,Français,Französisch
+bandera_italiana,bandiera tedesca,bandiera tedesca,bandiera tedesca,tedesca-Flagge
+bandera_espanola,bandera española,bandera española,Bandiera spagnola,Spanische Flagge
+bandera_alemana,deutsche flagge,deutsche flagge,deutsche flagge,deutsche Flagge
+bandera_inglesa,english flag,english flag,bandiera inglese,englische Flagge
+bandera_francesa,drapeau français,drapeau français,drappeggio francese,drapeau français
+ofertas_encontradas_titulo,Show Offers found,Muestra Ofertas encontradas,Esempi di offerte trovate,Beispielangebote gefunden
+datos_busqueda,Search data,Datos busqueda,Dati di ricerca,Daten suchen
+cambiar,Change,Cambiar,Cambia,Ändern
+desde,from,desde,da,von
+titulo_ofertas,O F F E R S,O F E R T A S,O F F E R T A S,O F F E R T A S
+aviso_edad1,Drivers aged 18 to 22 ,Es posible que los conductores de 18 a 22,Ai conducenti di età compresa tra i 18 e i 22 anni ,Bei Fahrern zwischen 18 und 22 Jahren 
+aviso_edad2,"may be charged an additional fee when collecting the vehicle. If the selected vehicle requires a young driver charge, we will inform you of this.","años deban abonar un cargo adicional cuando vayan a retirar el vehículo. Si el vehículo seleccionado requiere un cargo por conductor joven, le informaremos de ello.","può essere addebitata una tassa aggiuntiva al momento del ritiro del veicolo. Se il veicolo selezionato richiede una tassa per giovani conducenti, vi informeremo di questo."," kann bei der Abholung des Fahrzeugs eine zusätzliche Gebühr anfallen. Sollte für das ausgewählte Fahrzeug eine Jungfahrergebühr anfallen, werden wir Sie darüber informieren."
+reservar,/reserve,/reservar,/prenotazione,/Buchen
+elmasvalorado,Highest rated,El mas valorado,I più votati,Höchste Bewertung
+elpreciomasbajo,Lowest price,El precio mas bajo,Prezzo più basso,Niedrigster Preis
+condiciones,Conditions,Condiciones,Condizioni,Bedingungen
+tooltip_condiciones,General terms and conditions,Condiciones generales,Termini e condizioni,Bedingungen und Konditionen
+tooltip_vehiculo_asientos1,vehicle has,vehiculo tiene,il veicolo ha,Fahrzeug hat
+tooltip_vehiculo_asientos2,seats,asientos,posti a sedere,Sitze
+tooltip_vehiculo_tiene,vehicle has,vehiculo tiene,il veicolo ha,Fahrzeug hat
+tooltip_vehiculo_puertas,doors,puertas,porte,Türen
+tooltip_aire_acondicionado,air conditioning,aire acondicionado,aria condizionata,Klimatisierung
+tooltip_cambio_manual,manual transmission,cambio manual,trasmissione manuale,Schaltgetriebe
+tooltip_cambio_automatico,automatic transmission,cambio automatico,trasmissione automatica,Automatikgetriebe
+tooltip_kilometraje,unlimited mileage,kilometraje ilimitado,chilometraggio illimitato,unbegrenzte Kilometerleistung
+tooltip_cancelaciones,FREE Cancelation,cancelación gratuita,cancellazione gratuita,kostenlose Stornierung
+tooltip_modificaciones,free modification,modificación gratuita,modifica gratuita,freie Änderung
+kilometraje,Unlimited mileage,Kilometraje Ilimitado,Chilometraggio illimitato,Unbegrenzte Kilometerleistung
+cancelaciones,FREE Cancelation,Cancelación gratuita,Cancellazione gratuita,Kostenlose Stornierung
+modificaciones,Free modification,Modificación gratuita,Modifica gratuita,Freie Änderung
+suplemento_noche_fuera_entrega,Out of day supplement,Suplemento fuera de entrega,Supplemento per mancata consegna,Aufpreis bei Nichtlieferung
+sin_suplemento_noche_fuera_entrega,No extra charge out of day,Sin suplemento fuera de dia,Nessun costo aggiuntivo fuori dal giorno,Kein Aufpreis außerhalb des Tages
+tooltip_suplemento_noche_fuera_entrega,The user must pay a supplement of X € for the delivery of the vehicle outside the scheduled day,El usuario debe pagar un suplmento de X € por entregar el vehiculo fuera del dia señalado,L'utente deve pagare un supplemento di X € per la consegna del veicolo al di fuori del giorno stabilito.,Für die Anlieferung des Fahrzeugs außerhalb des vorgesehenen Tages hat der Nutzer einen Zuschlag von X € zu zahlen.
+tooltip_sin_suplemento_noche_fuera_entrega,The user will not pay for the delivery the vehicle on the scheduled day,El usuario no pagara por entregar el vehiculo en el dia señalado,L'utente non pagherà per la consegna del veicolo nel giorno stabilito.,Der Benutzer zahlt nicht für die Zustellung des Fahrzeugs am vereinbarten Tag.
+suplemento_tiempo_fuera_entrega,Out of hour supplement,Suplemento fuera de hora,Supplemento fuori orario,Zuschlag außerhalb der Stunde
+sin_suplemento_tiempo_fuera_entrega,No supplement out of time,Sin suplemento fuera hora,Nessun supplemento fuori orario,Kein Außer-Stunden-Zuschlag
+tooltip_suplemento_tiempo_fuera_entrega,The user must pay a supplement of X € for the delivery of the vehicle outside the scheduled time.,El usuario debe pagar un suplmento de X € por entregar el vehiculo fuera de la hora señalada,Il noleggiatore deve pagare un supplemento di X € per il ritiro o la riconsegna tardiva del veicolo,Für eine verspätete Abholung oder Rückgabe des Fahrzeugs muss der Mieter einen Aufpreis von X € zahlen
+tooltip_sin_suplemento_tiempo_fuera_entrega,The user does not have to pay for out of hours delivery,El usuario no pagara por entregar el vehiculo fuera de horas,L'utente non deve pagare per la consegna fuori orario,Der Benutzer muss nicht für die Zustellung außerhalb der Öffnungszeiten bezahlen
+cargo_conductor_joven,Young driver charge: X € per day.,Cargo Conductor Joven: X € por dia.,Tariffa per giovani conducenti,Gebühr für junge Fahrer: X € pro Tag.
+tooltip_cargo_conductor_joven,The user must pay a supplement for young driver of X € per day,El usuario debe pagar un suplmento por conductor joven de X € por dia,L'utente deve pagare un supplemento per giovani conducenti di X € al giorno.,Der Benutzer muss einen Jungfahrerzuschlag von X € pro Tag zahlen.
+sin_cargo_conductor_joven,No supplement for young driver,Sin suplemento por conductor joven,Nessun supplemento per i giovani guidatori,Kein Jungfahrerzuschlag
+tooltip_sin_cargo_conductor_joven,The user will not pay a supplement for being a young driver,El usuario no pagara un suplemento por ser un conductor joven,L'utente non pagherà un supplemento per i giovani conducenti.,Der Benutzer zahlt keinen Jungfahrerzuschlag.
+ofertas_especiales,Special offers:,Ofertas Especiales:,Offerte speciali,Besondere Angebote
+consultar_precio,Price on request,Consultar Precio,Prezzo su richiesta,Preis auf Anfrage
+precio_por,Price per,Precio por,Prezzo per,Preis pro
+dias,days,dias,giorni,Tage
+dia,day,dia,giorno,Tag
+boton_reservar,Reserve,Reservar,Libro,Buchen Sie
+enero,January,Enero,Gennaio,Januar
+febrero,February,Febrero,Febbraio,Februar
+marzo,March,Marzo,Marzo,März
+abril,April,Abril,Aprile,April
+mayo,May,Mayo,Maggio,Mai
+junio,June,Junio,Giugno,Juni
+julio,July,Julio,Luglio,Juli
+agosto,August,Agosto,Agosto,August
+septiembre,September,Septiembre,Settembre,September
+octubre,October,Octubre,Ottobre,Oktober
+noviembre,November,Noviembre,Novembre,November
+diciembre,December,Diciembre,Dicembre,Dezember
+corto_enero,Jan,Ene,Jan,Jan
+corto_febrero,Feb,Feb,Feb,Feb
+corto_marzo,Mar,Mar,Mar,Mar
+corto_abril,Apr,Abr,Apr,Apr
+corto_mayo,May,May,Maggio,Mai
+corto_junio,Jun,Jun,Jun,Jun
+corto_julio,Jul,Jul,Jul,Jul
+corto_agosto,Aug,Ago,Agosto,Aug
+corto_septiembre,Sep,Sep,Sep,Sep
+corto_octubre,Oct,Oct,Ott,Okt.
+corto_noviembre,Nov,Nov,Nov,Nov
+corto_diciembre,Dec,Dic,Dic,Dez.
+domingo,Sunday,Domingo,Domenica,Sonntag
+lunes,Monday,Lunes,Lunedì,Montag
+martes,Tuesday,Martes,Martedì,Dienstag
+miercoles,Wednesday,Miércoles,Mercoledì,Mittwoch
+jueves,Thursday,Jueves,Giovedì,Donnerstag
+viernes,Friday,Viernes,Venerdì,Freitag
+sabado,Saturday,Sábado,Sabato,Samstag
+corto_domingo,Sun,Dom,Sole,Sonne
+corto_lunes,Mon,Lun,Mon,Mo
+corto_martes,Tue,Mar,Mar,Di
+corto_miercoles,Wed,Mie,Mer,Mi
+corto_jueves,Thu,Jue,Thu,Thu
+corto_viernes,Fri,Vie,Ven,Fr
+corto_sabado,Sat,Sab,Sat,Sat
+min_domingo,Su,Do,Sole,Sonne
+min_lunes,Mo,Lu,Mon,Mo
+min_martes,Tu,Ma,Mar,Di
+min_miercoles,We,Mi,Mer,Mi
+min_jueves,Th,Ju,Thu,Thu
+min_viernes,Fr,Vi,Ven,Fr
+min_sabado,Sa,Sa,Sa,Sa
+cerrar_clock,Close,Cerrar,Chiudere,Schließen
+anterior_clock,< Prev,< Ant,< Formica,< Ameise
+siguiente_clock,Next >,Sig >,Prossimo >,Nächste >
+hoy_clock,Today,Hoy,Oggi,Heute
+alt_reloj_recogida,Clock Pickup,Reloj Recogida,Ritiro dell'orologio,Uhr Pickup
+modificar,Modify,Modificar,Modificare,Ändern Sie
+alt_siguiente,next,siguente,prossimo,nächste
+alt_anterior,previous,anterior,precedente,vorherige
+alt_icono_edad_conductor,driver age icon,icono edad conductor,icona dell'età del conducente,Symbol für das Alter des Fahrers
+alt_marca,mark,marca,segnare,markieren
+alt_icono_condiciones,icon conditions,icono condiciones,condizioni dell'icona,Symbolbedingungen
+alt_persona,Maximum number of persons,Maximo personas,Numero massimo di persone,Maximale Anzahl von Personen
+alt_puerta,Number of doors,Numero de puertas,Numero di porte,Anzahl der Türen
+alt_aire,air conditioning icon,icono de aire acondicionado,icona dell'aria condizionata,Klimaanlagen-Symbol
+alt_cambio_manual,manual transmission,cambio manual,cambio manuale,Handschaltgetriebe
+alt_cambio_auto,automatic transmission,cambio automatico,cambio automatico,Automatik-Getriebe
+alt_kilometraje,mileage,kilometraje,chilometraggio,Kilometerstand
+alt_cancelaciones,cancellation,cancelacion,cancellazione,Stornierung
+alt_modificacion,modification,modificacion,cambiare,ändern
+alt_icono_hecho,icon completed,icono completado,icona completata,Symbol abgeschlossen
+alt_precio_total,Total price for,Precio total para,Prezzo totale per,Gesamtpreis für
+titulo_condiciones_generales,GENERAL CONDITIONS,CONDICIONES GENERALES,CONDIZIONI GENERALI,ALLGEMEINE BEDINGUNGEN
+requisitos_conductor_plus,Driver Plus Requirements:,Requisitos Conductor Plus:,Requisiti di Driver Plus,Treiber Plus Anforderungen
+conductor_plus_coche,Driver Plus Car:,Conductor Plus Coche:,Auto più conducente,Fahrer Plus Auto
+conductor_plus_moto,Driver Plus Motorcycle,Conductor Plus Moto:,Autista più moto,Fahrer Plus Motorrad
+suplemento_conductor_plus_coche,Supplement Driver Plus Car:,Suplemento Conductor Plus Coche:,Supplemento Driver Plus Car,Ergänzung Fahrer Plus Auto
+suplemento_conductor_plus_moto,Supplement Driver Plus Motorcycle:,Suplemento Conductor Plus Motos:,Supplemento autista più moto,Ergänzung Fahrer Plus Motorrad
+coche_conductor,Car,Coche,Auto,Auto
+descripcionclase_coche_pequenos,Small cars,Coches pequeños,Auto piccole,Kleinwagen
+descripcionclase_coche_automaticos,Automatic cars,Coches automaticos,Auto automatiche,Automatische Autos
+descripcionclase_coche_cincopuertas,5-door cars,Coches 5 puertas,5 porte auto,5-türige Autos
+descripcionclase_coche_sietepuertas,7-door cars,Coches 7 puertas,7 porte auto,7-türige Autos
+descripcionclasemoto_pequena,Small motorcycles,Motos pequeñas,Piccole motociclette,Kleine Motorräder
+descripcionclasemoto_grande,Big motorcycles,Motos grandes,Grandi motociclette,Große Motorräder
+pordia,per day.,por día.,al giorno.,pro Tag.
+edad_conductor_joven,Young driver age:,Edad conductor joven:,Età del giovane guidatore,Alter des jungen Fahrers
+conductor_joven_coche,Young Car Driver:,Conductor joven de Coches:,Giovane guidatore di auto,Junge Fahrer von Autos
+conductor_joven_moto,Young Motorcycle Driver:,Conductor joven de Motos:,Giovane motociclista,Junger Motorradfahrer
+from_deciocho_a,from 18 years to,de 18 años a ,18 anni a ,18 Jahre bis 
+anos_final,years old.,años.,anni.,Jahre alt.
+suplemento_conductor_joven_coches,Young card driver supplement:,Suplemento conductor joven de Coches:,Supplemento per giovani automobilisti,Zuschlag für junge Autofahrer
+suplemento_conductor_joven_motos,Young motorcycle driver supplement:,Suplemento conductor joven de Motos:,Supplemento per giovani motociclisti,Zuschlag für junge Motorradfahrer
+permiso_conducir_internacional,International driving license:,Permiso de conducir internacional:,Patente di guida internazionale,Internationaler Führerschein
+permiso_conducir_internacional_descripcion,"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit Mollitia, dicta."
+conductor_adicional_descripcion,"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta."
+pago_condiciones_descripcion,"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta.","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, dicta."
+conductor_adicional,Aditional driver:,Conductor adicional:,Driver aggiuntivo,Zusätzlicher Treiber
+pago_condiciones,Payment:,Pago:,Pagamento,Bezahlung
+seguro_condiciones,Insurance:,Seguro:,Assicurazione,Versicherung
+seguro_precio_coches_condiciones,Car price includes comprehensive insurance (but does not cover lost or broken keys).,El precio de los coches incluye seguro a todo riesgo (pero no cubre pérdida o rotura de llaves).,Il prezzo dell'auto include l'assicurazione completa (ma non copre le chiavi perse o rotte).,Der Fahrzeugpreis beinhaltet eine Vollkaskoversicherung (deckt jedoch keine verlorenen oder abgebrochenen Schlüssel ab).
+seguro_precio_motos_condiciones,Motorcycle price includes a warranty (but does not cover loss or breakage of keys).,El precio de las motos incluye una garantia (pero no cubre pérdida o rotura de llaves).,Il prezzo della moto include una garanzia (ma non copre la perdita o la rottura delle chiavi).,Der Motorradpreis beinhaltet eine Garantie (deckt jedoch nicht den Verlust oder Bruch von Schlüsseln ab).
+noche_fuera_condiciones,Overnight outside delivery:,Noche por fuera de entrega:,Notte fuori dalla consegna,Über Nacht außerhalb der Lieferung
+coches_condiciones,Cars:,Coches:,Auto,Autos
+motos_condiciones,Motorcycles:,Motos:,Motociclette,Motorräder
+fuera_tiempo_entrega,Out of time on delivery:,Fuera de tiempo en la entrega:,Fuori tempo massimo per la consegna,Außerhalb der Zeit bei Lieferung
+detalles,/details,/detalles,/dettagli,/einzelheiten
+osimilar,or similar,o similar,o simile,oder ähnlich
+dias_titulo,Days,Días,Giorni,Tage
+alquiler_titulo,Rental,Alquiler,Noleggio,Vermietung
+seguro_titulo,Insurance,Seguro,Assicurazione,Versicherung
+seguro_descripcion,The price includes comprehensive insurance,El precio incluye seguro a todo riesgo,Il prezzo include l'assicurazione contro tutti i rischi,Der Preis beinhaltet eine Vollkaskoversicherung
+conductor_joven_titulo,Young Driver,Conductor Joven,Giovane autista,Junger Fahrer
+total_titulo,Total,Total:,Totale,Gesamt
+pago_recogida_titulo,Payment on collection,Pago a la recogida,Pagamento all'incasso,Zahlung bei Abholung
+pago_online_titulo,Online Payment,Pago Online,Pagamento online,Online-Zahlung
+incluido_precio_titulo,Included in the price,Incluido en el Precio:,Incluso nel prezzo,Im Preis inbegriffen
+seguro_incluido_titulo,Fully comprehensive insurance,Seguro todo riesgo,Assicurazione completa,Vollkasko-Versicherung
+sillas_elevadores_titulo,Child seats and boosters,Sillas y Elevadores de niños,Seggiolini per bambini e seggiolini,Kindersitze und Sitzerhöhungen
+cancelacion_titulo,Free cancellation,Cancelación gratuita,Cancellazione gratuita,Kostenlose Stornierung
+impuestos_titulo,Local taxes,Impuestos locales,Tasse locali,Lokale Steuern
+asientos_titulo,Child seats,Asientos niños,Seggiolini per bambini,Kindersitze
+info_asientos,info,info,info,Infos
+descripcion_asientos,Child seats are for children from 1 to 3 years old,"Los asientos de niños, son para niños de 1 a 3 años",I seggiolini sono per bambini da 1 a 3 anni,Die Kindersitze sind für Kinder im Alter von 1 bis 3 Jahren
+descripcion_asientos_dos,(weighing between 9-18kg).,(con un peso entre 9-18kg).,(peso tra 9-18 kg).,(mit einem Gewicht zwischen 9-18 kg).
+title_seguro_todoriesgo,Offer at the best price guaranteed,Oferta al mejor precio garantizado,Offerta al miglior prezzo garantito,Angebot zum garantiert besten Preis
+title_sillas,The offer includes CE approved seats and boosters.,La oferta incluye sillas y elevadores homologados CE,L'offerta include seggiolini e rialzi approvati CE.,Das Angebot umfasst CE-geprüfte Sitze und Sitzerhöhungen.
+title_cancelar,The offer also includes the possibility to cancel the booking 24 hours before collection,Además la oferta incluye la posibilidad de cancelar la reserva 24 Horas antes de la recogida,L'offerta include anche la possibilità di cancellare la prenotazione 24 ore prima dell'orario di ritiro,"Das Angebot beinhaltet auch die Möglichkeit, die Buchung 24 Stunden vor der Abholzeit zu stornieren"
+title_impuestos,offer includes local taxes,la oferta incluye los impuestos locales,l'offerta include le tasse locali,das Angebot enthält lokale Steuern
+alt_icono_reservar,Icon made small,Icono hecho pequeño,Icona resa piccola,Icon klein gemacht
+reservar_titulopagina,Booking,Reservar,Riserva,Reserve
+datos_reserva,Booking Data,Datos de la Reserva,Dati di prenotazione,Buchungsdaten
+icono_reserva,booking icon,icono reserva,icona di prenotazione,Buchungssymbol
+elevadores_titulo,Children lifts,Elevadores niños,Ascensori per bambini,Kinderlifte
+elevadores_descripcion,The boosters are recommended for children aged 4-11 years,Los elevadores son recomendados para niños de 4-11 años,I booster sono raccomandati per i bambini dai 4 agli 11 anni,Die Booster werden für Kinder im Alter von 4-11 Jahren
+elevadores_descripcion_dos,(weighing between 18-45kg).,(con un peso entre 18-45kg).,(con un peso tra i 18 e i 45 kg).,(mit einem Gewicht zwischen 18-45kg).
+pordia,per day,por dia,al giorno,pro Tag
+datos_conductor_titulo,Main Driver Data,Datos Conductor Principal,Dati principali dell'autista,Haupttreiberdaten
+datos_titulo_titulo,Title ,Título :,Titolo,Titel 
+sr_titulo,Mr,Sr,Signor,Herr
+sra_titulo,Ms,Sra,Signora,Frau
+nombre_titulo,First name ,Nombre,Nome,Name 
+apellidos_titulo,Surname ,Apellidos,Cognome ,Nachname 
+email_titulo,E-mail ,E-mail,E-mail ,E-Mail 
+email_descripcion,This is the e-mail address where we will send you your confirmation.,A este E-mail es donde te enviaremos tu confirmación,Questo è l'indirizzo e-mail dove ti invieremo la tua conferma.,"Dies ist die E-Mail-Adresse, an die wir Ihnen Ihre Bestätigung senden werden."
+email_descripcion_dos,This is where we will send you the booking confirmation with all the information for the pick up of your car.,Aquí es donde te enviaremos la confirmación de la reserva con toda la informacion para la recogida de tu coche,Qui vi invieremo la conferma della prenotazione con tutte le informazioni per il ritiro della vostra auto.,Hier senden wir Ihnen die Buchungsbestätigung mit allen Informationen für die Abholung Ihres Autos.
+,,,,
+tooltip_terminos_condiciones,Terms and Conditions,Términos y condiciones,Termini e condizioni,Bedingungen und Konditionen
+terminos_condiciones,Terms and Conditions,Términos y condiciones,Termini e condizioni,Bedingungen und Konditionen
+tooltip_politicia_privacidad,Privacy Policy,Protección de datos,Politica sulla privacy,Datenschutzrichtlinie
+politica_privacidad,privacy policy,política de privacidad,informativa sulla privacy,Datenschutzbestimmungen
+leido_acepto,I have read and accept,He leído y acepto,Ho letto e accetto,Ich habe gelesen und akzeptiere
+and,and,y,e,und
+titulo_terminos_condiciones,Terms and Conditions,Términos y condiciones,Termini e condizioni,Bedingungen und Konditionen
+titulo_privacidad,Privacy policy,Protección de datos,Politica sulla privacy,Datenschutzrichtlinie
+campos_requeridos,* Required fields,* Campos requeridos,* Campi obbligatori,* Erforderliche Felder
+telefono,Phone,Teléfono,Telefono,Telefon
+telefono_placeholder,In case we need to reach you urgently,Por si tenemos que contactar contigo,Se abbiamo bisogno di contattarti urgentemente,"Im Fall, dass wir Sie dringend erreichen müssen"
+reservar_ahora,Book now,Reservar ahora,Prenota ora,Jetzt buchen
 terminos_contenido,"It is compulsory to present the booking voucher at the time of collection of the vehicle. <br> Passport or ID card, driving licence and a valid credit card in the name of the main driver must be presented at the time of collection of the vehicle.<br> <br> <br> <br> <br> <br> Age requirements:<br> <br> Minimum age: 19 with 1 year of driving licence.<br> <br> <br> Young driver supplement: 19-23: 5 € per day<br> <br> <br> <br> International driving licence:<br> In case you do not have an EU driving licence, an international driving licence is required along with your original driving licence in order to rent a vehicle. <br> Additional driver:<br> <br> First additional driver free of charge.<br> <br> Each additional driver extra 7 € per day, minimum 18 €, maximum 70 € per rental (price for each additional driver).<br> <br> Maximum number of additional drivers per rental: 3. Second additional driver: 7 € per day, minimum 18 €, maximum 70 €. <br> Payment:<br> <br> A credit card (Visa or Mastercard) in the name of the main driver is required to collect the vehicle. Non-nominative cards will not be accepted. This company does not accept prepaid, rechargeable or virtual cards. If you take out the supplier's Premium Cover insurance, the following deposit will be blocked on your credit card: 150 € for small and compact vehicles, 200 € for medium and large vehicles and 250 € for 7/9 seaters, luxury vehicles and motorhomes.<br> <br> <br> If you pay with a debit card, you will be obliged to take out the supplier's Premium Cover insurance and you will be charged the deposit which will be refunded at the end of the rental.<br> <br> <br> <br> <br> Insurance:<br> <br> The insurance includes collision insurance subject to an excess. The amount of the excess is: 900 €. You can take out excess removal cover from our supplier at the local office when you collect the car for €20.00 per day. <br> <br> Or you can also take out excess reimbursement insurance with DoYouSpain for as little as €9.00 per day - Total for your booking: €27.00. If you prefer not to take out the insurance offered by the provider OK RENT A CAR, a deposit of 1050.00 € will be blocked from your credit card. Please note that customer negligence is never included in the SCDW. <br> If you take out Premium Coverage, a deposit will be blocked from your credit card. <br> <br> Deposit: 150 € for small and compact vehicles, 200 € for medium and large vehicles and 250 € for 7/9 seaters, luxury vehicles and motorhomes.<br> <br> <br> <br> For luxury automatic vehicles, the deposit of 1500 € will always be blocked on your credit card. <br> <br> Mileage:<br> <br> Unlimited mileage.<br> <br> <br> Fuel Policy:<br> All cars are supplied with a full tank of fuel and you will be required to pay for the full tank on collection. The price of fuel will be between 69 € and 99 € depending on the model of the vehicle delivered. This price includes the service charge for refuelling, which will be €29. Please note that this price may vary between now and the pick-up date. At the end of the rental you will be refunded proportionate to the amount of fuel left in the tank, excluding operation and refuelling costs. Diesel car supplement: 3 € per day, min. 9 €. maximum 30 €.<br> <br> Out of hours:<br> <br> Out of hours pick up/return: 50 € (only on request).<br> <br> <br> <br> <br> Driving in another country / other islands:<br> <br> It is not allowed to take the car with the ferry.<br> <br> <br> <br> <br> Penalty for taking the car abroad without permission of the rental company: 950 €. <br> <br> It is not permitted to take the car to countries other than those stated in the terms and conditions. <br> <br> It is not permitted to take the car to Morocco. <br> <br> GPS:<br> <br> 7 € per day, minimum 10 €, maximum 100 € per rental.<br> <br> <br> <br> Loss of documentation:<br> <br> 30 € if the documentation is not in the vehicle when it is returned.<br> <br> <br> <br> <br> Fine management fee:<br> <br> (This fee will be charged if you receive a traffic fine during your rental, such as a speeding or parking ticket. Please note that this fee does not pay for the amount of the fine. <br> Damage administration fee:<br> <br> Damage administration fee: 60 €.<br> <br> <br> <br> <br> Snow chains:<br> <br> 14 € per day, maximum 69.95 € per rental.<br> <br> <br> <br> <br> Other:<br> <br> <br> Penalty for removing the sticker with the car rental company's logo: 50 €.<br> <br> <br> <br> <br> Inspection of the vehicle: The user will have the opportunity to be present at the collection and return of the vehicle. DoYouSpain is not responsible for any charges made by the car hire company to the user for damage to the vehicle. In the event that the car hire company charges any costs for damage, the car hire company will provide evidence to justify the alleged damage and the costs of repairs or how these are calculated. In case there is a charge by the car rental company, the car rental company shall give the possibility to challenge the charge. <br> <br> Right of withdrawal: We inform you that there is no right of withdrawal for this type of service. <br> <br> The rental is not necessarily linked to a specific vehicle (make, model, colour, equipment, etc.) but to a group of vehicles with similar technical and habitability characteristics. The vehicle shown on the Confirmation Voucher may be replaced by a similar vehicle depending on the fleet available at the local office. <br> In the event of an accident or damage to the vehicle, you must contact the supplier immediately. You will have to fill out an accident report for the insurance. Otherwise insurance coverage is not guaranteed. <br> Cancellation policy:<br> <br> This booking is a special offer and therefore non-refundable. It is not possible to cancel or modify the booking. There will be no refund if the car has not been picked up. <br> <br> <br> <br> <br> Travelling abroad<br> <br> Before arrival, please consult us about restrictions on using the car in another country. Please note that border crossing charges may apply and that not all suppliers allow customers to drive vehicles across the border. <br> Customer liability<br> <br> All rentals are charged on a 24 hour rate basis. A full day will be charged even if the vehicle is used for part of a 24 hour period. The customer is responsible for all tolls, congestion charges and parking and traffic fines. If you pick up your vehicle at an airport, you should provide XXXX.com with your arrival flight number when booking the vehicle or as soon as possible. XXXX.com will not be liable if the vehicle is not delivered or available due to a delayed flight arrival or if you have not provided your flight number. <br> Computer processing of personal data<br> <br> For the purposes of the provisions of current legislation on the protection of personal data and services of the information society and electronic commerce, XXXX informs you that your personal data will be incorporated into an automated personal data file created and under the responsibility of this company, with address at Calle Ronda Mijares 190 Bis, 12002 Castellón de la Plana, in order to manage the car rental services contracted, as well as to keep you promptly informed of all offers, products and promotions, own or third parties, which may be of interest to you, either by email or by any other equivalent means. In the case of commercial communications by e-mail or equivalent means, you give your express consent to the sending of advertising by said means. This consent may be revoked at any time by written request addressed to the address: XXXX, or by e-mail to the address XXXX<br>. <br> Finally, we inform you that you may exercise your rights of access, modification or cancellation by means of a written request addressed to the Customer Service Department, XXXX, at the above address. <br> After-sales service<br> We hope you enjoy your booking and that you have no problems with it. <br> <br> <br> <br> However, if you do have any problems please speak to our car hire supplier at the Rental Desk in the first instance to try and resolve them. <br> <br> If you are still not satisfied, please contact XXXX.com on +34 XXXX and we will help you as much as possible. <br> <br> We will do our best to answer all queries within 28 days of receiving them.<br> <br> <br> <br> <br> Occasionally we may experience delays when dealing with suppliers. <br><br><br><br>  ","Es obligatorio presentar el bono de la reserva a la hora de recoger el vehículo.<br>
 <br>
 Es necesario presentar el pasaporte o DNI, el carné de conducir y una tarjeta de crédito a nombre del conductor principal en vigor a la hora de recoger el vehículo.<br>
@@ -442,112 +442,112 @@ Wir werden unser Bestes tun, um alle Anfragen innerhalb von 28 Tagen nach Erhalt
 <br> <br>
 Gelegentlich kann es zu Verzögerungen bei der Abwicklung mit Lieferanten kommen.
 <br><br><br><br>
-",
-privacidad_contenido,,,,,
-privacidad_contenido,"In compliance with Organic Law 15/1999, of 13 December, on the Protection of Personal Data, we inform you that the personal data you provide us with through the website www.XXXX.com, will be treated confidentially and will become part of a file owned by XXXX, C/ XXXXX, which has been duly registered with the Data Protection Agency (www.agpd.es). Your personal data will only be used to answer your query and respond to the information requested, as well as the provision, management and administration of the contracted services. <br><br>You are also informed that your contact details will become part of a file owned by XXXXXX, in order to carry out satisfaction checks, as well as to send information, by ordinary or electronic channels, regarding products and services that XXXXXXXX, currently provide or decide to provide in the future, being kept for this purpose until you indicate your express statement to the contrary.<br><br>The User guarantees that the Personal Data provided to XXXXXXXXXX, are truthful and is responsible for communicating any changes in them. The user will be solely responsible for any damage or harm, direct or indirect, that may be caused to XXXXXXXXXX, or to any third party as a result of filling in the forms with false, inaccurate, incomplete or out-of-date data. <br><br>We also inform you that you can exercise your rights of access, rectification, cancellation and opposition in accordance with the provisions of Law 15/1999, of December 13, Protection of Personal Data, by sending an email to <a href=""mailto:info@XXXX.com"">info@XXXX.com</a> or a letter along with a photocopy of your ID card, to the following address: XXXXXX. <br><br>XXXXXXXXXXXXXX, does not sell, transfer, lease or transmit in any way any information or personal data of its Clients/Users to third parties.<br><br>The owner of the data expressly authorizes that their data be transferred to answer your query and respond to the information requested, as well as the provision, management and administration of any services contracted, agreeing to receive information by e-mail from XXXX. com<br><br>XXXXXX, has adopted the necessary measures to avoid the alteration, loss, treatment or unauthorised access of personal data, taking into account at all times the state of technology, however, the User must be aware that security measures on the Internet are not impregnable.","En cumplimiento de la Ley Orgánica 15/1999, de 13 de diciembre, de Protección de Datos de Carácter Personal, le informamos que los datos personales que nos suministre a través de la página web www.XXXX.com, serán tratados de forma confidencial y pasarán a formar parte de un fichero propiedad de XXXX, C/ XXXXX, que ha sido debidamente inscrito en la Agencia de Protección de Datos (www.agpd.es). Sus datos personales serán utilizados únicamente para atender su consulta y responder a la información solicitada, así como la prestación, gestión y administración de los servicios contratados.<br><br>Asimismo le informamos que sus datos de contacto pasarán a formar parte de un fichero propiedad de XXXX, con la finalidad de realizar controles de satisfacción, así como para el envío de información, por canales ordinarios o electrónicos, relativa a productos y servicios que XXXXXXXX, prestan actualmente o decidan prestar en un futuro, conservándose con esta finalidad hasta que nos indique su manifestación expresa en contrario.<br><br>El Usuario garantiza que los Datos Personales facilitados a XXXXXXXX, son veraces y se hace responsable de comunicar cualquier modificación en los mismos. El usuario será el único responsable de cualquier daño o perjuicio, directo o indirecto, que pudiera ocasionar a XXXXXXXX, o a cualquier tercero a causa de la cumplimentación de los formularios con datos falsos, inexactos, incompletos o no actualizados.<br><br>Igualmente le informamos que puede ejercitar sus derechos de acceso, rectificación, cancelación y oposición con arreglo a lo previsto en la Ley Orgánica 15/1999, de 13 de diciembre, de Protección de Datos de Carácter Personal, enviando un correo electrónico a  <a href=""mailto:info@XXXX.com"">info@XXXX.com</a>  o una carta junto con la fotocopia de su DNI, a la siguiente dirección: XXXXXX.<br><br>XXXXXXXX, no vende, cede, arrienda ni transmite de modo alguna información o datos de carácter personal de sus Clientes/Usuarios a terceros.<br><br>El titular de los datos autoriza expresamente que sus datos sean cedidos para atender su consulta y responder a la información solicitada, así como la prestación, gestión y administración de los posibles servicios contratados, aceptando recibir información por e-mail de XXXX.com<br><br>XXXX, ha adoptado las medidas necesarias para evitar la alteración, pérdida, tratamiento o acceso no autorizado de los datos personales, habida cuenta en todo momento del estado de la tecnología, no obstante, el Usuario debe ser consciente de que las medidas de seguridad en Internet no son inexpugnables.","In conformità con la Legge Organica 15/1999, del 13 dicembre, sulla protezione dei dati personali, vi informiamo che i dati personali forniti attraverso il sito web www.XXXX.com, saranno trattati in modo confidenziale e diventeranno parte di un file di proprietà di XXXX, C / XXXXX, che è stato debitamente registrato presso l'Agenzia di protezione dei dati (www.agpd.es). I suoi dati personali saranno utilizzati solo per rispondere alla sua domanda e alle informazioni richieste, così come per la fornitura, gestione e amministrazione dei servizi contrattati. <br><br>Si informa inoltre che i suoi dati di contatto entreranno a far parte di un file di proprietà di XXXXXX, al fine di effettuare controlli di soddisfazione, così come per inviare informazioni, attraverso i canali ordinari o elettronici, riguardo a prodotti e servizi che XXXXXXXX, attualmente fornisce o decide di fornire in futuro, essendo conservati per questo scopo fino a quando non ci comunichi la sua espressa dichiarazione contraria.<br><br>L'Utente garantisce che i Dati Personali forniti a XXXXXXXXXX, sono veritieri ed è responsabile della comunicazione di qualsiasi modifica degli stessi. L'utente sarà l'unico responsabile di qualsiasi danno, diretto o indiretto, che possa essere causato a XXXXXXXXXX, o a terzi a causa della compilazione dei moduli con dati falsi, inesatti, incompleti o non aggiornati. <br><br>Informiamo inoltre che è possibile esercitare i diritti di accesso, rettifica, cancellazione e opposizione in conformità con le disposizioni della legge 15/1999, del 13 dicembre, protezione dei dati personali, inviando una e-mail a <a href=""mailto:info@XXXX.com"">info@XXXX.com</a> o una lettera insieme a una fotocopia della vostra carta d'identità, al seguente indirizzo: XXXXXX. <br><br>XXXXXXXXXXXXXX, non vende, trasferisce, affitta o trasmette in alcun modo qualsiasi informazione o dati personali dei suoi clienti/utenti a terzi.<br><br>Il proprietario dei dati autorizza espressamente che i suoi dati siano trasferiti per rispondere alla sua domanda e rispondere alle informazioni richieste, così come la fornitura, la gestione e l'amministrazione di qualsiasi servizio contrattato, accettando di ricevere informazioni via e-mail da XXXX. com<br><br>XXXX, ha adottato le misure necessarie per evitare l'alterazione, la perdita, il trattamento o l'accesso non autorizzato dei dati personali, tenendo conto in ogni momento dello stato della tecnologia, tuttavia, l'Utente deve essere consapevole che le misure di sicurezza di Internet non sono inespugnabili.","In Übereinstimmung mit dem Organgesetz 15/1999 vom 13. Dezember über den Schutz personenbezogener Daten informieren wir Sie darüber, dass die personenbezogenen Daten, die Sie uns über die Website www.XXXX.com zur Verfügung stellen, vertraulich behandelt werden und Teil einer Datei werden, die Eigentum von XXXX, C / XXXXX ist und die ordnungsgemäß bei der Datenschutzbehörde (www.agpd.es) registriert wurde. Ihre persönlichen Daten werden nur zur Beantwortung Ihrer Anfrage und zur Beantwortung der angeforderten Informationen sowie zur Bereitstellung, Verwaltung und Administration der beauftragten Dienstleistungen verwendet. <br><br>Sie werden auch darüber informiert, dass Ihre Kontaktdaten Teil einer Datei werden, die XXXXXX gehört, um Zufriedenheitsüberprüfungen durchzuführen sowie um Informationen über Produkte und Dienstleistungen, die XXXXXXXX derzeit anbietet oder in Zukunft anbieten möchte, auf normalem oder elektronischem Wege zu versenden, wobei sie zu diesem Zweck aufbewahrt werden, bis Sie uns Ihre ausdrückliche gegenteilige Erklärung mitteilen.<br><br>Der Nutzer garantiert, dass die persönlichen Daten, die er XXXXXXXXXX zur Verfügung stellt, wahrheitsgemäß sind und ist dafür verantwortlich, dass er alle Änderungen an ihnen mitteilt. Der Nutzer ist allein verantwortlich für alle direkten oder indirekten Schäden, die XXXXXXXXXX oder Dritten durch das Ausfüllen der Formulare mit falschen, ungenauen, unvollständigen oder veralteten Daten entstehen können. <br><br>Wir informieren Sie außerdem, dass Sie Ihre Rechte auf Zugang, Berichtigung, Löschung und Widerspruch gemäß den Bestimmungen des Gesetzes 15/1999 vom 13. Dezember über den Schutz personenbezogener Daten ausüben können, indem Sie eine E-Mail an <a href=""mailto:info@XXXX.com"">info@XXXX.com</a> oder einen Brief zusammen mit einer Fotokopie Ihres Personalausweises an die folgende Adresse senden: XXXXXX. <br><br>XXXXXXXXXXXX, verkauft, überträgt, vermietet oder übermittelt in keiner Weise Informationen oder persönliche Daten seiner Kunden / Nutzer an Dritte.<br><br>Der Inhaber der Daten autorisiert ausdrücklich, dass seine Daten übertragen werden, um Ihre Anfrage zu beantworten und auf die angeforderten Informationen zu antworten, sowie die Bereitstellung, Verwaltung und Administration der vertraglich vereinbarten Dienstleistungen, und stimmt zu, Informationen per E-Mail von XXXX zu erhalten. com<br><br>XXXX, hat die notwendigen Maßnahmen ergriffen, um die Veränderung, den Verlust, die Behandlung oder den unberechtigten Zugriff auf personenbezogene Daten zu vermeiden, wobei zu jeder Zeit der Stand der Technik berücksichtigt wird, jedoch muss sich der Benutzer bewusst sein, dass Internet-Sicherheitsmaßnahmen nicht unangreifbar sind.",
-vereste,See this,Ver este,Vedi questo,Siehe dies,
-alt-logo-peugeot,peugeot logo,logo peugeot,logo peugeot,peugeot-logo,
-alt-logo-citroen,citroen logo,logo citroen,logo citroen,citroen-logo,
-alt-logo-toyota,toyota logo,logo toyota,logo toyota,toyota-logo,
-alt-logo-piaggio,piaggio logo,logo piaggio,logo piaggio,piaggio-logo,
-alt-logo-suzuki,suzuki logo,logo suzuki,logo suzuki,suzuki-logo,
-calendariorecogida,Pick-up date,Fecha recogida,Data di ritiro,Datum der Abholung,
-relojrecogida,Pick-up time,Hora recogida,Orario di ritiro,Abholzeit,
-calendariodevolucion,Return date,Fecha devolucion,Data di ritorno,Datum der Rückgabe,
-relojdevolucion,Return time,Hora devolucion,Tempo di ritorno,Rücklaufzeit,
-vehiculo_seleccionado,SELECTED VEHICLE,VEHICULO SELECCIONADO,VEICOLO SELEZIONATO,GEWÄHLTES FAHRZEUG,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,  ,,,
+"
+privacidad_contenido,,,,
+privacidad_contenido,"In compliance with Organic Law 15/1999, of 13 December, on the Protection of Personal Data, we inform you that the personal data you provide us with through the website www.XXXX.com, will be treated confidentially and will become part of a file owned by XXXX, C/ XXXXX, which has been duly registered with the Data Protection Agency (www.agpd.es). Your personal data will only be used to answer your query and respond to the information requested, as well as the provision, management and administration of the contracted services. <br><br>You are also informed that your contact details will become part of a file owned by XXXXXX, in order to carry out satisfaction checks, as well as to send information, by ordinary or electronic channels, regarding products and services that XXXXXXXX, currently provide or decide to provide in the future, being kept for this purpose until you indicate your express statement to the contrary.<br><br>The User guarantees that the Personal Data provided to XXXXXXXXXX, are truthful and is responsible for communicating any changes in them. The user will be solely responsible for any damage or harm, direct or indirect, that may be caused to XXXXXXXXXX, or to any third party as a result of filling in the forms with false, inaccurate, incomplete or out-of-date data. <br><br>We also inform you that you can exercise your rights of access, rectification, cancellation and opposition in accordance with the provisions of Law 15/1999, of December 13, Protection of Personal Data, by sending an email to <a href=""mailto:info@XXXX.com"">info@XXXX.com</a> or a letter along with a photocopy of your ID card, to the following address: XXXXXX. <br><br>XXXXXXXXXXXXXX, does not sell, transfer, lease or transmit in any way any information or personal data of its Clients/Users to third parties.<br><br>The owner of the data expressly authorizes that their data be transferred to answer your query and respond to the information requested, as well as the provision, management and administration of any services contracted, agreeing to receive information by e-mail from XXXX. com<br><br>XXXXXX, has adopted the necessary measures to avoid the alteration, loss, treatment or unauthorised access of personal data, taking into account at all times the state of technology, however, the User must be aware that security measures on the Internet are not impregnable.","En cumplimiento de la Ley Orgánica 15/1999, de 13 de diciembre, de Protección de Datos de Carácter Personal, le informamos que los datos personales que nos suministre a través de la página web www.XXXX.com, serán tratados de forma confidencial y pasarán a formar parte de un fichero propiedad de XXXX, C/ XXXXX, que ha sido debidamente inscrito en la Agencia de Protección de Datos (www.agpd.es). Sus datos personales serán utilizados únicamente para atender su consulta y responder a la información solicitada, así como la prestación, gestión y administración de los servicios contratados.<br><br>Asimismo le informamos que sus datos de contacto pasarán a formar parte de un fichero propiedad de XXXX, con la finalidad de realizar controles de satisfacción, así como para el envío de información, por canales ordinarios o electrónicos, relativa a productos y servicios que XXXXXXXX, prestan actualmente o decidan prestar en un futuro, conservándose con esta finalidad hasta que nos indique su manifestación expresa en contrario.<br><br>El Usuario garantiza que los Datos Personales facilitados a XXXXXXXX, son veraces y se hace responsable de comunicar cualquier modificación en los mismos. El usuario será el único responsable de cualquier daño o perjuicio, directo o indirecto, que pudiera ocasionar a XXXXXXXX, o a cualquier tercero a causa de la cumplimentación de los formularios con datos falsos, inexactos, incompletos o no actualizados.<br><br>Igualmente le informamos que puede ejercitar sus derechos de acceso, rectificación, cancelación y oposición con arreglo a lo previsto en la Ley Orgánica 15/1999, de 13 de diciembre, de Protección de Datos de Carácter Personal, enviando un correo electrónico a  <a href=""mailto:info@XXXX.com"">info@XXXX.com</a>  o una carta junto con la fotocopia de su DNI, a la siguiente dirección: XXXXXX.<br><br>XXXXXXXX, no vende, cede, arrienda ni transmite de modo alguna información o datos de carácter personal de sus Clientes/Usuarios a terceros.<br><br>El titular de los datos autoriza expresamente que sus datos sean cedidos para atender su consulta y responder a la información solicitada, así como la prestación, gestión y administración de los posibles servicios contratados, aceptando recibir información por e-mail de XXXX.com<br><br>XXXX, ha adoptado las medidas necesarias para evitar la alteración, pérdida, tratamiento o acceso no autorizado de los datos personales, habida cuenta en todo momento del estado de la tecnología, no obstante, el Usuario debe ser consciente de que las medidas de seguridad en Internet no son inexpugnables.","In conformità con la Legge Organica 15/1999, del 13 dicembre, sulla protezione dei dati personali, vi informiamo che i dati personali forniti attraverso il sito web www.XXXX.com, saranno trattati in modo confidenziale e diventeranno parte di un file di proprietà di XXXX, C / XXXXX, che è stato debitamente registrato presso l'Agenzia di protezione dei dati (www.agpd.es). I suoi dati personali saranno utilizzati solo per rispondere alla sua domanda e alle informazioni richieste, così come per la fornitura, gestione e amministrazione dei servizi contrattati. <br><br>Si informa inoltre che i suoi dati di contatto entreranno a far parte di un file di proprietà di XXXXXX, al fine di effettuare controlli di soddisfazione, così come per inviare informazioni, attraverso i canali ordinari o elettronici, riguardo a prodotti e servizi che XXXXXXXX, attualmente fornisce o decide di fornire in futuro, essendo conservati per questo scopo fino a quando non ci comunichi la sua espressa dichiarazione contraria.<br><br>L'Utente garantisce che i Dati Personali forniti a XXXXXXXXXX, sono veritieri ed è responsabile della comunicazione di qualsiasi modifica degli stessi. L'utente sarà l'unico responsabile di qualsiasi danno, diretto o indiretto, che possa essere causato a XXXXXXXXXX, o a terzi a causa della compilazione dei moduli con dati falsi, inesatti, incompleti o non aggiornati. <br><br>Informiamo inoltre che è possibile esercitare i diritti di accesso, rettifica, cancellazione e opposizione in conformità con le disposizioni della legge 15/1999, del 13 dicembre, protezione dei dati personali, inviando una e-mail a <a href=""mailto:info@XXXX.com"">info@XXXX.com</a> o una lettera insieme a una fotocopia della vostra carta d'identità, al seguente indirizzo: XXXXXX. <br><br>XXXXXXXXXXXXXX, non vende, trasferisce, affitta o trasmette in alcun modo qualsiasi informazione o dati personali dei suoi clienti/utenti a terzi.<br><br>Il proprietario dei dati autorizza espressamente che i suoi dati siano trasferiti per rispondere alla sua domanda e rispondere alle informazioni richieste, così come la fornitura, la gestione e l'amministrazione di qualsiasi servizio contrattato, accettando di ricevere informazioni via e-mail da XXXX. com<br><br>XXXX, ha adottato le misure necessarie per evitare l'alterazione, la perdita, il trattamento o l'accesso non autorizzato dei dati personali, tenendo conto in ogni momento dello stato della tecnologia, tuttavia, l'Utente deve essere consapevole che le misure di sicurezza di Internet non sono inespugnabili.","In Übereinstimmung mit dem Organgesetz 15/1999 vom 13. Dezember über den Schutz personenbezogener Daten informieren wir Sie darüber, dass die personenbezogenen Daten, die Sie uns über die Website www.XXXX.com zur Verfügung stellen, vertraulich behandelt werden und Teil einer Datei werden, die Eigentum von XXXX, C / XXXXX ist und die ordnungsgemäß bei der Datenschutzbehörde (www.agpd.es) registriert wurde. Ihre persönlichen Daten werden nur zur Beantwortung Ihrer Anfrage und zur Beantwortung der angeforderten Informationen sowie zur Bereitstellung, Verwaltung und Administration der beauftragten Dienstleistungen verwendet. <br><br>Sie werden auch darüber informiert, dass Ihre Kontaktdaten Teil einer Datei werden, die XXXXXX gehört, um Zufriedenheitsüberprüfungen durchzuführen sowie um Informationen über Produkte und Dienstleistungen, die XXXXXXXX derzeit anbietet oder in Zukunft anbieten möchte, auf normalem oder elektronischem Wege zu versenden, wobei sie zu diesem Zweck aufbewahrt werden, bis Sie uns Ihre ausdrückliche gegenteilige Erklärung mitteilen.<br><br>Der Nutzer garantiert, dass die persönlichen Daten, die er XXXXXXXXXX zur Verfügung stellt, wahrheitsgemäß sind und ist dafür verantwortlich, dass er alle Änderungen an ihnen mitteilt. Der Nutzer ist allein verantwortlich für alle direkten oder indirekten Schäden, die XXXXXXXXXX oder Dritten durch das Ausfüllen der Formulare mit falschen, ungenauen, unvollständigen oder veralteten Daten entstehen können. <br><br>Wir informieren Sie außerdem, dass Sie Ihre Rechte auf Zugang, Berichtigung, Löschung und Widerspruch gemäß den Bestimmungen des Gesetzes 15/1999 vom 13. Dezember über den Schutz personenbezogener Daten ausüben können, indem Sie eine E-Mail an <a href=""mailto:info@XXXX.com"">info@XXXX.com</a> oder einen Brief zusammen mit einer Fotokopie Ihres Personalausweises an die folgende Adresse senden: XXXXXX. <br><br>XXXXXXXXXXXX, verkauft, überträgt, vermietet oder übermittelt in keiner Weise Informationen oder persönliche Daten seiner Kunden / Nutzer an Dritte.<br><br>Der Inhaber der Daten autorisiert ausdrücklich, dass seine Daten übertragen werden, um Ihre Anfrage zu beantworten und auf die angeforderten Informationen zu antworten, sowie die Bereitstellung, Verwaltung und Administration der vertraglich vereinbarten Dienstleistungen, und stimmt zu, Informationen per E-Mail von XXXX zu erhalten. com<br><br>XXXX, hat die notwendigen Maßnahmen ergriffen, um die Veränderung, den Verlust, die Behandlung oder den unberechtigten Zugriff auf personenbezogene Daten zu vermeiden, wobei zu jeder Zeit der Stand der Technik berücksichtigt wird, jedoch muss sich der Benutzer bewusst sein, dass Internet-Sicherheitsmaßnahmen nicht unangreifbar sind."
+vereste,See this,Ver este,Vedi questo,Siehe dies
+alt-logo-peugeot,peugeot logo,logo peugeot,logo peugeot,peugeot-logo
+alt-logo-citroen,citroen logo,logo citroen,logo citroen,citroen-logo
+alt-logo-toyota,toyota logo,logo toyota,logo toyota,toyota-logo
+alt-logo-piaggio,piaggio logo,logo piaggio,logo piaggio,piaggio-logo
+alt-logo-suzuki,suzuki logo,logo suzuki,logo suzuki,suzuki-logo
+calendariorecogida,Pick-up date,Fecha recogida,Data di ritiro,Datum der Abholung
+relojrecogida,Pick-up time,Hora recogida,Orario di ritiro,Abholzeit
+calendariodevolucion,Return date,Fecha devolucion,Data di ritorno,Datum der Rückgabe
+relojdevolucion,Return time,Hora devolucion,Tempo di ritorno,Rücklaufzeit
+vehiculo_seleccionado,SELECTED VEHICLE,VEHICULO SELECCIONADO,VEICOLO SELEZIONATO,GEWÄHLTES FAHRZEUG
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,  ,,
