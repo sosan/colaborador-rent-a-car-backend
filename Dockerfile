@@ -16,9 +16,10 @@ COPY package*.json ./
 COPY /src /src
 
 # RUN apk add --no-cache --virtual npm config set depth 0
+RUN npm install -g npm
 RUN npm config set depth 0
 RUN npm ci --only=production
-RUN npm cache clean
+# RUN npm cache clean
 RUN rm -rf /tmp/*
 
 ENTRYPOINT ["npm", "run", "start"]
