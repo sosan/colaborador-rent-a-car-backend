@@ -14,7 +14,6 @@ COPY package*.json ./
 
 # copy app files
 COPY /src /src
-COPY /public /public
 
 RUN apk add --no-cache --virtual npm config set depth 0
 RUN npm ci --only=production && \
