@@ -532,3 +532,28 @@ exports.GetPorcentajeTipoVehiculo = async () =>
 
 
 };
+
+
+exports.ProcesarReserva = async (formulario) =>
+{
+    try {
+
+        const result = await collectionReservas.insertOne(formulario);
+        let isInserted = false;
+        if (result.insertedCount === 1)
+        {
+            isInserted = true;
+        }
+        
+        // const isInserted = result.insertedCount === 1;
+        return isInserted;
+
+    }
+    catch (err)
+    {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Reservas`;
+        console.error(error);
+    }
+    
+};

@@ -19,9 +19,11 @@ exports.postRealizarReserva = async (req, res) =>
     }
 
 
-    
+    const resultadoInsercion = await logicInterface.ProcesarReserva(formulario);
+//TODO: generar token
 
-    console.log();
+    res.send({ isOk: resultadoInsercion });
+
 
 };
 

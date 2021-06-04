@@ -10,6 +10,30 @@ const GenerateTokenBackendToFrontend = async () => {
     return process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET;
 };
 
+exports.ProcesarReserva = async (formulario) =>
+{
+
+    let isInserted = false;
+    let incrementalCount = 1;
+    while (isInserted === false)
+    {
+        isInserted = await dbInterfaces.ProcesarReserva(formulario);
+        if (isInserted === false)
+        {
+            await sleep(5000 * incrementalCount);
+            incrementalCount++;
+        }
+    }
+    return isInserted;
+
+};
+
+const sleep = async (ms) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+
+};
 
 
 exports.CheckTokenPostForm = async (formulario) => {

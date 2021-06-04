@@ -148,3 +148,11 @@ exports.GetPorcentajeTipoVehiculo = async () =>
     const resultado = await mongo_dao.GetPorcentajeTipoVehiculo();
     return resultado;
 };
+
+
+exports.ProcesarReserva = async (formulario) => {
+
+    const resultado = await mongo_dao.ProcesarReserva(formulario);
+    return resultado;
+
+};
