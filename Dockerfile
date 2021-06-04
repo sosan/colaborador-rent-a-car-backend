@@ -1,12 +1,5 @@
 FROM node:15.14.0-alpine3.13
 
-# set NODE_ENV 
-ENV NODE_ENV=development && \
-    MONGO_DB_URI=mongodb+srv://jose:jose@cluster0.6oq5a.gcp.mongodb.net/test?retryWrites=true&w=majority?keepAlive=true&poolSize=30&autoReconnect=true&socketTimeoutMS=360000&connectTimeoutMS=360000 && \
-    MONGO_DB_NAME=rentacar && \
-    MONGO_COLECCION_CARS=cars && \
-    PORT_BACKEND=3000
-
 RUN adduser -D usuarioapp
 
 USER usuarioapp

@@ -39,17 +39,17 @@ steps:
   build:
     title: "Building App image"
     type: "build"
-    image_name: "rent-a-car-backend"
+    image_name: "rentacarbackend"
     working_directory: "${{clone}}"
     tag: "prod"
     dockerfile: "Dockerfile"
     stage: "build"
-    disable_push: true
+    # disable_push: true
   
   push:
     title: "Pushing 1st Docker image"
     type: push
-    image_name: "sosan/rent-a-car-backend"
+    image_name: "sosan/rentacar_backend"
     tag: "latest"
     stage: "push" 
     registry: sosan
