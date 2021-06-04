@@ -5,9 +5,10 @@
 version: "1.0"
 stages:
   - "clone"
-  - "unit"
+  # - "unit"
   - "build"
-  - "integration"
+  - push
+  # - "integration"
 
 steps:
   clone:
@@ -17,48 +18,58 @@ steps:
     revision: "backend"
     stage: "clone"
 
-  build_dev_image:
-    title: "Building Dev image"
-    type: "build"
-    image_name: "sosan/Colaborador-rent-a-car-backend"
-    working_directory: "${{clone}}"
-    tag: "dev"
-    dockerfile: "Dockerfile.dev"
-    stage: "unit"
+  # build_dev_image:
+  #   title: "Building Dev image"
+  #   type: "build"
+  #   image_name: "sosan/Colaborador-rent-a-car-backend"
+  #   working_directory: "${{clone}}"
+  #   tag: "dev"
+  #   dockerfile: "Dockerfile.dev"
+  #   stage: "unit"
 
-  test:
-    title: "Running test"
+  # test:
+  #   title: "Running test"
     # type: "freestyle" 
     # image: ${{build_dev_image}} 
     # working_directory: /root/colaborador-backend
     # commands:
     #   - 'npm run test'
     # stage: "unit"
-  
-  build_image:
+
+  build:
     title: "Building App image"
     type: "build"
-    image_name: "sosan/Colaborador-rent-a-car-backend"
+    image_name: "rent-a-car-backend"
     working_directory: "${{clone}}"
     tag: "prod"
     dockerfile: "Dockerfile"
     stage: "build"
-    
-  integration_step:
-    type: composition
-    stage: 'integration'
-    composition:
-      version: '2'
-      services:
-        app:
-          image: ${{build_image}}
-          links:
-            - mongo
-          ports:
-            - 5000
-        mongo:
-          image: mongo
-    composition-candidates:
-      main:
-        image: nhoag/curl
-        command: bash -c "sleep 30 && curl http://app:5000/" | echo 'works'    
+    disable_push: true
+  
+  push:
+    title: "Pushing 1st Docker image"
+    type: push
+    image_name: "sosan/rent-a-car-backend"
+    tag: "latest"
+    stage: "push" 
+    registry: sosan
+    candidate: ${{build}}
+
+  # integration_step:
+  #   type: composition
+  #   stage: 'integration'
+  #   composition:
+  #     version: '2'
+  #     services:
+  #       app:
+  #         image: ${{build_image}}
+  #         links:
+  #           - mongo
+  #         ports:
+  #           - 5000
+  #       mongo:
+  #         image: mongo
+  #   composition-candidates:
+  #     main:
+  #       image: nhoag/curl
+  #       command: bash -c "sleep 30 && curl http://app:5000/" | echo 'works'    
