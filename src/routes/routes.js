@@ -9,7 +9,8 @@ const indexGet = require("../controllers/getFormIndex");
 const statsPost = require("../controllers/postStats");
 
 const reservarPost = require("../controllers/postFormReservar");
-const reservarGet = require("../controllers/getFormReservar");
+
+
 
 const location = require("../controllers/location");
 
@@ -29,9 +30,8 @@ router.get("/api", async(req, res) => await indexGet.getFormIndex(req, res));
 // obtener todos los vehiculos
 router.post(process.env.ENDPOINT_GETALL_BACKEND, async (req, res) => await indexPost.GetAllVehicles(req, res));
 
-//reservar
-router.post("/reservar", async (req, res) => await  reservarPost.postFormReservar(req, res));
-router.get("/reservar", async (req, res) => await reservarGet.getFormReservar(req, res));
+//reservar de frontend a backend
+router.post(process.env.ENDPOINT_REALIZAR_RESERVA_BACKEND, async (req, res) => await reservarPost.postRealizarReserva(req, res));
 
 //inicio stat
 router.post(process.env.ENDPOINT_STATS_BACKEND, async (req, res) => await statsPost.PostInitStats(req, res) );

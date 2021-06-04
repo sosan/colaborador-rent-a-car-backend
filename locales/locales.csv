@@ -33,7 +33,7 @@ desde,from,desde,da,von
 titulo_ofertas,O F F E R S,O F E R T A S,O F F E R T A S,O F F E R T A S
 aviso_edad1,Drivers aged 18 to 22 ,Es posible que los conductores de 18 a 22,Ai conducenti di età compresa tra i 18 e i 22 anni ,Bei Fahrern zwischen 18 und 22 Jahren 
 aviso_edad2,"may be charged an additional fee when collecting the vehicle. If the selected vehicle requires a young driver charge, we will inform you of this.","años deban abonar un cargo adicional cuando vayan a retirar el vehículo. Si el vehículo seleccionado requiere un cargo por conductor joven, le informaremos de ello.","può essere addebitata una tassa aggiuntiva al momento del ritiro del veicolo. Se il veicolo selezionato richiede una tassa per giovani conducenti, vi informeremo di questo."," kann bei der Abholung des Fahrzeugs eine zusätzliche Gebühr anfallen. Sollte für das ausgewählte Fahrzeug eine Jungfahrergebühr anfallen, werden wir Sie darüber informieren."
-reservar,/reserve,/reservar,/prenotazione,/Buchen
+reservar,/reserve,/reservar,/prenotazione,/buchen
 elmasvalorado,Highest rated,El mas valorado,I più votati,Höchste Bewertung
 elpreciomasbajo,Lowest price,El precio mas bajo,Prezzo più basso,Niedrigster Preis
 condiciones,Conditions,Condiciones,Condizioni,Bedingungen
@@ -456,8 +456,8 @@ relojrecogida,Pick-up time,Hora recogida,Orario di ritiro,Abholzeit
 calendariodevolucion,Return date,Fecha devolucion,Data di ritorno,Datum der Rückgabe
 relojdevolucion,Return time,Hora devolucion,Tempo di ritorno,Rücklaufzeit
 vehiculo_seleccionado,SELECTED VEHICLE,VEHICULO SELECCIONADO,VEICOLO SELEZIONATO,GEWÄHLTES FAHRZEUG
-,,,,
-,,,,
+alt_icono_no_chequeo_reserva,error not checking checkbox,error al no chequear el checkbox,errore quando non si spunta la casella di controllo,Fehler bei nicht aktiviertem Kontrollkästchen
+alt_cerrar_modal,close modal button,boton cerrar modal,chiudere il pulsante modale,Modal-Schaltfläche schließen
 ,,,,
 ,,,,
 ,,,,
