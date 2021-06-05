@@ -33,8 +33,7 @@ exports.postRealizarReserva = async (req, res) =>
 
     let body = JSON.stringify({
         "from": {
-            // "email": "confirmation@pepisandbox.com",
-            "email": "confirmacion-reservas@dominio.com",
+            "email": "confirmation@pepisandbox.com",
             "name": "Reserva Rentacar confirmation"
         },
         "subject": `Reserva Numero: ${resultadoInsercion.numeroReserva} `,
