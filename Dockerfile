@@ -1,4 +1,5 @@
 FROM node:15.14.0-alpine3.13
+RUN npm update -g
 
 RUN adduser -D usuarioapp
 
@@ -16,7 +17,6 @@ COPY package*.json ./
 COPY /src /src
 
 # RUN apk add --no-cache --virtual npm config set depth 0
-RUN npm install -g npm
 RUN npm config set depth 0
 RUN npm ci --only=production
 # RUN npm cache clean
