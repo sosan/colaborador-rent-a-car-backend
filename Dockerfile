@@ -11,18 +11,18 @@ ENTRYPOINT ["npm", "run", "start"]
 # RUN npm cache clean
 # RUN rm -rf /tmp/*
 #####################################
-FROM node:15.14.0-alpine3.13 as dev
+# FROM node:15.14.0-alpine3.13 as dev
 
-WORKDIR /usr/src/app
+# WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
-RUN yarn install
-COPY . .
+# COPY package.json yarn.lock ./
+# RUN yarn install
+# COPY . .
 
-RUN yarn build
+# RUN yarn build
 
-FROM nginx:alpine
-COPY --from=dev /src/dist /usr/share/nginx/html
-EXPOSE 80
+# FROM nginx:alpine
+# COPY --from=dev /src/dist /usr/share/nginx/html
+# EXPOSE 80
 
 
