@@ -10,8 +10,29 @@ const GenerateTokenBackendToFrontend = async () => {
     return process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET;
 };
 
+const ObtenerNumeroReserva = async () =>
+{
+
+    let date_ob = new Date();
+    const dia = date_ob.getDate().toString().padStart(2, "00");
+    const mes = (date_ob.getMonth() + 1).toString().padStart(2, "00");
+    const anyo = date_ob.getFullYear();
+
+    const cadenaComprobarDia = `${anyo}:${mes}:${dia}`;
+    const cantidadReservasDia = await dbInterfaces.ConsultarCantidadReservasDia(cadenaComprobarDia);
+
+    const numeroReserva = `${anyo}-${mes}-${dia}--${cantidadReservasDia}`;
+
+    return numeroReserva;
+
+};
+
 exports.ProcesarReserva = async (formulario) =>
 {
+
+    const numeroReserva = await ObtenerNumeroReserva();
+
+    formulario["numeroReserva"] = numeroReserva;
 
     let isInserted = false;
     let incrementalCount = 1;
@@ -24,7 +45,7 @@ exports.ProcesarReserva = async (formulario) =>
             incrementalCount++;
         }
     }
-    return isInserted;
+    return { "isInserted": isInserted, "numeroReserva": numeroReserva};
 
 };
 

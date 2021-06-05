@@ -156,3 +156,12 @@ exports.ProcesarReserva = async (formulario) => {
     return resultado;
 
 };
+
+
+exports.ConsultarCantidadReservasDia = async(cadenaComprobarDia) =>
+{
+
+    const resultado = await redis_dao.ConsultarCantidadReservasDia(cadenaComprobarDia);
+    return resultado;
+
+};

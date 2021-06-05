@@ -49,3 +49,13 @@ exports.GetMasValorados = async () =>
 
 
 };
+
+
+exports.ConsultarCantidadReservasDia = async (cadenaComprobarDia) =>
+{
+
+    const result = await redisClient.incr(cadenaComprobarDia);
+    return result;
+
+
+};
