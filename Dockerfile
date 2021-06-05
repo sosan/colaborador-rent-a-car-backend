@@ -20,6 +20,6 @@ COPY /src /src
 RUN npm config set depth 0
 RUN npm ci --only=production
 # RUN npm cache clean
-RUN rm -rf /tmp/*
+# RUN rm -rf /tmp/*
 
 ENTRYPOINT ["npm", "run", "start"]
