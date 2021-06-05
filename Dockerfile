@@ -1,25 +1,19 @@
 FROM node:15.14.0-alpine3.13
-RUN npm update -g
+WORKDIR /usr/src/app
 
-RUN adduser -D usuarioapp
+COPY package*.json ./
+RUN npm ci --only=production
 
-USER usuarioapp
+# copy app files
+COPY ./src ./src
 
-WORKDIR /home/usuarioapp
+# RUN apk add --no-cache --virtual npm config set depth 0
+# RUN npm config set depth 0
+# RUN npm cache clean
+# RUN rm -rf /tmp/*
 
 # listening port
 EXPOSE 3000
-
-# copy project file
-COPY package*.json ./
-
-# copy app files
-COPY /src /src
-
-# RUN apk add --no-cache --virtual npm config set depth 0
-RUN npm config set depth 0
-RUN npm ci --only=production
-# RUN npm cache clean
-# RUN rm -rf /tmp/*
+USER node
 
 ENTRYPOINT ["npm", "run", "start"]
