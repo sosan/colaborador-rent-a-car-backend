@@ -9,7 +9,7 @@ const indexGet = require("../controllers/getFormIndex");
 const statsPost = require("../controllers/postStats");
 
 const reservarPost = require("../controllers/postFormReservar");
-
+const newsletter = require("../controllers/newsletter");
 
 
 const location = require("../controllers/location");
@@ -33,13 +33,19 @@ router.post(process.env.ENDPOINT_GETALL_BACKEND, async (req, res) => await index
 //reservar de frontend a backend
 router.post(process.env.ENDPOINT_REALIZAR_RESERVA_BACKEND, async (req, res) => await reservarPost.postRealizarReserva(req, res));
 
+router.post(process.env.ENDPOINT_NEWSLETTER_BACKEND, async (req, res) => await newsletter.ProcesarEmail(req, res));
+
 //inicio stat
 router.post(process.env.ENDPOINT_STATS_BACKEND, async (req, res) => await statsPost.PostInitStats(req, res) );
 router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.ActualizarStats(req, res));
 
+
+
 // admin
 router.post(
     process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res) );
+
+
 
 // generar html
 router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTLForGeneralConditions(req, res));
