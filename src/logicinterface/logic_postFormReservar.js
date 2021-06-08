@@ -1,14 +1,250 @@
 const Joi = require("joi");
 const dbInterfaces = require("../database/dbInterfaces");
 const logicStats = require("../logicinterface/logic_stats");
+const traducciones = require("../controllers/location");
+const fetch = require("node-fetch");
 
+const URI_EMAIL_ADMIN_API_BACKEND = `${process.env.URI_EMAIL_ADMIN_API_BACKEND}`;
+const EMAIL_ADMIN_TOKEN_API = `${process.env.EMAIL_ADMIN_TOKEN_API}`;
 
+const URI_EMAIL_USER_API_BACKEND = `${process.env.URI_EMAIL_USER_API_BACKEND}`;
+const EMAIL_USER_TOKEN_API = `${process.env.EMAIL_USER_TOKEN_API}`;
+
+const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
+const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
 
 // TODO: generar string a partir del secreto
 const GenerateTokenBackendToFrontend = async () => {
 
     return process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET;
 };
+
+
+exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
+{
+
+
+    const bodyEmail = await ContruirEmailUsuario(resultadoInsercion, formulario, traducciones.ObtenerTraducciones());
+
+    let data = {
+        method: "POST",
+        headers: {
+            "api_key": `${EMAIL_USER_TOKEN_API}`,
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: bodyEmail
+    };
+
+    // envio correo usuario
+    await EnviarCorreo(URI_EMAIL_USER_API_BACKEND, data);
+
+    const tablaDatos = await ConstruirTablaDatos(formulario);
+    // envio correo administracion
+    bodyEmail = JSON.stringify({
+        "from": {
+            "email": "confirmation@pepisandbox.com",
+            "name": "Reserva Rentacar confirmation"
+        },
+        "subject": `Reserva Numero: ${resultadoInsercion.numeroReserva} `,
+        "content": [
+            {
+                "type": "html",
+                "value": `<!DOCTYPE html>
+<html>
+<head>
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
+</head>
+<body>
+Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} con los siguientes datos
+<br>
+${tablaDatos}
+</body>
+</html>`
+            }
+        ],
+        "personalizations": [
+            {
+                "to": [
+                    {
+                        "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+                        "name": "Confimacion Reservas"
+                    },
+                    {
+                        "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
+                        "name": "Confimacion Reservas"
+                    }
+                ]
+            }
+        ]
+    });
+
+    data = {
+        method: "POST",
+        headers: {
+            "api_key": `${EMAIL_ADMIN_TOKEN_API}`,
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: bodyEmail
+    };
+
+    //envio correo admins
+    await EnviarCorreo(URI_EMAIL_ADMIN_API_BACKEND, data);
+
+
+};
+
+
+const ContruirEmailUsuario = async(resultadoInsercion, formulario, locations) =>
+{
+
+    formulario.idioma
+
+    // TODO: traducirlo a otros idiomas
+    let bodyEmail = JSON.stringify({
+        "from": {
+            "email": "confirmation@pepisandbox.com",
+            "name": "Reserva Rentacar confirmation"
+        },
+        "subject": `RentaCarMallorca Su Reserva Numero: ${resultadoInsercion.numeroReserva} `,
+        "content": [
+            {
+                "type": "html",
+                "value": `Hola ${formulario.nombre} Su Reserva Numero: ${resultadoInsercion.numeroReserva}....`
+            }
+        ],
+        "personalizations": [
+            {
+                "to": [
+                    {
+                        "email": `${formulario.email}`,
+                        "name": `${formulario.nombre}`
+                    }
+                ]
+            }
+        ]
+    });
+
+    return bodyEmail;
+
+};
+
+const ConstruirTablaDatos = async (formulario) =>
+{
+
+    let tabla = `<table>`
+    
+`<table id="customers">
+  <tr>
+    <th>Campos</th>
+    <th>Datos</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+
+  </tr>
+  <tr>
+    <td>Berglunds snabbköp</td>
+    <td>Christina Berglund</td>
+
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+
+  </tr>
+  <tr>
+    <td>Ernst Handel</td>
+    <td>Roland Mendel</td>
+
+  </tr>
+  <tr>
+    <td>Island Trading</td>
+    <td>Helen Bennett</td>
+
+  </tr>
+  <tr>
+    <td>Königlich Essen</td>
+    <td>Philip Cramer</td>
+
+  </tr>
+  <tr>
+    <td>Laughing Bacchus Winecellars</td>
+    <td>Yoshi Tannamuri</td>
+
+  </tr>
+  <tr>
+    <td>Magazzini Alimentari Riuniti</td>
+    <td>Giovanni Rovelli</td>
+
+  </tr>
+  <tr>
+    <td>North/South</td>
+    <td>Simon Crowther</td>
+
+  </tr>
+  <tr>
+    <td>Paris spécialités</td>
+    <td>Marie Bertrand</td>
+
+  </tr>
+</table>
+`
+
+
+};
+
+
+const EnviarCorreo = async (uri, data) =>
+{
+
+    let isSended = false;
+    let incrementalCount = 1;
+
+    while (isSended === false) {
+        const responseRaw = await fetch(uri, data);
+
+        const emailIsSended = await responseRaw.json();
+        if (emailIsSended.status === "success") {
+            isSended = true;
+        }
+        else {
+            await sleep(5000 * incrementalCount);
+            incrementalCount++;
+        }
+
+    }
+
+};
+
+
+
+
 
 const ObtenerNumeroReserva = async () =>
 {
@@ -76,6 +312,11 @@ exports.CheckTokenPostForm = async (formulario) => {
         child_seat: Joi.number().required(),
         booster_seat: Joi.number().required(),
         conductor_con_experiencia: Joi.string().required(),
+        email: Joi.string().required(),
+        nombre: Joi.string().required(),
+        apellidos: Joi.string().required(),
+        telefono: Joi.string().required(),
+        idioma: Joi.string().required(),
         
 
     });
