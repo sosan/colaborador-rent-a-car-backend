@@ -27,6 +27,7 @@ let collectionLocations = undefined;
 let collectionPosiblesCompradores = undefined;
 
 let collectionPorcentajeClaseVehiculos = undefined;
+let collectionEmailNewsletter = undefined;
 
 exports.conectDb = async () => {
     try {
@@ -51,6 +52,7 @@ exports.conectDb = async () => {
             collectionPosiblesCompradores = currentDb.collection(process.env.MONGO_COLECCION_POSIBLES_COMPRADORES);
             collectionLocations = currentDb.collection(process.env.MONGO_COLECCION_LOCATIONS);
             collectionPorcentajeClaseVehiculos = currentDb.collection(process.env.MONGO_COLECCION_PORCENTAJE_CLASE_VEHICULOS);
+            collectionEmailNewsletter = currentDb.collection(process.env.MONGO_COLECCION_EMAILS_NEWSLETTER);
 
 
         }
@@ -556,4 +558,40 @@ exports.ProcesarReserva = async (formulario) =>
         console.error(error);
     }
     
+};
+
+exports.CheckEmailNewsletter = async (email) =>
+{
+
+    try {
+        const datos = await collectionEmailNewsletter.countDocuments({ "email": email });
+        return datos;
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+
+
+};
+
+exports.AddEmailNewsletter = async (email) => {
+
+    try {
+        const result = await collectionEmailNewsletter.insertOne({ "email": email });
+        let isInserted = false;
+        if (result.insertedCount === 1)
+        {
+            isInserted = true;
+        }
+        
+        // const isInserted = result.insertedCount === 1;
+        return isInserted;
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+
+
 };

@@ -165,3 +165,19 @@ exports.ConsultarCantidadReservasDia = async(cadenaComprobarDia) =>
     return resultado;
 
 };
+
+exports.CheckEmailNewsletter = async (email) =>
+{
+
+    const resultado = await mongo_dao.CheckEmailNewsletter(email);
+    return resultado;
+
+};
+
+exports.AddEmailNewsletter = async (email) => 
+{
+    const resultado = await mongo_dao.AddEmailNewsletter(email);
+    return resultado;
+
+
+};
