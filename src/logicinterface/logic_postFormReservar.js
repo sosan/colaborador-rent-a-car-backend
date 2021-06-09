@@ -50,40 +50,7 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
         "content": [
             {
                 "type": "html",
-                "value": `<!DOCTYPE html>
-<html>
-<head>
-<style>
-#customers {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-#customers td, #customers th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-#customers tr:nth-child(even){background-color: #f2f2f2;}
-
-#customers tr:hover {background-color: #ddd;}
-
-#customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #04AA6D;
-  color: white;
-}
-</style>
-</head>
-<body>
-Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} con los siguientes datos
-<br>
-${tablaDatos}
-</body>
-</html>`
+                "value": ``
             }
         ],
         "personalizations": [
@@ -122,7 +89,22 @@ ${tablaDatos}
 const ContruirEmailUsuario = async(resultadoInsercion, formulario, locations) =>
 {
 
-    formulario.idioma
+    let bodyConfirmacionEmail = locations[formulario.idioma];
+
+    bodyConfirmacionEmail = bodyConfirmacionEmail
+        .replaceAll("NOMBRE", formulario.nombre)
+        .replaceAll("NOMBRE_MARCA", formulario.nombre)
+        .replaceAll("NOMBRE_COCHE", formulario.vehiculo)
+        .replaceAll("FECHA_INICIO", formulario.nombre)
+        .replaceAll("FECHA_FIN", formulario.nombre)
+        .replaceAll("NUMERO_RESERVA", resultadoInsercion.numeroReserva)
+        .replaceAll("TELEFONO_MARCA", formulario.nombre)
+        .replaceAll("EMAIL_MARCA", formulario.nombre)
+        .replaceAll("DIRECCION_MARCA", formulario.nombre)
+        .replaceAll("DIRECCION_1_MARCA", formulario.nombre)
+    ;
+
+    // formulario.idioma
 
     // TODO: traducirlo a otros idiomas
     let bodyEmail = JSON.stringify({
@@ -130,11 +112,11 @@ const ContruirEmailUsuario = async(resultadoInsercion, formulario, locations) =>
             "email": "confirmation@pepisandbox.com",
             "name": "Reserva Rentacar confirmation"
         },
-        "subject": `RentaCarMallorca Su Reserva Numero: ${resultadoInsercion.numeroReserva} `,
+        "subject": `RentaCarMallorca Su Reserva Numero: ${resultadoInsercion.numeroReserva}`,
         "content": [
             {
                 "type": "html",
-                "value": `Hola ${formulario.nombre} Su Reserva Numero: ${resultadoInsercion.numeroReserva}....`
+                "value": `${bodyConfirmacionEmail}`
             }
         ],
         "personalizations": [
@@ -156,9 +138,44 @@ const ContruirEmailUsuario = async(resultadoInsercion, formulario, locations) =>
 const ConstruirTablaDatos = async (formulario) =>
 {
 
-    let tabla = `<table>`
+    let tabla = 
     
-`<table id="customers">
+
+
+    
+`
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
+</head>
+<body>
+Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} con los siguientes datos
+<br>
+<table id="customers">
   <tr>
     <th>Campos</th>
     <th>Datos</th>
@@ -214,6 +231,8 @@ const ConstruirTablaDatos = async (formulario) =>
 
   </tr>
 </table>
+</body>
+</html>
 `
 
 
