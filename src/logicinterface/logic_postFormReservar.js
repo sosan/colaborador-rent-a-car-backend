@@ -23,8 +23,11 @@ const GenerateTokenBackendToFrontend = async () => {
 exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 {
 
+    const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
 
-    const bodyEmail = await ContruirEmailUsuario(resultadoInsercion, formulario, traducciones.ObtenerTraducciones());
+    if (traduccion === undefined) return;
+
+    let bodyEmail = await ContruirEmailUsuario(resultadoInsercion, formulario, traduccion);
 
     let data = {
         method: "POST",
@@ -37,37 +40,15 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     };
 
     // envio correo usuario
-    await EnviarCorreo(URI_EMAIL_USER_API_BACKEND, data);
+    const isUserEmailSended = await EnviarCorreo(URI_EMAIL_USER_API_BACKEND, data);
+    formulario["isUserEmailSended"] = isUserEmailSended;
+    
 
-    const tablaDatos = await ConstruirTablaDatos(formulario);
+
+// -------------
+
     // envio correo administracion
-    bodyEmail = JSON.stringify({
-        "from": {
-            "email": "confirmation@pepisandbox.com",
-            "name": "Reserva Rentacar confirmation"
-        },
-        "subject": `Reserva Numero: ${resultadoInsercion.numeroReserva} `,
-        "content": [
-            {
-                "type": "html",
-                "value": ``
-            }
-        ],
-        "personalizations": [
-            {
-                "to": [
-                    {
-                        "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                        "name": "Confimacion Reservas"
-                    },
-                    {
-                        "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
-                        "name": "Confimacion Reservas"
-                    }
-                ]
-            }
-        ]
-    });
+    bodyEmail = await ConstruirEmailAdmins(resultadoInsercion, formulario);
 
     data = {
         method: "POST",
@@ -86,22 +67,23 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 };
 
 
-const ContruirEmailUsuario = async(resultadoInsercion, formulario, locations) =>
+const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>
 {
 
-    let bodyConfirmacionEmail = locations[formulario.idioma];
-
-    bodyConfirmacionEmail = bodyConfirmacionEmail
-        .replaceAll("NOMBRE", formulario.nombre)
-        .replaceAll("NOMBRE_MARCA", formulario.nombre)
-        .replaceAll("NOMBRE_COCHE", formulario.vehiculo)
-        .replaceAll("FECHA_INICIO", formulario.nombre)
-        .replaceAll("FECHA_FIN", formulario.nombre)
+    bodyConfirmacionEmail = traduccion["email_confimacion"]
+        .replaceAll("USUARIO", formulario.nombre)
+        .replaceAll("NOMBRE_MARCA", "RentcarMallorca")
+        .replaceAll("NOMBRE_COCHE", formulario.descripcion_vehiculo)
+        .replaceAll("FECHA_INICIO", formulario.fechaRecogida)
+        .replaceAll("HORA_INICIO", formulario.horaRecogida)
+        .replaceAll("FECHA_FIN", formulario.fechaDevolucion)
+        .replaceAll("HORA_FIN", formulario.horaDevolucion)
         .replaceAll("NUMERO_RESERVA", resultadoInsercion.numeroReserva)
-        .replaceAll("TELEFONO_MARCA", formulario.nombre)
-        .replaceAll("EMAIL_MARCA", formulario.nombre)
-        .replaceAll("DIRECCION_MARCA", formulario.nombre)
-        .replaceAll("DIRECCION_1_MARCA", formulario.nombre)
+        .replaceAll("TELEFONO_MARCA", "9999999")
+        .replaceAll("EMAIL_MARCA", "email marca")
+        .replaceAll("DIRECCION_MARCA", "Camino de Can Pastilla, 51")
+        .replaceAll("DIRECCION_1_MARCA", "07610 Can Pastilla - Palma de Mallorca")
+
     ;
 
     // formulario.idioma
@@ -110,9 +92,9 @@ const ContruirEmailUsuario = async(resultadoInsercion, formulario, locations) =>
     let bodyEmail = JSON.stringify({
         "from": {
             "email": "confirmation@pepisandbox.com",
-            "name": "Reserva Rentacar confirmation"
+            "name": `RentacarMallorca Email`
         },
-        "subject": `RentaCarMallorca Su Reserva Numero: ${resultadoInsercion.numeroReserva}`,
+        "subject": `${traduccion.sureserva} ${resultadoInsercion.numeroReserva}`,
         "content": [
             {
                 "type": "html",
@@ -124,7 +106,7 @@ const ContruirEmailUsuario = async(resultadoInsercion, formulario, locations) =>
                 "to": [
                     {
                         "email": `${formulario.email}`,
-                        "name": `${formulario.nombre}`
+                        // "name": `${formulario.nombre}`
                     }
                 ]
             }
@@ -135,14 +117,33 @@ const ContruirEmailUsuario = async(resultadoInsercion, formulario, locations) =>
 
 };
 
-const ConstruirTablaDatos = async (formulario) =>
+const ConstruirEmailAdmins = async (resultadoInsercion, formulario) =>
 {
 
-    let tabla = 
-    
+    let tabla = "";
 
+    for (const key in formulario)
+    {
+        if (key === "token" || key === "useragent" || key === "location") continue;
+        
+        tabla += `
+        <tr>
+            <th>${key}</th>
+            <th>${formulario[key]}</th>
+        </tr>`;
 
-    
+    }
+
+    let errorEmailSended = "";
+    let subject = `Reserva Numero: ${resultadoInsercion.numeroReserva}`;
+    if (formulario.isUserEmailSended === false) {
+        // mostrar error en el correo
+        errorEmailSended = `ATENCION!!!! Ha habido un error al enviar correo al usuario ${formulario.email}`;
+        subject = `Error! Reserva Numero: ${resultadoInsercion.numeroReserva}`;
+
+    }
+
+    let html = 
 `
 <!DOCTYPE html>
 <html>
@@ -170,71 +171,54 @@ const ConstruirTablaDatos = async (formulario) =>
   background-color: #04AA6D;
   color: white;
 }
+
+a
+{
+    color: black;
+}
+
 </style>
 </head>
 <body>
+${errorEmailSended}
 Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} con los siguientes datos
 <br>
 <table id="customers">
-  <tr>
-    <th>Campos</th>
-    <th>Datos</th>
-  </tr>
-  <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-
-  </tr>
-  <tr>
-    <td>Berglunds snabbköp</td>
-    <td>Christina Berglund</td>
-
-  </tr>
-  <tr>
-    <td>Centro comercial Moctezuma</td>
-    <td>Francisco Chang</td>
-
-  </tr>
-  <tr>
-    <td>Ernst Handel</td>
-    <td>Roland Mendel</td>
-
-  </tr>
-  <tr>
-    <td>Island Trading</td>
-    <td>Helen Bennett</td>
-
-  </tr>
-  <tr>
-    <td>Königlich Essen</td>
-    <td>Philip Cramer</td>
-
-  </tr>
-  <tr>
-    <td>Laughing Bacchus Winecellars</td>
-    <td>Yoshi Tannamuri</td>
-
-  </tr>
-  <tr>
-    <td>Magazzini Alimentari Riuniti</td>
-    <td>Giovanni Rovelli</td>
-
-  </tr>
-  <tr>
-    <td>North/South</td>
-    <td>Simon Crowther</td>
-
-  </tr>
-  <tr>
-    <td>Paris spécialités</td>
-    <td>Marie Bertrand</td>
-
-  </tr>
+  ${tabla}
 </table>
 </body>
 </html>
 `
 
+    let bodyEmail = JSON.stringify({
+        "from": {
+            "email": "confirmation@pepisandbox.com",
+            "name": "RentacarMallorca Confirmation"
+        },
+        "subject": `${subject}`,
+        "content": [
+            {
+                "type": "html",
+                "value": `${html}`
+            }
+        ],
+        "personalizations": [
+            {
+                "to": [
+                    // {
+                    //     "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+                    //     // "name": "Confimacion Reservas"
+                    // },
+                    {
+                        "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
+                        // "name": "Confimacion Reservas"
+                    }
+                ]
+            }
+        ]
+    });
+
+    return bodyEmail;
 
 };
 
@@ -244,8 +228,9 @@ const EnviarCorreo = async (uri, data) =>
 
     let isSended = false;
     let incrementalCount = 1;
-
-    while (isSended === false) {
+    
+    while (isSended === false)
+    {
         const responseRaw = await fetch(uri, data);
 
         const emailIsSended = await responseRaw.json();
@@ -257,7 +242,14 @@ const EnviarCorreo = async (uri, data) =>
             incrementalCount++;
         }
 
+        if (incrementalCount >= 10)
+        {
+            isSended = false;
+            break;
+        }
     }
+
+    return isSended;
 
 };
 

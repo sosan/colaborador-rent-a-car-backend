@@ -4,10 +4,13 @@ const URI_LOCATIONS = `${process.env.URL_FRONTEND}:${process.env.PORT_FRONTEND}$
 
 let locations = undefined;
 
-exports.ObtenerTraducciones = async () =>
+exports.ObtenerTraduccionEmailUsuario = async (lang) =>
 {
-    return locations;
+    return locations[lang];
+
 };
+
+
 
 exports.GetLocations = async (req, res) => {
 
