@@ -16,6 +16,7 @@ coverage/
 ._*
 .~lock*
 
+*.local
 
 # Vim
 *~
