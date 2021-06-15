@@ -205,10 +205,10 @@ Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} c
         "personalizations": [
             {
                 "to": [
-                    // {
-                    //     "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                    //     // "name": "Confimacion Reservas"
-                    // },
+                    {
+                        "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+                        // "name": "Confimacion Reservas"
+                    },
                     {
                         "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
                         // "name": "Confimacion Reservas"
