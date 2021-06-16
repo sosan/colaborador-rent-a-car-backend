@@ -1,12 +1,8 @@
 const mongo_dao = require('../database/mongo_dao');
 const redis_dao = require("../database/redis_dao");
-const { EnumTiposErrores } = require("../errors/exceptions");
 
 const DAY_IN_MILISECONDS = 86400000;
 const DIA_DATE = new Date(DAY_IN_MILISECONDS);
-
-const EDAD_MINIMA_FORMULARIO = 27;
-const EDAD_MAXIMA_FORMULARIO = 68;
 
 let tokenFromFrontend = "incial";
 
@@ -179,5 +175,13 @@ exports.AddEmailNewsletter = async (email) =>
     const resultado = await mongo_dao.AddEmailNewsletter(email);
     return resultado;
 
+
+};
+
+
+exports.UpdateReserva = async (emailsEnviados, objectId, currentDate) =>
+{
+    const resultado = await mongo_dao.SearchReserva(emailsEnviados, objectId);
+    return resultado;
 
 };

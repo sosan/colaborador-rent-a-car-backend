@@ -1,5 +1,4 @@
 const dbInterfaces = require("../database/dbInterfaces");
-const { EnumTiposErrores } = require("../errors/exceptions");
 const porcentajeVehiculo = require("../controllers/porcentajeTipoVehiculo");
 const Joi = require("joi");
 
@@ -348,7 +347,6 @@ const GenerarParametros = async (reservado, conductor_con_experiencia) => {
     else {
         return {
             "reservado": reservado,
-            // "edadChofer": { $in: [EDAD_MINIMA_FORMULARIO, EDAD_MAXIMA_FORMULARIO] }
         };
     }
 

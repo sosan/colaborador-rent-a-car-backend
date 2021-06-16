@@ -41,9 +41,6 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 
     // envio correo usuario
     const isUserEmailSended = await EnviarCorreo(URI_EMAIL_USER_API_BACKEND, data);
-    formulario["isUserEmailSended"] = isUserEmailSended;
-    
-
 
 // -------------
 
@@ -61,7 +58,28 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     };
 
     //envio correo admins
-    await EnviarCorreo(URI_EMAIL_ADMIN_API_BACKEND, data);
+    const isAdminEmailSended = await EnviarCorreo(URI_EMAIL_ADMIN_API_BACKEND, data);
+    
+    const emailsEnviados = {
+        "isUserEmailSended": isUserEmailSended,
+        "isAdminEmailSended": isAdminEmailSended
+    };
+
+    return emailsEnviados;
+
+};
+
+exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
+{
+
+    const currentDate = await ObtenerCurrentDate();
+
+    emailsEnviados["fechaEmailsActualizado"] = currentDate;
+
+    //buscar el id y actualizar el id
+    const resultado = await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
+    console.log(`emails enviados:\n-> Usuarios: ${emailsEnviados.isUserEmailSended}\n-> Admins: ${emailsEnviados.isAdminEmailSended}` )
+    
 
 
 };
@@ -80,7 +98,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replaceAll("HORA_FIN", formulario.horaDevolucion)
         .replaceAll("NUMERO_RESERVA", resultadoInsercion.numeroReserva)
         .replaceAll("TELEFONO_MARCA", "9999999")
-        .replaceAll("EMAIL_MARCA", "email marca")
+        .replaceAll("EMAIL_MARCA", "cambiar@cambiar.com")
         .replaceAll("DIRECCION_MARCA", "Camino de Can Pastilla, 51")
         .replaceAll("DIRECCION_1_MARCA", "07610 Can Pastilla - Palma de Mallorca")
 
@@ -209,10 +227,10 @@ Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} c
                         "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
                         // "name": "Confimacion Reservas"
                     },
-                    {
-                        "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
-                        // "name": "Confimacion Reservas"
-                    }
+                    // {
+                    //     "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
+                    //     // "name": "Confimacion Reservas"
+                    // }
                 ]
             }
         ]
@@ -248,13 +266,33 @@ const EnviarCorreo = async (uri, data) =>
             break;
         }
     }
-
+    
     return isSended;
 
 };
 
 
 
+
+//2020-01-07T11:28:03.588+00:00
+const ObtenerCurrentDate = async () =>
+{
+    let date_ob = new Date();
+
+    const dia = date_ob.getUTCDate().toString().padStart(2, "00");
+    const mes = (date_ob.getUTCMonth() + 1).toString().padStart(2, "00");
+    const anyo = date_ob.getUTCFullYear();
+
+    const hora = date_ob.getUTCHours().toString().padStart(2, "00");
+    const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
+    const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");;
+    const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
+
+    const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}:${ms}`;
+
+    return cadena;
+
+};
 
 
 const ObtenerNumeroReserva = async () =>
@@ -274,25 +312,36 @@ const ObtenerNumeroReserva = async () =>
 
 };
 
-exports.ProcesarReserva = async (formulario) =>
+exports.ProcesarReserva = async (formulario, currentDate) =>
 {
 
     const numeroReserva = await ObtenerNumeroReserva();
-
+    
     formulario["numeroReserva"] = numeroReserva;
+    
+    // formulario = await SanitizarFormulario(formulario);
 
     let isInserted = false;
     let incrementalCount = 1;
     while (isInserted === false)
     {
-        isInserted = await dbInterfaces.ProcesarReserva(formulario);
+        result = await dbInterfaces.ProcesarReserva(formulario);
+        isInserted = result.isInserted;
         if (isInserted === false)
         {
             await sleep(5000 * incrementalCount);
             incrementalCount++;
         }
     }
-    return { "isInserted": isInserted, "numeroReserva": numeroReserva};
+    return { "isInserted": isInserted, "objectId": result.objectId, "numeroReserva": numeroReserva};
+
+};
+
+
+const SanitizarFormulario = async (formulario) =>
+{
+
+    //quitar mayusculas, espacios, o caracteres no permitidos
 
 };
 
@@ -355,6 +404,9 @@ const CheckTokenControlSchema = async (formulario, schema) => {
         formulario["conductor_con_experiencia"] = "off";
     }
 
+    const currentDate = await ObtenerCurrentDate();
+    formulario["fechaAlta"] = currentDate;
+
     respuesta["isSchemaValid"] = await ControlSchema(formulario, schema);
 
     return [respuesta, formulario];
@@ -390,66 +442,6 @@ const ControlSchema = async (body, schema) => {
     return isValid;
 
 };
-
-
-
-// exports.CheckToken = async (res, req, tokenFromFrontend) =>
-// {
-
-//     let isValid = false;
-
-//     if (req.useragent.browser === "node-fetch") 
-//     {
-//         isValid = true;
-//     }
-//     else
-//     {
-//         isValid = false;
-//     }
-
-//     if (req.body.token === tokenFromFrontend) {
-//         isValid = true;
-//     }
-//     else
-//     {
-//         isValid = false;
-//     }
-
-//     return isValid;
-
-// };
-
-
-
-
-
-// exports.ControlSchema = async (body) => {
-
-//     const schema = Joi.object({
-//         "conductor_con_experiencia": Joi.string().required(),
-//         "fase": Joi.number().required(),
-//         "location": Joi.object().required(),
-//         "success": Joi.string().required(),
-//         "token": Joi.string().required(),
-//         "useragent": Joi.object().required(),
-//         "vehiculo": Joi.string().required()
-//     });
-
-//     const options = {
-//         abortEarly: false,
-//         allowUnknown: false,
-//         stripUnknown: false
-//     };
-//     const validation = schema.validate(body, options);
-//     let isValid = false;
-
-//     if (validation.error === undefined) {
-//         isValid = true;
-//     }
-
-//     return isValid;
-
-// }
 
 
 

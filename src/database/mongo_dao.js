@@ -1,4 +1,5 @@
 const { MongoClient } = require("mongodb");
+const { ObjectId } = require('mongodb');
 const { EnumTiposErrores } = require("../errors/exceptions");
 
 const client = new MongoClient(process.env.MONGO_DB_URI,
@@ -541,14 +542,10 @@ exports.ProcesarReserva = async (formulario) =>
     try {
 
         const result = await collectionReservas.insertOne(formulario);
-        let isInserted = false;
-        if (result.insertedCount === 1)
-        {
-            isInserted = true;
-        }
+        let objectId = ObjectId(result.insertedId.id);
+        const isInserted = result.insertedCount === 1;
         
-        // const isInserted = result.insertedCount === 1;
-        return isInserted;
+        return {"isInserted": isInserted, "objectId": objectId };
 
     }
     catch (err)
@@ -593,5 +590,32 @@ exports.AddEmailNewsletter = async (email) => {
 
     }
 
+
+};
+
+
+exports.SearchReserva = async (emailsEnviados, objectId) =>
+{
+
+    try
+    {
+
+        const resultados = await collectionReservas.findOneAndUpdate(
+            { _id: objectId },
+            {
+                $set: emailsEnviados
+            });
+        
+        const isUpdated = resultados.ok === 1;
+        return isUpdated;
+
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+
+    }
 
 };

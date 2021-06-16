@@ -1,10 +1,5 @@
 
-const dbInterfaces = require("../database/dbInterfaces");
-const { EnumMensajesErrores } = require("../errors/exceptions");
 const logicInterface = require("../logicinterface/logic_postFormReservar");
-const fetch = require("node-fetch");
-
-
 
 exports.postRealizarReserva = async (req, res) => 
 {
@@ -20,14 +15,15 @@ exports.postRealizarReserva = async (req, res) =>
         console.error("Esquema invalido");
         return res.send({ "isOk": false, "errorFormulario": "" });
     }
-
+    
     const resultadoInsercion = await logicInterface.ProcesarReserva(formulario);
     
     //TODO: generar token
 
     res.send({ isOk: resultadoInsercion.isInserted, numeroReserva: resultadoInsercion.numeroReserva });
 
-    await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
+    const emailsEnviados = await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
+
+    await logicInterface.ConfirmacionEmailsEnviados(emailsEnviados, resultadoInsercion.objectId);
 
 };
-
