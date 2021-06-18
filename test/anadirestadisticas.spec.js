@@ -5,7 +5,10 @@ const logic_interface_stats = require("../src/logicinterface/logic_stats");
 const dbInterfaces = require("../src/database/dbInterfaces");
 
 
-const URI_STATS_BACKEND = `${process.env.URL_BASE}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_STATS_BACKEND}`;
+const urlfrontend = process.env.URL_FRONTEND || "localhost";
+const protocolo = "http://";
+
+const URI_STATS_BACKEND = `${protocolo}${urlfrontend}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_STATS_BACKEND}`;
 
 describe("Check estadisticas =>", () => {
 

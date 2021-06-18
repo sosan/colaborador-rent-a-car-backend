@@ -1,6 +1,11 @@
 const fetch = require("node-fetch");
 const dbinterface = require("../database/dbInterfaces");
-const URI_LOCATIONS = `${process.env.URL_FRONTEND}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_LOCATION}`;
+
+
+const urlfrontend = process.env.URL_FRONTEND || "localhost";
+const protocolo = "http://";
+
+const URI_LOCATIONS = `${protocolo}${urlfrontend}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_LOCATION}`;
 
 let locations = undefined;
 
