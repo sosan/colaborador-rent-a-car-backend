@@ -6,6 +6,7 @@ const DIA_DATE = new Date(DAY_IN_MILISECONDS);
 
 let tokenFromFrontend = "incial";
 
+
 exports.ConnectDB = async () =>
 {
     await mongo_dao.conectDb();
@@ -185,3 +186,5 @@ exports.UpdateReserva = async (emailsEnviados, objectId, currentDate) =>
     return resultado;
 
 };
+
+

@@ -59,3 +59,22 @@ exports.ConsultarCantidadReservasDia = async (cadenaComprobarDia) =>
 
 
 };
+
+
+exports.GetBackendVariables = async () => {
+
+
+}
+
+exports.GetVariables = async (key) => {
+
+    try {
+
+        const vars = await redisClient.get(key);
+        return vars;
+        
+    }
+    catch (error) {
+        console.error(error);
+    }
+}

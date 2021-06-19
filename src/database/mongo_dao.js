@@ -4,10 +4,8 @@ const { EnumTiposErrores } = require("../errors/exceptions");
 
 const client = new MongoClient(process.env.MONGO_DB_URI,
     {
-        poolSize: 5,
-        useNewUrlParser: true,
         useUnifiedTopology: true,
-        
+        useNewUrlParser: true, 
 
     });
 

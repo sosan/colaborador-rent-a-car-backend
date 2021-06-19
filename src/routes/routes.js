@@ -7,18 +7,14 @@ const index = require("../controllers/showIndex");
 const indexPost = require("../controllers/postFormIndex");
 const indexGet = require("../controllers/getFormIndex");
 const statsPost = require("../controllers/postStats");
-
 const reservarPost = require("../controllers/postFormReservar");
 const newsletter = require("../controllers/newsletter");
-
-
 const location = require("../controllers/location");
-
 const porcentajeTipoVehiculo = require("../controllers/porcentajeTipoVehiculo");
+const logicVars = require("../logicinterface/logicGetVars");
 
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
-
 const router = express.Router();
 
 
@@ -44,9 +40,8 @@ router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.Actual
 // admin
 router.post(
     process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res) );
-
-
-
+    
+    
 // generar html
 router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTLForGeneralConditions(req, res));
 
@@ -57,6 +52,10 @@ router.post(process.env.ENDPOINT_LOCATION, async (req, res) => await location.Ge
 
 //porcentaje
 router.get(process.env.ENDPOINT_PORCENTAJE_VEHICULO, async (req, res) => await porcentajeTipoVehiculo.GetPorcentajeTipoVehiculo(req, res));
+
+
+// obtener los vars para frontend
+router.post(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await logicVars.GetFrontendVars(req, res));
 
 
 module.exports = router;

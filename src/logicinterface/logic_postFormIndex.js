@@ -21,7 +21,7 @@ const CheckTokenControlSchema = async (formulario, schema) =>
     respuesta["isTokenValid"] = isTokenValid;
 
     if (isTokenValid === false) {
-        return respuesta;
+        return [respuesta, formulario];
     }
 
     // TODO: generar string a partir del secreto
