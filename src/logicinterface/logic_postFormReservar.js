@@ -319,7 +319,7 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
     
     formulario["numeroReserva"] = numeroReserva;
     
-    // formulario = await SanitizarFormulario(formulario);
+    formulario = await SanitizarFormulario(formulario);
 
     let isInserted = false;
     let incrementalCount = 1;
@@ -340,8 +340,12 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
 
 const SanitizarFormulario = async (formulario) =>
 {
-
+    
     //quitar mayusculas, espacios, o caracteres no permitidos
+    formulario["email"] = formulario["email"].trim().toLowerCase();
+    formulario["telefono"] = formulario["telefono"].trim().toLowerCase();
+
+    return formulario;
 
 };
 
