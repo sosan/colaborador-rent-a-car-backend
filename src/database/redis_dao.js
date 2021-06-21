@@ -1,18 +1,22 @@
 const Redis = require("ioredis");
 
-const redisClient = new Redis({
-    port: process.env.REDISDB_PORT,
-    host: process.env.REDISDB_HOST,
-    password: process.env.REDISDB_PASSWORD,
-    db: 0
-});
+let redisClient = undefined;
 
 
-exports.conectDb = async () => 
+exports.conectDb = async (redisdb_port, redisdb_host, redisdb_password) =>
 {
+    if (redisClient !== undefined) return;
+    
     try 
     {
-    
+
+        redisClient = new Redis({
+            port: redisdb_port || process.env.REDISDB_PORT,
+            host: redisdb_host || process.env.REDISDB_HOST,
+            password: redisdb_password || process.env.REDISDB_PASSWORD,
+            db: 0
+        });
+
         if (await redisClient.ping() === "PONG")
         {
             console.log(`[process ${process.pid}] CONNECTED TO REDIS DB`);
