@@ -1,14 +1,21 @@
-name: Docker Image CI
+name: accion para subir imagen a servidor
 
 on:
   push:
     branches: [ backend ]
-  pull_request:
-    branches: [ backend ]
+    tags:
+      - 'v*'
+
+# on:
+#   push:
+#     branches: [ backend ]
+#   pull_request:
+#     branches: [ backend ]
 
 jobs:
   buildx:
     runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'subir')"
     steps:
       -
         name: Checkout
