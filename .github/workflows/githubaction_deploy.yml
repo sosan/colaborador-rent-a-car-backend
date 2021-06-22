@@ -37,11 +37,12 @@ jobs:
             "REDISDB_HOST=${{ secrets.REDISDB_HOST }}"
             "REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }}"
             "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
-      # - 
-      #   name: Push to Docker Hub
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-      #     repository: sosan/backend-rentacarmallorca
-      #     tag_with_ref: true
+      
+      - name: Execute SSH commmands on remote server
+        uses: JimCronqvist/action-ssh@master
+        with:
+          hosts: ${{ secrets.HOST_SERVIDOR }} # root@ip
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          command: |
+            ls -lah
+            echo "I am $NAME"
