@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ backend ]
+  pull_request:
+    branches: [ backend ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker buildx build . --file Dockerfile --tag sosan/backend:$(date +%s) \
+        --no-cache --progress=plain \
+        --secret id=PORT_BACKEND,src={{ secrets.PORT_BACKEND }} \
+        --secret id=PORT_FRONTEND,src={{ secrets.PORT_FRONTEND }} \
+        --secret id=REDISDB_PORT,src={{ secrets.REDISDB_PORT }} \
+        --secret id=REDISDB_HOST,src={{ secrets.REDISDB_HOST }} \
+        --secret id=REDISDB_PASSWORD,src={{ secrets.REDISDB_PASSWORD }} \
+        --secret id=ENDPOINT_VARIABLES_FRONTEND,src={{ secrets.ENDPOINT_VARIABLES_FRONTEND }} \
+        .
