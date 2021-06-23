@@ -7,8 +7,6 @@ RUN npm ci --only=production
 
 # # imagen2 sin npm o yarn
 FROM mhart/alpine-node:slim-16.2.0
-RUN groupadd --gid 1000 node \
-    && useradd --uid 1000 --gid node
 
 USER node
 WORKDIR /usr/src/app
