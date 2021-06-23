@@ -25,7 +25,6 @@ jobs:
           node-version: '14'
         run: |
           npm install
-
           NODE_ENV=production \
           PORT_BACKEND=${{ secrets.PORT_BACKEND }} \
           PORT_FRONTEND=${{ secrets.PORT_FRONTEND }} \
@@ -34,7 +33,6 @@ jobs:
           REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }} \
           ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }} \
           node src/index.js
-
           NODE_ENV=production npm run test
       # - 
       #   name: Testing API
