@@ -19,12 +19,13 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - 
-        name: Testing
+        name: Running Server & Testing API
         uses: actions/setup-node@v2
         with:
           node-version: '14'
         run: |
-          npm install && \
+          npm install
+
           NODE_ENV=production \
           PORT_BACKEND=${{ secrets.PORT_BACKEND }} \
           PORT_FRONTEND=${{ secrets.PORT_FRONTEND }} \
@@ -33,14 +34,15 @@ jobs:
           REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }} \
           ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }} \
           node src/index.js
-      - 
-        name: Testing API
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-        run: |
-          NODE_ENV=production \
-          npm run test
+
+          NODE_ENV=production npm run test
+      # - 
+      #   name: Testing API
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14'
+      #   run: |
+      #     NODE_ENV=production npm run test
 
   buildx:
     runs-on: ubuntu-20.04
@@ -48,7 +50,12 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
-      
+      # - name: Get tag
+      #   id: tag
+      #   uses: dawidd6/action-get-tag@v1
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       -
         name: Login to DockerHub
         uses: docker/login-action@v1 
@@ -65,7 +72,7 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: sosan/backend-rentacarmallorca:latest
+          tags: sosan/backend-rentacarmallorca:${{steps.get_version.outputs.VERSION}}
           secrets: |
             "PORT_BACKEND=${{ secrets.PORT_BACKEND }}"
             "PORT_FRONTEND=${{ secrets.PORT_FRONTEND }}"

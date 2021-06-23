@@ -11,7 +11,7 @@ error_formulario4,x,x,x,x
 recogida,Pickup:,Recogida:,Ritiro,Abholen
 hora,At :,Hora :,Tempo,Uhrzeit 
 devolucion,Return :,Devolucion :,Ritorno,Rückgabe 
-conductor_experiencia,Driver is 23 years old or older,Conductor tiene 23 años o mas,Il conducente ha 23 anni o più,Der Fahrer ist 23 Jahre alt oder älter
+conductor_experiencia,Driver is 23 years old or older,Conductor tiene 23 años o más,Il conducente ha 23 anni o più,Der Fahrer ist 23 Jahre alt oder älter
 edad_conductor,Driver's age,Edad del conductor,Età dell'autista,Alter des Fahrers
 ver_precios,View prices,Ver precios,Vedere i prezzi,Siehe Preise
 informacion,Information,Información,Informazioni,Informationen
@@ -458,7 +458,7 @@ relojdevolucion,Return time,Hora devolucion,Tempo di ritorno,Rücklaufzeit
 vehiculo_seleccionado,SELECTED VEHICLE,VEHICULO SELECCIONADO,VEICOLO SELEZIONATO,GEWÄHLTES FAHRZEUG
 alt_icono_no_chequeo_reserva,error not checking checkbox,error al no chequear el checkbox,errore quando non si spunta la casella di controllo,Fehler bei nicht aktiviertem Kontrollkästchen
 alt_cerrar_modal,close modal button,boton cerrar modal,chiudere il pulsante modale,Modal-Schaltfläche schließen
-donde_estamos,WHERE ARE WE?,¿DONDE ESTAMOS?,DOVE SIAMO?,WO SIND WIR?
+donde_estamos,RESERVATION PICK-UP,RECOGIDA DE RESERVA,PRENOTAZIONE RACCOLTA,BUCHUNGSBESTAND
 alt_logo_empresa,logo rentcarmallorca,logo rentcarmallorca,logo affittocarmallorca,logo rentcarmallorca
 siguenos,FOLLOW US,SÍGUENOS,SEGUICI,FOLGEN SIE UNS
 alt_icono_instagram,instagram icon,icono instagram,icona instagram,Instagram-Symbol
@@ -489,31 +489,31 @@ tooltip_fecha_devolucion_informacion,Choose the day of return of the vehicle,Eli
 tooltip_hora_devolucion_informacion,Choose the time of return of the vehicle,Elige la hora de devolucion del vehiculo,Scegliere il tempo di ritorno del veicolo,Wählen Sie den Zeitpunkt der Rückgabe des Fahrzeugs
 tooltip_edad_conductor_informacion,Driver's age,Edad del conductor,Età del conducente,Alter des Fahrers
 tooltip_boton_ver_precios_informacion,Click to see the prices,Click para ver los precios,Clicca per vedere i prezzi,"Klicken Sie, um die Preise zu sehen"
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
-,,,,
+info_kilometraje,Mileage,Kilometraje,Chilometraggio,Kilometerstand
+info_combustible,Fuel,Combustible,Carburante,Kraftstoff
+info_conductor_adicional,Additional driver,Conductor adicional,Autista aggiuntivo,Zusätzlicher Treiber
+info_cancelacionreserva,Cancellation Reservation,Cancelación Reserva,Cancellazione Prenotazione,Stornierung Reservierung
+info_recogida,Pick up place,Lugar de recogida,Luogo di ritiro,Ort der Abholung
+contenido_kilometraje,"Unlimited mileage, No charge","kilometraje ilimitado, No tiene cargos","Chilometraggio illimitato, nessuna spesa","Unbegrenzte Kilometerzahl, keine Gebühr"
+contenido_combustible,No fuel policy,Sin política de Combustible,Nessuna politica sul carburante,Keine Kraftstoffpolitik
+contenido_conductoradicional,99.99€ charged per additional driver,Se cobra 99.99€ por conductor adicional,99.99€ addebitato per ogni guidatore aggiuntivo,"99,99€ für jeden weiteren Fahrer"
+contenido_cancelacionreserva,"Free booking cancellation, no charge","Cancelación de reserva Gratuita, no tiene cargos","Cancellazione gratuita della prenotazione, senza spese","Kostenlose Stornierung der Buchung, keine Kosten"
+contenido_recogida,"In our garage, check location","En nuestro garage, consulta localización","Nel nostro garage, controllare la posizione","In unserer Garage, Standort prüfen"
+tooltip_kilometros,"Unlimited mileage, No charge","kilometraje ilimitado, No tiene cargos","Chilometraggio illimitato, nessuna spesa","Unbegrenzte Kilometerzahl, keine Gebühr"
+tooltip_combustible,No fuel policy,Sin política de Combustible,Nessuna politica sul carburante,Keine Kraftstoffpolitik
+tooltip_conductoradicional,99.99€ charged per additional driver,Se cobra 99.99€ por conductor adicional,99.99€ addebitato per ogni guidatore aggiuntivo,"99,99€ für jeden weiteren Fahrer"
+tooltip_cancelacionreserva,"Free booking cancellation, no charge","Cancelación de reserva Gratuita, no tiene cargos","Cancellazione gratuita della prenotazione, senza spese","Kostenlose Stornierung der Buchung, keine Kosten"
+tooltip_recogida,"In our garage, check location","En nuestro garage, consulta localización","Nel nostro garage, controllare la posizione","In unserer Garage, Standort prüfen"
+enlace_combustible,Fuel Information,Información sobre Combustible,Informazioni sul carburante,Kraftstoff-Informationen
+enlace_seguro,Insurance Information,Información sobre Seguro,Informazioni sull'assicurazione,Informationen zur Versicherung
+enlace_conductoradicional,Additional Driver,Conductor adicional,Autista aggiuntivo,Zusätzlicher Treiber
+titulo_enlaces_interes,Useful links,Enlaces de interés,Link utili,Nützliche Links
+titulo_enlace_combustible,Insurance Information,Información sobre Seguro,Informazioni sull'assicurazione,Informationen zur Versicherung
+titulo_enlace_seguro,Additional driver,Conductor adicional,Autista aggiuntivo,Zusätzlicher Treiber
+titulo_enlace_conductoradicional,Useful links,Enlaces de interés,Link interessanti,Interessante Links
+contenido_enlace_combustible,akjsdfkjasldf,akjsdfkjasldf,akjsdfkjasldf,akjsdfkjasldf
+contenido_enlace_seguro,aksjdflasdf,aksjdflasdf,aksjdflasdf,aksjdflasdf
+contenido_enlace_conductoradicional,alsdfaslkdf,alsdfaslkdf,alsdfaslkdf,alsdfaslkdf
 ,,,,
 ,,,,
 ,,,,
