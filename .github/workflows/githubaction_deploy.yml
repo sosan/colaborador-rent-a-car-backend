@@ -52,7 +52,7 @@ jobs:
       #   uses: dawidd6/action-get-tag@v1
       - name: Get current date
         id: date
-        run: echo ::set-output name=DATE_NOW::$(date +'%Y-%m-%dT%H:%M:%S')
+        run: echo ::set-output name=DATE_NOW::$(date +'%Y_%m_%dT%H_%M_%S')
 
       # - name: Get the version
       #   id: get_version
