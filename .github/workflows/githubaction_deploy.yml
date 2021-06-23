@@ -15,26 +15,26 @@ on:
 #     branches: [ backend ]
 
 jobs:
-  test:
-    runs-on: ubuntu-20.04
-    steps:
-      - 
-        name: Running Server & Testing API
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-        run: |
-          npm install
+  # test:
+    # runs-on: ubuntu-20.04
+    # steps:
       # - 
-          # NODE_ENV=production \
-          # PORT_BACKEND=${{ secrets.PORT_BACKEND }} \
-          # PORT_FRONTEND=${{ secrets.PORT_FRONTEND }} \
-          # REDISDB_PORT=${{ secrets.REDISDB_PORT }} \
-          # REDISDB_HOST=${{ secrets.REDISDB_HOST }} \
-          # REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }} \
-          # ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }} \
-          # node src/index.js
-          # NODE_ENV=production npm run test
+      #   name: Running Server & Testing API
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14'
+      #   run: |
+      #     npm install
+      #     NODE_ENV=production \
+      #     PORT_BACKEND=${{ secrets.PORT_BACKEND }} \
+      #     PORT_FRONTEND=${{ secrets.PORT_FRONTEND }} \
+      #     REDISDB_PORT=${{ secrets.REDISDB_PORT }} \
+      #     REDISDB_HOST=${{ secrets.REDISDB_HOST }} \
+      #     REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }} \
+      #     ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }} \
+      #     node src/index.js
+      #     NODE_ENV=production npm run test
+      # - 
       #   name: Testing API
       #   uses: actions/setup-node@v2
       #   with:
