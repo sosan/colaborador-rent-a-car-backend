@@ -8,6 +8,7 @@ RUN npm ci --only=production
 # # imagen2 sin npm o yarn
 FROM mhart/alpine-node:slim-16.2.0
 
+RUN adduser -D node
 USER node
 WORKDIR /usr/src/app
 
