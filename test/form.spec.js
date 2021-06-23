@@ -1,5 +1,7 @@
 require('dotenv').config();
-const fetch = require("node-fetch");
+const { asyncFetchGet } = require("./fetches");
+const { asyncFetchPost } = require("./fetches");
+
 
 const logicPostForm = require("../src/logicinterface/logic_postFormIndex");
 const formIndex = require("../src/controllers/postFormIndex");
@@ -22,22 +24,19 @@ const formularioBase = {
 const URI_API_BACKEND = `${process.env.URL_BASE}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_API_BACKEND}`;
 
 
-describe("Check /api", () => {
 
-test("get /api", async () => {
 
-    const expected = "SERVER RUNNING";
-    const response = await fetch(URI_API_BACKEND, {
-        method: "GET",
-        headers: {
-            "Content-type": "application/json"
-        }
+describe("Check /api", () => 
+{
+
+    test("get /api", async () => {
+
+        const expected = "SERVER RUNNING";
+        const result = await asyncFetchGet("http://localhost:3000/api");
+
+        expect(expected).toBe(result.message);
+
     });
-    const result = await response.json();
-
-    expect(expected).toBe(result.message);
-
-});
 
 });
 
@@ -58,16 +57,8 @@ test("post token mal formulario /api", async () => {
     };
 
     
-    const response = await fetch(URI_API_BACKEND, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify(formulario)
-    });
-    const json = await response.json();
-    const recieved = json.isOk;
+    const response = await asyncFetchPost(URI_API_BACKEND, formulario);
+    const recieved = response.isOk;
     expect(recieved).toBe(expected);
 
 });
@@ -88,16 +79,8 @@ test("post bien formulario /api", async () => {
         edad_conductor: "22",
     };
 
-    const response = await fetch(URI_API_BACKEND, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify(formulario)
-    });
-    const json = await response.json();
-    const recieved = json.isOk;
+    const response = await asyncFetchPost(URI_API_BACKEND, formulario);
+    const recieved = response.isOk;
     expect(recieved).toBe(expected);
 
 });
@@ -118,16 +101,8 @@ test("post edad conductor mal formulario /api", async () => {
         edad_conductor: "oooooo"
     };
 
-    const response = await fetch(URI_API_BACKEND, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify(formulario)
-    });
-    const json = await response.json();
-    const recieved = json.isOk;
+    const response = await asyncFetchPost(URI_API_BACKEND, formulario);
+    const recieved = response.isOk;
     expect(recieved).toBe(expected);
 
 });
@@ -148,16 +123,8 @@ test("post fase/edad_conductor mal formulario /api", async () => {
         edad_conductor: "oooooo"
     };
 
-    const response = await fetch(URI_API_BACKEND, {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify(formulario)
-    });
-    const json = await response.json();
-    const recieved = json.isOk;
+    const response = await asyncFetchPost(URI_API_BACKEND, formulario);
+    const recieved = response.isOk;
     expect(recieved).toBe(expected);
 
 });

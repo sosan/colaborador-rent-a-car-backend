@@ -5,13 +5,11 @@ require("dotenv").config();
 
 if (process.env.NODE_ENV === "production")
 {
-
     //cargando las variables de entorno
     console.log(`production`);
     const logicGetVars = require("./logicinterface/logicGetVars");
     const resultado = logicGetVars.GetBackendVars();
-    // const servidor = require("./server");
-    // servidor.InitServer();
+    
 }
 
 const servidor = require("./server");
