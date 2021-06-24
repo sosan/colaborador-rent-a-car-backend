@@ -2,7 +2,7 @@ version: "3.8"
 services:
 #   frontend:
 #     restart: always
-#     image: sosan/frontend:v1
+#     image: sosan/frontend-rentacarmallorca:latest
 #     container_name: frontend
 #     ports:
 #       - 80:8080
