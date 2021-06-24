@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
+    "devhub": "NODE_ENV=production DEBUG=true node src/index.js",
     "test": "jest --detectOpenHandles --testTimeout 60000",
     "test:api": "jest -i test/anadirestadisticas.spec.js -t --detectOpenHandles --testTimeout 60000"
   },

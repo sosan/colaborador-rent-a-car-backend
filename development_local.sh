@@ -1,1 +1,0 @@
-nerdctl compose -f docker-compose-buildlocal.yaml up

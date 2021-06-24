@@ -19,7 +19,7 @@ services:
 #       - backend
   backend:
     restart: always
-    image: backend
+    image: sosan/backend-rentacarmallorca:2021_06_24T11_01_24
     container_name: backend
     ports:
       - 3000:3000

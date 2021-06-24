@@ -1,1 +1,0 @@
-nerdctl compose -f docker-compose_dockerhub_local.yaml up

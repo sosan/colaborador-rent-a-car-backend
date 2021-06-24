@@ -20,7 +20,7 @@ RUN --mount=type=secret,id=REDISDB_HOST cat /run/secrets/REDISDB_HOST
 RUN --mount=type=secret,id=REDISDB_PASSWORD cat /run/secrets/REDISDB_PASSWORD
 RUN --mount=type=secret,id=ENDPOINT_VARIABLES_FRONTEND cat /run/secrets/ENDPOINT_VARIABLES_FRONTEND
 
-RUN adduser -D node
-USER node
+# RUN adduser -D node
+# USER node
 
 CMD ["node", "src/index.js"]
