@@ -12,5 +12,9 @@ if (process.env.NODE_ENV === "production")
     
 }
 
+
+
+
+
 const servidor = require("./server");
 servidor.InitServer();
