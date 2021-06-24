@@ -77,7 +77,7 @@ jobs:
             "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
       
       - name: Execute SSH commmands on remote server
-        if: "contains(github.event.*.message, 'despliegue')"
+        if: "contains(github.event.*.message, 'subir_despliegue')"
         uses: JimCronqvist/action-ssh@master
         with:
           hosts: ${{ secrets.HOST_SERVIDOR }} # alvaro@ip

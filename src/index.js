@@ -13,8 +13,7 @@ const Init = async () =>
     
         const servidor = require("./server");
         servidor.InitServer();
-    
-    
+        
     }
     else
     {
@@ -22,10 +21,6 @@ const Init = async () =>
         servidor.InitServer();
     
     }
-    
-    
-    
-
 
 };    
 
