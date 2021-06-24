@@ -67,7 +67,9 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: sosan/backend-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
+          tags: | 
+            sosan/backend-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
+            sosan/backend-rentacarmallorca:latest
           secrets: |
             "PORT_BACKEND=${{ secrets.PORT_BACKEND }}"
             "PORT_FRONTEND=${{ secrets.PORT_FRONTEND }}"
