@@ -6,6 +6,7 @@ exports.ConnectVault = async (redisdb_port, redisdb_host, redisdb_password) => {
 };
 
 
+
 exports.GetBackendVariables = async () => {
     const resultado = await redis_dao.GetVariables("variables-backend");
     return resultado;
