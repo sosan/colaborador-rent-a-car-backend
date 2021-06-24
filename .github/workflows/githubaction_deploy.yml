@@ -43,6 +43,7 @@ jobs:
 
   buildx:
     runs-on: ubuntu-20.04
+    if: "contains(github.event.*.message, 'subir')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -81,7 +82,8 @@ jobs:
         with:
           hosts: ${{ secrets.HOST_SERVIDOR }} # alvaro@ip
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          # export DOCKER_TAG=${{steps.date.outputs.DATE_NOW}}
+          # nerdctl pull sosan/backend-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
+          # nerdctl compose up -d
           command: |
-            export DOCKER_TAG=${{steps.date.outputs.DATE_NOW}}
-            nerdctl pull sosan/backend-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
-            nerdctl compose up -d
+            ls

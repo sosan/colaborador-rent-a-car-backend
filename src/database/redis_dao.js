@@ -9,25 +9,21 @@ exports.conectDb = async (redisdb_port, redisdb_host, redisdb_password) =>
     
     try 
     {
-        console.log("entrada ");
         redisClient = new Redis({
             port: redisdb_port || process.env.REDISDB_PORT,
             host: redisdb_host || process.env.REDISDB_HOST,
             password: redisdb_password || process.env.REDISDB_PASSWORD,
             db: 0
         });
-        console.log("esperar ");
 
         if (await redisClient.ping() === "PONG")
         {
-            console.log("conectado ");
             console.log(`[process ${process.pid}] CONNECTED TO REDIS DB`);
         }
         else
         {
             console.log("CONEXION NO POSIBLE A REDIS");
         }
-        console.log("salida redis ");
     
     } 
     catch (error) {

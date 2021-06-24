@@ -9,10 +9,6 @@ exports.GetBackendVars = async () =>
 
     dotenv.config();
 
-    console.log("REDISDB_HOST");
-
-    // console.log("1" );
-
     let port_backend = "";
     let port_frontend = "";
     let redisdb_port = "";
@@ -42,22 +38,17 @@ exports.GetBackendVars = async () =>
 
     }
 
-
-    console.log("2" + redisdb_host + " " + redisdb_password);
-    console.log("3" + endpoint_variables_frontend);
-
     // MONGO_DB_URI
+    console.log("Seteando variables...");
     await dbInterfaces.ConnectVault(redisdb_port, redisdb_host, redisdb_password );
-    await esperar();
+    // await esperar();
 
     const variables =  await dbInterfaces.GetBackendVariables();
-    console.log("4");
     const buf = Buffer.from(variables);
-    console.log("5");
     const envConfig = dotenv.parse(buf);
     for (const k in envConfig) {
         process.env[k] = envConfig[k]
-        console.log(`${k}:${envConfig[k]}`);
+        // console.log(`${k}:${envConfig[k]}`);
     }
 
 };
@@ -66,10 +57,10 @@ function esperar() {
     return new Promise((resolve, reject) => {
         //here our function should be implemented 
         setTimeout(() => {
-            console.log("Hello from inside the testAsync function");
+            
             resolve();
             ;
-        }, 5000
+        }, 3000
         );
     });
 }
