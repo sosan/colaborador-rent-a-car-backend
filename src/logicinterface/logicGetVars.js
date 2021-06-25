@@ -38,7 +38,6 @@ exports.GetBackendVars = async () =>
 
     }
 
-    // MONGO_DB_URI
     console.log("Seteando variables...");
     await dbInterfaces.ConnectVault(redisdb_port, redisdb_host, redisdb_password );
     // await esperar();
