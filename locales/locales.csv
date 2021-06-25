@@ -514,9 +514,9 @@ titulo_enlace_conductoradicional,Additional Driver,Conductor adicional,Autista a
 contenido_enlace_combustible,akjsdfkjasldf,akjsdfkjasldf,akjsdfkjasldf,akjsdfkjasldf
 contenido_enlace_seguro,aksjdflasdf,aksjdflasdf,aksjdflasdf,aksjdflasdf
 contenido_enlace_conductoradicional,alsdfaslkdf,alsdfaslkdf,alsdfaslkdf,alsdfaslkdf
-,,,,
-,,,,
-,,,,
+overlay_titulo_reserva,TITULO,TITULO,TITULO,TITULO
+tooltip_masinformacion_reserva,"Book Now, directs you to a secure session where you can pay for your advance booking securely, using only your global credit or debit card details.","Reservar ahora, le direcciona a una sesión segura donde puede pagar su reserva anticipada con toda seguridad, solo con los datos de una tarjeta de credito o debito de uso global","Prenota ora, ti indirizza ad una sessione sicura dove puoi pagare la tua prenotazione anticipata in modo sicuro, con solo i dettagli della tua carta di credito o di debito per un uso globale.","Jetzt buchen leitet Sie zu einer sicheren Sitzung weiter, in der Sie Ihre Vorausbuchung sicher und nur mit Ihren globalen Kredit- oder Debitkartendaten bezahlen können."
+titulo_masinformacion_reserva,"Book now, Information","Reservar ahora, Informacón","Prenota ora, Informazioni","Jetzt buchen, Informationen"
 ,,,,
 ,,,,
 ,,,,

@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-20.04
     # if: "contains(github.event.*.message, 'subir')"
     # if: github.event.*.message === "subir"
-    if: "contains(github.event.head_commit.message, 'subir')"
+    if: "contains(github.event.head_commit.message, '/subir')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -84,7 +84,7 @@ jobs:
         # if: github.event.*.message === "subir_despliegue"
         
       - name: Comandos SSH Servidor
-        if: "contains(github.event.head_commit.message, 'despliegue')"
+        if: "contains(github.event.head_commit.message, '/despliegue')"
         uses: JimCronqvist/action-ssh@master
         with:
           hosts: ${{ secrets.HOST_SERVIDOR }} # alvaro@ip
@@ -110,7 +110,7 @@ jobs:
                 ports:
                     - 80:8080
                 links:
-                    - backend:backend
+                    - backend
                 environment:
                     URL_BACKEND: backend
                     URL_FRONTEND: frontend
