@@ -43,8 +43,9 @@ jobs:
 
   buildx:
     runs-on: ubuntu-20.04
-    if: "contains(github.event.*.message, 'subir')"
-    # if: "startsWith(github.event.*.message, 'subir')"
+    # if: "contains(github.event.*.message, 'subir')"
+    # if: github.event.*.message === "subir"
+    if: "contains(github.event.head_commit.message, 'subir')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -79,8 +80,11 @@ jobs:
             "REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }}"
             "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
       
+        # if: "contains(github.event.*.message, 'subir despliegue')"
+        # if: github.event.*.message === "subir_despliegue"
+        
       - name: Comandos SSH Servidor
-        if: "contains(github.event.*.message, 'subir despliegue')"
+        if: "contains(github.event.head_commit.message, 'despliegue')"
         uses: JimCronqvist/action-ssh@master
         with:
           hosts: ${{ secrets.HOST_SERVIDOR }} # alvaro@ip
