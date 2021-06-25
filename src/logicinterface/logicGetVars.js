@@ -88,16 +88,9 @@ const readSecret = async (secretNameAndPath) => {
 exports.GetFrontendVars = async (req, res) => {
 
     console.log("entrado");
-    const variables =  dbInterfaces.GetFrontendVariables();
+    const variables = await dbInterfaces.GetFrontendVariables();
 
-    res.send({"variables": variables});
-
-    // const buf = Buffer.from(variables);
-
-    // const envConfig = dotenv.parse(buf);
-    // for (const k in envConfig) {
-    //     process.env[k] = envConfig[k]
-    // }
+    res.json({"variables": variables});
 
 };
 

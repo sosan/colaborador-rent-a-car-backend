@@ -63,10 +63,6 @@ exports.ConsultarCantidadReservasDia = async (cadenaComprobarDia) =>
 };
 
 
-exports.GetBackendVariables = async () => {
-
-
-}
 
 exports.GetVariables = async (key) => {
 

@@ -55,7 +55,7 @@ router.get(process.env.ENDPOINT_PORCENTAJE_VEHICULO, async (req, res) => await p
 
 
 // obtener los vars para frontend
-router.post(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await logicVars.GetFrontendVars(req, res));
+router.get(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await logicVars.GetFrontendVars(req, res));
 
 
 module.exports = router;
