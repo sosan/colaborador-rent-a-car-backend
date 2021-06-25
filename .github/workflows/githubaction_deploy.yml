@@ -4,14 +4,14 @@ name: accion para subir imagen a servidor
 #   push:
 #     tags:
 #       - 'v*'
-#     # branches:
-#     #   - backend
+    # branches:
+    #   - backend
 
 on:
   push:
     branches: [ backend ]
-  pull_request:
-    branches: [ backend ]
+#   pull_request:
+#     branches: [ backend ]
 
 jobs:
   # test:
