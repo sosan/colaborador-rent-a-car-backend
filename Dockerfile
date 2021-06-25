@@ -13,6 +13,8 @@ WORKDIR /usr/src/app
 COPY --from=0 /usr/src/app ./
 COPY ./src ./src
 
+
+
 RUN --mount=type=secret,id=PORT_BACKEND cat /run/secrets/PORT_BACKEND
 RUN --mount=type=secret,id=PORT_FRONTEND cat /run/secrets/PORT_FRONTEND
 RUN --mount=type=secret,id=REDISDB_PORT cat /run/secrets/REDISDB_PORT
