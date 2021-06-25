@@ -36,6 +36,8 @@ exports.GetBackendVars = async () =>
         redisdb_password = await  readSecret("/run/secrets/REDISDB_PASSWORD");
         endpoint_variables_frontend = await   readSecret("/run/secrets/ENDPOINT_VARIABLES_FRONTEND");
 
+        
+
     }
 
     console.log("Seteando variables...");
