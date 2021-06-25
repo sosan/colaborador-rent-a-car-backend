@@ -3,7 +3,7 @@ name: accion para subir imagen a servidor
 # on:
 #   push:
 #     tags:
-#       - '*'
+#       - 'v*'
 #     # branches:
 #     #   - backend
 
@@ -47,6 +47,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        # with:
+        #   path: backend
       
       - name: Get current date
         id: date
@@ -89,3 +91,4 @@ jobs:
           # nerdctl compose up -d
           command: |
             ls
+  

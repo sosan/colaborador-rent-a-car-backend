@@ -16,7 +16,7 @@ exports.GetBackendVars = async () =>
     let redisdb_password = "";
     let endpoint_variables_frontend = "";
 
-    if (process.env.DEBUG === "true")
+    if (process.env.LOCAL_SECRETS === "true")
     {
         
         port_backend = await readSecret("../../secrets/port_backend.txt");
