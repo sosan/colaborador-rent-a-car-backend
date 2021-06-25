@@ -93,6 +93,7 @@ jobs:
             # nerdctl compose up -d
             # ls
           command: |
+            ls
             echo ${{secrets.REDISDB_PASSWORD}} > /tmp/redisdb_password.txt && \
             echo ${{secrets.REDISDB_PORT}} > /tmp/redisdb_port.txt && \
             echo ${{secrets.REDISDB_HOST}} > /tmp/redisdb_host.txt && \
