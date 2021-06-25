@@ -80,7 +80,7 @@ jobs:
             "REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }}"
             "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
       
-      - name: Execute SSH commmands on remote server
+      - name: Comandos SSH Servidor
         if: "contains(github.event.*.message, 'subir_despliegue')"
         uses: JimCronqvist/action-ssh@master
         with:
