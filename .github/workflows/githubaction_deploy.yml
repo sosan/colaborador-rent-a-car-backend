@@ -99,8 +99,8 @@ jobs:
             echo ${{secrets.REDISDB_HOST}} > /tmp/redisdb_host.txt && \
             echo ${{secrets.PORT_FRONTEND}} > /tmp/port_frontend.txt && \
             echo ${{secrets.PORT_BACKEND}} > /tmp/port_backend.txt && \
-            echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt && \
-            echo << EOF > /tmp/deploy-compose.txt
+            echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt
+            cat <<EOF > /tmp/deploy-compose.txt
             version: "3.8"
             services:
               frontend:
@@ -143,7 +143,6 @@ jobs:
                     # REDISDB_HOST: REDISDB_HOST
                     # REDISDB_PASSWORD: REDISDB_PASSWORD
                     # ENDPOINT_VARIABLES_FRONTEND: ENDPOINT_VARIABLES_FRONTEND
-
             secrets:
               REDISDB_PASSWORD:
                 file: "/tmp/redisdb_password.txt"
