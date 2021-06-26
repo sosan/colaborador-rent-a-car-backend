@@ -92,8 +92,8 @@ exports.GetFrontendVars = async (req, res) => {
 
     console.log("entrado");
     const variables = await dbInterfaces.GetFrontendVariables();
-
-    res.json({"variables": variables});
+    console.log("varialbes" + variables);
+    res.send({"variables": variables});
 
 };
 
