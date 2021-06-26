@@ -53,6 +53,7 @@ router.post(process.env.ENDPOINT_LOCATION, async (req, res) => await location.Ge
 //porcentaje
 router.get(process.env.ENDPOINT_PORCENTAJE_VEHICULO, async (req, res) => await porcentajeTipoVehiculo.GetPorcentajeTipoVehiculo(req, res));
 
+
 // obtener los vars para frontend
 router.get(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await logicVars.GetFrontendVars(req, res));
 
