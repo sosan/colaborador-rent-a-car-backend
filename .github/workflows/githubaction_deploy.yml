@@ -137,19 +137,19 @@ jobs:
                     URL_BACKEND: backend
                     URL_FRONTEND: frontend
                     NODE_ENV: production
-              secrets:
-                REDISDB_PASSWORD:
-                  file: "/tmp/redisdb_password.txt"
-                REDISDB_PORT:
-                  file: "/tmp/redisdb_port.txt"
-                REDISDB_HOST:
-                  file: "/tmp/redisdb_host.txt"
-                PORT_FRONTEND:
-                  file: "/tmp/port_frontend.txt"
-                PORT_BACKEND:
-                  file: "/tmp/port_backend.txt"
-                ENDPOINT_VARIABLES_FRONTEND:
-                  file: "/tmp/endpoint_variables_frontend.txt"
+            secrets:
+              REDISDB_PASSWORD:
+                file: "/tmp/redisdb_password.txt"
+              REDISDB_PORT:
+                file: "/tmp/redisdb_port.txt"
+              REDISDB_HOST:
+                file: "/tmp/redisdb_host.txt"
+              PORT_FRONTEND:
+                file: "/tmp/port_frontend.txt"
+              PORT_BACKEND:
+                file: "/tmp/port_backend.txt"
+              ENDPOINT_VARIABLES_FRONTEND:
+                file: "/tmp/endpoint_variables_frontend.txt"
             EOF
             cat /tmp/deploy-compose.txt && \
             docker-compose -f /tmp/deploy-compose.txt down && \
