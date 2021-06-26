@@ -34,12 +34,15 @@ exports.GetBackendVars = async () =>
         redisdb_port = await  readSecret("/run/secrets/REDISDB_PORT");
         redisdb_host = await  readSecret("/run/secrets/REDISDB_HOST");
         redisdb_password = await  readSecret("/run/secrets/REDISDB_PASSWORD");
-        endpoint_variables_frontend = await   readSecret("/run/secrets/ENDPOINT_VARIABLES_FRONTEND");
-
+        endpoint_variables_frontend = await readSecret("/run/secrets/ENDPOINT_VARIABLES_FRONTEND");
 
     }
-
+    
+    port_backend = port_backend - 0;
+    port_frontend = port_frontend - 0;
+    redisdb_port = redisdb_port - 0;
     console.log("Seteando variables...");
+
     await dbInterfaces.ConnectVault(redisdb_port, redisdb_host, redisdb_password );
     // await esperar();
 
