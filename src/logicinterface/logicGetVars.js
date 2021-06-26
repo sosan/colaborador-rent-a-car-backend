@@ -18,13 +18,12 @@ exports.GetBackendVars = async () =>
 
     if (process.env.LOCAL_SECRETS === "true")
     {
-        
-        port_backend = await readSecret("../../secrets/port_backend.txt");
-        port_frontend = await  readSecret("../../secrets/port_frontend.txt");
-        redisdb_port = await  readSecret("../../secrets/redisdb_port.txt");
-        redisdb_host = await  readSecret("../../secrets/redisdb_host.txt");
-        redisdb_password = await  readSecret("../../secrets/redisdb_password.txt");
-        endpoint_variables_frontend = await  readSecret("../../secrets/endpoint_variables_frontend.txt");
+        port_backend = await readLocalSecret("../../secrets/port_backend.txt");
+        port_frontend = await readLocalSecret("../../secrets/port_frontend.txt");
+        redisdb_port = await readLocalSecret("../../secrets/redisdb_port.txt");
+        redisdb_host = await readLocalSecret("../../secrets/redisdb_host.txt");
+        redisdb_password = await readLocalSecret("../../secrets/redisdb_password.txt");
+        endpoint_variables_frontend = await readLocalSecret("../../secrets/endpoint_variables_frontend.txt");
 
     }
     else
@@ -46,17 +45,15 @@ exports.GetBackendVars = async () =>
     await dbInterfaces.ConnectVault(redisdb_port, redisdb_host, redisdb_password );
     // await esperar();
 
-    const variables =  await dbInterfaces.GetBackendVariables();
-
-    variables = await sanitizar(variables);
-
-    const buf = Buffer.from(variables);
+    const variablesSinSanitizar =  await dbInterfaces.GetBackendVariables();
+    
+    const buf = Buffer.from(variablesSinSanitizar);
     const envConfig = dotenv.parse(buf);
     for (const k in envConfig) 
     {
-
-        process.env[k] = envConfig[k]
-        console.log(`texto sanitizado=${k}:${envConfig[k]}`);
+        const variableSanitizadas = await sanitizar(envConfig[k]);
+        process.env[k] = variableSanitizadas;
+        console.log(`texto sanitizado=${k}:${variableSanitizadas}`);
     }
 
 };
@@ -79,12 +76,28 @@ function esperar() {
     });
 }
 
-
 const readSecret = async (secretNameAndPath) => {
+    try {
+        const dataSinSanitizar = fs.readFileSync(secretNameAndPath, "utf8");
+        return dataSinSanitizar;
+    }
+    catch (err) {
+        if (err.code !== "ENOENT") {
+            console.error(`An error occurred while trying to read the secret: ${secretNameAndPath}. Err: ${err}`);
+        } else {
+            console.debug(`Could not find the secret ${secretNameAndPath}. Err: ${err}`);
+        }
+    }
+};
+
+
+
+const readLocalSecret = async (secretNameAndPath) => {
     try 
     {
-        const t = path.resolve(__dirname, secretNameAndPath);
-        return fs.readFileSync(t, "utf8");
+        const archivo = path.resolve(__dirname, secretNameAndPath);
+        const dataSinSanitizar = fs.readFileSync(archivo, "utf8");
+        return dataSinSanitizar;
     } 
     catch (err)
     {
