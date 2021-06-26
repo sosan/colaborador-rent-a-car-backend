@@ -9,9 +9,9 @@ exports.conectDb = async (redisdb_port, redisdb_host, redisdb_password) =>
     
     try 
     {
-        console.log("redisdb_port" + redisdb_port);
-        console.log("redisdb_host" + redisdb_host);
-        console.log("redisdb_password" + redisdb_password);
+        console.log("redisdb_port=" + redisdb_port);
+        console.log("redisdb_host=" + redisdb_host);
+        console.log("redisdb_password=" + redisdb_password);
 
         redisClient = new Redis({
             port: redisdb_port, //|| process.env.REDISDB_PORT,
@@ -20,6 +20,7 @@ exports.conectDb = async (redisdb_port, redisdb_host, redisdb_password) =>
             password: redisdb_password, // || process.env.REDISDB_PASSWORD,
             db: 0
         });
+        
 
         if (await redisClient.ping() === "PONG")
         {
