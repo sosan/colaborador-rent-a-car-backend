@@ -151,6 +151,6 @@ jobs:
               ENDPOINT_VARIABLES_FRONTEND:
                 file: "/tmp/endpoint_variables_frontend.txt"
             EOF
-            cat /tmp/deploy-compose.txt && \
-            docker-compose -f /tmp/deploy-compose.txt down && \
+            cat /tmp/deploy-compose.txt
+            docker-compose -f /tmp/deploy-compose.txt down
             docker-compose -f /tmp/deploy-compose.txt up -d
