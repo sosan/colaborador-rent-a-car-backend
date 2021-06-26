@@ -6,9 +6,12 @@ const fetch = require("node-fetch");
 
 const URI_EMAIL_ADMIN_API_BACKEND = `${process.env.URI_EMAIL_ADMIN_API_BACKEND}`;
 const EMAIL_ADMIN_TOKEN_API = `${process.env.EMAIL_ADMIN_TOKEN_API}`;
+const EMAIL_ADMIN_SECRET_TOKEN_API = `${process.env.EMAIL_ADMIN_SECRET_TOKEN_API}`;
+
 
 const URI_EMAIL_USER_API_BACKEND = `${process.env.URI_EMAIL_USER_API_BACKEND}`;
 const EMAIL_USER_TOKEN_API = `${process.env.EMAIL_USER_TOKEN_API}`;
+const EMAIL_USER_SECRET_TOKEN_API = `${process.env.EMAIL_USER_SECRET_TOKEN_API}`;
 
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
@@ -29,10 +32,13 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 
     let bodyEmail = await ContruirEmailUsuario(resultadoInsercion, formulario, traduccion);
 
+    const buff = Buffer.from(`${EMAIL_USER_TOKEN_API}:${EMAIL_USER_SECRET_TOKEN_API}`, "utf-8");
+    const authBase64 = buff.toString("base64");
+
     let data = {
         method: "POST",
         headers: {
-            "api_key": `${EMAIL_USER_TOKEN_API}`,
+            "Authorization": `Basic ${authBase64}`,
             "Content-Type": "application/json",
         },
         credentials: "include",
@@ -40,7 +46,7 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     };
 
     // envio correo usuario
-    const isUserEmailSended = await EnviarCorreo(URI_EMAIL_USER_API_BACKEND, data);
+    const isUserEmailSended = await EnviarCorreo(URI_EMAIL_USER_API_BACKEND,data);
 
 // -------------
 
@@ -107,26 +113,46 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
     // formulario.idioma
 
     // TODO: traducirlo a otros idiomas
+    // let bodyEmail = JSON.stringify({
+    //     "from": {
+    //         "email": "confirmation@pepisandbox.com",
+    //         "name": `RentacarMallorca Email`
+    //     },
+    //     "subject": `${traduccion.sureserva} ${resultadoInsercion.numeroReserva}`,
+    //     "content": [
+    //         {
+    //             "type": "html",
+    //             "value": `${bodyConfirmacionEmail}`
+    //         }
+    //     ],
+    //     "personalizations": [
+    //         {
+    //             "to": [
+    //                 {
+    //                     "email": `${formulario.email}`,
+    //                     // "name": `${formulario.nombre}`
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // });
+
     let bodyEmail = JSON.stringify({
-        "from": {
-            "email": "confirmation@pepisandbox.com",
-            "name": `RentacarMallorca Email`
-        },
-        "subject": `${traduccion.sureserva} ${resultadoInsercion.numeroReserva}`,
-        "content": [
+        "Messages": [
             {
-                "type": "html",
-                "value": `${bodyConfirmacionEmail}`
-            }
-        ],
-        "personalizations": [
-            {
-                "to": [
+                "From": {
+                    "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+                    "Name": "RentacarMallorca Email"
+                },
+                "To": [
                     {
-                        "email": `${formulario.email}`,
-                        // "name": `${formulario.nombre}`
+                        "Email": `${formulario.email}`,
+                        "Name": "Nombre"
                     }
-                ]
+                ],
+                "Subject": `${traduccion.sureserva} ${resultadoInsercion.numeroReserva}`,
+                "TextPart": "skdjfalsjdflasdf",
+                "HTMLPart": `${ bodyConfirmacionEmail }`
             }
         ]
     });
@@ -209,32 +235,52 @@ Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} c
 `
 
     let bodyEmail = JSON.stringify({
-        "from": {
-            "email": "confirmation@pepisandbox.com",
-            "name": "RentacarMallorca Confirmation"
-        },
-        "subject": `${subject}`,
-        "content": [
+        "Messages": [
             {
-                "type": "html",
-                "value": `${html}`
-            }
-        ],
-        "personalizations": [
-            {
-                "to": [
+                "From": {
+                    "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+                    "Name": "RentacarMallorca Confirmation"
+                },
+                "To": [
                     {
-                        "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                        // "name": "Confimacion Reservas"
-                    },
-                    // {
-                    //     "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
-                    //     // "name": "Confimacion Reservas"
-                    // }
-                ]
+                        "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+                        "Name": "Nombre"
+                    }
+                ],
+                "Subject": `${subject}`,
+                "TextPart": "skdjfalsjdflasdf",
+                "HTMLPart": `${html}`
             }
         ]
     });
+
+
+        // "from": {
+        //     "email": "confirmation@pepisandbox.com",
+        //     "name": "RentacarMallorca Confirmation"
+        // },
+        // "subject": `${subject}`,
+        // "content": [
+        //     {
+        //         "type": "html",
+        //         "value": `${html}`
+        //     }
+        // ],
+        // "personalizations": [
+        //     {
+        //         "to": [
+        //             {
+        //                 "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+        //                 // "name": "Confimacion Reservas"
+        //             },
+        //             // {
+        //             //     "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
+        //             //     // "name": "Confimacion Reservas"
+        //             // }
+        //         ]
+        //     }
+        // ]
+    // });
 
     return bodyEmail;
 
@@ -252,10 +298,14 @@ const EnviarCorreo = async (uri, data) =>
         const responseRaw = await fetch(uri, data);
 
         const emailIsSended = await responseRaw.json();
-        if (emailIsSended.status === "success") {
-            isSended = true;
+        if (emailIsSended.Messages.length > 0)
+        {
+            if (emailIsSended.Messages[0].Status === "success") {
+                isSended = true;
+            }
         }
-        else {
+        else 
+        {
             await sleep(5000 * incrementalCount);
             incrementalCount++;
         }
