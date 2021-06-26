@@ -94,13 +94,13 @@ jobs:
             # ls
           command: |
             ls
-            echo ${{secrets.REDISDB_PASSWORD}} > /tmp/redisdb_password.txt && \
-            echo ${{secrets.REDISDB_PORT}} > /tmp/redisdb_port.txt && \
-            echo ${{secrets.REDISDB_HOST}} > /tmp/redisdb_host.txt && \
-            echo ${{secrets.PORT_FRONTEND}} > /tmp/port_frontend.txt && \
-            echo ${{secrets.PORT_BACKEND}} > /tmp/port_backend.txt && \
-            echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt
-            cat <<EOF > /tmp/deploy-compose.txt
+            echo ${{secrets.REDISDB_PASSWORD}} > ./redisdb_password.txt && \
+            echo ${{secrets.REDISDB_PORT}} > ./redisdb_port.txt && \
+            echo ${{secrets.REDISDB_HOST}} > ./redisdb_host.txt && \
+            echo ${{secrets.PORT_FRONTEND}} > ./port_frontend.txt && \
+            echo ${{secrets.PORT_BACKEND}} > ./port_backend.txt && \
+            echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > ./endpoint_variables_frontend.txt
+            cat <<EOF > ./deploy-compose.txt
             version: "3.8"
             services:
               frontend:
@@ -145,18 +145,18 @@ jobs:
                     # ENDPOINT_VARIABLES_FRONTEND: ENDPOINT_VARIABLES_FRONTEND
             secrets:
               REDISDB_PASSWORD:
-                file: "/tmp/redisdb_password.txt"
+                file: "./redisdb_password.txt"
               REDISDB_PORT:
-                file: "/tmp/redisdb_port.txt"
+                file: "./redisdb_port.txt"
               REDISDB_HOST:
-                file: "/tmp/redisdb_host.txt"
+                file: "./redisdb_host.txt"
               PORT_FRONTEND:
-                file: "/tmp/port_frontend.txt"
+                file: "./port_frontend.txt"
               PORT_BACKEND:
-                file: "/tmp/port_backend.txt"
+                file: "./port_backend.txt"
               ENDPOINT_VARIABLES_FRONTEND:
-                file: "/tmp/endpoint_variables_frontend.txt"
+                file: "./endpoint_variables_frontend.txt"
             EOF
-            cat /tmp/deploy-compose.txt
-            nerdctl compose -f /tmp/deploy-compose.txt down
-            nerdctl compose -f /tmp/deploy-compose.txt up -d
+            cat ./deploy-compose.txt
+            nerdctl compose -f ./deploy-compose.txt down
+            nerdctl compose -f ./deploy-compose.txt up -d
