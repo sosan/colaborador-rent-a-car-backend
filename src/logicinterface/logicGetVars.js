@@ -47,18 +47,29 @@ exports.GetBackendVars = async () =>
     // await esperar();
 
     const variables =  await dbInterfaces.GetBackendVariables();
+
+    variables = await sanitizar(variables);
+
     const buf = Buffer.from(variables);
     const envConfig = dotenv.parse(buf);
-    for (const k in envConfig) {
+    for (const k in envConfig) 
+    {
+
         process.env[k] = envConfig[k]
-        // console.log(`${k}:${envConfig[k]}`);
+        console.log(`texto sanitizado=${k}:${envConfig[k]}`);
     }
+
+};
+
+const sanitizar = async (textoSinSanitizar) => {
+
+    const textoSanitizado = textoSinSanitizar.replaceAll("\n", "");
+    return textoSanitizado;
 
 };
 
 function esperar() {
     return new Promise((resolve, reject) => {
-        //here our function should be implemented 
         setTimeout(() => {
             
             resolve();
