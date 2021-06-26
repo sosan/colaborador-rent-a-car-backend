@@ -11,6 +11,11 @@ let locations = undefined;
 
 exports.ObtenerTraduccionEmailUsuario = async (lang) =>
 {
+    if (locations === undefined)
+    {
+        locations = await dbinterface.GetLocation();
+    }
+
     return locations[lang];
 
 };
