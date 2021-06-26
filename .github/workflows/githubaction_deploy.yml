@@ -152,5 +152,5 @@ jobs:
                   file: "/tmp/endpoint_variables_frontend.txt"
             EOF
             cat /tmp/deploy-compose.txt && \
-            nerdctl compose -f /tmp/deploy-compose.txt down && \
-            nerdctl compose -f /tmp/deploy-compose.txt up -d
+            docker-compose -f /tmp/deploy-compose.txt down && \
+            docker-compose -f /tmp/deploy-compose.txt up -d
