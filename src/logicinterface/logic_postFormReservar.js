@@ -95,19 +95,18 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
 {
 
     bodyConfirmacionEmail = traduccion["email_confimacion"]
-        .replaceAll("USUARIO", formulario.nombre)
-        .replaceAll("NOMBRE_MARCA", "RentcarMallorca")
-        .replaceAll("NOMBRE_COCHE", formulario.descripcion_vehiculo)
-        .replaceAll("FECHA_INICIO", formulario.fechaRecogida)
-        .replaceAll("HORA_INICIO", formulario.horaRecogida)
-        .replaceAll("FECHA_FIN", formulario.fechaDevolucion)
-        .replaceAll("HORA_FIN", formulario.horaDevolucion)
-        .replaceAll("NUMERO_RESERVA", resultadoInsercion.numeroReserva)
-        .replaceAll("TELEFONO_MARCA", "9999999")
-        .replaceAll("EMAIL_MARCA", "cambiar@cambiar.com")
-        .replaceAll("DIRECCION_MARCA", "Camino de Can Pastilla, 51")
-        .replaceAll("DIRECCION_1_MARCA", "07610 Can Pastilla - Palma de Mallorca")
-
+        .replace("USUARIO", formulario.nombre)
+        .replace("NOMBRE_MARCA", "RentcarMallorca")
+        .replace("NOMBRE_COCHE", formulario.descripcion_vehiculo)
+        .replace("FECHA_INICIO", formulario.fechaRecogida)
+        .replace("HORA_INICIO", formulario.horaRecogida)
+        .replace("FECHA_FIN", formulario.fechaDevolucion)
+        .replace("HORA_FIN", formulario.horaDevolucion)
+        .replace("NUMERO_RESERVA", resultadoInsercion.numeroReserva)
+        .replace("TELEFONO_MARCA", "9999999")
+        .replace("EMAIL_MARCA", "cambiar@cambiar.com")
+        .replace("DIRECCION_MARCA", "Camino de Can Pastilla, 51")
+        .replace("DIRECCION_1_MARCA", "07610 Can Pastilla - Palma de Mallorca")
     ;
 
     // formulario.idioma
