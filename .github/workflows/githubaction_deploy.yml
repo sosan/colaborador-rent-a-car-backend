@@ -99,7 +99,7 @@ jobs:
             echo ${{secrets.REDISDB_HOST}} > ./redisdb_host.txt && \
             echo ${{secrets.PORT_FRONTEND}} > ./port_frontend.txt && \
             echo ${{secrets.PORT_BACKEND}} > ./port_backend.txt && \
-            echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > ./endpoint_variables_frontend.txt
+            echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > ./endpoint_variables_frontend.txt && \
             cat <<EOF > ./deploy-compose.txt
             version: "3.8"
             services:
@@ -157,6 +157,6 @@ jobs:
               ENDPOINT_VARIABLES_FRONTEND:
                 file: "./endpoint_variables_frontend.txt"
             EOF
-            cat ./deploy-compose.txt
-            nerdctl compose -f ./deploy-compose.txt down
+            cat ./deploy-compose.txt && \
+            nerdctl compose -f ./deploy-compose.txt down && \
             nerdctl compose -f ./deploy-compose.txt up -d
