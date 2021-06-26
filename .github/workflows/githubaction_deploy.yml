@@ -110,16 +110,16 @@ jobs:
                 ports:
                     - 80:8080
                 links:
-                    - backend
+                    - backend_v1:backend_v1
                 environment:
-                    URL_BACKEND: backend
-                    URL_FRONTEND: frontend
+                    URL_BACKEND: backend_v1
+                    URL_FRONTEND: frontend_v1
                     NODE_ENV: production
                 secrets:
                     - PORT_BACKEND
                     - ENDPOINT_VARIABLES_FRONTEND
                 depends_on:
-                    - backend
+                    - backend_v1
               backend:
                 restart: always
                 image: sosan/backend-rentacarmallorca:latest
@@ -134,8 +134,8 @@ jobs:
                     - REDISDB_PASSWORD
                     - ENDPOINT_VARIABLES_FRONTEND
                 environment:
-                    URL_BACKEND: backend
-                    URL_FRONTEND: frontend
+                    URL_BACKEND: backend_v1
+                    URL_FRONTEND: frontend_v1
                     NODE_ENV: production
                     # PORT_FRONTEND: PORT_FRONTEND
                     # PORT_BACKEND: PORT_BACKEND
@@ -145,18 +145,18 @@ jobs:
                     # ENDPOINT_VARIABLES_FRONTEND: ENDPOINT_VARIABLES_FRONTEND
             secrets:
               REDISDB_PASSWORD:
-                file: "./redisdb_password.txt"
+                file: "~/redisdb_password.txt"
               REDISDB_PORT:
-                file: "./redisdb_port.txt"
+                file: "~/redisdb_port.txt"
               REDISDB_HOST:
-                file: "./redisdb_host.txt"
+                file: "~/redisdb_host.txt"
               PORT_FRONTEND:
-                file: "./port_frontend.txt"
+                file: "~/port_frontend.txt"
               PORT_BACKEND:
-                file: "./port_backend.txt"
+                file: "~/port_backend.txt"
               ENDPOINT_VARIABLES_FRONTEND:
-                file: "./endpoint_variables_frontend.txt"
+                file: "~/endpoint_variables_frontend.txt"
             EOF
-            cat ./deploy-compose.txt && \
-            nerdctl compose -f ./deploy-compose.txt down && \
-            nerdctl compose -f ./deploy-compose.txt up -d
+            cat ~/deploy-compose.txt && \
+            nerdctl compose -f ~/deploy-compose.txt down && \
+            nerdctl compose -f ~/deploy-compose.txt up -d
