@@ -16,6 +16,10 @@ const EMAIL_USER_SECRET_TOKEN_API = `${process.env.EMAIL_USER_SECRET_TOKEN_API}`
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
 
+const authBase64 = Buffer.from(`${EMAIL_USER_TOKEN_API}:${EMAIL_USER_SECRET_TOKEN_API}`, "utf-8").toString("base64");
+// const authBase64 = buff.toString("base64");
+
+
 // TODO: generar string a partir del secreto
 const GenerateTokenBackendToFrontend = async () => {
 
@@ -32,8 +36,7 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 
     let bodyEmail = await ContruirEmailUsuario(resultadoInsercion, formulario, traduccion);
 
-    const buff = Buffer.from(`${EMAIL_USER_TOKEN_API}:${EMAIL_USER_SECRET_TOKEN_API}`, "utf-8");
-    const authBase64 = buff.toString("base64");
+    
 
     let data = {
         method: "POST",
@@ -46,8 +49,11 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     };
 
     // envio correo usuario
-    const isUserEmailSended = await EnviarCorreo(URI_EMAIL_USER_API_BACKEND,data);
-
+    const resultadoUserEmailSended = await EnviarCorreo(URI_EMAIL_USER_API_BACKEND,data);
+    if (resultadoUserEmailSended.cannotSend === true)
+    {
+        //TODO: enviarlo a una base de datos para procesar mas tarde
+    }
 // -------------
 
     // envio correo administracion
@@ -56,7 +62,7 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     data = {
         method: "POST",
         headers: {
-            "api_key": `${EMAIL_ADMIN_TOKEN_API}`,
+            "Authorization": `Basic ${authBase64}`,
             "Content-Type": "application/json",
         },
         credentials: "include",
@@ -64,11 +70,11 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     };
 
     //envio correo admins
-    const isAdminEmailSended = await EnviarCorreo(URI_EMAIL_ADMIN_API_BACKEND, data);
+    const resultadoAdminEmailSended = await EnviarCorreo(URI_EMAIL_ADMIN_API_BACKEND, data);
     
     const emailsEnviados = {
-        "isUserEmailSended": isUserEmailSended,
-        "isAdminEmailSended": isAdminEmailSended
+        "resultadoUserEmailSended": resultadoUserEmailSended,
+        "resultadoAdminEmailSended": resultadoAdminEmailSended
     };
 
     return emailsEnviados;
@@ -81,33 +87,41 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
     const currentDate = await ObtenerCurrentDate();
 
     emailsEnviados["fechaEmailsActualizado"] = currentDate;
+    emailsEnviados.resultadoUserEmailSended["fechaEmailsActualizado"] = currentDate;
+    emailsEnviados.resultadoAdminEmailSended["fechaEmailsActualizado"] = currentDate;
 
-    //buscar el id y actualizar el id
-    const resultado = await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
-    console.log(`emails enviados:\n-> Usuarios: ${emailsEnviados.isUserEmailSended}\n-> Admins: ${emailsEnviados.isAdminEmailSended}` )
-    
-
+    //buscar por id
+    const isUpdated = await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
+    console.log(`emails enviados:\n-> Usuarios: ${emailsEnviados.resultadoUserEmailSended.isSended}\n-> Admins: ${emailsEnviados.resultadoAdminEmailSended.isSended}` )
 
 };
+
+
+
 
 
 const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>
 {
 
+
+    
+    // .replace("USUARIO", formulario.nombre)
     bodyConfirmacionEmail = traduccion["email_confimacion"]
-        .replace("USUARIO", formulario.nombre)
-        .replace("NOMBRE_MARCA", "RentcarMallorca")
-        .replace("NOMBRE_COCHE", formulario.descripcion_vehiculo)
-        .replace("FECHA_INICIO", formulario.fechaRecogida)
-        .replace("HORA_INICIO", formulario.horaRecogida)
-        .replace("FECHA_FIN", formulario.fechaDevolucion)
-        .replace("HORA_FIN", formulario.horaDevolucion)
-        .replace("NUMERO_RESERVA", resultadoInsercion.numeroReserva)
-        .replace("TELEFONO_MARCA", "9999999")
-        .replace("EMAIL_MARCA", "cambiar@cambiar.com")
-        .replace("DIRECCION_MARCA", "Camino de Can Pastilla, 51")
-        .replace("DIRECCION_1_MARCA", "07610 Can Pastilla - Palma de Mallorca")
+    .replace(new RegExp("USUARIO", 'g'), formulario.nombre)
+    .replace(new RegExp("NOMBRE_MARCA", "g"), "RentcarMallorca")
+    .replace(new RegExp("NOMBRE_COCHE", "g"), formulario.descripcion_vehiculo)
+    .replace(new RegExp("FECHA_INICIO", "g"), formulario.fechaRecogida)
+    .replace(new RegExp("HORA_INICIO", "g"), formulario.horaRecogida)
+    .replace(new RegExp("FECHA_FIN", "g"), formulario.fechaDevolucion)
+    .replace(new RegExp("HORA_FIN", "g"), formulario.horaDevolucion)
+    .replace(new RegExp("NUMERO_RESERVA", "g"), resultadoInsercion.numeroReserva)
+    .replace(new RegExp("TELEFONO_MARCA", "g"), "9999999")
+    .replace(new RegExp("EMAIL_MARCA", "g"), "cambiar@cambiar.com")
+    .replace(new RegExp("DIRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
+    .replace(new RegExp("DIRECCION_1_MARCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
+
+
 
     // formulario.idioma
 
@@ -291,6 +305,13 @@ const EnviarCorreo = async (uri, data) =>
 
     let isSended = false;
     let incrementalCount = 1;
+    let resultadoEnvioEmail =
+    {
+        "isSended": false,
+        "messageId": 0,
+        "messageUUID": 0,
+        "cannotSend": false
+    };
     
     while (isSended === false)
     {
@@ -299,8 +320,12 @@ const EnviarCorreo = async (uri, data) =>
         const emailIsSended = await responseRaw.json();
         if (emailIsSended.Messages.length > 0)
         {
-            if (emailIsSended.Messages[0].Status === "success") {
+            if (emailIsSended.Messages[0].Status === "success")
+            {
                 isSended = true;
+                resultadoEnvioEmail["isSended"] = true ;
+                resultadoEnvioEmail["messageId"] = emailIsSended.Messages[0].To[0].MessageID;
+                resultadoEnvioEmail["messageUUID"] = emailIsSended.Messages[0].To[0].MessageUUID;
             }
         }
         else 
@@ -311,12 +336,12 @@ const EnviarCorreo = async (uri, data) =>
 
         if (incrementalCount >= 10)
         {
-            isSended = false;
+            resultadoEnvioEmail["cannotSend"] = true;
             break;
         }
     }
-    
-    return isSended;
+
+    return resultadoEnvioEmail;
 
 };
 

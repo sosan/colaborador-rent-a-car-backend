@@ -592,7 +592,7 @@ exports.AddEmailNewsletter = async (email) => {
 };
 
 
-exports.SearchReserva = async (emailsEnviados, objectId) =>
+exports.UpdateReserva = async (emailsEnviados, objectId) =>
 {
 
     try

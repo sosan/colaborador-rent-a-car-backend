@@ -182,7 +182,7 @@ exports.AddEmailNewsletter = async (email) =>
 
 exports.UpdateReserva = async (emailsEnviados, objectId, currentDate) =>
 {
-    const resultado = await mongo_dao.SearchReserva(emailsEnviados, objectId);
+    const resultado = await mongo_dao.UpdateReserva(emailsEnviados, objectId);
     return resultado;
 
 };

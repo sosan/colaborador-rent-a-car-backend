@@ -22,8 +22,9 @@ exports.postRealizarReserva = async (req, res) =>
 
     res.send({ isOk: resultadoInsercion.isInserted, numeroReserva: resultadoInsercion.numeroReserva });
 
-    const emailsEnviados = await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
-
-    await logicInterface.ConfirmacionEmailsEnviados(emailsEnviados, resultadoInsercion.objectId);
+    const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
+    
+    // console.log("emailenviados" + emailsEnviados.isAdminEmailSended + " ")
+    await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, resultadoInsercion.objectId);
 
 };
