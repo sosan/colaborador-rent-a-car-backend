@@ -85,12 +85,13 @@ jobs:
         
       - name: Comandos SSH Servidor
         if: "contains(github.event.head_commit.message, '/b')"
-        uses: garygrossgarten/github-action-ssh@release
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_SERVIDOR }}
           username: alvaro
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
-          command: |
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          port: 22
+          script: |
             ls && \
             echo ${{secrets.REDISDB_PASSWORD}} > /tmp/redisdb_password.txt && \
             echo ${{secrets.REDISDB_PORT}} > /tmp/redisdb_port.txt && \
