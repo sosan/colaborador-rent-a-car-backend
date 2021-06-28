@@ -106,49 +106,21 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
 
     
     // .replace("USUARIO", formulario.nombre)
-    bodyConfirmacionEmail = traduccion["email_confimacion"]
+    bodyConfirmacionEmail = traduccion["registro_confirmacion"]
     .replace(new RegExp("USUARIO", 'g'), formulario.nombre)
+    .replace(new RegExp("URL_IMAGEN", 'g'), "http://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png")
     .replace(new RegExp("NOMBRE_MARCA", "g"), "RentcarMallorca")
     .replace(new RegExp("NOMBRE_COCHE", "g"), formulario.descripcion_vehiculo)
     .replace(new RegExp("FECHA_INICIO", "g"), formulario.fechaRecogida)
     .replace(new RegExp("HORA_INICIO", "g"), formulario.horaRecogida)
     .replace(new RegExp("FECHA_FIN", "g"), formulario.fechaDevolucion)
     .replace(new RegExp("HORA_FIN", "g"), formulario.horaDevolucion)
-    .replace(new RegExp("NUMERO_RESERVA", "g"), resultadoInsercion.numeroReserva)
+    .replace(new RegExp("NUMERO_REGISTRO", "g"), resultadoInsercion.numeroRegistro)
     .replace(new RegExp("TELEFONO_MARCA", "g"), "9999999")
     .replace(new RegExp("EMAIL_MARCA", "g"), "cambiar@cambiar.com")
     .replace(new RegExp("DIRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
     .replace(new RegExp("DIRECCION_1_MARCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
-
-
-
-    // formulario.idioma
-
-    // TODO: traducirlo a otros idiomas
-    // let bodyEmail = JSON.stringify({
-    //     "from": {
-    //         "email": "confirmation@pepisandbox.com",
-    //         "name": `RentacarMallorca Email`
-    //     },
-    //     "subject": `${traduccion.sureserva} ${resultadoInsercion.numeroReserva}`,
-    //     "content": [
-    //         {
-    //             "type": "html",
-    //             "value": `${bodyConfirmacionEmail}`
-    //         }
-    //     ],
-    //     "personalizations": [
-    //         {
-    //             "to": [
-    //                 {
-    //                     "email": `${formulario.email}`,
-    //                     // "name": `${formulario.nombre}`
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // });
 
     let bodyEmail = JSON.stringify({
         "Messages": [
@@ -163,8 +135,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
                         "Name": "Nombre"
                     }
                 ],
-                "Subject": `${traduccion.sureserva} ${resultadoInsercion.numeroReserva}`,
-                "TextPart": "skdjfalsjdflasdf",
+                "Subject": `${traduccion.suregistro} ${resultadoInsercion.numeroRegistro}`,
                 "HTMLPart": `${ bodyConfirmacionEmail }`
             }
         ]
@@ -192,11 +163,11 @@ const ConstruirEmailAdmins = async (resultadoInsercion, formulario) =>
     }
 
     let errorEmailSended = "";
-    let subject = `Reserva Numero: ${resultadoInsercion.numeroReserva}`;
+    let subject = `Numero Registro: ${resultadoInsercion.numeroRegistro}`;
     if (formulario.isUserEmailSended === false) {
         // mostrar error en el correo
         errorEmailSended = `ATENCION!!!! Ha habido un error al enviar correo al usuario ${formulario.email}`;
-        subject = `Error! Reserva Numero: ${resultadoInsercion.numeroReserva}`;
+        subject = `Problemas! El Numero Registro: ${resultadoInsercion.numeroRegistro} tiene problemas`;
 
     }
 
@@ -238,7 +209,7 @@ a
 </head>
 <body>
 ${errorEmailSended}
-Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} con los siguientes datos
+Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroRegistro} con los siguientes datos
 <br>
 <table id="customers">
   ${tabla}
@@ -257,43 +228,14 @@ Ha llegado una reserva nueva con el numero ${resultadoInsercion.numeroReserva} c
                 "To": [
                     {
                         "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                        "Name": "Nombre"
+                        "Name": "Alvaro"
                     }
                 ],
                 "Subject": `${subject}`,
-                "TextPart": "skdjfalsjdflasdf",
                 "HTMLPart": `${html}`
             }
         ]
     });
-
-
-        // "from": {
-        //     "email": "confirmation@pepisandbox.com",
-        //     "name": "RentacarMallorca Confirmation"
-        // },
-        // "subject": `${subject}`,
-        // "content": [
-        //     {
-        //         "type": "html",
-        //         "value": `${html}`
-        //     }
-        // ],
-        // "personalizations": [
-        //     {
-        //         "to": [
-        //             {
-        //                 "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-        //                 // "name": "Confimacion Reservas"
-        //             },
-        //             // {
-        //             //     "email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}`,
-        //             //     // "name": "Confimacion Reservas"
-        //             // }
-        //         ]
-        //     }
-        // ]
-    // });
 
     return bodyEmail;
 
@@ -369,7 +311,7 @@ const ObtenerCurrentDate = async () =>
 };
 
 
-const ObtenerNumeroReserva = async () =>
+const ObtenernumeroRegistro = async () =>
 {
 
     let date_ob = new Date();
@@ -380,18 +322,18 @@ const ObtenerNumeroReserva = async () =>
     const cadenaComprobarDia = `${anyo}:${mes}:${dia}`;
     const cantidadReservasDia = await dbInterfaces.ConsultarCantidadReservasDia(cadenaComprobarDia);
 
-    const numeroReserva = `${anyo}-${mes}-${dia}--${cantidadReservasDia}`;
+    const numeroRegistro = `${anyo}-${mes}-${dia}--${cantidadReservasDia}`;
 
-    return numeroReserva;
+    return numeroRegistro;
 
 };
 
 exports.ProcesarReserva = async (formulario, currentDate) =>
 {
 
-    const numeroReserva = await ObtenerNumeroReserva();
+    const numeroRegistro = await ObtenernumeroRegistro();
     
-    formulario["numeroReserva"] = numeroReserva;
+    formulario["numeroRegistro"] = numeroRegistro;
     
     formulario = await SanitizarFormulario(formulario);
 
@@ -407,7 +349,7 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
             incrementalCount++;
         }
     }
-    return { "isInserted": isInserted, "objectId": result.objectId, "numeroReserva": numeroReserva};
+    return { "isInserted": isInserted, "objectId": result.objectId, "numeroRegistro": numeroRegistro};
 
 };
 

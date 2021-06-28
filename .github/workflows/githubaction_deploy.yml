@@ -155,7 +155,8 @@ jobs:
               ENDPOINT_VARIABLES_FRONTEND:
                 file: "/tmp/endpoint_variables_frontend.txt"
             EOF
-            docker pull sosan/backend-rentacarmallorca:latest
+            ls && \
+            docker pull sosan/backend-rentacarmallorca:latest && \
             docker pull sosan/frontend-rentacarmallorca:latest
             
             

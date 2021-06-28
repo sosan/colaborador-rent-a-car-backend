@@ -20,7 +20,7 @@ exports.postRealizarReserva = async (req, res) =>
     
     //TODO: generar token
 
-    res.send({ isOk: resultadoInsercion.isInserted, numeroReserva: resultadoInsercion.numeroReserva });
+    res.send({ isOk: resultadoInsercion.isInserted, numeroRegistro: resultadoInsercion.numeroRegistro });
 
     const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
     
