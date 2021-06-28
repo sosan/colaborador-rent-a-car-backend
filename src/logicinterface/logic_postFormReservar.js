@@ -17,7 +17,6 @@ const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERV
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
 
 const authBase64 = Buffer.from(`${EMAIL_USER_TOKEN_API}:${EMAIL_USER_SECRET_TOKEN_API}`, "utf-8").toString("base64");
-// const authBase64 = buff.toString("base64");
 
 
 // TODO: generar string a partir del secreto
@@ -117,7 +116,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
     .replace(new RegExp("HORA_FIN", "g"), formulario.horaDevolucion)
     .replace(new RegExp("NUMERO_REGISTRO", "g"), resultadoInsercion.numeroRegistro)
     .replace(new RegExp("TELEFONO_MARCA", "g"), "9999999")
-    .replace(new RegExp("EMAIL_MARCA", "g"), "cambiar@cambiar.com")
+    .replace(new RegExp("EMAIL_MARCA", "g"), "servicios@rentcarmallorca.es")
     .replace(new RegExp("DIRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
     .replace(new RegExp("DIRECCION_1_MARCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
@@ -127,12 +126,12 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
             {
                 "From": {
                     "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                    "Name": "RentacarMallorca Email"
+                    "Name": "Servicios RentcarMallorca.es"
                 },
                 "To": [
                     {
                         "Email": `${formulario.email}`,
-                        "Name": "Nombre"
+                        "Name": `${formulario.nombre}`
                     }
                 ],
                 "Subject": `${traduccion.suregistro} ${resultadoInsercion.numeroRegistro}`,
@@ -228,7 +227,7 @@ Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroR
                 "To": [
                     {
                         "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                        "Name": "Alvaro"
+                        "Name": "Admin"
                     }
                 ],
                 "Subject": `${subject}`,
@@ -398,25 +397,6 @@ exports.CheckTokenPostForm = async (formulario) => {
         email: Joi.string().required(),
         telefono: Joi.string().required(),
         idioma: Joi.string().required(),
-        // descripcion_vehiculo: Joi.string().required(),
-        // fechaRecogida: Joi.string().required(),
-        // horaRecogida: Joi.string().required(),
-        // fechaDevolucion: Joi.string().required(),
-        // horaDevolucion: Joi.string().required(),
-        // dias: Joi.number().required(),
-        // alquiler: Joi.number().required(),
-        // total_suplmento_tipo_conductor: Joi.number().required(),
-        // pagoRecogida: Joi.number().required(),
-        // pago_online: Joi.number().required(),
-        // titulo: Joi.string().required(),
-        // child_seat: Joi.number().required(),
-        // booster_seat: Joi.number().required(),
-        // conductor_con_experiencia: Joi.string().required(),
-        // email: Joi.string().required(),
-        // nombre: Joi.string().required(),
-        // apellidos: Joi.string().required(),
-        // telefono: Joi.string().required(),
-        // idioma: Joi.string().required(),
         
 
     });

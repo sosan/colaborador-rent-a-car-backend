@@ -88,9 +88,9 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_SERVIDOR }}
-          username: alvaro
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY}}
-          port: 22
+          port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
             ls && \
             echo ${{secrets.REDISDB_PASSWORD}} > /tmp/redisdb_password.txt && \
@@ -99,7 +99,7 @@ jobs:
             echo ${{secrets.PORT_FRONTEND}} > /tmp/port_frontend.txt && \
             echo ${{secrets.PORT_BACKEND}} > /tmp/port_backend.txt && \
             echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt && \
-            cat <<EOF > /tmp/deploy-compose.txt && \
+            cat <<EOF > /tmp/deploy-compose.txt
             version: "3.7"
             services:
               frontend:
@@ -155,7 +155,7 @@ jobs:
                 file: "/tmp/endpoint_variables_frontend.txt"
             EOF
             ls && \
-            docker pull sosan/backend-rentacarmallorca:latest && \
-            docker pull sosan/frontend-rentacarmallorca:latest
+            /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
+            /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest
             
             
