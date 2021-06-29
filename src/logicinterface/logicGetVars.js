@@ -125,10 +125,10 @@ const readLocalSecret = async (secretNameAndPath) => {
 exports.GetFrontendVars = async (req, res) => 
 {
 
-    // const authheader = ;
-    // if (authheader === undefined)
+    console.log("req.header.auth=" + req.headers.authorization + " token_for=" + process.env.TOKEN_FOR_BACKEND_ACCESS):
     if (req.headers.authorization !== process.env.TOKEN_FOR_BACKEND_ACCESS )
     {
+        console.log("no son iguales");
         return;
     }
 
