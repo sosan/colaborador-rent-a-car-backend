@@ -157,7 +157,7 @@ jobs:
                 file: "/tmp/port_backend.txt"
               ENDPOINT_VARIABLES_FRONTEND:
                 file: "/tmp/endpoint_variables_frontend.txt"
-              TOKEN_FOR_BACKEND_ACCESS
+              TOKEN_FOR_BACKEND_ACCESS:
                 file: "/tmp/token_for_backend_access.txt"
             EOF
             ls && \

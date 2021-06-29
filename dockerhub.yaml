@@ -13,6 +13,7 @@ services:
     secrets:
         - PORT_BACKEND
         - ENDPOINT_VARIABLES_FRONTEND
+        - TOKEN_FOR_BACKEND_ACCESS
     networks:
       - gateway
     depends_on:
@@ -32,6 +33,7 @@ services:
       - REDISDB_HOST
       - REDISDB_PASSWORD
       - ENDPOINT_VARIABLES_FRONTEND
+      - TOKEN_FOR_BACKEND_ACCESS
     environment:
       URL_BACKEND: backend
       URL_FRONTEND: frontend
@@ -51,3 +53,5 @@ secrets:
     file: "./secrets/port_backend.txt"
   ENDPOINT_VARIABLES_FRONTEND:
     file: "./secrets/endpoint_variables_frontend.txt"
+  TOKEN_FOR_BACKEND_ACCESS:
+    file: "./secrets/token_for_backend_access.txt"
