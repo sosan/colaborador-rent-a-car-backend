@@ -3,6 +3,7 @@ const dbInterfaces = require("../database/dbInterfaces");
 const logicStats = require("../logicinterface/logic_stats");
 const traducciones = require("../controllers/location");
 const fetch = require("node-fetch");
+const { transporter } = require("./logicSendEmail");
 
 const URI_EMAIL_ADMIN_API_BACKEND = `${process.env.URI_EMAIL_ADMIN_API_BACKEND}`;
 const EMAIL_ADMIN_TOKEN_API = `${process.env.EMAIL_ADMIN_TOKEN_API}`;
@@ -37,18 +38,21 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 
     
 
-    let data = {
-        method: "POST",
-        headers: {
-            "Authorization": `Basic ${authBase64}`,
-            "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: bodyEmail
-    };
+    // let data = {
+    //     method: "POST",
+    //     headers: {
+    //         "Authorization": `Basic ${authBase64}`,
+    //         "Content-Type": "application/json",
+    //     },
+    //     credentials: "include",
+    //     body: bodyEmail
+    // };
 
     // envio correo usuario
-    const resultadoUserEmailSended = await EnviarCorreo(URI_EMAIL_USER_API_BACKEND,data);
+    
+    const resultadoUserEmailSended = await EnviarCorreoIo( bodyEmail);
+    // const resultadoUserEmailSended = await EnviarCorreoApiJet(URI_EMAIL_USER_API_BACKEND,data);
+    
     if (resultadoUserEmailSended.cannotSend === true)
     {
         //TODO: enviarlo a una base de datos para procesar mas tarde
@@ -58,18 +62,18 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     // envio correo administracion
     bodyEmail = await ConstruirEmailAdmins(resultadoInsercion, formulario);
 
-    data = {
-        method: "POST",
-        headers: {
-            "Authorization": `Basic ${authBase64}`,
-            "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: bodyEmail
-    };
+    // data = {
+    //     method: "POST",
+    //     headers: {
+    //         "Authorization": `Basic ${authBase64}`,
+    //         "Content-Type": "application/json",
+    //     },
+    //     credentials: "include",
+    //     body: bodyEmail
+    // };
 
     //envio correo admins
-    const resultadoAdminEmailSended = await EnviarCorreo(URI_EMAIL_ADMIN_API_BACKEND, data);
+    const resultadoAdminEmailSended = await EnviarCorreoIo(bodyEmail);
     
     const emailsEnviados = {
         "resultadoUserEmailSended": resultadoUserEmailSended,
@@ -121,24 +125,36 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
     .replace(new RegExp("DIRECCION_1_MARCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
 
-    let bodyEmail = JSON.stringify({
-        "Messages": [
-            {
-                "From": {
-                    "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                    "Name": "Servicios RentcarMallorca.es"
-                },
-                "To": [
-                    {
-                        "Email": `${formulario.email}`,
-                        "Name": `${formulario.nombre}`
-                    }
-                ],
-                "Subject": `${traduccion.suregistro} ${resultadoInsercion.numeroRegistro}`,
-                "HTMLPart": `${ bodyConfirmacionEmail }`
-            }
-        ]
-    });
+    let bodyEmail = 
+    {
+        from: 
+        {
+            name: "Servicios RentCarMallorca.es",
+            address: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`
+        },
+        to: `${formulario.email}`,
+        subject: `${traduccion.suregistro} ${resultadoInsercion.numeroRegistro}`,
+        html: `${bodyConfirmacionEmail}`
+    };
+
+    // let bodyEmail = JSON.stringify({
+    //     "Messages": [
+    //         {
+    //             "From": {
+    //                 "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+    //                 "Name": "Servicios RentcarMallorca.es"
+    //             },
+    //             "To": [
+    //                 {
+    //                     "Email": `${formulario.email}`,
+    //                     "Name": `${formulario.nombre}`
+    //                 }
+    //             ],
+    //             "Subject": `${traduccion.suregistro} ${resultadoInsercion.numeroRegistro}`,
+    //             "HTMLPart": `${ bodyConfirmacionEmail }`
+    //         }
+    //     ]
+    // });
 
     return bodyEmail;
 
@@ -217,31 +233,79 @@ Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroR
 </html>
 `
 
-    let bodyEmail = JSON.stringify({
-        "Messages": [
-            {
-                "From": {
-                    "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                    "Name": "RentacarMallorca Confirmation"
-                },
-                "To": [
-                    {
-                        "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-                        "Name": "Admin"
-                    }
-                ],
-                "Subject": `${subject}`,
-                "HTMLPart": `${html}`
-            }
-        ]
-    });
+    let bodyEmail =
+    {
+        from: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+        to: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+        subject: `${subject}`,
+        html: `${html}`
+    };
+
+    // let bodyEmail = {
+    //     "Messages": [
+    //         {
+    //             "From": {
+    //                 "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+    //                 "Name": "RentacarMallorca Confirmation"
+    //             },
+    //             "To": [
+    //                 {
+    //                     "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+    //                     "Name": "Admin"
+    //                 }
+    //             ],
+    //             "Subject": `${subject}`,
+    //             "HTMLPart": `${html}`
+    //         }
+    //     ]
+    // };
 
     return bodyEmail;
 
 };
 
+const EnviarCorreoIo = async (data) =>
+{
 
-const EnviarCorreo = async (uri, data) =>
+    let isSended = false;
+    let incrementalCount = 1;
+    let resultadoEnvioEmail =
+    {
+        "isSended": false,
+        "messageId": 0,
+        "cannotSend": false
+    };
+
+    while (isSended === false) {
+
+        const responseRaw = await transporter.sendMail(data);
+
+        if (responseRaw.messageId !== undefined) {
+            
+            isSended = true;
+            resultadoEnvioEmail["isSended"] = true;
+            resultadoEnvioEmail["messageId"] = responseRaw.messageId;
+            
+        }
+        else {
+            await sleep(5000 * incrementalCount);
+            incrementalCount++;
+        }
+
+        if (incrementalCount >= 10) {
+            resultadoEnvioEmail["cannotSend"] = true;
+            break;
+        }
+    }
+
+    return resultadoEnvioEmail;
+
+
+
+};
+
+
+const EnviarCorreoApiJet = async (uri, data) =>
 {
 
     let isSended = false;
@@ -254,6 +318,8 @@ const EnviarCorreo = async (uri, data) =>
         "cannotSend": false
     };
     
+   
+
     while (isSended === false)
     {
         const responseRaw = await fetch(uri, data);
@@ -285,8 +351,6 @@ const EnviarCorreo = async (uri, data) =>
     return resultadoEnvioEmail;
 
 };
-
-
 
 
 //2020-01-07T11:28:03.588+00:00

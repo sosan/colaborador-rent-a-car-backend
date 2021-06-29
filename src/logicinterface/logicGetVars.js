@@ -51,8 +51,15 @@ exports.GetBackendVars = async () =>
     const envConfig = dotenv.parse(buf);
     for (const k in envConfig) 
     {
-        const variableSanitizadas = await sanitizar(envConfig[k]);
-        process.env[k] = variableSanitizadas;
+        if (k !== PUBLIC_SMTP_KEY)
+        {
+            const variableSanitizadas = await sanitizar(envConfig[k]);
+            process.env[k] = variableSanitizadas;
+        }
+        else
+        {
+            process.env[k] = envConfig[k];
+        }
         console.log(`texto sanitizado=${k}:${variableSanitizadas}`);
     }
 
@@ -112,7 +119,18 @@ const readLocalSecret = async (secretNameAndPath) => {
 
 
 
-exports.GetFrontendVars = async (req, res) => {
+exports.GetFrontendVars = async (req, res) => 
+{
+
+    // const authheader = ;
+    // if (authheader === undefined)
+    if (req.headers.authorization !== process.env.TOKEN_FOR_BACKEND_ACCESS )
+    {
+        return;
+    }
+
+    // const auth = new Buffer.from(authheader.split(" ")[1], "base64").toString().split(":");
+
 
     console.log("entrado");
     const variables = await dbInterfaces.GetFrontendVariables();

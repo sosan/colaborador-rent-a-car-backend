@@ -1,5 +1,6 @@
 const dbInterface = require("../database/dbInterfaces");
-
+const {transporter} = require("../logicinterface/logicSendEmail");
+const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 
 exports.CheckEmail = async (email) => {
     const regex = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm;
@@ -31,5 +32,76 @@ exports.AñadirEmailNewsLetter = async (email) =>
 
     const result = await dbInterface.AddEmailNewsletter(email);
     return result;
+
+};
+
+
+exports.ContruirEmailUsuario = async (formulario, traduccion) => {
+
+
+    // .replace("USUARIO", formulario.nombre)
+    bodyConfirmacionEmail = traduccion["registro_newsletter"]
+        .replace(new RegExp("URL_IMAGEN", 'g'), "http://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png")
+        .replace(new RegExp("NOMBRE_MARCA", "g"), "RentcarMallorca")
+        .replace(new RegExp("TELEFONO_MARCA", "g"), "9999999")
+        .replace(new RegExp("EMAIL_MARCA", "g"), "servicios@rentcarmallorca.es")
+        .replace(new RegExp("DIRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
+        .replace(new RegExp("DIRECCION_1_MARCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
+        ;
+
+    let bodyEmail =
+    {
+        from:
+        {
+            name: "Servicios RentCarMallorca.es",
+            address: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`
+        },
+        to: `${formulario.email}`,
+        subject: `${traduccion.suregistronewsletter}`,
+        html: `${bodyConfirmacionEmail}`
+    };
+
+
+    return bodyEmail;
+
+};
+
+
+exports.EnviarCorreoIo = async (data) => {
+
+    let isSended = false;
+    let incrementalCount = 1;
+    let resultadoEnvioEmail =
+    {
+        "isSended": false,
+        "messageId": 0,
+        "cannotSend": false
+    };
+
+    while (isSended === false) {
+
+        const responseRaw = await transporter.sendMail(data);
+
+        if (responseRaw.messageId !== undefined) {
+
+            isSended = true;
+            resultadoEnvioEmail["isSended"] = true;
+            resultadoEnvioEmail["messageId"] = responseRaw.messageId;
+
+        }
+        else {
+            await sleep(5000 * incrementalCount);
+            incrementalCount++;
+        }
+
+        if (incrementalCount >= 10) {
+            resultadoEnvioEmail["cannotSend"] = true;
+            break;
+        }
+    }
+
+    return resultadoEnvioEmail;
+
+
 
 };

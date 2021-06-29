@@ -1,5 +1,6 @@
 const news = require("../logicinterface/logicNewsletter");
 const fetch = require("node-fetch");
+const traducciones = require("../controllers/location");
 
 const ENDPOINT_NEWSLETTER_BACKEND = `${process.env.URL_BACKEND}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_NEWSLETTER_BACKEND}`;
 
@@ -22,11 +23,22 @@ exports.ProcesarEmail = async (req, res) => {
     
     if (emailChecked.existeEmail === true)
     {
-        res.send({ "isOk": false });
+        return res.send({ "isOk": false });
     }
     
     res.send({ "isOk": true });
     await news.AñadirEmailNewsLetter(req.body.email);
+
+    const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(req.body.idioma);
+
+    if (traduccion === undefined)
+    {
+        return res.send({ "isOk": false });
+    }
+
+    let bodyEmail = await news.ContruirEmailUsuario(req.body, traduccion);
+
+    const resultadoUserEmailSended = await news.EnviarCorreoIo(bodyEmail);
 
 
 };

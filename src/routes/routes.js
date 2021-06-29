@@ -13,6 +13,7 @@ const location = require("../controllers/location");
 const porcentajeTipoVehiculo = require("../controllers/porcentajeTipoVehiculo");
 const logicVars = require("../logicinterface/logicGetVars");
 
+
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
 const router = express.Router();
@@ -56,8 +57,6 @@ router.get(process.env.ENDPOINT_PORCENTAJE_VEHICULO, async (req, res) => await p
 
 // obtener los vars para frontend
 router.get(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await logicVars.GetFrontendVars(req, res));
-
-
 
 
 module.exports = router;
