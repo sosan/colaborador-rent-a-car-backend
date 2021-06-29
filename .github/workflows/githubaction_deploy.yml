@@ -79,6 +79,7 @@ jobs:
             "REDISDB_HOST=${{ secrets.REDISDB_HOST }}"
             "REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }}"
             "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
+            "TOKEN_FOR_BACKEND_ACCESS=${{ secrets.TOKEN_FOR_BACKEND_ACCESS }}"
       
         # if: "contains(github.event.*.message, 'subir despliegue')"
         # if: github.event.*.message === "subir_despliegue"
@@ -99,6 +100,7 @@ jobs:
             echo ${{secrets.PORT_FRONTEND}} > /tmp/port_frontend.txt && \
             echo ${{secrets.PORT_BACKEND}} > /tmp/port_backend.txt && \
             echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt && \
+            echo ${{secrets.TOKEN_FOR_BACKEND_ACCESS}} > /tmp/token_for_backend_access.txt && \
             cat <<EOF > /tmp/deploy-compose.txt
             version: "3.7"
             services:
@@ -115,6 +117,7 @@ jobs:
                 secrets:
                     - PORT_BACKEND
                     - ENDPOINT_VARIABLES_FRONTEND
+                    - TOKEN_FOR_BACKEND_ACCESS
                 networks:
                   - gateway
                 depends_on:
@@ -134,6 +137,7 @@ jobs:
                   - REDISDB_HOST
                   - REDISDB_PASSWORD
                   - ENDPOINT_VARIABLES_FRONTEND
+                  - TOKEN_FOR_BACKEND_ACCESS
                 environment:
                   URL_BACKEND: backend
                   URL_FRONTEND: frontend
@@ -153,6 +157,8 @@ jobs:
                 file: "/tmp/port_backend.txt"
               ENDPOINT_VARIABLES_FRONTEND:
                 file: "/tmp/endpoint_variables_frontend.txt"
+              TOKEN_FOR_BACKEND_ACCESS
+                file: "/tmp/token_for_backend_access.txt"
             EOF
             ls && \
             /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
