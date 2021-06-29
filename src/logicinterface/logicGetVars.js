@@ -55,7 +55,7 @@ exports.GetBackendVars = async () =>
         {
             const variableSanitizadas = await sanitizar(envConfig[k]);
             process.env[k] = variableSanitizadas;
-            console.log(`texto sanitizado=${k}:${variableSanitizadas}`);
+            console.log(`texto sanitizado=${k}=${variableSanitizadas}`);
         }
         else
         {
@@ -125,6 +125,7 @@ const readLocalSecret = async (secretNameAndPath) => {
 exports.GetFrontendVars = async (req, res) => 
 {
 
+    // console.log("req.headers=" + req.headers);
     console.log("req.header.auth=" + req.headers.authorization + " token_for=" + process.env.TOKEN_FOR_BACKEND_ACCESS);
     if (req.headers.authorization !== process.env.TOKEN_FOR_BACKEND_ACCESS )
     {
