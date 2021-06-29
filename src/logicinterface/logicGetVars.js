@@ -55,12 +55,13 @@ exports.GetBackendVars = async () =>
         {
             const variableSanitizadas = await sanitizar(envConfig[k]);
             process.env[k] = variableSanitizadas;
+            console.log(`texto sanitizado=${k}:${variableSanitizadas}`);
         }
         else
         {
             process.env[k] = envConfig[k];
+            console.log(`+++ texto=${k}:${envConfig[k]}`);
         }
-        console.log(`texto sanitizado=${k}:${variableSanitizadas}`);
     }
 
 };
