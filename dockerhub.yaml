@@ -1,28 +1,30 @@
 version: "3.8"
 services:
-#   frontend:
-#     restart: always
-#     image: sosan/frontend-rentacarmallorca:latest
-#     container_name: frontend
-#     ports:
-#       - 80:8080
-#     links:
-#       - backend:backend
-#     environment:
-#       URL_BACKEND: backend
-#       URL_FRONTEND: frontend
-#       NODE_ENV: production
-#       PORT_FRONTEND: /run/secrets/port_frontend
-#       PORT_BACKEND: /run/secrets/port_backend
-#       ENDPOINT_VARIABLES_FRONTEND: /run/secrets/endpoint_variables_frontend
-#     depends_on:
-#       - backend
+  frontend:
+    restart: always
+    image: sosan/frontend-rentacarmallorca:latest
+    container_name: frontend
+    ports:
+      - 8080:8080
+    environment:
+      URL_BACKEND: backend
+      URL_FRONTEND: frontend
+      NODE_ENV: production
+    secrets:
+        - PORT_BACKEND
+        - ENDPOINT_VARIABLES_FRONTEND
+    networks:
+      - gateway
+    depends_on:
+      - backend
   backend:
     restart: always
     image: sosan/backend-rentacarmallorca:latest
     container_name: backend
     ports:
       - 3000:3000
+    networks:
+      - gateway
     secrets:
       - PORT_FRONTEND
       - PORT_BACKEND
@@ -34,13 +36,8 @@ services:
       URL_BACKEND: backend
       URL_FRONTEND: frontend
       NODE_ENV: production
-      # PORT_FRONTEND: PORT_FRONTEND
-      # PORT_BACKEND: PORT_BACKEND
-      # REDISDB_PORT: REDISDB_PORT
-      # REDISDB_HOST: REDISDB_HOST
-      # REDISDB_PASSWORD: REDISDB_PASSWORD
-      # ENDPOINT_VARIABLES_FRONTEND: ENDPOINT_VARIABLES_FRONTEND
-
+networks:
+  gateway: {}
 secrets:
   REDISDB_PASSWORD:
     file: "./secrets/redisdb_password.txt"

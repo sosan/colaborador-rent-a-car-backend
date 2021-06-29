@@ -51,7 +51,7 @@ exports.GetBackendVars = async () =>
     const envConfig = dotenv.parse(buf);
     for (const k in envConfig) 
     {
-        if (k !== PUBLIC_SMTP_KEY)
+        if (k !== "PUBLIC_SMTP_KEY")
         {
             const variableSanitizadas = await sanitizar(envConfig[k]);
             process.env[k] = variableSanitizadas;
