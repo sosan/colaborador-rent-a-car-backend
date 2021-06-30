@@ -11,10 +11,10 @@ exports.conectDb = async (redisdb_port, redisdb_host, redisdb_password) =>
     {
 
         redisClient = new Redis({
-            port: redisdb_port, 
-            host: redisdb_host,
+            port: redisdb_port || process.env.REDISDB_PORT, 
+            host: redisdb_host || process.env.REDISDB_HOST,
             family: 4,
-            password: redisdb_password,
+            password: redisdb_password || process.env.REDISDB_PASSWORD,
             db: 0
         });
 
