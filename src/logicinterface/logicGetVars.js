@@ -18,13 +18,12 @@ exports.GetBackendVars = async () =>
 
     if (process.env.LOCAL_SECRETS === "true")
     {
-        port_backend = await readLocalSecret("../../secrets/port_backend.txt");
-        port_frontend = await readLocalSecret("../../secrets/port_frontend.txt");
-        redisdb_port = await readLocalSecret("../../secrets/redisdb_port.txt");
-        redisdb_host = await readLocalSecret("../../secrets/redisdb_host.txt");
-        redisdb_password = await readLocalSecret("../../secrets/redisdb_password.txt");
-        endpoint_variables_frontend = await readLocalSecret("../../secrets/endpoint_variables_frontend.txt");
-
+        port_backend = await readLocalSecret("../../secrets/port_backend.txt") || process.env.PORT_BACKEND;
+        port_frontend = await readLocalSecret("../../secrets/port_frontend.txt") || process.env.PORT_FRONTEND;
+        redisdb_port = await readLocalSecret("../../secrets/redisdb_port.txt") || process.env.REDISDB_PORT;
+        redisdb_host = await readLocalSecret("../../secrets/redisdb_host.txt") || process.env.REDISDB_HOST;
+        redisdb_password = await readLocalSecret("../../secrets/redisdb_password.txt") || process.env.REDISDB_PASSWORD;
+        endpoint_variables_frontend = await readLocalSecret("../../secrets/endpoint_variables_frontend.txt") || process.env.ENDPOINT_VARIABLES_FRONTEND;
     }
     else
     {
@@ -37,6 +36,13 @@ exports.GetBackendVars = async () =>
 
     }
     
+
+    port_backend = await sanitizar(port_backend);
+    port_frontend = await sanitizar(port_frontend);
+    redisdb_port = await sanitizar(redisdb_port);
+    redisdb_host = await sanitizar(redisdb_host);
+    redisdb_password = await sanitizar(redisdb_password);
+
     port_backend = port_backend - 0;
     port_frontend = port_frontend - 0;
     redisdb_port = redisdb_port - 0;

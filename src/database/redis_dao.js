@@ -9,16 +9,12 @@ exports.conectDb = async (redisdb_port, redisdb_host, redisdb_password) =>
     
     try 
     {
-        redisdb_port = redisdb_port - 0;
-        console.log("redisdb_port=" + redisdb_port);
-        console.log("redisdb_host=" + redisdb_host);
-        console.log("redisdb_password=" + redisdb_password);
 
         redisClient = new Redis({
-            port: 11235, //redisdb_port || process.env.REDISDB_PORT,
-            host: "redis-11235.c55.eu-central-1-1.ec2.cloud.redislabs.com", //redisdb_host || process.env.REDISDB_HOST,
+            port: redisdb_port, 
+            host: redisdb_host,
             family: 4,
-            password: "xVxCoygWjECVZudGBcjnsf7m1BZGPI8A",//redisdb_password || process.env.REDISDB_PASSWORD,
+            password: redisdb_password,
             db: 0
         });
 
