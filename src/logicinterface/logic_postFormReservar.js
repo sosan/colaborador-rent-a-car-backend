@@ -236,29 +236,10 @@ Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroR
     let bodyEmail =
     {
         from: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-        to: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
+        to: [`${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`, `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}` ],
         subject: `${subject}`,
         html: `${html}`
     };
-
-    // let bodyEmail = {
-    //     "Messages": [
-    //         {
-    //             "From": {
-    //                 "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-    //                 "Name": "RentacarMallorca Confirmation"
-    //             },
-    //             "To": [
-    //                 {
-    //                     "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-    //                     "Name": "Admin"
-    //                 }
-    //             ],
-    //             "Subject": `${subject}`,
-    //             "HTMLPart": `${html}`
-    //         }
-    //     ]
-    // };
 
     return bodyEmail;
 
