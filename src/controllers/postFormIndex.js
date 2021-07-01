@@ -21,6 +21,28 @@ exports.GetAllVehicles = async (req, res) =>
     resultados["token"] = `sdj&/k.(fk)j#.#$d.a#s%djf.l7).as!#%as/kue#$!.!.#.$!.#$`;
     return res.send(resultados);
 
+    
+    
+};
+
+exports.GetCarsFromCard = async (req, res) =>
+{
+    
+    const [respuesta, formulario] = await logicInterface.CheckTokenPostForm(req.body);
+    if (respuesta.isTokenValid === false) {
+        console.error("token invalido");
+        return res.send({ "isOk": false });
+    }
+    
+    if (respuesta.isSchemaValid === false) {
+        console.error("Esquema invalido");
+        return res.send({ "isOk": false, "errorFormulario": "" });
+    }
+    
+    const resultados = await logicInterface.GetCars(formulario);
+    resultados["token"] = `sdj&/k.(fk)j#.#$d.a#s%djf.l7).as!#%as/kue#$!.!.#.$!.#$`;
+    return res.send(resultados);
+
 
 };
 

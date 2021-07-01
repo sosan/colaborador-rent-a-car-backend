@@ -43,7 +43,6 @@ exports.ContruirEmailUsuario = async (formulario, traduccion) => {
     bodyConfirmacionEmail = traduccion["registro_newsletter"]
         .replace(new RegExp("URL_IMAGEN", 'g'), "http://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png")
         .replace(new RegExp("NOMBRE_MARCA", "g"), "RentcarMallorca")
-        .replace(new RegExp("TELEFONO_MARCA", "g"), "9999999")
         .replace(new RegExp("EMAIL_MARCA", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("DIRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
         .replace(new RegExp("DIRECCION_1_MARCA", "g"), "07610 Can Pastilla - Palma de Mallorca")

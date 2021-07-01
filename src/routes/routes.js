@@ -27,6 +27,8 @@ router.get("/api", async(req, res) => await indexGet.getFormIndex(req, res));
 // obtener todos los vehiculos
 router.post(process.env.ENDPOINT_GETALL_BACKEND, async (req, res) => await indexPost.GetAllVehicles(req, res));
 
+router.post(process.env.ENDPOINT_GETCAR_FROM_CARD_BACKEND, async (req, res) => await indexPost.GetCarsFromCard(req, res));
+
 //reservar de frontend a backend
 router.post(process.env.ENDPOINT_REALIZAR_RESERVA_BACKEND, async (req, res) => await reservarPost.postRealizarReserva(req, res));
 

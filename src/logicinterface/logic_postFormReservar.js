@@ -106,23 +106,21 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
 const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>
 {
 
-
     
     // .replace("USUARIO", formulario.nombre)
     bodyConfirmacionEmail = traduccion["registro_confirmacion"]
-    .replace(new RegExp("USUARIO", 'g'), formulario.nombre)
-    .replace(new RegExp("URL_IMAGEN", 'g'), "http://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png")
-    .replace(new RegExp("NOMBRE_MARCA", "g"), "RentcarMallorca")
-    .replace(new RegExp("NOMBRE_COCHE", "g"), formulario.descripcion_vehiculo)
-    .replace(new RegExp("FECHA_INICIO", "g"), formulario.fechaRecogida)
-    .replace(new RegExp("HORA_INICIO", "g"), formulario.horaRecogida)
-    .replace(new RegExp("FECHA_FIN", "g"), formulario.fechaDevolucion)
-    .replace(new RegExp("HORA_FIN", "g"), formulario.horaDevolucion)
-    .replace(new RegExp("NUMERO_REGISTRO", "g"), resultadoInsercion.numeroRegistro)
-    .replace(new RegExp("TELEFONO_MARCA", "g"), "9999999")
-    .replace(new RegExp("EMAIL_MARCA", "g"), "servicios@rentcarmallorca.es")
-    .replace(new RegExp("DIRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
-    .replace(new RegExp("DIRECCION_1_MARCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
+        .replace(new RegExp("U_SUARIO", 'g'), formulario.nombre)
+        .replace(new RegExp("URRL_IMMAGGEN", 'g'), "http://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png")
+        .replace(new RegExp("NOOOMBRE_MARCA", "g"), "RentcarMallorca")
+        .replace(new RegExp("NOOOMBRE_COCHEE", "g"), formulario.descripcion_vehiculo)
+        .replace(new RegExp("FECCHA_INNICIO", "g"), formulario.fechaRecogida)
+        .replace(new RegExp("HORRA_INNICIO", "g"), formulario.horaRecogida)
+        .replace(new RegExp("FEECHHA_FIIIN", "g"), formulario.fechaDevolucion)
+        .replace(new RegExp("HORRA_FINN", "g"), formulario.horaDevolucion)
+        .replace(new RegExp("NUMEERRO_RREGISTRO", "g"), resultadoInsercion.numeroRegistro)
+        .replace(new RegExp("EMMAIL_MARRCA", "g"), "servicios@rentcarmallorca.es")
+        .replace(new RegExp("DIRRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
+        .replace(new RegExp("DIRRECCIOON_1_MARRCCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
 
     let bodyEmail = 
