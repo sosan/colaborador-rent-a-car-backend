@@ -74,6 +74,7 @@ exports.CheckTokenFromGetAllVehicles = async (formulario) =>
 exports.CheckTokenPostForm = async (formulario) => {
 
     const schema = Joi.object({
+        anyos_carnet: Joi.number().required(),
         conductor_con_experiencia: Joi.string().required(),
         edad_conductor: Joi.number().required(),
         "fase": Joi.number().required(),
@@ -421,18 +422,31 @@ const CheckResultadosCoches = async (
 
         }
 
-
+        
         resultadosCoches[i]["preciototaldias"] = precioTotalDias;
-        resultadosCoches[i]["preciopordia"] = precioDiaPorClase;
-        resultadosCoches[i]["preciopordiasindescuento"] = precioDiaSinDescuento;
-        resultadosCoches[i]["preciototalsindescuento"] = precioDiaSinDescuento * numeroDiasRecogidaDevolucion;
-        resultadosCoches[i]["porcentaje"] = porcentaje;
-
+        
         const preciosSuplementoPorTipoChofer = await GenerarSuplementosPorTipoChofer(
             suplementoTipoChofer,
             formulario.conductor_con_experiencia,
             claseVehiculo
         );
+
+        
+        
+        resultadosCoches[i]["preciopordia"] = precioDiaPorClase;
+        resultadosCoches[i]["preciopordiasindescuento"] = precioDiaSinDescuento;
+        resultadosCoches[i]["preciototalsindescuento"] = precioDiaSinDescuento * numeroDiasRecogidaDevolucion;
+        resultadosCoches[i]["porcentaje"] = porcentaje;
+        
+        if (formulario.conductor_con_experiencia === "off" && formulario.edad_conductor - 0 <= 23 && formulario.anyos_carnet - 0 >= 2)
+        {
+            let precioDiarioSuplemento = preciosSuplementoPorTipoChofer["no-oferta"][0]["valor"] * numeroDiasRecogidaDevolucion;
+            resultadosCoches[i]["preciototaldias"] += precioDiarioSuplemento;
+            resultadosCoches[i]["preciopordia"] += precioDiarioSuplemento;
+            resultadosCoches[i]["preciopordiasindescuento"] += precioDiarioSuplemento;
+            resultadosCoches[i]["preciototalsindescuento"] += precioDiarioSuplemento;
+
+        }
 
         resultadosCoches[i]["preciosSuplementoPorTipoChofer"] = preciosSuplementoPorTipoChofer;
 

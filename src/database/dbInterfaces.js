@@ -188,3 +188,9 @@ exports.UpdateReserva = async (emailsEnviados, objectId, currentDate) =>
 };
 
 
+exports.GetImagenBase64 = async () =>
+{
+    const resultado = await mongo_dao.GetImagenBase64();
+    return resultado;
+};
+

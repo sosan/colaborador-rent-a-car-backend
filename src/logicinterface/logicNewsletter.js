@@ -1,6 +1,7 @@
 const dbInterface = require("../database/dbInterfaces");
 const {transporter} = require("../logicinterface/logicSendEmail");
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
+const path = require("path");
 
 exports.CheckEmail = async (email) => {
     const regex = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm;
@@ -41,7 +42,7 @@ exports.ContruirEmailUsuario = async (formulario, traduccion) => {
 
     // .replace("USUARIO", formulario.nombre)
     bodyConfirmacionEmail = traduccion["registro_newsletter"]
-        .replace(new RegExp("URL_IMAGEN", 'g'), "http://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png")
+        .replace(new RegExp("URL_IMAGEN", "g"), "cid:logo_rentcarmallorca")
         .replace(new RegExp("NOMBRE_MARCA", "g"), "RentcarMallorca")
         .replace(new RegExp("EMAIL_MARCA", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("DIRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
@@ -57,7 +58,12 @@ exports.ContruirEmailUsuario = async (formulario, traduccion) => {
         },
         to: `${formulario.email}`,
         subject: `${traduccion.suregistronewsletter}`,
-        html: `${bodyConfirmacionEmail}`
+        html: `${bodyConfirmacionEmail}`,
+        attachments: [{
+            filename: "logo.png",
+            path: path.resolve(__dirname, "../img/logo.png"),
+            cid: "logo_rentcarmallorca"
+        }]
     };
 
 

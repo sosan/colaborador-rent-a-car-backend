@@ -11,7 +11,8 @@ error_formulario4,x,x,x,x
 recogida,Pickup:,Recogida:,Ritiro,Abholen
 hora,At :,Hora :,Tempo,Uhrzeit 
 devolucion,Return :,Devolucion :,Ritorno,Rückgabe 
-conductor_experiencia,Driver is 23 years old or older,Conductor tiene 23 años o más,Il conducente ha 23 anni o più,Der Fahrer ist 23 Jahre alt oder älter
+conductor_experiencia,Driver is 23 years of age or older with a minimum of 2 years driving licence,Conductor tiene 23 años o más con 2 años de carnet mínimo,L'autista ha 23 anni o più con 2 anni minimo di patente di guida,Fahrer ist 23 Jahre alt oder älter mit mindestens 2 Jahren Führerschein
+anyos_carnet,Years driving licence,Años carnet conducir,Anni di patente di guida,Jahre Führerschein
 edad_conductor,Driver's age,Edad del conductor,Età dell'autista,Alter des Fahrers
 ver_precios,View prices,Ver precios,Vedere i prezzi,Siehe Preise
 informacion,Information,Información,Informazioni,Informationen
@@ -33,6 +34,7 @@ desde,from,desde,da,von
 titulo_ofertas,O F F E R S,O F E R T A S,O F F E R T A S,O F F E R T A S
 aviso_edad1,Drivers aged 18 to 22 ,Es posible que los conductores de 18 a 22,Ai conducenti di età compresa tra i 18 e i 22 anni ,Bei Fahrern zwischen 18 und 22 Jahren 
 aviso_edad2,"may be charged an additional fee when collecting the vehicle. If the selected vehicle requires a young driver charge, we will inform you of this.","años deban abonar un cargo adicional cuando vayan a retirar el vehículo. Si el vehículo seleccionado requiere un cargo por conductor joven, le informaremos de ello.","può essere addebitata una tassa aggiuntiva al momento del ritiro del veicolo. Se il veicolo selezionato richiede una tassa per giovani conducenti, vi informeremo di questo."," kann bei der Abholung des Fahrzeugs eine zusätzliche Gebühr anfallen. Sollte für das ausgewählte Fahrzeug eine Jungfahrergebühr anfallen, werden wir Sie darüber informieren."
+aviso_edad_ofertas,"Some vehicles may have young driver supplements (21 to 23 years of age and minimum 2 years of driving licence). If the selected vehicle requires a young driver surcharge, this surcharge will be shown in the offer.","Es posible que algunos vehículos tengan suplementos por  conductor joven (21 a 23 años de edad y mínimo 2 años de Carnet de conducir). Si el vehículo seleccionado requiere un cargo por conductor joven, se mostrará en la oferta, dicho suplemento","Alcuni veicoli possono avere supplementi per giovani conducenti (da 21 a 23 anni di età e minimo 2 anni di patente). Se il veicolo selezionato richiede un supplemento per giovani conducenti, questo supplemento sarà indicato nell'offerta. ","Für einige Fahrzeuge gibt es Zuschläge für junge Fahrer (21 bis 23 Jahre alt und mindestens 2 Jahre Führerschein). Wenn für das ausgewählte Fahrzeug ein Jungfahrerzuschlag erforderlich ist, wird dieser Zuschlag im Angebot angezeigt."
 reservar,/reserve,/reservar,/prenotazione,/buchen
 elmasvalorado,Highest rated,El mas valorado,I più votati,Höchste Bewertung
 elpreciomasbajo,Lowest price,El precio mas bajo,Prezzo più basso,Niedrigster Preis

@@ -21,8 +21,8 @@ const router = express.Router();
 
 // 
 router.get("/", async (req, res) => await index.showIndex(req, res));
-router.post("/api", async (req, res) => await indexPost.postFormIndex(req, res));
-router.get("/api", async(req, res) => await indexGet.getFormIndex(req, res));
+router.post(process.env.ENDPOINT_API_BACKEND, async (req, res) => await indexPost.postFormIndex(req, res));
+router.get(process.env.ENDPOINT_API_BACKEND, async(req, res) => await indexGet.getFormIndex(req, res));
 
 // obtener todos los vehiculos
 router.post(process.env.ENDPOINT_GETALL_BACKEND, async (req, res) => await indexPost.GetAllVehicles(req, res));

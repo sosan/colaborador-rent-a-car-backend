@@ -617,3 +617,17 @@ exports.UpdateReserva = async (emailsEnviados, objectId) =>
     }
 
 };
+
+
+exports.GetImagenBase64 = async () =>
+{
+
+    try {
+        const datos = await collectionHelper.find({ "id": "imagen" }).project({ _id: 0, id: 0 }).toArray();
+        return datos[0].imagen;
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+}

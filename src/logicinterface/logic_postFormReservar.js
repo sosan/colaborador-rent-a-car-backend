@@ -4,6 +4,8 @@ const logicStats = require("../logicinterface/logic_stats");
 const traducciones = require("../controllers/location");
 const fetch = require("node-fetch");
 const { transporter } = require("./logicSendEmail");
+const path = require("path");
+
 
 const URI_EMAIL_ADMIN_API_BACKEND = `${process.env.URI_EMAIL_ADMIN_API_BACKEND}`;
 const EMAIL_ADMIN_TOKEN_API = `${process.env.EMAIL_ADMIN_TOKEN_API}`;
@@ -17,8 +19,8 @@ const EMAIL_USER_SECRET_TOKEN_API = `${process.env.EMAIL_USER_SECRET_TOKEN_API}`
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
 
-const authBase64 = Buffer.from(`${EMAIL_USER_TOKEN_API}:${EMAIL_USER_SECRET_TOKEN_API}`, "utf-8").toString("base64");
-
+// const authBase64 = Buffer.from(`${EMAIL_USER_TOKEN_API}:${EMAIL_USER_SECRET_TOKEN_API}`, "utf-8").toString("base64");
+let imagen_base64 = undefined;
 
 // TODO: generar string a partir del secreto
 const GenerateTokenBackendToFrontend = async () => {
@@ -36,22 +38,8 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 
     let bodyEmail = await ContruirEmailUsuario(resultadoInsercion, formulario, traduccion);
 
-    
-
-    // let data = {
-    //     method: "POST",
-    //     headers: {
-    //         "Authorization": `Basic ${authBase64}`,
-    //         "Content-Type": "application/json",
-    //     },
-    //     credentials: "include",
-    //     body: bodyEmail
-    // };
-
-    // envio correo usuario
-    
     const resultadoUserEmailSended = await EnviarCorreoIo( bodyEmail);
-    // const resultadoUserEmailSended = await EnviarCorreoApiJet(URI_EMAIL_USER_API_BACKEND,data);
+    
     
     if (resultadoUserEmailSended.cannotSend === true)
     {
@@ -106,23 +94,31 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
 const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>
 {
 
+
+    // if (imagen_base64 === undefined)
+    // {
+    //     imagen_base64 = await dbInterfaces.GetImagenBase64();
+    // }
     
     // .replace("USUARIO", formulario.nombre)
     bodyConfirmacionEmail = traduccion["registro_confirmacion"]
-        .replace(new RegExp("U_SUARIO", 'g'), formulario.nombre)
-        .replace(new RegExp("URRL_IMMAGGEN", 'g'), "http://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png")
-        .replace(new RegExp("NOOOMBRE_MARCA", "g"), "RentcarMallorca")
-        .replace(new RegExp("NOOOMBRE_COCHEE", "g"), formulario.descripcion_vehiculo)
+        .replace(new RegExp("U_SUARIO", "g"), formulario.nombre)
+        .replace(new RegExp("URRL_IMMAGGEN", "g"), "cid:logo_rentcarmallorca")
+        .replace(new RegExp("NOMBBRE_MMARCA", "g"), "RentcarMallorca")
+        .replace("NOOOMBRE_MARCA", "RentcarMallorca")
+        .replace("NOMMBRRE_COCHHE", formulario.descripcion_vehiculo)
+        .replace("NOOOMBRE_COCHEE", formulario.descripcion_vehiculo)
         .replace(new RegExp("FECCHA_INNICIO", "g"), formulario.fechaRecogida)
         .replace(new RegExp("HORRA_INNICIO", "g"), formulario.horaRecogida)
-        .replace(new RegExp("FEECHHA_FIIIN", "g"), formulario.fechaDevolucion)
+        .replace(new RegExp("FECCHA_FFIN", "g"), formulario.fechaDevolucion)
+        .replace("FEECHHA_FIIIN", formulario.fechaDevolucion)
         .replace(new RegExp("HORRA_FINN", "g"), formulario.horaDevolucion)
         .replace(new RegExp("NUMEERRO_RREGISTRO", "g"), resultadoInsercion.numeroRegistro)
         .replace(new RegExp("EMMAIL_MARRCA", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("DIRRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
         .replace(new RegExp("DIRRECCIOON_1_MARRCCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
-
+    
     let bodyEmail = 
     {
         from: 
@@ -132,27 +128,15 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         },
         to: `${formulario.email}`,
         subject: `${traduccion.suregistro} ${resultadoInsercion.numeroRegistro}`,
-        html: `${bodyConfirmacionEmail}`
+        html: `${bodyConfirmacionEmail}`,
+        attachments: [{
+            filename: "logo.png",
+            path: path.resolve(__dirname, "../img/logo.png"),
+            cid: "logo_rentcarmallorca"
+        }]
+
     };
 
-    // let bodyEmail = JSON.stringify({
-    //     "Messages": [
-    //         {
-    //             "From": {
-    //                 "Email": `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
-    //                 "Name": "Servicios RentcarMallorca.es"
-    //             },
-    //             "To": [
-    //                 {
-    //                     "Email": `${formulario.email}`,
-    //                     "Name": `${formulario.nombre}`
-    //                 }
-    //             ],
-    //             "Subject": `${traduccion.suregistro} ${resultadoInsercion.numeroRegistro}`,
-    //             "HTMLPart": `${ bodyConfirmacionEmail }`
-    //         }
-    //     ]
-    // });
 
     return bodyEmail;
 
