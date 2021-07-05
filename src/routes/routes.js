@@ -38,8 +38,6 @@ router.post(process.env.ENDPOINT_NEWSLETTER_BACKEND, async (req, res) => await n
 router.post(process.env.ENDPOINT_STATS_BACKEND, async (req, res) => await statsPost.PostInitStats(req, res) );
 router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.ActualizarStats(req, res));
 
-
-
 // admin
 router.post(
     process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res) );
