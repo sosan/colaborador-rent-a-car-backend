@@ -98,6 +98,7 @@ const readSecret = async (secretNameAndPath) => {
         return dataSinSanitizar;
     }
     catch (err) {
+        
         if (err.code !== "ENOENT") {
             console.error(`An error occurred while trying to read the secret: ${secretNameAndPath}. Err: ${err}`);
         } else {
