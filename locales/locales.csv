@@ -11,8 +11,13 @@ error_formulario4,x,x,x,x
 recogida,Pickup:,Recogida:,Ritiro,Abholen
 hora,At :,Hora :,Tempo,Uhrzeit 
 devolucion,Return :,Devolucion :,Ritorno,Rückgabe 
-conductor_experiencia,Driver is 23 years of age or older with a minimum of 2 years driving licence,Conductor tiene 23 años o más con 2 años de carnet mínimo,L'autista ha 23 anni o più con 2 anni minimo di patente di guida,Fahrer ist 23 Jahre alt oder älter mit mindestens 2 Jahren Führerschein
+conductor_experiencia,Driver is 24 years of age or older with a minimum of 2 years driving licence,Conductor tiene 24 años o más con 2 años de carnet mínimo,L'autista ha 24 anni o più con 2 anni minimo di patente di guida,Fahrer ist 24 Jahre alt oder älter mit mindestens 2 Jahren Führerschein
 anyos_carnet,Years driving licence,Años carnet conducir,Anni di patente di guida,Jahre Führerschein
+error_validacion_anyos_car,Minimum 2 years of driving licence,Minimo tener 2 años de carnet de conducir,Minimo 2 anni di patente di guida.,Mindestens 2 Jahre Führerschein.
+error_validacion_edad_conductor,"Minimum 21 years of age, Maximum 90 years of age","Minimo 21 años, Maximo 90 años","Minimo 21 anni, Massimo 90 anni","Minimum 21 Jahre, Maximum 90 Jahre"
+error_validacion_carnet_2_anyos,"For young drivers, a minimum of 2 years of driving licence is required. ","Para conductores jóvenes, se requiere de 2 años mínimos de carnet de conducir ","Per i giovani conducenti, è richiesto un minimo di 2 anni di patente di guida. ",Für junge Fahrer ist ein Führerschein von mindestens 2 Jahren erforderlich. 
+error_validacion_edad_conductor_menos_20,"For young drivers, the age must not be less than 21 years.","Para conductores jóvenes, la edad no puede ser inferior a 21 años","Per i giovani conducenti, l'età non può essere inferiore a 21 anni.",Bei jungen Fahrern darf das Alter nicht unter 21 Jahren liegen.
+error_validacion_edad_conductor_mas_70,The maximum age requirement for the driver is 70 years.,"La edad máxima exigida para el conductor, es de 70 años",L'età massima richiesta per il conducente è di 70 anni.,Die maximale Altersanforderung für den Fahrer ist 70 Jahre.
 edad_conductor,Driver's age,Edad del conductor,Età dell'autista,Alter des Fahrers
 ver_precios,View prices,Ver precios,Vedere i prezzi,Siehe Preise
 informacion,Information,Información,Informazioni,Informationen
@@ -61,8 +66,8 @@ suplemento_tiempo_fuera_entrega,Out of hour supplement,Suplemento fuera de hora,
 sin_suplemento_tiempo_fuera_entrega,No supplement out of time,Sin suplemento fuera hora,Nessun supplemento fuori orario,Kein Außer-Stunden-Zuschlag
 tooltip_suplemento_tiempo_fuera_entrega,The user must pay a supplement of X € for the delivery of the vehicle outside the scheduled time.,El usuario debe pagar un suplmento de X € por entregar el vehiculo fuera de la hora señalada,Il noleggiatore deve pagare un supplemento di X € per il ritiro o la riconsegna tardiva del veicolo,Für eine verspätete Abholung oder Rückgabe des Fahrzeugs muss der Mieter einen Aufpreis von X € zahlen
 tooltip_sin_suplemento_tiempo_fuera_entrega,The user does not have to pay for out of hours delivery,El usuario no pagara por entregar el vehiculo fuera de horas,L'utente non deve pagare per la consegna fuori orario,Der Benutzer muss nicht für die Zustellung außerhalb der Öffnungszeiten bezahlen
-cargo_conductor_joven,Young driver charge: X € per day.,Cargo Conductor Joven: X € por dia.,Tariffa per giovani conducenti,Gebühr für junge Fahrer: X € pro Tag.
-tooltip_cargo_conductor_joven,The user must pay a supplement for young driver of X € per day,El usuario debe pagar un suplmento por conductor joven de X € por dia,L'utente deve pagare un supplemento per giovani conducenti di X € al giorno.,Der Benutzer muss einen Jungfahrerzuschlag von X € pro Tag zahlen.
+cargo_conductor_joven,Charge already included young driver: X € per day.,Cargo ya Incluido conductor joven: X € por dia.,Tassa già incluso giovane autista: X € al giorno.,Gebühr bereits enthalten junger Fahrer: X € pro Tag.
+tooltip_cargo_conductor_joven,The young driver supplement of X € per day is already included.,Ya esta incluido el suplmento por conductor joven de X € por dia,Il supplemento per il giovane autista di X € al giorno è già incluso.,Der Jungfahrerzuschlag von X € pro Tag ist bereits enthalten.
 sin_cargo_conductor_joven,No supplement for young driver,Sin suplemento por conductor joven,Nessun supplemento per i giovani guidatori,Kein Jungfahrerzuschlag
 tooltip_sin_cargo_conductor_joven,The user will not pay a supplement for being a young driver,El usuario no pagara un suplemento por ser un conductor joven,L'utente non pagherà un supplemento per i giovani conducenti.,Der Benutzer zahlt keinen Jungfahrerzuschlag.
 ofertas_especiales,Special offers:,Ofertas Especiales:,Offerte speciali,Besondere Angebote
@@ -502,6 +507,7 @@ tooltip_fecha_recogida_informacion,Choose the day of pick up of the vehicle,Elig
 tooltip_hora_recogida_informacion,Choose the pick up time of the vehicle,Elige la hora de recogida  del vehiculo,Scegliere l'orario di ritiro del veicolo,Wählen Sie die Abholzeit des Fahrzeugs
 tooltip_fecha_devolucion_informacion,Choose the day of return of the vehicle,Elige el dia de devolucion del vehiculo,Scegliere il giorno della restituzione del veicolo,Wählen Sie den Tag der Rückgabe des Fahrzeugs
 tooltip_hora_devolucion_informacion,Choose the time of return of the vehicle,Elige la hora de devolucion del vehiculo,Scegliere il tempo di ritorno del veicolo,Wählen Sie den Zeitpunkt der Rückgabe des Fahrzeugs
+tooltip_edad_anyos_carnet_informacion,Minimum 2 years driving licence,Minimo 2 años de carnet de conducir,Minimo 2 anni di patente di guida,Mindestens 2 Jahre Führerschein
 tooltip_edad_conductor_informacion,Driver's age,Edad del conductor,Età del conducente,Alter des Fahrers
 tooltip_boton_ver_precios_informacion,Click to see the prices,Click para ver los precios,Clicca per vedere i prezzi,"Klicken Sie, um die Preise zu sehen"
 info_kilometraje,Mileage,Kilometraje,Chilometraggio,Kilometerstand

@@ -161,7 +161,9 @@ jobs:
                 file: "/tmp/token_for_backend_access.txt"
             EOF
             ls && \
-            /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
-            /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest
+            export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
+            /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
             
             
+# /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
+# /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
