@@ -107,6 +107,7 @@ jobs:
               frontend:
                 restart: always
                 image: sosan/frontend-rentacarmallorca:latest
+                pull: Always
                 container_name: frontend
                 ports:
                   - 8080:8080
@@ -125,6 +126,7 @@ jobs:
               backend:
                 restart: always
                 image: sosan/backend-rentacarmallorca:latest
+                pull: Always
                 container_name: backend
                 ports:
                   - 3000:3000
