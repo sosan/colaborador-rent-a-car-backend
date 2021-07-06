@@ -107,7 +107,6 @@ jobs:
               frontend:
                 restart: always
                 image: sosan/frontend-rentacarmallorca:latest
-                pull: Always
                 container_name: frontend
                 ports:
                   - 8080:8080
@@ -126,7 +125,6 @@ jobs:
               backend:
                 restart: always
                 image: sosan/backend-rentacarmallorca:latest
-                pull: Always
                 container_name: backend
                 ports:
                   - 3000:3000
@@ -164,8 +162,8 @@ jobs:
             EOF
             ls && \
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
+            /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
+            /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
             
             
-# /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
-# /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
