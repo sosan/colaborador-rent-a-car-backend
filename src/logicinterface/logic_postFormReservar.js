@@ -4,7 +4,7 @@ const logicStats = require("../logicinterface/logic_stats");
 const traducciones = require("../controllers/location");
 const fetch = require("node-fetch");
 const { transporter } = require("./logicSendEmail");
-const path = require("path");
+const nanoid = require("nanoid");
 
 
 const URI_EMAIL_ADMIN_API_BACKEND = `${process.env.URI_EMAIL_ADMIN_API_BACKEND}`;
@@ -20,7 +20,28 @@ const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERV
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
 
 // const authBase64 = Buffer.from(`${EMAIL_USER_TOKEN_API}:${EMAIL_USER_SECRET_TOKEN_API}`, "utf-8").toString("base64");
-let imagen_base64 = undefined;
+// let imagen_base64 = undefined;
+
+const htmlEmail = `
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <a href="0000">
+        <img src="http://www.rentcarmallorca.es:8080/img/Img-Logo/rentacar_logo_header.png" alt="logo rentcarmallorca.es">
+    </a>
+    XXXXXX
+<br>
+</body>
+
+</html>
+`;
 
 // TODO: generar string a partir del secreto
 const GenerateTokenBackendToFrontend = async () => {
@@ -49,16 +70,6 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 
     // envio correo administracion
     bodyEmail = await ConstruirEmailAdmins(resultadoInsercion, formulario);
-
-    // data = {
-    //     method: "POST",
-    //     headers: {
-    //         "Authorization": `Basic ${authBase64}`,
-    //         "Content-Type": "application/json",
-    //     },
-    //     credentials: "include",
-    //     body: bodyEmail
-    // };
 
     //envio correo admins
     const resultadoAdminEmailSended = await EnviarCorreoIo(bodyEmail);
@@ -94,31 +105,28 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
 const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>
 {
 
-
-    // if (imagen_base64 === undefined)
-    // {
-    //     imagen_base64 = await dbInterfaces.GetImagenBase64();
-    // }
-    
-    // .replace("USUARIO", formulario.nombre)
-    bodyConfirmacionEmail = traduccion["registro_confirmacion"]
-        .replace(new RegExp("U_SUARIO", "g"), formulario.nombre)
-        .replace(new RegExp("URRL_IMMAGGEN", "g"), "cid:logo_rentcarmallorca")
-        .replace(new RegExp("NOMBBRE_MMARCA", "g"), "RentcarMallorca")
-        .replace("NOOOMBRE_MARCA", "RentcarMallorca")
-        .replace("NOMMBRRE_COCHHE", formulario.descripcion_vehiculo)
-        .replace("NOOOMBRE_COCHEE", formulario.descripcion_vehiculo)
-        .replace(new RegExp("FECCHA_INNICIO", "g"), formulario.fechaRecogida)
+    const texto = traduccion["registro_confirmacion"]
+        
+        .replace(new RegExp("{AAAA}", "g"), formulario.nombre)
+        .replace(new RegExp("{CCCC}", "g"), "RentcarMallorca")
+        .replace(new RegExp("{DDDD}", "g"), formulario.descripcion_vehiculo)
+        .replace(new RegExp("{EEEE}", "g"), formulario.fechaRecogida)
         .replace(new RegExp("HORRA_INNICIO", "g"), formulario.horaRecogida)
-        .replace(new RegExp("FECCHA_FFIN", "g"), formulario.fechaDevolucion)
-        .replace("FEECHHA_FIIIN", formulario.fechaDevolucion)
+        .replace(new RegExp("{FFFF}", "g"), formulario.fechaDevolucion)
         .replace(new RegExp("HORRA_FINN", "g"), formulario.horaDevolucion)
-        .replace(new RegExp("NUMEERRO_RREGISTRO", "g"), resultadoInsercion.numeroRegistro)
-        .replace(new RegExp("EMMAIL_MARRCA", "g"), "servicios@rentcarmallorca.es")
-        .replace(new RegExp("DIRRECCION_MARCA", "g"), "Camino de Can Pastilla, 51")
-        .replace(new RegExp("DIRRECCIOON_1_MARRCCA", "g"), "07610 Can Pastilla - Palma de Mallorca")
+        .replace(new RegExp("{GGGG}", "g"), resultadoInsercion.numeroRegistro)
+        .replace(new RegExp("{D1}", "g"), formulario.numero_sillas_nino)
+        .replace(new RegExp("{D2}", "g"), formulario.numero_booster)
+        .replace(new RegExp("{HHHH}", "g"), "servicios@rentcarmallorca.es")
+        .replace(new RegExp("{JJJJ}", "g"), "Camino de Can Pastilla, 51")
+        .replace(new RegExp("{KKKK}", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
     
+    const bodyConfirmacionEmail = htmlEmail
+        .replace("0000", "http://www.rentcarmallorca.es:8080/")
+        .replace("XXXXXX", texto)
+    ;
+
     let bodyEmail = 
     {
         from: 
@@ -129,11 +137,6 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         to: `${formulario.email}`,
         subject: `${traduccion.suregistro} ${resultadoInsercion.numeroRegistro}`,
         html: `${bodyConfirmacionEmail}`,
-        attachments: [{
-            filename: "logo.png",
-            path: path.resolve(__dirname, "../img/logo.png"),
-            cid: "logo_rentcarmallorca"
-        }]
 
     };
 
@@ -347,8 +350,9 @@ const ObtenernumeroRegistro = async () =>
 
     const cadenaComprobarDia = `${anyo}:${mes}:${dia}`;
     const cantidadReservasDia = await dbInterfaces.ConsultarCantidadReservasDia(cadenaComprobarDia);
-
-    const numeroRegistro = `${anyo}-${mes}-${dia}--${cantidadReservasDia}`;
+    //cross sucess => reserva localizador
+    const idRandom = nanoid.nanoid().substring(0, 3).toUpperCase();
+    const numeroRegistro = `${idRandom}${anyo}${mes}${dia}${cantidadReservasDia.toString().padStart(2, "00")}`;
 
     return numeroRegistro;
 
