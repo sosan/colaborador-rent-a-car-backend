@@ -25,6 +25,7 @@ exports.GetAllVehicles = async (req, res) =>
     
 };
 
+
 exports.GetCarsFromCard = async (req, res) =>
 {
     
@@ -43,9 +44,7 @@ exports.GetCarsFromCard = async (req, res) =>
     resultados["token"] = `sdj&/k.(fk)j#.#$d.a#s%djf.l7).as!#%as/kue#$!.!.#.$!.#$`;
     return res.send(resultados);
 
-
 };
-
 
 
 exports.postFormIndex = async (req, res) =>

@@ -93,7 +93,6 @@ exports.CheckTokenPostForm = async (formulario) => {
 
 };
 
-
 const CheckToken = async (token, tokenFromFrontend) => {
 
     let isValid = false;
