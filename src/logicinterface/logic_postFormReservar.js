@@ -98,10 +98,6 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
 
 };
 
-
-
-
-
 const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>
 {
 
