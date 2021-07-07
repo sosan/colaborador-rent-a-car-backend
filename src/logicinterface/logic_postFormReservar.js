@@ -35,7 +35,7 @@ const htmlEmail = `
 <body>
     <a href="0000">
         <img src="http://www.rentcarmallorca.es:8080/img/Img-Logo/rentacar_logo_header.png" alt="logo rentcarmallorca.es">
-    </a>
+    </a><br><br>
     XXXXXX
 <br>
 </body>
@@ -108,7 +108,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
     const texto = traduccion["registro_confirmacion"]
         
         .replace(new RegExp("{AAAA}", "g"), formulario.nombre)
-        .replace(new RegExp("{CCCC}", "g"), "RentcarMallorca")
+        .replace(new RegExp("{CCCC}", "g"), "RentCarMallorca")
         .replace(new RegExp("{DDDD}", "g"), formulario.descripcion_vehiculo)
         .replace(new RegExp("{EEEE}", "g"), formulario.fechaRecogida)
         .replace(new RegExp("HORRA_INNICIO", "g"), formulario.horaRecogida)
