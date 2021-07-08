@@ -437,16 +437,6 @@ const CheckResultadosCoches = async (
         resultadosCoches[i]["preciototalsindescuento"] = precioDiaSinDescuento * numeroDiasRecogidaDevolucion;
         resultadosCoches[i]["porcentaje"] = porcentaje;
         
-        // if (formulario.conductor_con_experiencia === "off" && formulario.edad_conductor - 0 <= 23 && formulario.anyos_carnet - 0 >= 2)
-        // {
-        //     let precioDiarioSuplemento = preciosSuplementoPorTipoChofer["no-oferta"][0]["valor"] * numeroDiasRecogidaDevolucion;
-        //     resultadosCoches[i]["preciototaldias"] += precioDiarioSuplemento;
-        //     resultadosCoches[i]["preciopordia"] += precioDiarioSuplemento;
-        //     resultadosCoches[i]["preciopordiasindescuento"] += precioDiarioSuplemento;
-        //     resultadosCoches[i]["preciototalsindescuento"] += precioDiarioSuplemento;
-
-        // }
-
         resultadosCoches[i]["preciosSuplementoPorTipoChofer"] = preciosSuplementoPorTipoChofer;
 
         const isValorado = await CheckIsMasValorado(resultadosCoches[i]["vehiculo"], masValorados);
