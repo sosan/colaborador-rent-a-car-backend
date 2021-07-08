@@ -75,6 +75,7 @@ jobs:
           secrets: |
             "PORT_BACKEND=${{ secrets.PORT_BACKEND }}"
             "PORT_FRONTEND=${{ secrets.PORT_FRONTEND }}"
+            "PORT_BACKOFFICE=${{ secrets.PORT_BACKOFFICE }}"
             "REDISDB_PORT=${{ secrets.REDISDB_PORT }}"
             "REDISDB_HOST=${{ secrets.REDISDB_HOST }}"
             "REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }}"
@@ -99,6 +100,7 @@ jobs:
             echo ${{secrets.REDISDB_HOST}} > /tmp/redisdb_host.txt && \
             echo ${{secrets.PORT_FRONTEND}} > /tmp/port_frontend.txt && \
             echo ${{secrets.PORT_BACKEND}} > /tmp/port_backend.txt && \
+            echo ${{secrets.PORT_BACKOFFICE}} > /tmp/port_backoffice.txt && \
             echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt && \
             echo ${{secrets.TOKEN_FOR_BACKEND_ACCESS}} > /tmp/token_for_backend_access.txt && \
             cat <<EOF > /tmp/deploy-compose.txt
@@ -122,6 +124,23 @@ jobs:
                   - gateway
                 depends_on:
                   - backend
+              backoffice:
+                restart: always
+                image: sosan/backoffice-rentacarmallorca:latest
+                container_name: backoffice
+                ports:
+                  - 3100:3100
+                environment:
+                  URL_BACKEND: backend
+                  URL_BACKOFFICE: backoffice
+                  NODE_ENV: production
+                secrets:
+                    - PORT_BACKEND
+                    - PORT_BACKOFFICE
+                networks:
+                  - gateway
+                depends_on:
+                  - backend
               backend:
                 restart: always
                 image: sosan/backend-rentacarmallorca:latest
@@ -141,6 +160,7 @@ jobs:
                 environment:
                   URL_BACKEND: backend
                   URL_FRONTEND: frontend
+                  URL_BACKOFFICE: backoffice
                   NODE_ENV: production
             networks:
               gateway: {}
@@ -159,6 +179,8 @@ jobs:
                 file: "/tmp/endpoint_variables_frontend.txt"
               TOKEN_FOR_BACKEND_ACCESS:
                 file: "/tmp/token_for_backend_access.txt"
+              PORT_BACKOFFICE:
+                file: "/tmp/port_backoffice.txt"
             EOF
             ls && \
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \

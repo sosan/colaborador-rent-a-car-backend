@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.7"
 services:
   frontend:
     restart: always
@@ -14,6 +14,23 @@ services:
         - PORT_BACKEND
         - ENDPOINT_VARIABLES_FRONTEND
         - TOKEN_FOR_BACKEND_ACCESS
+    networks:
+      - gateway
+    depends_on:
+      - backend
+  backoffice:
+    restart: always
+    image: sosan/backoffice-rentacarmallorca:latest
+    container_name: backoffice
+    ports:
+      - 3100:3100
+    environment:
+      URL_BACKEND: backend
+      URL_BACKOFFICE: backoffice
+      NODE_ENV: production
+    secrets:
+        - PORT_BACKEND
+        - PORT_BACKOFFICE
     networks:
       - gateway
     depends_on:
@@ -37,6 +54,7 @@ services:
     environment:
       URL_BACKEND: backend
       URL_FRONTEND: frontend
+      URL_BACKOFFICE: backoffice
       NODE_ENV: production
 networks:
   gateway: {}
@@ -55,3 +73,5 @@ secrets:
     file: "./secrets/endpoint_variables_frontend.txt"
   TOKEN_FOR_BACKEND_ACCESS:
     file: "./secrets/token_for_backend_access.txt"
+  PORT_BACKOFFICE:
+    file: "./secrets/port_backoffice.txt"
