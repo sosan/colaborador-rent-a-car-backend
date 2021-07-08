@@ -456,10 +456,6 @@ const CheckResultadosCoches = async (
 };
 
 
-
-
-
-
 //----
 const TransformarResultadosCoche = async (
     resultadosCoches, 
