@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 exports.MostrarReservas = async (req, res) =>
 {
 
-    const response = await fetch("http://localhost:3000/mostrar_reservas", {
+    const response = await fetch(`http://${process.env.URL_BACKEND}:3000/mostrar_reservas`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
