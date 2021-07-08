@@ -13,24 +13,24 @@ const path = require("path");
 
 const app = express();
 
-const apiLimiter = rateLimit({
-    windowMs: 1 * 60 * 1000, //1min
-    max: 20
-});
+// const apiLimiter = rateLimit({
+//     windowMs: 1 * 60 * 1000, //1min
+//     max: 20
+// });
 
-const allowlist = [`${process.env.URL_FRONTEND}:${process.env.PORT_BACKEND}`];
+// const allowlist = [`${process.env.URL_FRONTEND}:${process.env.PORT_BACKEND}`];
 
-app.use(session({ secret: process.env.SECRET_SESSION, resave: false, saveUninitialized: false }));
+// app.use(session({ secret: process.env.SECRET_SESSION, resave: false, saveUninitialized: false }));
 app.use(compression());
-app.use(userAgent.express())
-app.use(helmet());
+// app.use(userAgent.express())
+// app.use(helmet());
 app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 app.use(express.json({ limit: "2mb" }));
-app.use(cors({
-    credentials: true,
-    origin: allowlist
-}));
-app.use(morgan("combined"));
+// app.use(cors({
+//     credentials: true,
+//     origin: allowlist
+// }));
+// app.use(morgan("combined"));
 
 
 //registro de html como eta
@@ -41,7 +41,7 @@ app.set("view engine", "html");
 app.use("/", express.static("public"));
 
 
-app.use("/", apiLimiter);
+// app.use("/", apiLimiter);
 app.use("/", router);
 
 

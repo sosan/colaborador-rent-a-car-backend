@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/mostrar_reservas.css">
+    <title>Envio confirmacion reservas</title>
+</head>
+<body>
+    <ul>
+        
+    <% for (let i = 0; i < it.formdata.length; i++) { %>
+        <li class="centrado">
+            <div>
+                <%=it.formdata[i].numeroRegistro %>
+            </div>
+            <div>
+                <%=it.formdata[i].nombre %> <%=it.formdata[i].apellidos %>
+            </div>
+            <div>
+                <%=it.formdata[i].email %>
+            </div>
+            <div>
+                <form action="/enviocorreo" method="post">
+                    <input type="hidden" name="localizador" value="<%=it.formdata[i].numeroRegistro %>">
+                    <input type="hidden" name="nombre" value="<%=it.formdata[i].nombre %>">
+                    <input type="hidden" name="email" value="<%=it.formdata[i].email %>">
+                    <input type="hidden" name="idioma" value="<%=it.formdata[i].idioma %>">
+                    <input type="hidden" name="fechaRecogida" value="<%=it.formdata[i].fechaRecogida %>">
+                    <input type="hidden" name="horaRecogida" value="<%=it.formdata[i].horaRecogida %>">
+                    <input type="hidden" name="fechaDevolucion" value="<%=it.formdata[i].fechaDevolucion %>">
+                    <input type="hidden" name="horaDevolucion" value="<%=it.formdata[i].horaDevolucion %>">
+                    <input type="hidden" name="numero_sillas_nino" value="<%=it.formdata[i].numero_sillas_nino %>">
+                    <input type="hidden" name="numero_booster" value="<%=it.formdata[i].numero_booster %>">
+                    <input type="hidden" name="descripcion_vehiculo" value="<%=it.formdata[i].descripcion_vehiculo %>">
+
+                    <button class="centrado-boton_correo" type="submit">
+                        Enviar correo
+                    </button>
+                </form>
+            </div>
+        </li>
+    <% } %>
+    </ul>
+
+
+</body>
+</html>
