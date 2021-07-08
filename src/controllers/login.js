@@ -3,7 +3,6 @@ require('dotenv').config();
 const nanoid = require("nanoid");
 const Joi = require("joi");
 const fetch = require("node-fetch");
-const { reset } = require('nodemon');
 
 const URI_PANEL_CONTROL_BACKEND = `${process.env.URL_BACKEND}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER}`;
 
