@@ -103,19 +103,19 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
 
     const texto = traduccion["registro_confirmacion"]
         
-        .replace(new RegExp("{AAAA}", "g"), formulario.nombre)
-        .replace(new RegExp("{CCCC}", "g"), "RentCarMallorca")
-        .replace(new RegExp("{DDDD}", "g"), formulario.descripcion_vehiculo)
-        .replace(new RegExp("{EEEE}", "g"), formulario.fechaRecogida)
-        .replace(new RegExp("HORRA_INNICIO", "g"), formulario.horaRecogida)
-        .replace(new RegExp("{FFFF}", "g"), formulario.fechaDevolucion)
-        .replace(new RegExp("HORRA_FINN", "g"), formulario.horaDevolucion)
-        .replace(new RegExp("{GGGG}", "g"), resultadoInsercion.numeroRegistro)
-        .replace(new RegExp("{D1}", "g"), formulario.numero_sillas_nino)
-        .replace(new RegExp("{D2}", "g"), formulario.numero_booster)
-        .replace(new RegExp("{HHHH}", "g"), "servicios@rentcarmallorca.es")
-        .replace(new RegExp("{JJJJ}", "g"), "Camino de Can Pastilla, 51")
-        .replace(new RegExp("{KKKK}", "g"), "07610 Can Pastilla - Palma de Mallorca")
+        .replace(new RegExp("{A1}", "g"), formulario.nombre)
+        .replace(new RegExp("{C1}", "g"), "RentCarMallorca")
+        .replace(new RegExp("{D1}", "g"), formulario.descripcion_vehiculo)
+        .replace(new RegExp("{E1}", "g"), formulario.fechaRecogida)
+        .replace(new RegExp("{E3}", "g"), formulario.horaRecogida)
+        .replace(new RegExp("{E4}", "g"), formulario.horaDevolucion)
+        .replace(new RegExp("{F1}", "g"), formulario.fechaDevolucion)
+        .replace(new RegExp("{G1}", "g"), resultadoInsercion.numeroRegistro)
+        .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
+        .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
+        .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
+        .replace(new RegExp("{J1}", "g"), "Camino de Can Pastilla, 51")
+        .replace(new RegExp("{K1}", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
     
     const bodyConfirmacionEmail = htmlEmail
@@ -345,11 +345,11 @@ const ObtenernumeroRegistro = async () =>
     const anyo = date_ob.getFullYear();
 
     const cadenaComprobarDia = `${anyo}:${mes}:${dia}`;
-    const cantidadReservasDia = await dbInterfaces.ConsultarCantidadReservasDia(cadenaComprobarDia);
+    // const cantidadReservasDia = await dbInterfaces.ConsultarCantidadReservasDia(cadenaComprobarDia);
+    // const numeroRegistro = `${idRandom}${anyo}${mes}${dia}${cantidadReservasDia.toString().padStart(2, "00")}`;
     //cross sucess => reserva localizador
     const idRandom = nanoid.nanoid().substring(0, 3).toUpperCase();
-    const numeroRegistro = `${idRandom}${anyo}${mes}${dia}${cantidadReservasDia.toString().padStart(2, "00")}`;
-
+    const numeroRegistro = `${idRandom}${anyo}${mes}${dia}`;
     return numeroRegistro;
 
 };
