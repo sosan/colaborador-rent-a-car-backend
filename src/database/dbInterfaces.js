@@ -194,3 +194,12 @@ exports.GetImagenBase64 = async () =>
     return resultado;
 };
 
+
+exports.GetReservas = async () =>
+{
+    const resultado = await mongo_dao.GetAllReservas();
+    return resultado;
+
+
+}
+

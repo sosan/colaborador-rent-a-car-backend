@@ -34,7 +34,7 @@ const htmlEmail = `
 
 <body>
     <a href="0000">
-        <img src="http://www.rentcarmallorca.es:8080/img/Img-Logo/rentacar_logo_header.png" alt="logo rentcarmallorca.es">
+        <img src="http://www.rentcarmallorca.es:8080/img/Img-Logo/rentacar_logo_header.png">
     </a><br><br>
     XXXXXX
 <br>
@@ -127,7 +127,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
     {
         from: 
         {
-            name: "Servicios RentCarMallorca.es",
+            name: "RentCarMallorca.es Servicios",
             address: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`
         },
         to: `${formulario.email}`,

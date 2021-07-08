@@ -631,3 +631,19 @@ exports.GetImagenBase64 = async () =>
 
     }
 }
+
+
+exports.GetAllReservas = async () =>
+{
+    try
+    {
+        const datos = await collectionReservas.find({}).project({_id: 0}).toArray();
+        return datos;
+
+    }
+    catch (error)
+    {
+        console.log("error" + error);
+    }
+
+}

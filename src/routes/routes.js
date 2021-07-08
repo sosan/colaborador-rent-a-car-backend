@@ -12,7 +12,7 @@ const newsletter = require("../controllers/newsletter");
 const location = require("../controllers/location");
 const porcentajeTipoVehiculo = require("../controllers/porcentajeTipoVehiculo");
 const logicVars = require("../logicinterface/logicGetVars");
-
+const logicGetReservas = require("../logicinterface/logicGetReservas");
 
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
@@ -57,6 +57,10 @@ router.get(process.env.ENDPOINT_PORCENTAJE_VEHICULO, async (req, res) => await p
 
 // obtener los vars para frontend
 router.get(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await logicVars.GetFrontendVars(req, res));
+
+
+router.get("/mostrar_reservas", async (req, res) => await logicGetReservas.GetReservas(req, res) );
+router.post("/envioCorreoConfirmacionReserva", async (req, res) => await logicGetReservas.ConfirmarReserva(req, res) );
 
 
 module.exports = router;
