@@ -102,7 +102,7 @@ exports.ConfirmarReserva = async (req, res ) =>
 
     };
 
-    const respuestaReservaConfirmacion = await logic_postFormReservar.EnviarCorreoIo(bodyEmail); //transporter.sendMail(bodyEmail);
+    const respuestaReservaConfirmacion = await logic_postFormReservar.EnviarCorreoAh(bodyEmail); //transporter.sendMail(bodyEmail);
 
     //enviarlo a la db
     const currentDate = await ObtenerCurrentDate();

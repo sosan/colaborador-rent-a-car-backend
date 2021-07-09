@@ -229,7 +229,17 @@ Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroR
 
 };
 
-exports.EnviarCorreoIo = async (data) =>
+
+exports.EnviarCorreoAh = async (data) =>
+{
+
+    const result = await EnviarCorreoIo(data);
+    return result;
+
+
+};
+
+const EnviarCorreoIo = async (data) =>
 {
 
     let isSended = false;
