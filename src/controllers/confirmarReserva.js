@@ -41,5 +41,18 @@ exports.EnvioCorreo = async (req, res) =>
 
     const datos = await response.json();
 
+    if (datos.isOk === true)
+    {
+        res.send({ "isOk": true, "fechaEnvioConfirmacionReserva": datos.fechaEnvioConfirmacionReserva });
+
+    }
+    else
+    {
+        res.send({ "isOk": false });
+        // realizar comprobaciones....
+    }
+
 
 };
+
+

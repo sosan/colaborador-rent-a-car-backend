@@ -1,4 +1,4 @@
-name: subir backoffice
+name: backoffice
 
 on:
   push:

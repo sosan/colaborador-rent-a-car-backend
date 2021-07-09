@@ -1,20 +1,147 @@
+html
+{
+    font-family: Verdana,sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+
 body
 {
     width: 100vw;
 }
 
-.centrado
+.header
 {
     display: flex;
     justify-content: space-evenly;
+
+    color: whitesmoke;
+    background-color: black;
+
+}
+
+.pestanyaContenido
+{
+    padding: 0.01em 16px;
+}
+
+.boton-noenviado
+{
+    padding: 10px;
+    background-color: brown;
+    border-radius: 5px;
+    color: whitesmoke;
+}
+
+.boton-enviado
+{
+    padding: 10px;
+    background-color: green;
+    border-radius: 5px;
+    color: whitesmoke;
+}
+
+
+.atras
+{
+    justify-self: flex-start;
+    flex-grow: 0.1;
+}
+
+
+
+.boton
+{
+    border: none;
+    display: inline-block;
+    padding: 8px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+
+    user-select: none;
+
+    padding: 8px 16px;
+    float: left;
+    width: auto;
+    border: none;
+    display: block;
+    outline: 0;
+
+}
+
+.boton:hover
+{
+    color:#000;
+    background-color:#ccc;
+}
+
+.boton-rojo
+{
+    color: whitesmoke;
+    background-color: #f44336;
+}
+
+
+.boton-masancho
+{
+    flex-grow: 1;
+}
+
+.tamanyo-200
+{
+    flex-basis: 200px;
+}
+
+.titulo
+{
+    font-weight: 400;
+    margin: 10px 0;
+    font-size: 30px;
+    font-size: x-large;
+}
+
+.centrado
+{
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+    
 }
 
 .centrado-boton_correo
 {
     padding: 10px;
-    background-color: blue;
+    border-radius: 7px;
+    
     color: white;
 
+}
+
+.azul
+{
+    background-color: rgb(16, 98, 204);
+}
+
+.verde
+{
+    background-color: rgb(70, 155, 9);
+    color: white;
+}
+
+.rojo
+{
+    background-color: rgb(223, 17, 17);
+    color: white;
 }

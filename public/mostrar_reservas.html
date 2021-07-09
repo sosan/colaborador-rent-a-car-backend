@@ -6,45 +6,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/mostrar_reservas.css">
+    
+    
     <title>Envio confirmacion reservas</title>
 </head>
 <body>
-    <ul>
+
+    <header class="header">
+        <button id="botonAtras" type="button" class="boton atras">Atras</button>
+        <button id="botonNoEnviados" type="button" class="boton boton-rojo boton-masancho" >No Enviados</button>
+        <button id="botonEnviados" type="button" class="boton boton-masancho" >Enviados</button>
+        <button id="botonOtros" type="button" class="boton boton-masancho" >Otros</button>
+    </header>
+    <main>
+
+        <div id="noenviados" class="pestanyaContenido">
+            <h2 class="titulo">NO Enviada Confirmacion</h2>
+            <ul>
+                <li class="centrado">
+                    <div class="tamanyo-200">
+                        Localizador
+                    </div>
+                    <div class="tamanyo-200">
+                        Nombre Apellidos
+                    </div>
+                    <div class="tamanyo-200">
+                        Correo
+                    </div>
+                
+                    <div class="tamanyo-200">
+                        Fecha Envio
+                    </div>
+                    <div class="tamanyo-201">
+                        Boton
+                    </div>
+                </li>
+
+                <% for (let i=0; i < it.formdata.length; i++) { %>
+                    
+                        <li class="centrado">
+                            <div class="tamanyo-200">
+                                <b><%=it.formdata[i].numeroRegistro %></b>
+                            </div>
+                            <div class="tamanyo-200">
+                                <%=it.formdata[i].nombre %>
+                                    <%=it.formdata[i].apellidos %>
+                            </div>
+                            <div class="tamanyo-200">
+                                <%=it.formdata[i].email %>
+                            </div>
+
+                            <div class="tamanyo-200">
+                                <% if (it.formdata.fechaConfirmacionReserva) { %>
+                                    <%= it.formdata.fechaConfirmacionReserva%>
+                                <% } else { %>
+                                    --
+                                <% } %>
+                            </div>
+                            <div class="tamanyo-201">
+                                <form class="formulario" action="/enviocorreo" method="post">
+                                    <input type="hidden" name="localizador" value="<%=it.formdata[i].numeroRegistro %>">
+                                    <input type="hidden" name="nombre" value="<%=it.formdata[i].nombre %>">
+                                    <input type="hidden" name="email" value="<%=it.formdata[i].email %>">
+                                    <input type="hidden" name="idioma" value="<%=it.formdata[i].idioma %>">
+                                    <input type="hidden" name="fechaRecogida" value="<%=it.formdata[i].fechaRecogida %>">
+                                    <input type="hidden" name="horaRecogida" value="<%=it.formdata[i].horaRecogida %>">
+                                    <input type="hidden" name="fechaDevolucion" value="<%=it.formdata[i].fechaDevolucion %>">
+                                    <input type="hidden" name="horaDevolucion" value="<%=it.formdata[i].horaDevolucion %>">
+                                    <input type="hidden" name="numero_sillas_nino" value="<%=it.formdata[i].numero_sillas_nino %>">
+                                    <input type="hidden" name="numero_booster" value="<%=it.formdata[i].numero_booster %>">
+                                    <input type="hidden" name="descripcion_vehiculo"
+                                        value="<%=it.formdata[i].descripcion_vehiculo %>">
+            
+                                    <button id="botonEnviar" class="centrado-boton_correo azul" type="submit">
+                                        Enviar correo
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                        <% } %>
+                    
+            </ul>
+
+        </div>
         
-    <% for (let i = 0; i < it.formdata.length; i++) { %>
-        <li class="centrado">
-            <div>
-                <%=it.formdata[i].numeroRegistro %>
-            </div>
-            <div>
-                <%=it.formdata[i].nombre %> <%=it.formdata[i].apellidos %>
-            </div>
-            <div>
-                <%=it.formdata[i].email %>
-            </div>
-            <div>
-                <form action="/enviocorreo" method="post">
-                    <input type="hidden" name="localizador" value="<%=it.formdata[i].numeroRegistro %>">
-                    <input type="hidden" name="nombre" value="<%=it.formdata[i].nombre %>">
-                    <input type="hidden" name="email" value="<%=it.formdata[i].email %>">
-                    <input type="hidden" name="idioma" value="<%=it.formdata[i].idioma %>">
-                    <input type="hidden" name="fechaRecogida" value="<%=it.formdata[i].fechaRecogida %>">
-                    <input type="hidden" name="horaRecogida" value="<%=it.formdata[i].horaRecogida %>">
-                    <input type="hidden" name="fechaDevolucion" value="<%=it.formdata[i].fechaDevolucion %>">
-                    <input type="hidden" name="horaDevolucion" value="<%=it.formdata[i].horaDevolucion %>">
-                    <input type="hidden" name="numero_sillas_nino" value="<%=it.formdata[i].numero_sillas_nino %>">
-                    <input type="hidden" name="numero_booster" value="<%=it.formdata[i].numero_booster %>">
-                    <input type="hidden" name="descripcion_vehiculo" value="<%=it.formdata[i].descripcion_vehiculo %>">
+        <div id="enviados" class="pestanyaContenido" style="display:none">
+            <h2 class="titulo">Enviados</h2>
+            
+        </div>
+        
+        <div id="otros" class="pestanyaContenido" style="display:none">
+            <h2 class="titulo">Otros</h2>
 
-                    <button class="centrado-boton_correo" type="submit">
-                        Enviar correo
-                    </button>
-                </form>
-            </div>
-        </li>
-    <% } %>
-    </ul>
+        </div>
+    
 
 
+    </main>
+    <script src="./js/mostrar_reservas.js"></script>
 </body>
 </html>
