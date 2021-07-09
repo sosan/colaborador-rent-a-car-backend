@@ -1,5 +1,6 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const traducciones = require("../controllers/location");
+const logic_postFormReservar = require("./logic_postFormReservar");
 const { transporter } = require("./logicSendEmail");
 
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
@@ -29,7 +30,7 @@ const htmlEmail = `
 
 
 
-const descripcionVehiculos = {
+exports.descripcionVehiculos = {
     "Toyota Aygo": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/toyotaAygoRed_Card.png",
     "Suzuky Burgman 125": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/Suzuki-Burgman_125cc_Card.png",
     "Citröen C1 Open": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/CitroenC1_open_Card.png",
@@ -57,6 +58,8 @@ exports.GetReservas = async (req, res) =>
 
 exports.ConfirmarReserva = async (req, res ) =>
 {
+
+    // return res.send({ "isOk": true, "fechaEnvioConfirmacionReserva": new Date() });
 
     const formulario = req.body;
     const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
@@ -99,8 +102,34 @@ exports.ConfirmarReserva = async (req, res ) =>
 
     };
 
-    const responseRaw = await transporter.sendMail(bodyEmail);
+    const respuestaReservaConfirmacion = await logic_postFormReservar.EnviarCorreoIo(bodyEmail); //transporter.sendMail(bodyEmail);
+
+    //enviarlo a la db
+    const currentDate = await ObtenerCurrentDate();
+
+    respuestaReservaConfirmacion["fechaEnvioConfirmacionReserva"] = currentDate;
+
+    //buscar por id
+    // const isUpdated = await dbInterfaces.UpdateReserva(respuestaReservaConfirmacion, formulario._id);
+    // console.log(` enviados:\n-> Usuarios:${isUpdated}`);
 
 
+};
+
+const ObtenerCurrentDate = async () => {
+    let date_ob = new Date();
+
+    const dia = date_ob.getUTCDate().toString().padStart(2, "00");
+    const mes = (date_ob.getUTCMonth() + 1).toString().padStart(2, "00");
+    const anyo = date_ob.getUTCFullYear();
+
+    const hora = date_ob.getUTCHours().toString().padStart(2, "00");
+    const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
+    const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");;
+    const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
+
+    const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}:${ms}`;
+
+    return cadena;
 
 };

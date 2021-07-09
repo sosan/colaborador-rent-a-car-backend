@@ -633,11 +633,25 @@ exports.GetImagenBase64 = async () =>
 }
 
 
+exports.ConsultarLocalizador = async (localizador) =>
+{
+
+    try {
+        const datos = await collectionReservas.find({"localizador": localizador}).project({ _id: 0 }).toArray();
+        return datos;
+
+    }
+    catch (error) {
+        console.log("error" + error);
+    }
+
+};
+
 exports.GetAllReservas = async () =>
 {
     try
     {
-        const datos = await collectionReservas.find({}).project({_id: 0}).toArray();
+        const datos = await collectionReservas.find({}).toArray();
         return datos;
 
     }

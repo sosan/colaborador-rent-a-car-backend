@@ -4,6 +4,7 @@ const logicStats = require("../logicinterface/logic_stats");
 const traducciones = require("../controllers/location");
 const fetch = require("node-fetch");
 const { transporter } = require("./logicSendEmail");
+const { descripcionVehiculos } = require("./logicGetReservas");
 const nanoid = require("nanoid");
 
 
@@ -113,6 +114,8 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{G1}", "g"), resultadoInsercion.numeroRegistro)
         .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
         .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
+        .replace(new RegExp("{Z3}", "g"), `<img src="${descripcionVehiculos[formulario.descripcion_vehiculo]}">`)
+        .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="http://www.rentcarmallorca.es:8080/img/imagenlocalizacion.webp" width="200"></a>`)
         .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("{J1}", "g"), "Camino de Can Pastilla, 51")
         .replace(new RegExp("{K1}", "g"), "07610 Can Pastilla - Palma de Mallorca")
@@ -226,7 +229,7 @@ Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroR
 
 };
 
-const EnviarCorreoIo = async (data) =>
+exports.EnviarCorreoIo = async (data) =>
 {
 
     let isSended = false;
@@ -350,6 +353,15 @@ const ObtenernumeroRegistro = async () =>
     //cross sucess => reserva localizador
     const idRandom = nanoid.nanoid().substring(0, 3).toUpperCase();
     const numeroRegistro = `${idRandom}${anyo}${mes}${dia}`;
+
+    // comprobar que no exista el numero
+    const existe = await dbInterfaces.ConsultarLocalizador(numeroRegistro);
+
+    if (existe === true)
+    {
+        numeroRegistro = await ObtenernumeroRegistro();
+    }
+
     return numeroRegistro;
 
 };
@@ -384,6 +396,16 @@ const SanitizarFormulario = async (formulario) =>
 {
     
     //quitar mayusculas, espacios, o caracteres no permitidos
+
+    const palabras = formulario["nombre"].split(" ");
+
+    for (let i = 0; i < palabras.length; i++)
+    {
+        palabras[i] = palabras[i][0].toUpperCase() + palabras[i].substr(1);
+    }
+
+    formulario["nombre"] = palabras.join(" ");
+
     formulario["email"] = formulario["email"].trim().toLowerCase();
     formulario["telefono"] = formulario["telefono"].trim().toLowerCase();
 

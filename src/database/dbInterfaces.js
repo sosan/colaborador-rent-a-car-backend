@@ -195,6 +195,14 @@ exports.GetImagenBase64 = async () =>
 };
 
 
+exports.ConsultarLocalizador = async (localizador) =>
+{
+
+    const resultado = await mongo_dao.ConsultarLocalizador(localizador);
+    return resultado;
+
+};
+
 exports.GetReservas = async () =>
 {
     const resultado = await mongo_dao.GetAllReservas();
