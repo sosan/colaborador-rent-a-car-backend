@@ -407,7 +407,7 @@ const SanitizarFormulario = async (formulario) =>
     
     //quitar mayusculas, espacios, o caracteres no permitidos
 
-    const palabras = formulario["nombre"].split(" ");
+    const palabras = formulario["nombre"].toLowerCase().split(" ");
 
     for (let i = 0; i < palabras.length; i++)
     {
