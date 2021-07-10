@@ -597,7 +597,6 @@ exports.UpdateReserva = async (emailsEnviados, objectId) =>
 
     try
     {
-
         const resultados = await collectionReservas.findOneAndUpdate(
             { _id: objectId },
             {
@@ -606,7 +605,6 @@ exports.UpdateReserva = async (emailsEnviados, objectId) =>
         
         const isUpdated = resultados.ok === 1;
         return isUpdated;
-
 
     }
     catch (err) {
@@ -685,4 +683,4 @@ exports.GetReservasSended = async () => {
         console.log("error" + error);
     }
 
-}
+};
