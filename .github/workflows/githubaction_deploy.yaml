@@ -38,7 +38,6 @@ jobs:
             sosan/backoffice-rentacarmallorca:latest
           secrets: |
             "PORT_BACOFFICE=${{ secrets.PORT_BACKOFFICE }}"
-
       - name: Send discord failure message
         if: ${{ failure() }}
         uses: appleboy/discord-action@master
@@ -46,7 +45,7 @@ jobs:
           webhook_id: ${{ secrets.WEBHOOK_ID }}
           webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           color: "#FF0000"
-          message: "Fallo subida backoffice !!!"
+          message: "Fallo construccion imagen backoffice !!!"
 
       - name: Send discord success message
         if: ${{ success() }}
@@ -55,7 +54,7 @@ jobs:
           webhook_id: ${{ secrets.WEBHOOK_ID }}
           webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           color: "#48f442"
-          message: "Subido Backoffice correctamente"
+          message: "Construccion imagen backoffice correcta"
   upload:
     runs-on: ubuntu-20.04
     needs: [build]
@@ -77,18 +76,18 @@ jobs:
         if: ${{ failure() }}
         uses: appleboy/discord-action@master
         with:
-          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
-          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          webhook_id: ${{ secrets.WEBHOOK_ID }}
+          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           color: "#FF0000"
-          message: "Fallo subida backoffice !!!"
+          message: "Fallo subida imagen backoffice !!!"
 
       - name: Send discord success message
         if: ${{ success() }}
         uses: appleboy/discord-action@master
         with:
-          webhook_id: ${{ secrets.DISCORD_WEBHOOK_ID }}
-          webhook_token: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
+          webhook_id: ${{ secrets.WEBHOOK_ID }}
+          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           color: "#48f442"
-          message: "Subido Backoffice correctamente"
+          message: "Subido imagen Backoffice correctamente"
     
 
