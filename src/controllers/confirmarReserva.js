@@ -52,7 +52,7 @@ exports.MostrarReservasNoEnviadas = async (req, res) => {
 
     const datos = await response.json();
     const html = eta.render(templateConfirmacionNoEnviada, { noenviados: datos.formdata })
-
+    // let result = await eta.renderAsync(
     res.send({
         reservasEnviadas: html
     });
@@ -96,7 +96,24 @@ exports.EnvioCorreo = async (req, res) =>
 
 };
 
-const templateConfirmacionNoEnviada = `<ul>
+const templateConfirmacionNoEnviada = `
+<% const FechasES=(fecha)=> { 
+    fecha = fecha.substring(0, fecha.length - 4);
+    fecha += "Z";
+    let date_ob=new Date(fecha);
+    
+    const dia=(date_ob.getDate()).toString().padStart(2, "00" );
+    const mes=(date_ob.getMonth() + 1).toString().padStart(2, "00" ); 
+    const anyo=date_ob.getFullYear(); 
+    const minuto=date_ob.getMinutes().toString().padStart(2, "00" ); 
+    const horas=date_ob.getHours().toString().padStart(2, "00" ); 
+    const segundos=date_ob.getSeconds().toString().padStart(2, "00" ); 
+    
+    const fechaActual=dia + "-" + mes+ "-" +anyo+ " " +horas+ ":" +minuto+ ":" +segundos;
+    return fechaActual; } %>
+
+
+<ul>
                 <li class="centrado">
                     <div class="tamanyo-200">
                         Localizador
@@ -134,14 +151,17 @@ const templateConfirmacionNoEnviada = `<ul>
                             <%=it.noenviados[i].email %>
                         </div>
                         <div class="tamanyo-200">
-                            <%= it.noenviados[i].fechaAlta%>
+                        
+                            <% const alta=FechasES(it.noenviados[i].fechaAlta) %>
+                            <%= alta %>
                         </div>
 
                         <div class="tamanyo-200">
                             <% if (it.noenviados[i].fechaEnvioConfirmacionReserva) { %>
-                                <%= it.noenviados[i].fechaEnvioConfirmacionReserva%>
+                                <% const fe = FechasES(it.noenviados[i].fechaEnvioConfirmacionReserva) %>
+                                <%= fe %>
                             <% } else { %>
-                                        --
+                                --
                             <% } %>
                         </div>
                         <div class="tamanyo-201">
@@ -175,7 +195,26 @@ const templateConfirmacionNoEnviada = `<ul>
             </ul>`;
 
 
-const templateConfirmacionEnviada = ` <ul>
+const templateConfirmacionEnviada = ` 
+<% const FechasES=(fecha)=> {
+
+    
+    fecha = fecha.split(".")[0];
+    fecha += "Z";
+    let date_ob=new Date(fecha);
+
+    const dia=(date_ob.getDate()).toString().padStart(2, "00" );
+    const mes=(date_ob.getMonth() + 1).toString().padStart(2, "00" );
+    const anyo=date_ob.getFullYear();
+    const minuto=date_ob.getMinutes().toString().padStart(2, "00" );
+    const horas=date_ob.getHours().toString().padStart(2, "00" );
+    const segundos=date_ob.getSeconds().toString().padStart(2, "00" );
+
+    const fechaActual=dia + "-" + mes+ "-" +anyo+ " " +horas+ ":" +minuto+ ":" +segundos;
+    return fechaActual; } %>
+
+
+<ul>
                 <li class="centrado">
                     <div class="tamanyo-200">
                         Localizador
@@ -213,10 +252,11 @@ const templateConfirmacionEnviada = ` <ul>
 
                         <div class="tamanyo-200">
                             <% if (it.enviados[i].fechaEnvioConfirmacionReserva) { %>
-                                <%= it.enviados[i].fechaEnvioConfirmacionReserva%>
-                                    <% } else { %>
-                                        --
-                                        <% } %>
+                                <% const fe = FechasES(it.enviados[i].fechaEnvioConfirmacionReserva) %>
+                                <%= fe %>
+                            <% } else { %>
+                                --
+                            <% } %>
                         </div>
                         <div class="tamanyo-201">
                             <form class="formulario" action="/enviocorreo" method="post">

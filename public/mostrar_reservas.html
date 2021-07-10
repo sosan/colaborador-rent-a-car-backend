@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,9 +8,23 @@
     <link rel="stylesheet" href="./css/mostrar_reservas.css">
     <title>Envio confirmacion reservas</title>
 </head>
-
+    
 <body>
-
+<% const FechasES=(fecha)=> { 
+    fecha = fecha.substring(0, fecha.length - 4);
+    fecha += "Z";
+    let date_ob=new Date(fecha);
+    
+    const dia=(date_ob.getDate()).toString().padStart(2, "00" );
+    const mes=(date_ob.getMonth() + 1).toString().padStart(2, "00" ); 
+    const anyo=date_ob.getFullYear(); 
+    const minuto=date_ob.getMinutes().toString().padStart(2, "00" ); 
+    const horas=date_ob.getHours().toString().padStart(2, "00" ); 
+    const segundos=date_ob.getSeconds().toString().padStart(2, "00" ); 
+    
+    const fechaActual=`${dia}-${mes}-${anyo} ${horas}:${minuto}:${segundos}`;
+    return fechaActual; } %>
+        
     <header class="header">
         <button id="botonAtras" type="button" class="boton atras">Atras</button>
         <button id="botonNoEnviados" type="button" class="boton boton-rojo boton-masancho">No Enviados</button>
@@ -19,7 +32,7 @@
         <button id="botonOtros" type="button" class="boton boton-masancho">Otros</button>
     </header>
     <main>
-
+        
         <div id="noenviados" class="pestanyaContenido">
             <h2 class="titulo">NO Enviada Confirmacion</h2>
             <ul id="borrarnoenviados">
@@ -44,8 +57,9 @@
                     </div>
                 </li>
 
+                
                 <% for (let i=0; i < it.noenviados.length; i++) { %>
-
+                    
                     <li class="centrado">
                         <div class="tamanyo-200">
                             <b>
@@ -60,15 +74,18 @@
                             <%=it.noenviados[i].email %>
                         </div>
                         <div class="tamanyo-200">
-                            <%= it.noenviados[i].fechaAlta%>
+                            <% const alta=FechasES(it.noenviados[i].fechaAlta) %>
+                            <%= alta %>
                         </div>
-
+                        
                         <div class="tamanyo-200">
                             <% if (it.noenviados[i].fechaEnvioConfirmacionReserva) { %>
-                                <%= it.noenviados[i].fechaEnvioConfirmacionReserva%>
+                                <% const fe = FechasES(it.noenviados[i].fechaEnvioConfirmacionReserva) %>
+                                <%= fe %>
                             <% } else { %>
-                                        --
+                                --
                             <% } %>
+                            
                         </div>
                         <div class="tamanyo-201">
                             <form class="formulario" action="/enviocorreo" method="post">
@@ -81,14 +98,14 @@
                                 <input type="hidden" name="horaRecogida" value="<%=it.noenviados[i].horaRecogida %>">
                                 <input type="hidden" name="fechaDevolucion"
                                     value="<%=it.noenviados[i].fechaDevolucion %>">
-                                <input type="hidden" name="horaDevolucion"
+                                    <input type="hidden" name="horaDevolucion"
                                     value="<%=it.noenviados[i].horaDevolucion %>">
                                 <input type="hidden" name="numero_sillas_nino"
-                                    value="<%=it.noenviados[i].numero_sillas_nino %>">
+                                value="<%=it.noenviados[i].numero_sillas_nino %>">
                                 <input type="hidden" name="numero_booster"
                                     value="<%=it.noenviados[i].numero_booster %>">
                                 <input type="hidden" name="descripcion_vehiculo"
-                                    value="<%=it.noenviados[i].descripcion_vehiculo %>">
+                                value="<%=it.noenviados[i].descripcion_vehiculo %>">
 
                                 <button id="botonEnviar" class="centrado-boton_correo azul" type="submit">
                                     Enviar correo
@@ -97,23 +114,23 @@
                         </div>
                     </li>
                     <% } %>
-
+                    
             </ul>
 
         </div>
 
         <div id="enviados" class="pestanyaContenido" style="display:none">
             <h2 class="titulo">Enviada Confirmacion</h2>
-
+            
         </div>
-
+        
         <div id="otros" class="pestanyaContenido" style="display:none">
             <h2 class="titulo">Otros</h2>
 
         </div>
 
 
-
+        
     </main>
     <script src="./js/mostrar_reservas.js"></script>
 </body>
