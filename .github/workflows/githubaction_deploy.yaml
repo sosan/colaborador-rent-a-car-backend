@@ -45,7 +45,7 @@ jobs:
           webhook_id: ${{ secrets.WEBHOOK_ID }}
           webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           color: "#FF0000"
-          message: "Fallo construccion imagen backoffice !!!"
+          message: "BACKOFFICE: FALLO BUILD!!!"
 
       - name: Send discord success message
         if: ${{ success() }}
@@ -54,7 +54,7 @@ jobs:
           webhook_id: ${{ secrets.WEBHOOK_ID }}
           webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           color: "#48f442"
-          message: "Construccion imagen backoffice correcta"
+          message: "BACKOFFICE: BUILD OK"
   upload:
     runs-on: ubuntu-20.04
     needs: [build]
@@ -79,7 +79,7 @@ jobs:
           webhook_id: ${{ secrets.WEBHOOK_ID }}
           webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           color: "#FF0000"
-          message: "Fallo subida imagen backoffice !!!"
+          message: "BACKOFFICE: FALLO SUBIDA"
 
       - name: Send discord success message
         if: ${{ success() }}
@@ -88,6 +88,6 @@ jobs:
           webhook_id: ${{ secrets.WEBHOOK_ID }}
           webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
           color: "#48f442"
-          message: "Subido imagen Backoffice correctamente"
+          message: "BACKOFFICE: SUBIDA OK"
     
 
