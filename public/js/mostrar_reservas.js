@@ -74,9 +74,7 @@ const GetReservas = async (url) =>
     const datosDevueltos = await responseRaw.json();
     return datosDevueltos;
 
-
 };
-
 
 const abrirPestanyas = (nombreBoton, pestanyaId) => 
 {
