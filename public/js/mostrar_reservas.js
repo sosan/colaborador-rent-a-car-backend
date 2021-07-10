@@ -5,19 +5,80 @@ const botonOtros = document.getElementById("botonOtros");
 
 const pestanyasContenido = document.getElementsByClassName("pestanyaContenido");
 const pestanyasBotones = document.getElementsByClassName("boton");
-const formularios = document.getElementsByClassName("formulario");
+
 
 
 botonAtras.addEventListener("click", () => {
     console.log("sdfsdf");
 });
-botonNoEnviados.addEventListener("click", (evento) => { abrirPestanyas(evento, "noenviados"); } );
-botonEnviados.addEventListener("click", (evento) => { abrirPestanyas(evento, "enviados"); } );
-botonOtros.addEventListener("click", (evento) => { abrirPestanyas(evento, "otros"); });
+
+botonNoEnviados.addEventListener("click", async (evento) => 
+{ 
+    
+    const datosDevueltos = await GetReservas("/reservasnoenviadas");
+
+    const relleno = document.getElementById("noenviados");
+
+    const borrarNoEnviados = document.getElementById("borrarnoenviados");
+    if (borrarNoEnviados) {
+        borrarNoEnviados.remove();
+    }
+
+    const trozoHtml = document.createElement("div");
+    trozoHtml.id = "borrarnoenviados";
+    trozoHtml.innerHTML = datosDevueltos.reservasEnviadas;
+
+    relleno.appendChild(trozoHtml);
+    abrirPestanyas(botonNoEnviados, "noenviados"); 
+
+});
 
 
+botonEnviados.addEventListener("click", async (evento) => 
+{ 
+    const datosDevueltos = await GetReservas("/reservasenviadas");
 
-const abrirPestanyas = (evento, pestanyaId) => 
+    const relleno = document.getElementById("enviados");
+
+    const borrarEnviados = document.getElementById("borrarenviados");
+    if (borrarEnviados) {
+        borrarEnviados.remove();
+
+    }
+
+    const trozoHtml = document.createElement("div");
+    trozoHtml.id = "borrarenviados";
+    trozoHtml.innerHTML = datosDevueltos.reservasEnviadas;
+
+    relleno.appendChild(trozoHtml);
+
+    await AnadirEventosFormularios();
+
+    abrirPestanyas(botonEnviados, "enviados"); 
+
+});
+botonOtros.addEventListener("click", async (evento) => { abrirPestanyas(botonOtros, "otros"); });
+
+
+const GetReservas = async (url) =>
+{
+
+    const responseRaw = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+    });
+
+    const datosDevueltos = await responseRaw.json();
+    return datosDevueltos;
+
+
+};
+
+
+const abrirPestanyas = (nombreBoton, pestanyaId) => 
 {
     
     for (i = 0; i < pestanyasContenido.length; i++) 
@@ -31,63 +92,70 @@ const abrirPestanyas = (evento, pestanyaId) =>
     }
 
     document.getElementById(pestanyaId).style.display = "block";
-    evento.currentTarget.classList.add("boton-rojo");
+    nombreBoton.classList.add("boton-rojo");
+
 };
 
-
-
-
-for (let i = 0; i < formularios.length; i++)
+const AnadirEventosFormularios = async () =>
 {
-    formularios[i].addEventListener("submit", async (evento) =>
+
+    const formularios = document.getElementsByClassName("formulario");
+    for (let i = 0; i < formularios.length; i++)
     {
-
-        evento.preventDefault();
-
-        const data = new FormData(formularios[i]);
-        let body = Object.fromEntries(data);
-
-        const responseRaw = await fetch("/enviocorreo", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(body)
+        formularios[i].addEventListener("submit", async (evento) =>
+        {
+    
+            evento.preventDefault();
+    
+            const data = new FormData(formularios[i]);
+            let body = Object.fromEntries(data);
+    
+            const responseRaw = await fetch("/enviocorreo", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(body)
+            });
+    
+            const datosDevueltos = await responseRaw.json();
+    
+            if (datosDevueltos.isOk === true)
+            {
+                const boton = formularios[i].lastElementChild;
+                boton.innerText = "Enviado";
+                boton.classList.remove("azul");
+                boton.classList.add("verde");
+    
+                const fecha = await ObtenerCurrentDate(datosDevueltos.fechaEnvioConfirmacionReserva);
+    
+                formularios[i].parentElement.previousElementSibling.innerText = fecha;
+                formularios[i].lastElementChild.disabled = true;
+            }
+            else
+            {
+    
+                const boton = formularios[i].lastElementChild;
+                boton.innerText = "Error!";
+                boton.classList.remove("azul");
+                boton.classList.add("rojo");
+    
+                formularios[i].parentElement.previousElementSibling.innerText = "ERROR!";
+    
+            }
+    
+    
+    
+    
         });
-
-        const datosDevueltos = await responseRaw.json();
-
-        if (datosDevueltos.isOk === true)
-        {
-            const boton = formularios[i].lastElementChild;
-            boton.innerText = "Enviado";
-            boton.classList.remove("azul");
-            boton.classList.add("verde");
-
-            const fecha = await ObtenerCurrentDate(datosDevueltos.fechaEnvioConfirmacionReserva);
-
-            formularios[i].parentElement.previousElementSibling.innerText = fecha;
-
-        }
-        else
-        {
-
-            const boton = formularios[i].lastElementChild;
-            boton.innerText = "Error!";
-            boton.classList.remove("azul");
-            boton.classList.add("rojo");
-
-            formularios[i].parentElement.previousElementSibling.innerText = "ERROR!";
-
-        }
-
-
-
-
-    });
+    
+    }
 
 }
+
+AnadirEventosFormularios();
+
 
 
 const ObtenerCurrentDate = async (fecha) => {
