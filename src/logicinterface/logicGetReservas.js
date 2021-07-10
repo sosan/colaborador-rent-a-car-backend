@@ -46,10 +46,10 @@ exports.descripcionVehiculos = {
 }
 
 
-exports.GetReservas = async (req, res) =>
+exports.GetReservasNotSended = async (req, res) =>
 {
 
-    const resultado = await dbInterfaces.GetReservas();
+    const resultado = await dbInterfaces.GetReservasNotSended();
     
     res.send({
         formdata: resultado
@@ -57,10 +57,19 @@ exports.GetReservas = async (req, res) =>
 
 };
 
+exports.GetReservasSended = async (req, res) => {
+
+    const resultado = await dbInterfaces.GetReservasSended();
+
+    res.send({
+        formdata: resultado
+    });
+
+};
+
+
 exports.ConfirmarReserva = async (req, res ) =>
 {
-
-    // return res.send({ "isOk": true, "fechaEnvioConfirmacionReserva": new Date() });
 
     const formulario = req.body;
     const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
@@ -106,31 +115,58 @@ exports.ConfirmarReserva = async (req, res ) =>
     const respuestaReservaConfirmacion = await logic_postFormReservar.EnviarCorreoAh(bodyEmail); //transporter.sendMail(bodyEmail);
 
     //enviarlo a la db
-    const currentDate = await ObtenerCurrentDate();
+    const currentDate = new Date();
 
     respuestaReservaConfirmacion["fechaEnvioConfirmacionReserva"] = currentDate;
+    respuestaReservaConfirmacion["emailConfirmacionReservaEnviado"] = respuestaReservaConfirmacion.datosEmailConfirmacionReserva.isSended;
 
     //buscar por id
-    // const isUpdated = await dbInterfaces.UpdateReserva(respuestaReservaConfirmacion, formulario._id);
-    // console.log(` enviados:\n-> Usuarios:${isUpdated}`);
+    const isUpdated = await dbInterfaces.UpdateReservaWithString(respuestaReservaConfirmacion, formulario._id);
+    
+    if (isUpdated === true)
+    {
+        res.send({ "isOk": true, "fechaEnvioConfirmacionReserva": currentDate });
+
+    }
+    else
+    {
+        res.send({ "isOk": false });
+        //TODO:
+    }
+    
+
+    let bodyAdmin =
+    {
+        from:
+        {
+            name: "RentCarMallorca.es Servicios",
+            address: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`
+        },
+        to: [`${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`, `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}` ],
+        subject: `Confirmacion de reserva enviado correctamente con ${formulario.localizador}`,
+        html: `Email de confirmacion de reserva enviado correctamente`,
+
+    };
+
+    await logic_postFormReservar.EnviarCorreoAh(bodyAdmin);
 
 
 };
 
-const ObtenerCurrentDate = async () => {
-    let date_ob = new Date();
+// const ObtenerCurrentDate = async () => {
+//     let date_ob = new Date();
 
-    const dia = date_ob.getUTCDate().toString().padStart(2, "00");
-    const mes = (date_ob.getUTCMonth() + 1).toString().padStart(2, "00");
-    const anyo = date_ob.getUTCFullYear();
+//     const dia = date_ob.getUTCDate().toString().padStart(2, "00");
+//     const mes = (date_ob.getUTCMonth() + 1).toString().padStart(2, "00");
+//     const anyo = date_ob.getUTCFullYear();
 
-    const hora = date_ob.getUTCHours().toString().padStart(2, "00");
-    const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
-    const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");;
-    const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
+//     const hora = date_ob.getUTCHours().toString().padStart(2, "00");
+//     const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
+//     const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");;
+//     const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
 
-    const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}:${ms}`;
+//     const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}:${ms}`;
 
-    return cadena;
+//     return cadena;
 
-};
+// };

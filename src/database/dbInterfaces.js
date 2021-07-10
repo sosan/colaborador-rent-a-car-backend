@@ -1,6 +1,8 @@
 const mongo_dao = require('../database/mongo_dao');
 const redis_dao = require("../database/redis_dao");
 
+const { ObjectId } = require('mongodb');
+
 const DAY_IN_MILISECONDS = 86400000;
 const DIA_DATE = new Date(DAY_IN_MILISECONDS);
 
@@ -187,6 +189,16 @@ exports.UpdateReserva = async (emailsEnviados, objectId, currentDate) =>
 
 };
 
+exports.UpdateReservaWithString = async (emailsEnviados, objectId, currentDate) =>
+{
+
+    const resultado = await mongo_dao.UpdateReserva(emailsEnviados, ObjectId(objectId));
+    return resultado;
+
+    
+
+};
+
 
 exports.GetImagenBase64 = async () =>
 {
@@ -203,11 +215,19 @@ exports.ConsultarLocalizador = async (localizador) =>
 
 };
 
-exports.GetReservas = async () =>
+exports.GetReservasNotSended = async () =>
 {
-    const resultado = await mongo_dao.GetAllReservas();
+    const resultado = await mongo_dao.GetReservasNotSended();
+    return resultado;
+
+
+};
+
+exports.GetReservasSended = async () => {
+    const resultado = await mongo_dao.GetReservasSended();
     return resultado;
 
 
 }
+
 

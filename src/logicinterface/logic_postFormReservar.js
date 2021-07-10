@@ -234,7 +234,11 @@ exports.EnviarCorreoAh = async (data) =>
 {
 
     const result = await EnviarCorreoIo(data);
-    return result;
+    const datos = {
+        "datosEmailConfirmacionReserva": result,
+    };
+
+    return datos;
 
 
 };
@@ -379,12 +383,12 @@ const ObtenernumeroRegistro = async () =>
 exports.ProcesarReserva = async (formulario, currentDate) =>
 {
 
-    const numeroRegistro = await ObtenernumeroRegistro();
-    
-    formulario["numeroRegistro"] = numeroRegistro;
-    
     formulario = await SanitizarFormulario(formulario);
-
+    
+    const numeroRegistro = await ObtenernumeroRegistro();
+    formulario["numeroRegistro"] = numeroRegistro;
+    formulario["emailConfirmacionReservaEnviado"] = false;
+    
     let isInserted = false;
     let incrementalCount = 1;
     while (isInserted === false)

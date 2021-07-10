@@ -611,7 +611,7 @@ exports.UpdateReserva = async (emailsEnviados, objectId) =>
     }
     catch (err) {
         //TODO: enviar a otra db error, redis
-        const error = `${err} Coleccion Cars`;
+        const error = `${err} Coleccion Reservas`;
         console.error(error);
 
     }
@@ -657,6 +657,31 @@ exports.GetAllReservas = async () =>
     }
     catch (error)
     {
+        console.log("error" + error);
+    }
+
+};
+
+exports.GetReservasNotSended = async () => {
+    try {
+        const datos = await collectionReservas.find({"emailConfirmacionReservaEnviado": false}).toArray();
+        return datos;
+
+    }
+    catch (error) {
+        console.log("error" + error);
+    }
+
+};
+
+
+exports.GetReservasSended = async () => {
+    try {
+        const datos = await collectionReservas.find({ "emailConfirmacionReservaEnviado": true }).toArray();
+        return datos;
+
+    }
+    catch (error) {
         console.log("error" + error);
     }
 
