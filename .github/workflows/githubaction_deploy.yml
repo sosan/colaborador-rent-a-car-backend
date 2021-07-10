@@ -186,6 +186,7 @@ jobs:
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
             /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
             /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
+            /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest && \
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
             
             

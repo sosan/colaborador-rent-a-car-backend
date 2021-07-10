@@ -410,15 +410,8 @@ const SanitizarFormulario = async (formulario) =>
 {
     
     //quitar mayusculas, espacios, o caracteres no permitidos
-
-    const palabras = formulario["nombre"].toLowerCase().split(" ");
-
-    for (let i = 0; i < palabras.length; i++)
-    {
-        palabras[i] = palabras[i][0].toUpperCase() + palabras[i].substr(1);
-    }
-
-    formulario["nombre"] = palabras.join(" ");
+    formulario["nombre"] = await CapitalizarString(formulario["nombre"]);
+    formulario["apellidos"] = await CapitalizarString(formulario["apellidos"]);
 
     formulario["email"] = formulario["email"].trim().toLowerCase();
     formulario["telefono"] = formulario["telefono"].trim().toLowerCase();
@@ -426,6 +419,21 @@ const SanitizarFormulario = async (formulario) =>
     return formulario;
 
 };
+
+const CapitalizarString = async (cadena) =>
+{
+
+    const palabras = cadena.toLowerCase().split(" ");
+
+    for (let i = 0; i < palabras.length; i++) {
+        palabras[i] = palabras[i][0].toUpperCase() + palabras[i].substr(1);
+    }
+
+    const texto = palabras.join(" ");
+    return texto;
+
+};
+
 
 const sleep = async (ms) => {
     return new Promise((resolve) => {
