@@ -195,6 +195,8 @@ exports.GetAllCars = async (formulario) =>
 };
 
 
+
+
 exports.GetCars = async (formulario) =>
 {
 
@@ -236,7 +238,7 @@ exports.GetCars = async (formulario) =>
     );
 
 
-    
+
 
     let datosDevueltos = { "isOk": false };
     if (resultadosObjetoCoches.isOk === false) {
