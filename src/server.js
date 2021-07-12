@@ -38,6 +38,7 @@ exports.InitServer = async () =>
     // app.use(morgan("combined"));
 
 
+
     //registro de html como eta
     app.engine(".html", eta.renderFile);
     app.set("views", path.join(__dirname, "../public"));
