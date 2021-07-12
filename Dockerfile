@@ -20,18 +20,3 @@ COPY --from=builder /usr/src/app/backoffice .
 USER alpine
 CMD /usr/src/app/backoffice
 
-
-
-# # imagen2 sin npm o yarn
-# FROM mhart/alpine-node:slim-14.16.1
-# WORKDIR /usr/src/app
-
-# COPY --from=0 /usr/src/app ./
-# COPY ./src ./src
-# COPY ./public ./public
-
-# # RUN adduser -D node
-# # USER node
-
-# CMD ["node", "src/index.js"]
-
