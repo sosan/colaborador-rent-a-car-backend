@@ -235,6 +235,9 @@ exports.GetCars = async (formulario) =>
         true
     );
 
+
+    
+
     let datosDevueltos = { "isOk": false };
     if (resultadosObjetoCoches.isOk === false) {
 
