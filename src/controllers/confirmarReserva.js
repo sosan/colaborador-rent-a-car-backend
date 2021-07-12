@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const eta = require("eta");
+const path = require("path");
 
 
 exports.MostrarReservas = async (req, res) =>
@@ -15,7 +16,7 @@ exports.MostrarReservas = async (req, res) =>
 
     const datos = await response.json();
 
-    res.render("mostrar_reservas", {
+    res.render(path.join(__dirname, '../../public/mostrar_reservas.html'), {
         noenviados: datos.formdata
     });
 

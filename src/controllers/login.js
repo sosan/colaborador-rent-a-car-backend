@@ -161,7 +161,7 @@ exports.getLogin = async (req, res) =>
 {
     
     const id = nanoid.nanoid();
-    res.render("inicio", { "success": id });
+    res.render(path.join(__dirname, '../../public/inicio.html'), { "success": id });
 
 
 };

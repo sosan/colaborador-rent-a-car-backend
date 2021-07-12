@@ -1,9 +1,7 @@
 name: backoffice
-
 on:
   push:
     branches: [ backoffice ]
-
 
 jobs:
   build:
@@ -38,6 +36,9 @@ jobs:
             sosan/backoffice-rentacarmallorca:latest
           secrets: |
             "PORT_BACOFFICE=${{ secrets.PORT_BACKOFFICE }}"
+            "PORT_BACKEND=${{ secrets.PORT_BACKEND }}"
+            "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
+            "TOKEN_FOR_BACKEND_ACCESS=${{ secrets.TOKEN_FOR_BACKEND_ACCESS }}"
       - name: Send discord failure message
         if: ${{ failure() }}
         uses: appleboy/discord-action@master
