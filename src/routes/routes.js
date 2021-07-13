@@ -45,6 +45,7 @@ router.post(
     
 // generar html
 router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTLForGeneralConditions(req, res));
+router.get("/actualizar-traduccion", async (req, res) => await controlPanelLogin.ActualizarTraducciones(req, res));
 
 //location
 // TODO: deberia ser post, cambiarlo al realizar el backoffice
