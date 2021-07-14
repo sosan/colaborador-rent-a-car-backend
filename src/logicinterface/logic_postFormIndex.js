@@ -6,14 +6,12 @@ const DAY_IN_MILISECONDS = 86400000;
 const DIA_DATE = new Date(DAY_IN_MILISECONDS);
 
 // TODO: generar string a partir del secreto
-const GenerateTokenBackendToFrontend = async () =>
-{
+const GenerateTokenBackendToFrontend = async () => {
 
     return process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET;
 };
 
-const CheckTokenControlSchema = async (formulario, schema) =>
-{
+const CheckTokenControlSchema = async (formulario, schema) => {
 
     let respuesta = {};
 
@@ -36,13 +34,11 @@ const CheckTokenControlSchema = async (formulario, schema) =>
 
 };
 
-exports.CheckTokenFromGetAllVehicles = async (formulario) =>
-{
+exports.CheckTokenFromGetAllVehicles = async (formulario) => {
 
     let schema = undefined;
 
-    if (formulario.direct === true)
-    {
+    if (formulario.direct === true) {
         schema = Joi.object({
 
             direct: Joi.boolean().required(),
@@ -53,8 +49,7 @@ exports.CheckTokenFromGetAllVehicles = async (formulario) =>
             token: Joi.string().required(),
         });
     }
-    else
-    {
+    else {
         schema = Joi.object({
             id: Joi.string().required(),
             location: Joi.object().required(),
@@ -123,8 +118,7 @@ const ControlSchema = async (body, schema) => {
 };
 
 
-exports.GetAllCars = async (formulario) =>
-{
+exports.GetAllCars = async (formulario) => {
 
     const cochesPreciosRaw = await GetCarsByReservado(formulario);
 
@@ -197,8 +191,7 @@ exports.GetAllCars = async (formulario) =>
 
 
 
-exports.GetCars = async (formulario) =>
-{
+exports.GetCars = async (formulario) => {
 
     const cochesPreciosRaw = await GetCarsByReservado(formulario);
 
@@ -251,8 +244,7 @@ exports.GetCars = async (formulario) =>
             "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
         };
     }
-    else
-    {
+    else {
         datosDevueltos = {
             "isOk": true,
             "data": resultadosObjetoCoches.resultadosCoches,
@@ -263,7 +255,7 @@ exports.GetCars = async (formulario) =>
             "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
             "preciosPorClase": cochesPreciosRaw.preciosPorClase,
             "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados,
-    
+
         };
 
     }
@@ -413,35 +405,33 @@ const CheckResultadosCoches = async (
         let precioTotalDias = 0;
         let precioDiaSinDescuento = listadoPrecios[1];
 
-        if (numeroDiasRecogidaDevolucion > 7) 
-        {
+        if (numeroDiasRecogidaDevolucion > 7) {
             precioDiaPorClase = listadoPrecios[listadoPrecios.length - 1];
             precioTotalDias = precioDiaPorClase * numeroDiasRecogidaDevolucion;
 
         }
-        else
-        {
+        else {
             precioDiaPorClase = listadoPrecios[1];
             precioTotalDias = listadoPrecios[numeroDiasRecogidaDevolucion];
 
         }
 
-        
+
         resultadosCoches[i]["preciototaldias"] = precioTotalDias;
-        
+
         const preciosSuplementoPorTipoChofer = await GenerarSuplementosPorTipoChofer(
             suplementoTipoChofer,
             formulario.conductor_con_experiencia,
             claseVehiculo
         );
 
-        
-        
+
+
         resultadosCoches[i]["preciopordia"] = precioDiaPorClase;
         resultadosCoches[i]["preciopordiasindescuento"] = precioDiaSinDescuento;
         resultadosCoches[i]["preciototalsindescuento"] = precioDiaSinDescuento * numeroDiasRecogidaDevolucion;
         resultadosCoches[i]["porcentaje"] = porcentaje;
-        
+
         resultadosCoches[i]["preciosSuplementoPorTipoChofer"] = preciosSuplementoPorTipoChofer;
 
         const isValorado = await CheckIsMasValorado(resultadosCoches[i]["vehiculo"], masValorados);
@@ -463,24 +453,22 @@ const CheckResultadosCoches = async (
 
 //----
 const TransformarResultadosCoche = async (
-    resultadosCoches, 
-    preciosPorClase, 
-    formulario, 
-    suplementoGenerico, 
+    resultadosCoches,
+    preciosPorClase,
+    formulario,
+    suplementoGenerico,
     suplementoTipoChofer,
     masValorados,
     porcentajeTipoVehiculo,
     procesarTiempo
-) => 
-{
+) => {
 
     let diasEntreRecogidaDevolucion = 0;
     let numeroDiasRecogidaDevolucion = 1;
 
-    if (procesarTiempo === true)
-    {
+    if (procesarTiempo === true) {
         diasEntreRecogidaDevolucion = await DiferenciaFechaRecogidaDevolucion(formulario);
-    
+
         if (diasEntreRecogidaDevolucion === undefined) {
             return {
                 isOk: false,
@@ -488,7 +476,7 @@ const TransformarResultadosCoche = async (
                 errorFormulario: "error_formulario3",
                 diasEntreRecogidaDevolucion: undefined
             };
-    
+
         }
 
         numeroDiasRecogidaDevolucion = diasEntreRecogidaDevolucion + 1;
@@ -504,7 +492,7 @@ const TransformarResultadosCoche = async (
         porcentajeTipoVehiculo,
         numeroDiasRecogidaDevolucion
     );
-    
+
     return {
         isOk: true,
         resultadosCoches: resultadoscochesChecked,
@@ -517,11 +505,10 @@ const TransformarResultadosCoche = async (
 
 
 const GenerarSuplementosPorTipoChofer = async (
-    suplementoTipoChofer, 
+    suplementoTipoChofer,
     conductor_con_experiencia,
     claseVehiculo
-) =>
-{
+) => {
 
     let preciosSuplementoPorTipoChofer = {
         "no-oferta": [],
@@ -531,25 +518,23 @@ const GenerarSuplementosPorTipoChofer = async (
     const currentTipoChofer = await ObtenerListadoTipoChofer(claseVehiculo, conductor_con_experiencia, suplementoTipoChofer);
     let objSuplemento = {};
 
-    if (currentTipoChofer[claseVehiculo] > 0) 
-    {
-        
+    if (currentTipoChofer[claseVehiculo] > 0) {
+
         // objSuplemento["descripcion"] = `Cargo Conductor Joven: ${currentTipoChofer[claseVehiculo]} € por dia.`;
         // objSuplemento["tooltip"] = `El usuario debe pagar un suplmento por conductor joven de ${currentTipoChofer[claseVehiculo]} € por dia`;
         objSuplemento["descripcion"] = "cargo_conductor_joven";
         objSuplemento["tooltip"] = "tooltip_cargo_conductor_joven";
         objSuplemento["valor"] = currentTipoChofer[claseVehiculo];
         preciosSuplementoPorTipoChofer["no-oferta"].push(objSuplemento);
-        
+
     }
-    else
-    {
-        
+    else {
+
         objSuplemento["descripcion"] = "sin_cargo_conductor_joven";
         objSuplemento["tooltip"] = "tooltip_sin_cargo_conductor_joven";
         objSuplemento["valor"] = 0;
         preciosSuplementoPorTipoChofer["oferta"].push(objSuplemento);
-        
+
     }
 
     return preciosSuplementoPorTipoChofer;
@@ -558,30 +543,23 @@ const GenerarSuplementosPorTipoChofer = async (
 };
 
 
-const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia, suplementoTipoChofer) =>
-{
+const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia, suplementoTipoChofer) => {
 
     let currentTipoChofer = {};
 
-    if (conductor_con_experiencia === "on")
-    {
-        if (claseVehiculo === "motos2")
-        {
+    if (conductor_con_experiencia === "on") {
+        if (claseVehiculo === "motos2") {
             currentTipoChofer = suplementoTipoChofer["choferPlus252Motos"];
         }
-        else
-        {
+        else {
             currentTipoChofer = suplementoTipoChofer["choferPlus232Cars"];
         }
     }
-    else
-    {
-        if (claseVehiculo === "motos2")
-        {
+    else {
+        if (claseVehiculo === "motos2") {
             currentTipoChofer = suplementoTipoChofer["choferPlusNovelMotos"];
         }
-        else
-        {
+        else {
             currentTipoChofer = suplementoTipoChofer["choferPlusNovelCars"];
         }
 
@@ -592,37 +570,33 @@ const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia
 };
 
 
-const GenerarSuplementosVehiculos = async (suplementos, suplementoGenerico) =>
-{
+const GenerarSuplementosVehiculos = async (suplementos, suplementoGenerico) => {
 
     let suplementosGenericos = [];
 
-    for (let j = 0; j < suplementos.length; j++) 
-    {
+    for (let j = 0; j < suplementos.length; j++) {
 
         const keySuplemento = suplementos[j];
         const contenidoSuplemento = suplementoGenerico[keySuplemento];
-        
-        if (contenidoSuplemento.valor > 0)
-        {
+
+        if (contenidoSuplemento.valor > 0) {
             // let texto = contenidoSuplemento["tooltip_pagar"];
             // contenidoSuplemento["tooltip_pagar"] = texto.replace("X", contenidoSuplemento["valor"] );
-            
+
             suplementosGenericos.push({
                 "titulo": contenidoSuplemento["titulo_pagar"],
                 "tooltip": contenidoSuplemento["tooltip_pagar"],
                 "valor": contenidoSuplemento["valor"]
             });
         }
-        else
-        {
+        else {
             suplementosGenericos.push({
                 "titulo": contenidoSuplemento["titulo_gratis"],
                 "tooltip": contenidoSuplemento["tooltip_gratis"],
                 "valor": 0
             });
         }
-        
+
     }
 
     return suplementosGenericos;
@@ -704,15 +678,12 @@ const ObtenerConversionFecha = async (fechaRaw, horaRaw) => {
 };
 
 
-const CheckIsMasValorado = async (vehiculo, masvalorados) =>
-{
+const CheckIsMasValorado = async (vehiculo, masvalorados) => {
 
     let isValorado = false;
-    for (let i = 0; i < masvalorados.length; i++)
-    {
+    for (let i = 0; i < masvalorados.length; i++) {
 
-        if (vehiculo === masvalorados[i])
-        {
+        if (vehiculo === masvalorados[i]) {
             isValorado = true;
             break;
         }
@@ -723,8 +694,7 @@ const CheckIsMasValorado = async (vehiculo, masvalorados) =>
 
 };
 
-const GetMasValorados = async () =>
-{
+const GetMasValorados = async () => {
 
     const result = await dbInterfaces.GetMasValorados();
     return result;
@@ -732,18 +702,16 @@ const GetMasValorados = async () =>
 
 };
 
-const GetPorcentajeVehiculos = async () =>
-{
+const GetPorcentajeVehiculos = async () => {
 
     let porcentajeTipoVehiculo = await porcentajeVehiculo.GetPorcentajeTipoVehiculo();
 
-    if (porcentajeTipoVehiculo === undefined)
-    {
+    if (porcentajeTipoVehiculo === undefined) {
         porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
         porcentajeVehiculo.SetPorcentajeTipoVehiculo(porcentajeTipoVehiculo);
     }
 
     return porcentajeTipoVehiculo;
-    
+
 
 };
