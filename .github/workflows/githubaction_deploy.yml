@@ -100,8 +100,6 @@ jobs:
             echo ${{secrets.PORT_BACKOFFICE}} > /tmp/port_backoffice.txt && \
             echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt && \
             echo ${{secrets.TOKEN_FOR_BACKEND_ACCESS}} > /tmp/token_for_backend_access.txt && \
-            echo ${{secrets.TOKEN_FOR_BACKEND_ACCESS}} > /tmp/token_for_backend_access.txt && \
-            echo ${{secrets.TOKEN_FOR_BACKEND_ACCESS}} > /tmp/token_for_backend_access.txt && \
             cat <<EOF > /tmp/deploy-compose.txt
             version: "3.7"
             services:
