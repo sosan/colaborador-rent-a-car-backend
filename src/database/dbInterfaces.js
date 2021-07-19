@@ -228,6 +228,12 @@ exports.GetReservasSended = async () => {
     return resultado;
 
 
-}
+};
 
+
+exports.GetReservasPorFecha = async (fechaInicio, fechaFin, enviado) => {
+
+    const resultado = await mongo_dao.GetReservasPorFecha(fechaInicio, fechaFin, enviado);
+    return resultado;
+};
 

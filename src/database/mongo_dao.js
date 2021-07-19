@@ -675,7 +675,11 @@ exports.GetReservasNotSended = async () => {
 
 exports.GetReservasSended = async () => {
     try {
-        const datos = await collectionReservas.find({ "emailConfirmacionReservaEnviado": true }).toArray();
+        const datos = await collectionReservas
+        .find({ "emailConfirmacionReservaEnviado": true })
+        .sort("fechaEnvioConfirmacionReserva", -1)
+        .limit(10)
+        .toArray();
         return datos;
 
     }
@@ -684,3 +688,28 @@ exports.GetReservasSended = async () => {
     }
 
 };
+
+exports.GetReservasPorFecha = async (fechaInicio, fechaFin, enviado) => {
+    try {
+        const datos = await collectionReservas
+        // .find({ "emailConfirmacionReservaEnviado": true })
+        .find(
+            {
+                "emailConfirmacionReservaEnviado": enviado,
+                "fechaEnvioConfirmacionReserva": 
+                    { 
+                        "$gte": new Date(`${fechaInicio}T00:00:00Z`),
+                        "$lt": new Date(`${fechaFin}T00:00:00Z`)
+                    } 
+            })
+        .sort("fechaEnvioConfirmacionReserva", -1).toArray();
+        return datos;
+
+    }
+    catch (error) {
+        console.log("error" + error);
+    }
+
+};
+
+// { fechaAlta: { $gte: "2021-07-15" } }

@@ -67,6 +67,16 @@ exports.GetReservasSended = async (req, res) => {
 
 };
 
+exports.MostrarReservasPorFecha = async (req, res) =>
+{
+    const resultado = await dbInterfaces.GetReservasPorFecha(req.body.fechaInicio, req.body.fechaDestino, req.body.enviadas);
+    res.send({
+        formdata: resultado
+    });
+
+};
+
+
 
 exports.ConfirmarReserva = async (req, res ) =>
 {

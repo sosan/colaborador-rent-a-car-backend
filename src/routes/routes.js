@@ -64,5 +64,7 @@ router.get("/reservas_noenviadas", async (req, res) => await logicGetReservas.Ge
 router.get("/reservas_enviadas", async (req, res) => await logicGetReservas.GetReservasSended(req, res));
 router.post("/envioCorreoConfirmacionReserva", async (req, res) => await logicGetReservas.ConfirmarReserva(req, res) );
 
+router.post("/busquedareservasfecha", async (req, res) => await logicGetReservas.MostrarReservasPorFecha(req, res));
+// router.post("/busquedareservasnoenviadasfecha", async (req, res) => await logicGetReservas.MostrarReservasNoEnviadasFecha(req, res));
 
 module.exports = router;
