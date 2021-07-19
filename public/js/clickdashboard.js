@@ -4,7 +4,7 @@ const todosBotones = document.getElementsByClassName("navList__subheading");
 const sidenavEl = document.getElementById('sidenav');
 const gridEl = document.getElementById('grid');
 const SIDENAV_ACTIVE_CLASS = 'sidenav--active';
-const GRID_NO_SCROLL_CLASS = 'grid--noscroll';
+
 
 const toggleClass = (el, className) =>
 {
@@ -19,13 +19,12 @@ const toggleClass = (el, className) =>
 document.getElementById('header__menu').addEventListener('click', function (e) {
     
     toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
-    toggleClass(gridEl, GRID_NO_SCROLL_CLASS);
 });
 
 document.getElementById('sidenav__brand-close').addEventListener('click', function (e) {
     
     toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
-    toggleClass(gridEl, GRID_NO_SCROLL_CLASS);
+
 });
 
 
@@ -122,6 +121,5 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     }
     
     toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
-    toggleClass(gridEl, GRID_NO_SCROLL_CLASS);
 
 });

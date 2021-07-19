@@ -41,9 +41,7 @@ a {
   height: 100vh;
   overflow-x: hidden;
 }
-.grid--noscroll {
-  overflow-y: hidden;
-}
+
 
 .header {
   grid-area: header;

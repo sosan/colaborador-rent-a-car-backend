@@ -130,7 +130,7 @@ botonEnviados.addEventListener("click", async (evento) =>
 });
 
 
-// botonOtros.addEventListener("click", async (evento) => { abrirPestanyas(botonOtros, "otros"); });
+botonOtros.addEventListener("click", async (evento) => { abrirPestanyas(botonOtros, "otros"); });
 
 
 const GetReservas = async (url) =>

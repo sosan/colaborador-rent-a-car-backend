@@ -44,15 +44,9 @@ exports.InitServer = async () =>
     app.set("views", path.join(__dirname, "../public"));
 
     app.set("view engine", "html");
-
-    // app.use("/", express.static("public"));
     app.use("/", express.static(path.join(__dirname, "../public")));
-
-    // app.use("/", apiLimiter);
+    app.use("/dashboard", express.static(path.join(__dirname, "../public")));
     app.use("/", router);
-
-
-
 
     app.listen(3100, (error) => {
             if (error) {
