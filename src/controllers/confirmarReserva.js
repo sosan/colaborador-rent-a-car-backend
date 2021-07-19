@@ -3,6 +3,35 @@ const eta = require("eta");
 const path = require("path");
 
 
+exports.MostrarConfirmaciones = async (req, res) =>
+{
+
+    const response = await fetch(`http://${process.env.URL_BACKEND}:3000/reservas_noenviadas`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include"
+    })
+
+    const datos = await response.json();
+
+    const html = await eta.renderFileAsync(path.join(__dirname, '../../public/mostrar_reservas_layout.html'), { noenviados: datos.formdata })
+
+    res.send({
+        html: html,
+        calcularFecha: true,
+    });
+
+    // const html = await eta.renderFileAsync(path.join(__dirname, "../../public/templateConfirmacionNoEnviada.html"), { noenviados: datos.formdata });
+    // res.send({
+    //     reservasEnviadas: html
+    // });
+    
+
+
+};
+
 exports.MostrarReservas = async (req, res) =>
 {
 
@@ -17,26 +46,33 @@ exports.MostrarReservas = async (req, res) =>
     const datos = await response.json();
 
     res.render(path.join(__dirname, '../../public/mostrar_reservas.html'), {
-        noenviados: datos.formdata
+        noenviados: datos.formdata,
+        calcularFecha: true,
     });
 
 };
 
 exports.MostrarReservasEnviadas = async (req, res) => {
 
+
+    //TODO: recibir las ultimas 10 reservas?
     const response = await fetch(`http://${process.env.URL_BACKEND}:3000/reservas_enviadas`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
         },
         credentials: "include"
-    })
+    });
+
+
 
     const datos = await response.json();
-    const html = eta.render(templateConfirmacionEnviada, { enviados: datos.formdata })
+    // const html = await eta.renderFileAsync(templateConfirmacionEnviada, { enviados: datos.formdata });
+    const html = await eta.renderFileAsync(path.join(__dirname, "../../public/templateConfirmacionEnviada.html"), { enviados: datos.formdata });
 
     res.send({
-        reservasEnviadas: html
+        html: html,
+        calcularFecha: true,
     });
 
 };
@@ -52,11 +88,63 @@ exports.MostrarReservasNoEnviadas = async (req, res) => {
     })
 
     const datos = await response.json();
-    const html = eta.render(templateConfirmacionNoEnviada, { noenviados: datos.formdata })
+    const html = await eta.renderFileAsync(path.join(__dirname, "../../public/templateConfirmacionNoEnviada.html"), { noenviados: datos.formdata });
+    // const html = eta.render(templateConfirmacionNoEnviada, { noenviados: datos.formdata })
     // let result = await eta.renderAsync(
     res.send({
-        reservasEnviadas: html
+        html: html,
+        calcularFecha: true,
     });
+
+};
+
+exports.MostrarReservasPorFecha = async (req, res) =>
+{
+    
+    const response = await fetch(`http://${process.env.URL_BACKEND}:3000/busquedareservasfecha`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(req.body)
+    })
+
+    const datos = await response.json();
+    let html = undefined;
+    if (req.body.enviadas === true)
+    {
+        html = await eta.renderFileAsync(path.join(__dirname, "../../public/templateConfirmacionEnviada.html"), 
+        { 
+            enviados: datos.formdata, 
+            fecha: true,
+            fechaInicio: req.body.fechaInicio,
+            fechaDestino: req.body.fechaDestino
+        
+        });
+    }
+    else
+    {
+        html = await eta.renderFileAsync(path.join(__dirname, "../../public/templateConfirmacionNoEnviada.html"), 
+        { 
+            noenviados: datos.formdata, 
+            fecha: true,
+            fechaInicio: req.body.fechaInicio,
+            fechaDestino: req.body.fechaDestino
+        
+        });
+    }
+    res.send({
+        html: html,
+        calcularFecha: false,
+        fechaInicio: req.body.fechaInicio,
+        fechaDestino: req.body.fechaDestino
+    });
+
+
+
+
+
 
 };
 
@@ -97,194 +185,196 @@ exports.EnvioCorreo = async (req, res) =>
 
 };
 
-const templateConfirmacionNoEnviada = `
-<% const FechasES=(fecha)=> { 
-    fecha = fecha.substring(0, fecha.length - 4);
-    fecha += "Z";
-    let date_ob=new Date(fecha);
+
+
+// const templateConfirmacionNoEnviada = `
+// <% const FechasES=(fecha)=> { 
+//     fecha = fecha.substring(0, fecha.length - 4);
+//     fecha += "Z";
+//     let date_ob=new Date(fecha);
     
-    const dia=(date_ob.getDate()).toString().padStart(2, "00" );
-    const mes=(date_ob.getMonth() + 1).toString().padStart(2, "00" ); 
-    const anyo=date_ob.getFullYear(); 
-    const minuto=date_ob.getMinutes().toString().padStart(2, "00" ); 
-    const horas=date_ob.getHours().toString().padStart(2, "00" ); 
-    const segundos=date_ob.getSeconds().toString().padStart(2, "00" ); 
+//     const dia=(date_ob.getDate()).toString().padStart(2, "00" );
+//     const mes=(date_ob.getMonth() + 1).toString().padStart(2, "00" ); 
+//     const anyo=date_ob.getFullYear(); 
+//     const minuto=date_ob.getMinutes().toString().padStart(2, "00" ); 
+//     const horas=date_ob.getHours().toString().padStart(2, "00" ); 
+//     const segundos=date_ob.getSeconds().toString().padStart(2, "00" ); 
     
-    const fechaActual=dia + "-" + mes+ "-" +anyo+ " " +horas+ ":" +minuto+ ":" +segundos;
-    return fechaActual; } %>
+//     const fechaActual=dia + "-" + mes+ "-" +anyo+ " " +horas+ ":" +minuto+ ":" +segundos;
+//     return fechaActual; } %>
 
 
-<ul>
-                <li class="centrado">
-                    <div class="tamanyo-200">
-                        Localizador
-                    </div>
-                    <div class="tamanyo-200">
-                        Nombre Apellidos
-                    </div>
-                    <div class="tamanyo-200">
-                        Correo
-                    </div>
-                    <div class="tamanyo-200">
-                        Fecha Alta
-                    </div>
-                    <div class="tamanyo-200">
-                        Fecha Envio
-                    </div>
-                    <div class="tamanyo-201">
-                        Boton
-                    </div>
-                </li>
+// <ul>
+//                 <li class="centrado">
+//                     <div class="tamanyo-200">
+//                         Localizador
+//                     </div>
+//                     <div class="tamanyo-200">
+//                         Nombre Apellidos
+//                     </div>
+//                     <div class="tamanyo-200">
+//                         Correo
+//                     </div>
+//                     <div class="tamanyo-200">
+//                         Fecha Alta
+//                     </div>
+//                     <div class="tamanyo-200">
+//                         Fecha Envio
+//                     </div>
+//                     <div class="tamanyo-201">
+//                         Boton
+//                     </div>
+//                 </li>
 
-                <% for (let i=0; i < it.noenviados.length; i++) { %>
+//                 <% for (let i=0; i < it.noenviados.length; i++) { %>
 
-                    <li class="centrado">
-                        <div class="tamanyo-200">
-                            <b>
-                                <%=it.noenviados[i].numeroRegistro %>
-                            </b>
-                        </div>
-                        <div class="tamanyo-200">
-                            <%=it.noenviados[i].nombre %>
-                                <%=it.noenviados[i].apellidos %>
-                        </div>
-                        <div class="tamanyo-200">
-                            <%=it.noenviados[i].email %>
-                        </div>
-                        <div class="tamanyo-200">
+//                     <li class="centrado">
+//                         <div class="tamanyo-200">
+//                             <b>
+//                                 <%=it.noenviados[i].numeroRegistro %>
+//                             </b>
+//                         </div>
+//                         <div class="tamanyo-200">
+//                             <%=it.noenviados[i].nombre %>
+//                                 <%=it.noenviados[i].apellidos %>
+//                         </div>
+//                         <div class="tamanyo-200">
+//                             <%=it.noenviados[i].email %>
+//                         </div>
+//                         <div class="tamanyo-200">
                         
-                            <% const alta=FechasES(it.noenviados[i].fechaAlta) %>
-                            <%= alta %>
-                        </div>
+//                             <% const alta=FechasES(it.noenviados[i].fechaAlta) %>
+//                             <%= alta %>
+//                         </div>
 
-                        <div class="tamanyo-200">
-                            <% if (it.noenviados[i].fechaEnvioConfirmacionReserva) { %>
-                                <% const fe = FechasES(it.noenviados[i].fechaEnvioConfirmacionReserva) %>
-                                <%= fe %>
-                            <% } else { %>
-                                --
-                            <% } %>
-                        </div>
-                        <div class="tamanyo-201">
-                            <form class="formulario" action="/enviocorreo" method="post">
-                                <input type="hidden" name="_id" value="<%=it.noenviados[i]._id %>">
-                                <input type="hidden" name="localizador" value="<%=it.noenviados[i].numeroRegistro %>">
-                                <input type="hidden" name="nombre" value="<%=it.noenviados[i].nombre %>">
-                                <input type="hidden" name="email" value="<%=it.noenviados[i].email %>">
-                                <input type="hidden" name="idioma" value="<%=it.noenviados[i].idioma %>">
-                                <input type="hidden" name="fechaRecogida" value="<%=it.noenviados[i].fechaRecogida %>">
-                                <input type="hidden" name="horaRecogida" value="<%=it.noenviados[i].horaRecogida %>">
-                                <input type="hidden" name="fechaDevolucion"
-                                    value="<%=it.noenviados[i].fechaDevolucion %>">
-                                <input type="hidden" name="horaDevolucion"
-                                    value="<%=it.noenviados[i].horaDevolucion %>">
-                                <input type="hidden" name="numero_sillas_nino"
-                                    value="<%=it.noenviados[i].numero_sillas_nino %>">
-                                <input type="hidden" name="numero_booster"
-                                    value="<%=it.noenviados[i].numero_booster %>">
-                                <input type="hidden" name="descripcion_vehiculo"
-                                    value="<%=it.noenviados[i].descripcion_vehiculo %>">
+//                         <div class="tamanyo-200">
+//                             <% if (it.noenviados[i].fechaEnvioConfirmacionReserva) { %>
+//                                 <% const fe = FechasES(it.noenviados[i].fechaEnvioConfirmacionReserva) %>
+//                                 <%= fe %>
+//                             <% } else { %>
+//                                 --
+//                             <% } %>
+//                         </div>
+//                         <div class="tamanyo-201">
+//                             <form class="formulario" action="/enviocorreo" method="post">
+//                                 <input type="hidden" name="_id" value="<%=it.noenviados[i]._id %>">
+//                                 <input type="hidden" name="localizador" value="<%=it.noenviados[i].numeroRegistro %>">
+//                                 <input type="hidden" name="nombre" value="<%=it.noenviados[i].nombre %>">
+//                                 <input type="hidden" name="email" value="<%=it.noenviados[i].email %>">
+//                                 <input type="hidden" name="idioma" value="<%=it.noenviados[i].idioma %>">
+//                                 <input type="hidden" name="fechaRecogida" value="<%=it.noenviados[i].fechaRecogida %>">
+//                                 <input type="hidden" name="horaRecogida" value="<%=it.noenviados[i].horaRecogida %>">
+//                                 <input type="hidden" name="fechaDevolucion"
+//                                     value="<%=it.noenviados[i].fechaDevolucion %>">
+//                                 <input type="hidden" name="horaDevolucion"
+//                                     value="<%=it.noenviados[i].horaDevolucion %>">
+//                                 <input type="hidden" name="numero_sillas_nino"
+//                                     value="<%=it.noenviados[i].numero_sillas_nino %>">
+//                                 <input type="hidden" name="numero_booster"
+//                                     value="<%=it.noenviados[i].numero_booster %>">
+//                                 <input type="hidden" name="descripcion_vehiculo"
+//                                     value="<%=it.noenviados[i].descripcion_vehiculo %>">
 
-                                <button id="botonEnviar" class="centrado-boton_correo azul" type="submit">
-                                    Enviar correo
-                                </button>
-                            </form>
-                        </div>
-                    </li>
-                    <% } %>
+//                                 <button id="botonEnviar" class="centrado-boton_correo azul" type="submit">
+//                                     Enviar correo
+//                                 </button>
+//                             </form>
+//                         </div>
+//                     </li>
+//                     <% } %>
 
-            </ul>`;
+//             </ul>`;
 
 
-const templateConfirmacionEnviada = ` 
-<% const FechasES=(fecha)=> {
+// const templateConfirmacionEnviada = ` 
+// <% const FechasES=(fecha)=> {
 
     
-    fecha = fecha.split(".")[0];
-    fecha += "Z";
-    let date_ob=new Date(fecha);
+//     fecha = fecha.split(".")[0];
+//     fecha += "Z";
+//     let date_ob=new Date(fecha);
 
-    const dia=(date_ob.getDate()).toString().padStart(2, "00" );
-    const mes=(date_ob.getMonth() + 1).toString().padStart(2, "00" );
-    const anyo=date_ob.getFullYear();
-    const minuto=date_ob.getMinutes().toString().padStart(2, "00" );
-    const horas=date_ob.getHours().toString().padStart(2, "00" );
-    const segundos=date_ob.getSeconds().toString().padStart(2, "00" );
+//     const dia=(date_ob.getDate()).toString().padStart(2, "00" );
+//     const mes=(date_ob.getMonth() + 1).toString().padStart(2, "00" );
+//     const anyo=date_ob.getFullYear();
+//     const minuto=date_ob.getMinutes().toString().padStart(2, "00" );
+//     const horas=date_ob.getHours().toString().padStart(2, "00" );
+//     const segundos=date_ob.getSeconds().toString().padStart(2, "00" );
 
-    const fechaActual=dia + "-" + mes+ "-" +anyo+ " " +horas+ ":" +minuto+ ":" +segundos;
-    return fechaActual; } %>
+//     const fechaActual=dia + "-" + mes+ "-" +anyo+ " " +horas+ ":" +minuto+ ":" +segundos;
+//     return fechaActual; } %>
 
 
-<ul>
-                <li class="centrado">
-                    <div class="tamanyo-200">
-                        Localizador
-                    </div>
-                    <div class="tamanyo-200">
-                        Nombre Apellidos
-                    </div>
-                    <div class="tamanyo-200">
-                        Correo
-                    </div>
+// <ul>
+//                 <li class="centrado">
+//                     <div class="tamanyo-200">
+//                         Localizador
+//                     </div>
+//                     <div class="tamanyo-200">
+//                         Nombre Apellidos
+//                     </div>
+//                     <div class="tamanyo-200">
+//                         Correo
+//                     </div>
 
-                    <div class="tamanyo-200">
-                        Fecha Envio
-                    </div>
-                    <div class="tamanyo-201">
-                        Boton
-                    </div>
-                </li>
+//                     <div class="tamanyo-200">
+//                         Fecha Envio
+//                     </div>
+//                     <div class="tamanyo-201">
+//                         Boton
+//                     </div>
+//                 </li>
 
-                <% for (let i=0; i < it.enviados.length; i++) { %>
+//                 <% for (let i=0; i < it.enviados.length; i++) { %>
 
-                    <li class="centrado">
-                        <div class="tamanyo-200">
-                            <b>
-                                <%=it.enviados[i].numeroRegistro %>
-                            </b>
-                        </div>
-                        <div class="tamanyo-200">
-                            <%=it.enviados[i].nombre %>
-                                <%=it.enviados[i].apellidos %>
-                        </div>
-                        <div class="tamanyo-200">
-                            <%=it.enviados[i].email %>
-                        </div>
+//                     <li class="centrado">
+//                         <div class="tamanyo-200">
+//                             <b>
+//                                 <%=it.enviados[i].numeroRegistro %>
+//                             </b>
+//                         </div>
+//                         <div class="tamanyo-200">
+//                             <%=it.enviados[i].nombre %>
+//                                 <%=it.enviados[i].apellidos %>
+//                         </div>
+//                         <div class="tamanyo-200">
+//                             <%=it.enviados[i].email %>
+//                         </div>
 
-                        <div class="tamanyo-200">
-                            <% if (it.enviados[i].fechaEnvioConfirmacionReserva) { %>
-                                <% const fe = FechasES(it.enviados[i].fechaEnvioConfirmacionReserva) %>
-                                <%= fe %>
-                            <% } else { %>
-                                --
-                            <% } %>
-                        </div>
-                        <div class="tamanyo-201">
-                            <form class="formulario" action="/enviocorreo" method="post">
-                                <input type="hidden" name="_id" value="<%=it.enviados[i]._id %>">
-                                <input type="hidden" name="localizador" value="<%=it.enviados[i].numeroRegistro %>">
-                                <input type="hidden" name="nombre" value="<%=it.enviados[i].nombre %>">
-                                <input type="hidden" name="email" value="<%=it.enviados[i].email %>">
-                                <input type="hidden" name="idioma" value="<%=it.enviados[i].idioma %>">
-                                <input type="hidden" name="fechaRecogida" value="<%=it.enviados[i].fechaRecogida %>">
-                                <input type="hidden" name="horaRecogida" value="<%=it.enviados[i].horaRecogida %>">
-                                <input type="hidden" name="fechaDevolucion"
-                                    value="<%=it.enviados[i].fechaDevolucion %>">
-                                <input type="hidden" name="horaDevolucion"
-                                    value="<%=it.enviados[i].horaDevolucion %>">
-                                <input type="hidden" name="numero_sillas_nino"
-                                    value="<%=it.enviados[i].numero_sillas_nino %>">
-                                <input type="hidden" name="numero_booster"
-                                    value="<%=it.enviados[i].numero_booster %>">
-                                <input type="hidden" name="descripcion_vehiculo"
-                                    value="<%=it.enviados[i].descripcion_vehiculo %>">
+//                         <div class="tamanyo-200">
+//                             <% if (it.enviados[i].fechaEnvioConfirmacionReserva) { %>
+//                                 <% const fe = FechasES(it.enviados[i].fechaEnvioConfirmacionReserva) %>
+//                                 <%= fe %>
+//                             <% } else { %>
+//                                 --
+//                             <% } %>
+//                         </div>
+//                         <div class="tamanyo-201">
+//                             <form class="formulario" action="/enviocorreo" method="post">
+//                                 <input type="hidden" name="_id" value="<%=it.enviados[i]._id %>">
+//                                 <input type="hidden" name="localizador" value="<%=it.enviados[i].numeroRegistro %>">
+//                                 <input type="hidden" name="nombre" value="<%=it.enviados[i].nombre %>">
+//                                 <input type="hidden" name="email" value="<%=it.enviados[i].email %>">
+//                                 <input type="hidden" name="idioma" value="<%=it.enviados[i].idioma %>">
+//                                 <input type="hidden" name="fechaRecogida" value="<%=it.enviados[i].fechaRecogida %>">
+//                                 <input type="hidden" name="horaRecogida" value="<%=it.enviados[i].horaRecogida %>">
+//                                 <input type="hidden" name="fechaDevolucion"
+//                                     value="<%=it.enviados[i].fechaDevolucion %>">
+//                                 <input type="hidden" name="horaDevolucion"
+//                                     value="<%=it.enviados[i].horaDevolucion %>">
+//                                 <input type="hidden" name="numero_sillas_nino"
+//                                     value="<%=it.enviados[i].numero_sillas_nino %>">
+//                                 <input type="hidden" name="numero_booster"
+//                                     value="<%=it.enviados[i].numero_booster %>">
+//                                 <input type="hidden" name="descripcion_vehiculo"
+//                                     value="<%=it.enviados[i].descripcion_vehiculo %>">
 
-                                <button id="botonEnviar" class="centrado-boton_correo verde" type="submit" disabled>
-                                    Enviado
-                                </button>
-                            </form>
-                        </div>
-                    </li>
-                    <% } %>
+//                                 <button id="botonEnviar_<%=i%>" class="centrado-boton_correo verde" type="submit" disabled>
+//                                     Enviado
+//                                 </button>
+//                             </form>
+//                         </div>
+//                     </li>
+//                     <% } %>
 
-            </ul>`;
+//             </ul>`;

@@ -6,6 +6,7 @@ const express = require('express');
 const { showIndex } = require("../controllers/showIndex");
 const login = require("../controllers/login");
 const confirmar = require("../controllers/confirmarReserva");
+const dashboard = require("../controllers/dashboard");
 
 const router = express.Router();
 
@@ -18,9 +19,17 @@ router.get("/confirmar", async (req, res) => await confirmar.MostrarReservas(req
 router.get("/reservasenviadas", async (req, res) => await confirmar.MostrarReservasEnviadas(req, res));
 router.get("/reservasnoenviadas", async (req, res) => await confirmar.MostrarReservasNoEnviadas(req, res));
 
+router.post("/busquedareservasporfecha", async (req, res) => await confirmar.MostrarReservasPorFecha(req, res));
 
+router.get("/xxxxx", async (req, res) => await dashboard.RedirectGetDashboard(req, res));
+
+router.get("/confirmaciones", async (req, res) => await confirmar.MostrarConfirmaciones(req, res));
 
 router.post("/enviocorreo", async (req, res) => await confirmar.EnvioCorreo(req, res));
-router.get("/enviocorreo", async (req, res) => await confirmar.RedirigirEnvioCorreo(req, res)  )
+router.get("/enviocorreo", async (req, res) => await confirmar.RedirigirEnvioCorreo(req, res)  );
+
+router.get("/dashboard", async (req, res) => await dashboard.GetDashboard(req, res));
 
 module.exports = router;
+
+

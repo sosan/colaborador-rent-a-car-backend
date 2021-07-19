@@ -12,13 +12,13 @@ body
     width: 100vw;
 }
 
-.header
+.header_reservas
 {
     display: flex;
     justify-content: space-evenly;
 
     color: whitesmoke;
-    background-color: black;
+    background-color: #313854;
 
 }
 
@@ -43,6 +43,53 @@ body
     color: whitesmoke;
 }
 
+.contenido-centrado
+{
+    /* align-self: center;
+    justify-self: center; */
+    place-content: center;
+    width: 100%;
+}
+
+.formulario-busqueda
+{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    
+    justify-items: flex-end;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 10px;
+
+    grid-template-areas: 
+    "a b"
+    "c d"
+    "e e"
+    ;
+}
+
+.inputFecha
+{
+    border: 1px solid black;
+    height: 50px;
+    text-align: center;
+    width: 100%;
+    font-size: 18px;
+}
+
+
+
+.botonBusqueda_noenviado
+{
+    grid-area: e;
+    padding: 10px;
+    background-color: rgb(35, 134, 21);
+    width: 100%;
+    color: whitesmoke;
+    border-radius: 10px;
+    
+
+}
 
 .atras
 {
@@ -106,6 +153,7 @@ body
     margin: 10px 0;
     font-size: 30px;
     font-size: x-large;
+    margin-left: 20px;
 }
 
 .centrado

@@ -1,63 +1,137 @@
-const botonAtras = document.getElementById("botonAtras");
-const botonEnviados = document.getElementById("botonEnviados");
-const botonNoEnviados = document.getElementById("botonNoEnviados");
-const botonOtros = document.getElementById("botonOtros");
+// const botonAtras = document.getElementById("botonAtras");
+let botonEnviados = document.getElementById("botonEnviados");
+let botonNoEnviados = document.getElementById("botonNoEnviados");
+let botonOtros = document.getElementById("botonOtros");
 
-const pestanyasContenido = document.getElementsByClassName("pestanyaContenido");
-const pestanyasBotones = document.getElementsByClassName("boton");
+let pestanyasContenido = document.getElementsByClassName("pestanyaContenido");
+let pestanyasBotones = document.getElementsByClassName("boton");
+
+let botonBusqueda = undefined;
+let botonBusquedaNoEnviado = undefined;
 
 
-
-botonAtras.addEventListener("click", () => {
-    console.log("sdfsdf");
-});
 
 botonNoEnviados.addEventListener("click", async (evento) => 
-{ 
+{
+    evento.preventDefault();
+    await RecibirDatos({
+        url: "/reservasnoenviadas",
+        relleno: "noenviados",
+        idBorrar: "borrarnoenviados",
+        botonBusqueda: "botonBusqueda_noenviado",
+        botonPestanya: "botonNoEnviados",
+        formFechaInicio: "fechaInicioBusquedaNoEnviada",
+        formFechaDestino: "fechaDestinoBusquedaNoEnviada",
+        enviadas: false,
+        method: "get"
+    });
+
+    return;
     
-    const datosDevueltos = await GetReservas("/reservasnoenviadas");
-
-    const relleno = document.getElementById("noenviados");
-
-    const borrarNoEnviados = document.getElementById("borrarnoenviados");
-    if (borrarNoEnviados) {
-        borrarNoEnviados.remove();
-    }
-
-    const trozoHtml = document.createElement("div");
-    trozoHtml.id = "borrarnoenviados";
-    trozoHtml.innerHTML = datosDevueltos.reservasEnviadas;
-
-    relleno.appendChild(trozoHtml);
-    abrirPestanyas(botonNoEnviados, "noenviados"); 
+    
 
 });
+
+const RecibirDatos = async (config) =>
+{
+
+    let datosDevueltos = undefined;
+    if (config.method === "get")
+    {
+        datosDevueltos = await GetReservas(config.url);
+    }
+    else
+    {
+
+        const body = 
+        {
+            fechaInicio: document.getElementById(config.formFechaInicio).value,
+            fechaDestino: document.getElementById(config.formFechaDestino).value,
+            enviadas: config.enviadas
+        };
+        datosDevueltos = await PostSearchReservas(config.url, body);
+    }
+
+    const relleno = document.getElementById(config.relleno);
+    const borrar = document.getElementById(config.idBorrar);
+    if (borrar) {
+        borrar.remove();
+    
+    }
+    
+    const trozoHtml = document.createElement("div");
+    trozoHtml.id = config.idBorrar;
+    trozoHtml.innerHTML = datosDevueltos.html;
+    
+    relleno.appendChild(trozoHtml);
+    
+    await AnadirEventosFormularios();
+
+    if (datosDevueltos.calcularFecha === true)
+    {
+        const fechaInicio = document.getElementById(config.formFechaInicio);
+        const fechaDestino = document.getElementById(config.formFechaDestino);
+    
+        const destino = new Date();
+        fechaDestino.value = destino.getFullYear().toString() + '-' + (destino.getMonth() + 1).toString().padStart(2, 0) + '-' + destino.getDate().toString().padStart(2, 0);;
+    
+        destino.setDate(destino.getDate() - 30);
+        fechaInicio.value = destino.getFullYear().toString() + '-' + (destino.getMonth() + 1).toString().padStart(2, 0) + '-' + destino.getDate().toString().padStart(2, 0);
+    }
+
+    
+    botonBusqueda = document.getElementById(config.botonBusqueda);
+    if (botonBusqueda)
+    {
+        botonBusqueda.addEventListener("click", async (evento) => 
+        {
+            evento.preventDefault();
+
+            let datosEnviar = {
+                url: "/busquedareservasporfecha",
+                relleno: config.relleno,
+                idBorrar: config.idBorrar,
+                botonBusqueda: config.botonBusqueda,
+                botonPestanya: config.botonPestanya,
+                formFechaInicio: config.formFechaInicio,
+                formFechaDestino: config.formFechaDestino,
+                enviadas: config.enviadas,
+                method: "post"
+            };
+
+            await RecibirDatos(datosEnviar);
+            return;
+        
+        });
+
+    }
+    
+    const botonPestanya = document.getElementById(config.botonPestanya);
+    
+    abrirPestanyas(botonPestanya, config.relleno);
+
+};
 
 
 botonEnviados.addEventListener("click", async (evento) => 
 { 
-    const datosDevueltos = await GetReservas("/reservasenviadas");
-
-    const relleno = document.getElementById("enviados");
-
-    const borrarEnviados = document.getElementById("borrarenviados");
-    if (borrarEnviados) {
-        borrarEnviados.remove();
-
-    }
-
-    const trozoHtml = document.createElement("div");
-    trozoHtml.id = "borrarenviados";
-    trozoHtml.innerHTML = datosDevueltos.reservasEnviadas;
-
-    relleno.appendChild(trozoHtml);
-
-    await AnadirEventosFormularios();
-
-    abrirPestanyas(botonEnviados, "enviados"); 
+    evento.preventDefault();
+    await RecibirDatos({
+        url: "/reservasenviadas",
+        relleno: "enviados",
+        idBorrar: "borrarenviados",
+        botonBusqueda: "botonBusqueda_enviado",
+        botonPestanya: "botonEnviados",
+        formFechaInicio: "fechaInicioBusquedaEnviada",
+        formFechaDestino: "fechaDestinoBusquedaEnviada",
+        enviadas: true,
+        method: "get"
+    });
 
 });
-botonOtros.addEventListener("click", async (evento) => { abrirPestanyas(botonOtros, "otros"); });
+
+
+// botonOtros.addEventListener("click", async (evento) => { abrirPestanyas(botonOtros, "otros"); });
 
 
 const GetReservas = async (url) =>
@@ -75,6 +149,23 @@ const GetReservas = async (url) =>
     return datosDevueltos;
 
 };
+
+const PostSearchReservas = async (url, body) => {
+
+    const responseRaw = await fetch(url, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(body)
+    });
+
+    const datosDevueltos = await responseRaw.json();
+    return datosDevueltos;
+
+};
+
 
 const abrirPestanyas = (nombreBoton, pestanyaId) => 
 {

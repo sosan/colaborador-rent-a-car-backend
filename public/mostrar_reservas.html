@@ -25,13 +25,13 @@
     const fechaActual=`${dia}-${mes}-${anyo} ${horas}:${minuto}:${segundos}`;
     return fechaActual; } %>
         
-    <header class="header">
+    <div class="header">
         <button id="botonAtras" type="button" class="boton atras">Atras</button>
         <button id="botonNoEnviados" type="button" class="boton boton-rojo boton-masancho">No Enviados</button>
         <button id="botonEnviados" type="button" class="boton boton-masancho">Enviados</button>
         <button id="botonOtros" type="button" class="boton boton-masancho">Otros</button>
-    </header>
-    <main>
+    </div>
+    <div>
         
         <div id="noenviados" class="pestanyaContenido">
             <h2 class="titulo">NO Enviada Confirmacion</h2>
@@ -107,7 +107,7 @@
                                 <input type="hidden" name="descripcion_vehiculo"
                                 value="<%=it.noenviados[i].descripcion_vehiculo %>">
 
-                                <button id="botonEnviar" class="centrado-boton_correo azul" type="submit">
+                                <button id="botonEnviar_<%=i%>" class="centrado-boton_correo azul" type="submit">
                                     Enviar correo
                                 </button>
                             </form>
@@ -131,7 +131,7 @@
 
 
         
-    </main>
+    </div>
     <script src="./js/mostrar_reservas.js"></script>
 </body>
 
