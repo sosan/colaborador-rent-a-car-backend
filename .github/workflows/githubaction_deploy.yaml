@@ -18,11 +18,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: HTML/CSS/JS Minifier
-        uses: docker://devatherock/minify-js:latest
-        with:
-          directory: './public'
-          add_suffix: false
+      # - name: HTML/CSS/JS Minifier
+      #   uses: docker://devatherock/minify-js:latest
+      #   with:
+      #     directory: './public'
+      #     add_suffix: false
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Build

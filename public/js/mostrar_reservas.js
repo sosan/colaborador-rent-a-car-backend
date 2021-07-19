@@ -1,4 +1,3 @@
-// const botonAtras = document.getElementById("botonAtras");
 let botonEnviados = document.getElementById("botonEnviados");
 let botonNoEnviados = document.getElementById("botonNoEnviados");
 let botonOtros = document.getElementById("botonOtros");
