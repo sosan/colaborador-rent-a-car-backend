@@ -753,3 +753,11 @@ a {
   background-color: rgba(48, 55, 83, 0.446);
 }
 
+
+/* TEXTAREA */
+.textarea_templates
+{
+  width: 100%;
+  height: 300px;
+  border: 1px solid black;
+}

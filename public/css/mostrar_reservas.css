@@ -101,26 +101,23 @@ body
 
 .boton
 {
-    border: none;
+
     display: inline-block;
     padding: 8px 16px;
     vertical-align: middle;
     overflow: hidden;
     text-decoration: none;
-    color: inherit;
-    background-color: inherit;
     text-align: center;
     cursor: pointer;
     white-space: nowrap;
 
     user-select: none;
 
-    padding: 8px 16px;
-    float: left;
     width: auto;
     border: none;
-    display: block;
     outline: 0;
+
+    color: white;
 
 }
 

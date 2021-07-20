@@ -1,4 +1,5 @@
 const botonConfirmaciones = document.getElementById("confirmaciones");
+const botonTemplates = document.getElementById("templates");
 const todosBotones = document.getElementsByClassName("navList__subheading");
 
 const sidenavEl = document.getElementById('sidenav');
@@ -82,7 +83,7 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     destino.setDate(destino.getDate() - 30);
     fechaInicio.value = destino.getFullYear().toString() + '-' + (destino.getMonth() + 1).toString().padStart(2, 0) + '-' + destino.getDate().toString().padStart(2, 0);
 
-    const borrarScript = document.getElementById("borrar_script");
+    const borrarScript = document.getElementById("borrar_script_mostrar_reservas");
     if (borrarScript)
     {
         borrarScript.remove();
@@ -90,7 +91,7 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
 
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
-    script.id = "borrar_script";
+    script.id = "borrar_script_mostrar_reservas";
     script.type = 'text/javascript';
     script.src = '../js/mostrar_reservas.js';
     head.appendChild(script);
@@ -121,5 +122,59 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     }
     
     toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
+
+});
+
+
+botonTemplates.addEventListener("click", async (evento) =>
+{
+
+    evento.preventDefault();
+
+    console.log("clicked");
+
+    await borrarColorTodosBotones();
+
+    botonTemplates.classList.add("navList__subheading_clicked");
+
+
+    const rawResponse = await fetch("/templates", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include"
+    });
+
+    const datos = await rawResponse.json();
+
+    const relleno = document.getElementById("main");
+
+    const borrarMain = document.getElementById("borrar_main");
+    if (borrarMain) {
+        borrarMain.remove();
+    }
+
+    const trozoHtml = document.createElement("div");
+    trozoHtml.id = "borrar_main";
+    trozoHtml.innerHTML = datos.html;
+
+    relleno.appendChild(trozoHtml);
+
+    const borrarScript = document.getElementById("borrar_script_mostrar_templates");
+    if (borrarScript) {
+        borrarScript.remove();
+    }
+    
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.id = "borrar_script_mostrar_templates";
+    script.type = 'text/javascript';
+    script.src = '../js/clicktemplates.js';
+    head.appendChild(script);
+
+    toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
+
+
 
 });
