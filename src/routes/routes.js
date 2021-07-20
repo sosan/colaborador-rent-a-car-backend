@@ -13,6 +13,7 @@ const location = require("../controllers/location");
 const porcentajeTipoVehiculo = require("../controllers/porcentajeTipoVehiculo");
 const logicVars = require("../logicinterface/logicGetVars");
 const logicGetReservas = require("../logicinterface/logicGetReservas");
+const logicTemplates = require("../logicinterface/logicGetTemplate");
 
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
@@ -60,11 +61,12 @@ router.get(process.env.ENDPOINT_PORCENTAJE_VEHICULO, async (req, res) => await p
 router.get(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await logicVars.GetFrontendVars(req, res));
 
 
+//backoffice
 router.get("/reservas_noenviadas", async (req, res) => await logicGetReservas.GetReservasNotSended(req, res) );
 router.get("/reservas_enviadas", async (req, res) => await logicGetReservas.GetReservasSended(req, res));
 router.post("/envioCorreoConfirmacionReserva", async (req, res) => await logicGetReservas.ConfirmarReserva(req, res) );
 
 router.post("/busquedareservasfecha", async (req, res) => await logicGetReservas.MostrarReservasPorFecha(req, res));
-// router.post("/busquedareservasnoenviadasfecha", async (req, res) => await logicGetReservas.MostrarReservasNoEnviadasFecha(req, res));
+router.post(process.env.ENDPOINT_TEMPLATE_FRONTEND, async (req, res) => await logicTemplates.MostrarTemplate(req, res));
 
 module.exports = router;

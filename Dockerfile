@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.2
-FROM mhart/alpine-node:14.16.1
+FROM mhart/alpine-node:14.16.1 as builder
 WORKDIR /usr/src/app
 COPY package*.json ./
 
@@ -10,7 +10,7 @@ FROM mhart/alpine-node:slim-14.16.1
 
 WORKDIR /usr/src/app
 
-COPY --from=0 /usr/src/app ./
+COPY --from=builder /usr/src/app ./
 COPY ./src ./src
 
 # RUN --mount=type=secret,id=PORT_BACKEND cat /run/secrets/PORT_BACKEND
