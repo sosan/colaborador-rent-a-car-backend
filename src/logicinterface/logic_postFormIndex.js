@@ -117,6 +117,37 @@ const ControlSchema = async (body, schema) => {
 
 };
 
+exports.GetCarsByReservadoExport = async (formulario) =>
+{
+
+    const cochesPreciosRaw = await GetCarsByReservado(formulario);
+    return cochesPreciosRaw;
+};
+
+exports.GetMasValoradosExport = async () =>
+{
+
+    const masvalorados = await GetMasValorados();
+    return masvalorados;
+
+};
+
+exports.GetPorcentajeVehiculosExport = async () =>
+{
+
+    const porcentaje = await GetPorcentajeVehiculos();
+    return porcentaje;
+};
+
+
+exports.CheckResultadosCochesExport = async () =>
+{
+
+    const resultados = await CheckResultadosCoches();
+    return resultados;
+
+};
+
 
 exports.GetAllCars = async (formulario) => {
 
@@ -191,7 +222,7 @@ exports.GetAllCars = async (formulario) => {
 
 
 
-exports.GetCars = async (formulario) => {
+exports.GetCars = async (formulario, token) => {
 
     const cochesPreciosRaw = await GetCarsByReservado(formulario);
 
@@ -227,7 +258,8 @@ exports.GetCars = async (formulario) => {
         cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
         masValorados,
         porcentajeVehiculo,
-        true
+        true,
+        token
     );
 
 
@@ -460,27 +492,33 @@ const TransformarResultadosCoche = async (
     suplementoTipoChofer,
     masValorados,
     porcentajeTipoVehiculo,
-    procesarTiempo
+    procesarTiempo,
+    token
 ) => {
 
     let diasEntreRecogidaDevolucion = 0;
     let numeroDiasRecogidaDevolucion = 1;
 
-    if (procesarTiempo === true) {
-        diasEntreRecogidaDevolucion = await DiferenciaFechaRecogidaDevolucion(formulario);
-
-        if (diasEntreRecogidaDevolucion === undefined) {
-            return {
-                isOk: false,
-                resultadosCoches: undefined,
-                errorFormulario: "error_formulario3",
-                diasEntreRecogidaDevolucion: undefined
-            };
-
+    if (token !== process.env.TOKEN_FOR_BACKEND_CHECK)
+    {
+        if (procesarTiempo === true) {
+            diasEntreRecogidaDevolucion = await DiferenciaFechaRecogidaDevolucion(formulario);
+    
+            if (diasEntreRecogidaDevolucion === undefined) {
+                return {
+                    isOk: false,
+                    resultadosCoches: undefined,
+                    errorFormulario: "error_formulario3",
+                    diasEntreRecogidaDevolucion: undefined
+                };
+    
+            }
+    
+            numeroDiasRecogidaDevolucion = diasEntreRecogidaDevolucion + 1;
         }
 
-        numeroDiasRecogidaDevolucion = diasEntreRecogidaDevolucion + 1;
     }
+
 
     const resultadoscochesChecked = await CheckResultadosCoches(
         resultadosCoches,

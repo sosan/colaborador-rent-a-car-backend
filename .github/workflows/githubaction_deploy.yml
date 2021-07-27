@@ -132,10 +132,10 @@ jobs:
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
                 secrets:
-                    - PORT_BACKOFFICE
-                    - PORT_BACKEND
-                    - ENDPOINT_VARIABLES_FRONTEND
-                    - TOKEN_FOR_BACKEND_ACCESS
+                  - PORT_BACKOFFICE
+                  - PORT_BACKEND
+                  - ENDPOINT_VARIABLES_FRONTEND
+                  - TOKEN_FOR_BACKEND_ACCESS
                 networks:
                   - gateway
                 depends_on:

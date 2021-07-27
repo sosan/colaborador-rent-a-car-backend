@@ -4,6 +4,7 @@ const urlfrontend = process.env.URL_FRONTEND || "localhost";
 const protocolo = "http://";
 
 const TEMPLATE_FRONTEND = `${protocolo}${urlfrontend}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_TEMPLATE_FRONTEND}`;
+const DETALLE_TEMPLATE_FRONTEND = `${protocolo}${urlfrontend}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_DETALLE_TEMPLATE_FRONTEND}`;
 
 exports.MostrarTemplate = async (req, res) =>
 {
@@ -26,5 +27,22 @@ exports.MostrarTemplate = async (req, res) =>
 
 };
 
+exports.DetalleTemplate = async (req, res) => {
 
+    const rawResponse = await fetch(DETALLE_TEMPLATE_FRONTEND, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(req.body)
+    });
+
+    const datos = await rawResponse.json();
+
+    res.send({
+        datos: datos.resultado,
+    });
+
+};
 

@@ -1,26 +1,20 @@
-# syntax=docker/dockerfile:1.2
-FROM mhart/alpine-node:14.16.1 as builder
+# syntax = docker/dockerfile:1.2
+FROM mhart/alpine-node:16.2.0 as builder
 WORKDIR /usr/src/app
 COPY package*.json ./
-
 RUN npm ci --only=production
 
-# # imagen2 sin npm o yarn
-FROM mhart/alpine-node:slim-14.16.1
-
-WORKDIR /usr/src/app
-
-COPY --from=builder /usr/src/app ./
 COPY ./src ./src
 
-# RUN --mount=type=secret,id=PORT_BACKEND cat /run/secrets/PORT_BACKEND
-# RUN --mount=type=secret,id=PORT_FRONTEND cat /run/secrets/PORT_FRONTEND
-# RUN --mount=type=secret,id=REDISDB_PORT cat /run/secrets/REDISDB_PORT
-# RUN --mount=type=secret,id=REDISDB_HOST cat /run/secrets/REDISDB_HOST
-# RUN --mount=type=secret,id=REDISDB_PASSWORD cat /run/secrets/REDISDB_PASSWORD
-# RUN --mount=type=secret,id=ENDPOINT_VARIABLES_FRONTEND cat /run/secrets/ENDPOINT_VARIABLES_FRONTEND
+RUN npm install -g pkg && \
+    pkg ./src/index.js --targets node16-linux-x64 --compress GZip --output /usr/src/app/backend
 
-# RUN adduser -D node
-# USER node
-
-CMD ["node", "src/index.js"]
+FROM frolvlad/alpine-glibc:latest
+RUN apk update && \
+    apk add --no-cache libstdc++ libgcc ca-certificates && \
+    rm -rf /var/cache/apk/* && \
+    adduser -D alpine
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/backend .
+USER alpine
+CMD /usr/src/app/backend

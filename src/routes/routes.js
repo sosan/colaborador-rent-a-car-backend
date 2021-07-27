@@ -68,5 +68,7 @@ router.post("/envioCorreoConfirmacionReserva", async (req, res) => await logicGe
 
 router.post("/busquedareservasfecha", async (req, res) => await logicGetReservas.MostrarReservasPorFecha(req, res));
 router.post(process.env.ENDPOINT_TEMPLATE_FRONTEND, async (req, res) => await logicTemplates.MostrarTemplate(req, res));
+router.post(process.env.ENDPOINT_DETALLE_TEMPLATE_FRONTEND, async (req, res) => await logicTemplates.DetalleTemplate(req, res));
+
 
 module.exports = router;

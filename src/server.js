@@ -11,7 +11,7 @@ exports.InitServer = async () =>
     const userAgent = require("express-useragent");
     const rateLimit = require("express-rate-limit");
     const dbInterfaces = require("./database/dbInterfaces");
-    
+
     // --- conexion base de datos
     dbInterfaces.ConnectDB();
     
@@ -38,13 +38,13 @@ exports.InitServer = async () =>
     app.use("/", apiLimiter);
     app.use("/", router);
     
-    
+    const listadoIP = await GetIP();
     
     app.listen(process.env.PORT_BACKEND, (error) => {
             if (error) {
-                console.error(`[process ${process.pid}] Error ${error} ${process.env.URL_BACKEND}:${process.env.PORT_BACKEND}`);
+                console.error(`[process ${process.pid}] Error ${error} ${listadoIP} at ${process.env.PORT_BACKEND}`);
             }
-        console.info(`[process ${process.pid}] Listening at ${process.env.URL_BACKEND}:${process.env.PORT_BACKEND}`);
+        console.info(`[process ${process.pid}] Listening ${listadoIP} at ${process.env.PORT_BACKEND}`);
         }
     );
     
@@ -52,5 +52,23 @@ exports.InitServer = async () =>
 
 exports.app = app;
 
-// module.exports = app;
+const GetIP = async () =>
+{
+    const { networkInterfaces } = require('os');
+    const nets = networkInterfaces();
+    let listadoIPs = "";
+
+    for (const name of Object.keys(nets)) {
+        for (const net of nets[name]) 
+        {
+            if (net.family === 'IPv4' && !net.internal) {
+                listadoIPs = net.address;
+                break;
+            }
+        }
+    }
+
+    return listadoIPs;
+
+};
 
