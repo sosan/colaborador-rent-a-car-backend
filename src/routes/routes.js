@@ -14,6 +14,7 @@ const porcentajeTipoVehiculo = require("../controllers/porcentajeTipoVehiculo");
 const logicVars = require("../logicinterface/logicGetVars");
 const logicGetReservas = require("../logicinterface/logicGetReservas");
 const logicTemplates = require("../logicinterface/logicGetTemplate");
+const logicTraducciones = require("../logicinterface/logicTraducciones");
 
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
@@ -69,6 +70,8 @@ router.post("/envioCorreoConfirmacionReserva", async (req, res) => await logicGe
 router.post("/busquedareservasfecha", async (req, res) => await logicGetReservas.MostrarReservasPorFecha(req, res));
 router.post(process.env.ENDPOINT_TEMPLATE_FRONTEND, async (req, res) => await logicTemplates.MostrarTemplate(req, res));
 router.post(process.env.ENDPOINT_DETALLE_TEMPLATE_FRONTEND, async (req, res) => await logicTemplates.DetalleTemplate(req, res));
+
+router.get(process.env.ENDPOINT_TRADUCCIONES_BACKEND, async (req, res) => await logicTraducciones.MostrarTraducciones(req, res) );
 
 
 module.exports = router;

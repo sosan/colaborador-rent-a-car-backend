@@ -15,3 +15,12 @@ exports.CheckAdminUserPassword = async (email, password) =>
 
 
 };
+
+
+exports.GetTranslations = async () =>
+{
+
+    const resultado = await mongo_dao.GetLocation();
+    return resultado;
+
+};
