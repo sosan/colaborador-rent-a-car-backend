@@ -8,6 +8,7 @@ const login = require("../controllers/login");
 const confirmar = require("../controllers/confirmarReserva");
 const dashboard = require("../controllers/dashboard");
 const templates = require("../controllers/templates");
+const traducciones = require("../controllers/traducciones");
 
 const router = express.Router();
 
@@ -29,6 +30,13 @@ router.get("/confirmar", async (req, res) => await confirmar.MostrarReservas(req
 
 router.get("/templates", async (req, res) => await templates.GetMainTemplates(req, res));
 router.post("/mostrartemplate", async (req, res) => await templates.MostrarTemplate(req, res));
+router.post("/mostrardetalletemplate", async (req, res) => await templates.DetalleTemplate(req, res));
+
+router.get("/traducciones", async (req, res) => await traducciones.GetTraducciones(req, res));
+router.post("/guardartraducciones", async (req, res) => await traducciones.GuardarTraducciones(req, res));
+router.get("/actualizartraducciones", async (req, res) => await traducciones.ActualizarTraducciones(req, res));
+
+
 
 router.get("/xxxxx", async (req, res) => await dashboard.RedirectGetDashboard(req, res));
 

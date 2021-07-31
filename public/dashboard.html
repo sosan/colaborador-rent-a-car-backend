@@ -88,7 +88,7 @@
     
                     <li class="navList__heading">Cache<i class="fas fa-hashtag"></i></li>
                     <li>
-                        <div class="navList__subheading row row--align-v-center">
+                        <div id="traducciones" class="navList__subheading row row--align-v-center">
                             <span class="navList__subheading-icon"><i class="fas fa-globe"></i></span>
                             <span class="navList__subheading-title">traducciones</span>
                         </div>
@@ -97,7 +97,7 @@
                     <li>
                         <div id="templates" class="navList__subheading row row--align-v-center">
                             <span class="navList__subheading-icon"><i class="fas fa-folder-open"></i></span>
-                            <span class="navList__subheading-title">templates</span>
+                            <span class="navList__subheading-title">templates - Dev</span>
                         </div>
                         <!-- <ul class="subList subList--hidden">
                             <li class="subList__item">....</li>
@@ -155,14 +155,14 @@
         </aside>
     
         <main id="main" class="main">
-                <%~ includeFile('./main-content.html', { }) %>
+                <%~ includeFile('./main-content.html', it) %>
             </div>
         </main>
     
        
     </div>
 
-    <script src="./js/clickdashboard.js"></script>
+    <script type="module" src="./js/clickdashboard.js"></script>
     
 </body>
 </html>
