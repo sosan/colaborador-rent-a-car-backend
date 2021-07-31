@@ -31,7 +31,7 @@ exports.GuardarTraduccion = async (traduccion, nombreusuario, nombrerepo) =>
     });
     
     const resultadoUpdateFile = await updateFileGithubRaw.json();
-    
+    return resultadoUpdateFile["commit"]["sha"] !== undefined;
 
 }
 
@@ -55,22 +55,4 @@ const GetShaFile = async (nombreusuario, nombrerepo) =>
     return response["sha"];
 
 
-};
-
-const SaveFile = async (nameFile, texto) => {
-    try {
-        const archivo = path.resolve(__dirname, `../../public/${nameFile}`);
-        await fs.promises.writeFile(archivo, texto, "utf-8");
-        return true;
-    }
-    catch (err) {
-        if (err.code !== "ENOENT") {
-            console.error(`An error occurred while trying to read the secret: ${nameFile}. Err: ${err}`);
-
-        } else {
-            console.debug(`Could not find the secret ${nameFile}. Err: ${err}`);
-
-        }
-        return false;
-    }
 };

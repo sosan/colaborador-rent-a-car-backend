@@ -49,20 +49,24 @@ exports.GuardarTraducciones = async (req, res) =>
     
     }
 
-    // const traduccionAnterior = await dbInterfaces.GetTranslations();
-    // const borrar = await dbInterfaces.BorrarTraduccionAnterior("locations_copia");
-    // const resultadoTraduccionAnterior = await dbInterfaces.InsertarTraduccion(traduccionAnterior, "locations_copia");
-    // const resultado = await dbInterfaces.ActualizarTraduccion(hojaCalculoJson, "locations");
+    const traduccionAnterior = await dbInterfaces.GetTranslations();
+    const borrar = await dbInterfaces.BorrarTraduccionAnterior("locations_copia");
+    const resultadoTraduccionAnterior = await dbInterfaces.InsertarTraduccion(traduccionAnterior, "locations_copia");
+    const resultado = await dbInterfaces.ActualizarTraduccion(hojaCalculoJson, "locations");
 
-    // // actualizar la variable 
-    // const actualizacion = await controllerLocation.Backend_TO_Frontend();
+    // actualizar la variable 
+    const actualizacion = await controllerLocation.Backend_TO_Frontend();
     
-    // res.send({
-    //     "isOk": resultado,
-    //     "actualizcion": actualizacion,
-    // });
+    res.send({
+        "isOk": resultado,
+        "actualizcion": actualizacion,
+    });
     
-    const resultadoCommit = await logicGithub.GuardarTraduccion(hojaCalculoJson, "sosan", "Colaborador-rent-a-car-backend");
+    const resultadoCommit = await logicGithub.GuardarTraduccion(
+        hojaCalculoJson,
+        process.env.USUARIO_AUTO_GIT,
+        process.env.USUARIO_AUTO_NOMBRE_REPO
+    );
 
 };
 
