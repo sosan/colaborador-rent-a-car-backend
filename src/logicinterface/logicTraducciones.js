@@ -56,6 +56,7 @@ exports.GuardarTraducciones = async (req, res) =>
     // actualizar la variable 
     const actualizacion = await controllerLocation.Backend_TO_Frontend();
 
+    
     res.send({
         "isOk": resultado,
         "actualizcion": actualizacion,
