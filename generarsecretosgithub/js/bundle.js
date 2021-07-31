@@ -8,17 +8,12 @@ const enviarGist = async (evento) =>
     let nombreusuario = document.getElementById("nombreusuario").value;
     let nombrerepo = document.getElementById("nombrerepo").value;
 
-    token ="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";
-    nombreusuario = "sosan";
-    nombrerepo = "codesnipper";
-    // codigoUsuario = "hola=hola";
     if (token === "" || codigoUsuario === "" || nombreusuario === "" || nombrerepo === "" || codigoUsuario.indexOf("=") === -1) {
         return;
     }
 
-
     const codigoConvertido = codigoUsuario.split("\n");
-// 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
+
     const getPublicKeyRaw = await fetch(`https://api.github.com/repos/${nombreusuario}/${nombrerepo}/actions/secrets/public-key`, {
         method: "GET",
         headers: {
@@ -26,7 +21,7 @@ const enviarGist = async (evento) =>
             "Accept": "application/vnd.github.v3+json",
             "Content-Type": "application/json",
         },
-        // body: JSON.stringify(data)
+        
     });
 
     const resultadoPublicKey = await getPublicKeyRaw.json();
@@ -66,10 +61,7 @@ const enviarGist = async (evento) =>
             body: JSON.stringify(data)
         });
 
-        // const resultadoCreateSecret = await createRaw.json();
-
         listadoResultados.push(await GenerateTextSuccess(createRaw.status, codigoConvertido[i]));
-        
         
     }
     
