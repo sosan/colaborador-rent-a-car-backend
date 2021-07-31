@@ -43,24 +43,42 @@ exports.Backend_TO_Frontend = async (req, res) => {
 
     const body = { "token": process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET, datos: locations };
 
-    // enviarlo al frontend
-    const responseRaw = await fetch(URI_LOCATIONS, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(body)
-    });
-
-    const dataResponse = await responseRaw.json();
-    // res.send({"isOk": dataResponse.isOk});
-
-    if (dataResponse.isOk === true)
+    try
     {
+        // enviarlo al frontend
+        const responseRaw = await fetch(URI_LOCATIONS, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(body)
+        });
+    
+        const dataResponse = await responseRaw.json();
+        if (res !== undefined)
+        {
+            res.send({"isOk": dataResponse.isOk})
 
+        }
+        else
+        {
+            return dataResponse.isOk;
+        }
 
     }
+    catch (error)
+    {
+        console.log("error" + error);
+        if (res !== undefined)
+        {
+            res.send({ "isOk": false });
+
+        }
+        return false;
+    }
+
+
 
 
 };

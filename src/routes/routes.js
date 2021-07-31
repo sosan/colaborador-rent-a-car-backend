@@ -15,6 +15,7 @@ const logicVars = require("../logicinterface/logicGetVars");
 const logicGetReservas = require("../logicinterface/logicGetReservas");
 const logicTemplates = require("../logicinterface/logicGetTemplate");
 const logicTraducciones = require("../logicinterface/logicTraducciones");
+const logicStats = require("../logicinterface/logicStats");
 
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
@@ -40,10 +41,7 @@ router.post(process.env.ENDPOINT_NEWSLETTER_BACKEND, async (req, res) => await n
 router.post(process.env.ENDPOINT_STATS_BACKEND, async (req, res) => await statsPost.PostInitStats(req, res) );
 router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.ActualizarStats(req, res));
 
-// admin
-router.post(
-    process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res) );
-    
+
     
 // generar html
 router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTLForGeneralConditions(req, res));
@@ -63,6 +61,11 @@ router.get(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await lo
 
 
 //backoffice
+// admin
+router.post(
+    process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res));
+
+router.get(process.env.ENDPOINT_GET_GENERAL_STATS, async (req, res) => await logicStats.GetStats(req, res) )
 router.get("/reservas_noenviadas", async (req, res) => await logicGetReservas.GetReservasNotSended(req, res) );
 router.get("/reservas_enviadas", async (req, res) => await logicGetReservas.GetReservasSended(req, res));
 router.post("/envioCorreoConfirmacionReserva", async (req, res) => await logicGetReservas.ConfirmarReserva(req, res) );
@@ -72,6 +75,7 @@ router.post(process.env.ENDPOINT_TEMPLATE_FRONTEND, async (req, res) => await lo
 router.post(process.env.ENDPOINT_DETALLE_TEMPLATE_FRONTEND, async (req, res) => await logicTemplates.DetalleTemplate(req, res));
 
 router.get(process.env.ENDPOINT_TRADUCCIONES_BACKEND, async (req, res) => await logicTraducciones.MostrarTraducciones(req, res) );
-
+router.post(process.env.ENDPOINT_TRADUCCIONES_GUARDAR, async (req, res) => await logicTraducciones.GuardarTraducciones(req, res));
+router.get(process.env.ENDPOINT_TRADUCCIONES_ACTUALIZAR, async (req, res) => await logicTraducciones.ActualizarTraducciones(req, res));
 
 module.exports = router;

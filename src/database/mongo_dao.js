@@ -520,6 +520,103 @@ exports.GetLocation = async () =>
 };
 
 
+exports.ActualizarTraduccion = async (hojaCalculo, nombreId) =>
+{
+
+    try {
+        const resultados = await collectionLocations.findOneAndUpdate(
+        { "id": nombreId },
+        {
+            $set: hojaCalculo
+        });
+
+        const isUpdated = resultados.ok === 1;
+        return isUpdated;
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+
+};
+
+exports.InsertarTraduccion = async (hojaCalculo) =>
+{
+
+    try {
+        const resultados = await collectionLocations.insertOne(hojaCalculo);
+
+        const isInserted = resultados.insertedCount === 1;
+        return isInserted;
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+
+};
+
+exports.BorrarTraduccion = async (nombreId) =>
+{
+    try {
+        const resultados = await collectionLocations.deleteOne( { "id": nombreId });
+
+        const isRemoved = resultados.result.ok === 1;
+        return isRemoved;
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+
+
+};
+
+
+exports.NumeroEmailsConfirmacionPorEnviar = async () =>
+{
+
+    try {
+        const resultados = await collectionReservas.countDocuments({ "emailConfirmacionReservaEnviado": false });
+
+        return resultados;
+        
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+
+};
+
+
+exports.NumeroReservasPorDia = async (fechaInicio, fechaFin) =>
+{
+
+    try {
+
+        const resultados = await collectionReservas
+            .countDocuments(
+                {
+                    "fechaAlta":
+                    {
+                        "$gte": fechaInicio,
+                        "$lte": fechaFin
+                    }
+                }
+                
+            );
+
+        return resultados;
+
+
+    } catch (error) {
+        console.log("error" + error);
+
+    }
+
+};
+
 exports.GetPorcentajeTipoVehiculo = async () => 
 {
     try {

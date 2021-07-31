@@ -24,3 +24,41 @@ exports.GetTranslations = async () =>
     return resultado;
 
 };
+
+exports.BorrarTraduccionAnterior = async (nombreId) =>
+{
+    const resultado = await mongo_dao.BorrarTraduccion(nombreId);
+    return resultado;
+
+};
+
+exports.ActualizarTraduccion = async (hojaCalculo, nombreId) =>
+{
+
+    const resultado = await mongo_dao.ActualizarTraduccion(hojaCalculo, nombreId);
+    return resultado;
+};
+
+exports.InsertarTraduccion = async (hojaCalculo, nombreId) =>
+{
+    hojaCalculo["id"] = nombreId;
+    const resultado = await mongo_dao.InsertarTraduccion(hojaCalculo);
+    return resultado;
+};
+
+exports.GetStats = async (fechaInicio, fechaFin) =>
+{
+
+    const numeroEmailsPorEnviar = await mongo_dao.NumeroEmailsConfirmacionPorEnviar();
+    
+    const hoyNumeroReservas = await mongo_dao.NumeroReservasPorDia(fechaInicio, fechaFin);
+
+
+    let datos = {
+        "numeroEmailsPorEnviar": numeroEmailsPorEnviar,
+        "hoyNumeroReservas": hoyNumeroReservas
+    };
+
+    return datos;
+
+};

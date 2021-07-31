@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/customnormalize.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <title>Generador Secretos Github</title>
+</head>
+<body>
+    
+    <section class="app">
+    
+        <!-- header -->
+        <header class="appHeader">
+    
+            <ul class="appHeader">
+                <li>
+                    <h1 class="titulo">Generador Secretos Github</h1>
+                </li>
+                <li class="appInputTokenNotion">
+                    <input type="text" class="input" name="nombreusuario" value="" placeholder="Nombre usuario Github" id="nombreusuario" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false">
+                </li>
+                <li class="appInputTokenNotion">
+                    <input type="text" class="input" name="nombrerepo" value="" placeholder="Nombre Repositorio Github" id="nombrerepo" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false">
+                </li>
+                <li class="appInputTokenNotion">
+                    <input type="text" class="input" name="token" value="" placeholder="Token Github" id="token" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false">
+                </li>
+            </ul>
+    
+        </header>
+        <!-- fin header-->
+    
+        <main class="appMain">
+            <ul class="appMain_mitad">
+                <li class="botones">
+                    <button class="boton botonAzul" id="btnEnviarGist">
+                        Enviar Github
+                    </button>
+                </li>
+    
+                <li class="appMain_mitadBottom out">
+                    <textarea class="textarea" name="snippet" placeholder="Codigo..." id="codigo" autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false" wrap="off"></textarea>
+                </li>
+                <li class="appMain_mitadBottom out">
+                    <pre class="pre" id="resultado">Resultado...</pre>
+                
+                
+                </li>
+    
+            </ul>
+            <!-- FIN OUTPUT -->
+        </main>
+    </section>
+    
+    
+    
+    
+    <script type="module">
+        import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
+        </script>
+    
+    <!-- <script src="./js/index.js"></script> -->
+    <script  src="./js/bundle.js"></script>
+    
+    <script>
+        window.sodium = {
+            onload: function (sodium) {
+                let h = sodium.crypto_generichash(64, sodium.from_string('test'));
+                console.log(sodium.to_hex(h));
+            }
+        };
+    </script>
+    <script src="./js/sodium.js" async></script>
+    
+
+
+
+
+</body>
+</html>
