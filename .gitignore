@@ -21,7 +21,6 @@ coverage/
 *~
 *.swp
 *.swo
-*.local
 
 # IDE files
 .idea/

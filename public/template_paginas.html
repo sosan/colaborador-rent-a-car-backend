@@ -1,29 +1,24 @@
 <div id="borrarcontenido" class="pestanyaContenido">
     <h2 class="titulo">Template <%=it.datos.nombreArchivo %> </h2>
     <input type="hidden" id="accion" name="accion" value="<%=it.accion %>">
-    
     <ul>
-        <li class="contenido_minimo">
-            <h3 id="resultado">&nbsp;</h3>
-        </li>
         <li class="centrado">
-            <div class="altura-70">
-                <button id="atras" class="boton azul boton-template-detalle">Atras</button>
+            <div class="tamanyo-200">
+                <button id="atras_" class="boton azul">Atras</button>
             </div>
 
-            <div class="altura-70">
-                <button id="guardar" class="boton rojo boton-template-detalle">Guardar</button>
+            <div class="tamanyo-200">
+                <button class="boton rojo">Guardar</button>
             </div>
-            <div class="altura-70">
-                <button id="generar" class="boton verde boton-template-detalle">Generar cache</button>
+            <div class="tamanyo-200">
+                <button class="boton verde">Generar cache</button>
             </div>
-            <!-- <div class="altura-70">
-                <button id="default" class="boton azul boton-template-detalle">Volver al default</button>
-            </div> -->
+            <div class="">
+                <button class="boton azul">Volver al default</button>
+            </div>
         </li>
-        
         <li class="centrado">
-            <textarea style="border: 1px solid black; width: 100%; height: 300px;" name="archivo" id="textarea" cols="30" rows="10"><%=it.datos.archivo%></textarea>
+            <textarea style="border: 1px solid black; width: 100%; height: 300px;" name="archivo" id="" cols="30" rows="10"><%=it.datos.archivo%></textarea>
         </li>
     </ul>
 </div>
