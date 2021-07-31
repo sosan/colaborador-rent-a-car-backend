@@ -53,7 +53,6 @@ exports.GuardarTraducciones = async (req, res) =>
 
 exports.ActualizarTraducciones = async (req, res) =>
 {
-    
 
     try
     {

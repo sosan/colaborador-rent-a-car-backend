@@ -761,3 +761,14 @@ a {
   height: 300px;
   border: 1px solid black;
 }
+
+.altura-70
+{
+  height: 70px;
+}
+
+.contenido_minimo
+{
+  height: min-content;
+  height: 40px;
+}
