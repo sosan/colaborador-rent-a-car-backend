@@ -72,7 +72,9 @@ jobs:
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
-            /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest
+            /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest && \
+            /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
+            
       - name: Send discord failure message
         if: ${{ failure() }}
         uses: appleboy/discord-action@master
