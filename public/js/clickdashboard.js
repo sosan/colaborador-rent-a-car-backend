@@ -99,7 +99,10 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     script.src = '../js/mostrar_reservas.js';
     head.appendChild(script);
 
-    botonBusqueda = document.getElementById("botonBusqueda_noenviado");
+    
+    toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
+    
+    const botonBusqueda = document.getElementById("botonBusqueda_noenviado");
     if (botonBusqueda) 
     {
         botonBusqueda.addEventListener("click", async (evento) => {
@@ -123,9 +126,6 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
         });
 
     }
-    
-    toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
-
 });
 
 

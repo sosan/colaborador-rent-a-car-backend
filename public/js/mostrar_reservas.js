@@ -1,12 +1,12 @@
-let botonEnviados = document.getElementById("botonEnviados");
-let botonNoEnviados = document.getElementById("botonNoEnviados");
-let botonOtros = document.getElementById("botonOtros");
+var botonEnviados = document.getElementById("botonEnviados");
+var botonNoEnviados = document.getElementById("botonNoEnviados");
+var botonOtros = document.getElementById("botonOtros");
 
-let pestanyasContenido = document.getElementsByClassName("pestanyaContenido");
-let pestanyasBotones = document.getElementsByClassName("boton");
+var pestanyasContenido = document.getElementsByClassName("pestanyaContenido");
+var pestanyasBotones = document.getElementsByClassName("boton");
 
-let botonBusqueda = undefined;
-let botonBusquedaNoEnviado = undefined;
+var botonBusqueda = undefined;
+var botonBusquedaNoEnviado = undefined;
 
 
 
@@ -31,7 +31,7 @@ botonNoEnviados.addEventListener("click", async (evento) =>
 
 });
 
-const RecibirDatos = async (config) =>
+var RecibirDatos = async (config) =>
 {
 
     let datosDevueltos = undefined;
@@ -133,7 +133,7 @@ botonEnviados.addEventListener("click", async (evento) =>
 botonOtros.addEventListener("click", async (evento) => { abrirPestanyas(botonOtros, "otros"); });
 
 
-const GetReservas = async (url) =>
+var GetReservas = async (url) =>
 {
 
     const responseRaw = await fetch(url, {
@@ -149,7 +149,7 @@ const GetReservas = async (url) =>
 
 };
 
-const PostSearchReservas = async (url, body) => {
+var PostSearchReservas = async (url, body) => {
 
     const responseRaw = await fetch(url, {
         method: "post",
@@ -166,7 +166,7 @@ const PostSearchReservas = async (url, body) => {
 };
 
 
-const abrirPestanyas = (nombreBoton, pestanyaId) => 
+var abrirPestanyas = (nombreBoton, pestanyaId) => 
 {
     
     for (i = 0; i < pestanyasContenido.length; i++) 
@@ -184,7 +184,7 @@ const abrirPestanyas = (nombreBoton, pestanyaId) =>
 
 };
 
-const AnadirEventosFormularios = async () =>
+var AnadirEventosFormularios = async () =>
 {
 
     const formularios = document.getElementsByClassName("formulario");
@@ -246,7 +246,7 @@ AnadirEventosFormularios();
 
 
 
-const ObtenerCurrentDate = async (fecha) => {
+var ObtenerCurrentDate = async (fecha) => {
 
     let date_ob = new Date(fecha);
 
