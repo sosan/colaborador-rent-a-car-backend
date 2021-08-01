@@ -69,7 +69,39 @@ exports.GetReservasSended = async (req, res) => {
 
 exports.MostrarReservasPorFecha = async (req, res) =>
 {
-    const resultado = await dbInterfaces.GetReservasPorFecha(req.body.fechaInicio, req.body.fechaDestino, req.body.enviadas);
+
+    const fechaInicioDate = new Date(req.body.fechaInicio);
+    const fechaDestinoDate = new Date(req.body.fechaDestino);
+    const confirmacionEnviada = req.body.enviadas;
+
+    
+    
+    let resultado = undefined;
+
+    if (confirmacionEnviada === true)
+    {
+        const fechaInicio = `${fechaInicioDate.getFullYear()}-${(fechaInicioDate.getMonth() + 1).toString().padStart(2, "00")}-${fechaInicioDate.getDate().toString().padStart(2, "00")}T00:00:00`;
+        const fechaDestino = `${fechaDestinoDate.getFullYear()}-${(fechaDestinoDate.getMonth() + 1).toString().padStart(2, "00")}-${fechaDestinoDate.getDate().toString().padStart(2, "00")}T23:59:59`;
+
+        // 
+        resultado = await dbInterfaces.GetReservasConfirmacionEnviada(
+            fechaInicio,
+            fechaDestino, 
+            confirmacionEnviada);
+
+    }
+    else
+    {
+        const fechaInicio = `${fechaInicioDate.getFullYear()}-${(fechaInicioDate.getMonth() + 1).toString().padStart(2, "00")}-${fechaInicioDate.getDate().toString().padStart(2, "00")}T00:00:00`;
+        const fechaDestino = `${fechaDestinoDate.getFullYear()}-${(fechaDestinoDate.getMonth() + 1).toString().padStart(2, "00")}-${fechaDestinoDate.getDate().toString().padStart(2, "00")}T23:59:59`;
+
+        resultado = await dbInterfaces.GetReservasConfirmacionNoEnviada(
+            fechaInicio,
+            fechaDestino,
+            confirmacionEnviada);
+    }
+    
+    
     res.send({
         formdata: resultado
     });
@@ -125,7 +157,7 @@ exports.ConfirmarReserva = async (req, res ) =>
     const respuestaReservaConfirmacion = await logic_postFormReservar.EnviarCorreoAh(bodyEmail); //transporter.sendMail(bodyEmail);
 
     //enviarlo a la db
-    const currentDate = new Date();
+    const currentDate = await ObtenerCurrentDate(); //new Date().toISOString();
 
     respuestaReservaConfirmacion["fechaEnvioConfirmacionReserva"] = currentDate;
     respuestaReservaConfirmacion["emailConfirmacionReservaEnviado"] = respuestaReservaConfirmacion.datosEmailConfirmacionReserva.isSended;
@@ -163,20 +195,20 @@ exports.ConfirmarReserva = async (req, res ) =>
 
 };
 
-// const ObtenerCurrentDate = async () => {
-//     let date_ob = new Date();
+const ObtenerCurrentDate = async () => {
+    let date_ob = new Date();
 
-//     const dia = date_ob.getUTCDate().toString().padStart(2, "00");
-//     const mes = (date_ob.getUTCMonth() + 1).toString().padStart(2, "00");
-//     const anyo = date_ob.getUTCFullYear();
+    const dia = date_ob.getUTCDate().toString().padStart(2, "00");
+    const mes = (date_ob.getUTCMonth() + 1).toString().padStart(2, "00");
+    const anyo = date_ob.getUTCFullYear();
 
-//     const hora = date_ob.getUTCHours().toString().padStart(2, "00");
-//     const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
-//     const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");;
-//     const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
+    const hora = date_ob.getUTCHours().toString().padStart(2, "00");
+    const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
+    const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");
+    // const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
 
-//     const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}:${ms}`;
+    const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}`;
 
-//     return cadena;
+    return cadena;
 
-// };
+};

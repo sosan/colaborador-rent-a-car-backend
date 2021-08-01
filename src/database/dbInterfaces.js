@@ -231,9 +231,15 @@ exports.GetReservasSended = async () => {
 };
 
 
-exports.GetReservasPorFecha = async (fechaInicio, fechaFin, enviado) => {
+exports.GetReservasConfirmacionEnviada = async (fechaInicio, fechaFin, enviado) => {
 
-    const resultado = await mongo_dao.GetReservasPorFecha(fechaInicio, fechaFin, enviado);
+    const resultado = await mongo_dao.GetReservasConfirmacionEnviada(fechaInicio, fechaFin, enviado);
+    return resultado;
+};
+
+exports.GetReservasConfirmacionNoEnviada = async (fechaInicio, fechaFin, enviado) => {
+
+    const resultado = await mongo_dao.GetReservasConfirmacionNoEnviada(fechaInicio, fechaFin, enviado);
     return resultado;
 };
 

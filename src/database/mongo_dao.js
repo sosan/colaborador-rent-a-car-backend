@@ -786,20 +786,21 @@ exports.GetReservasSended = async () => {
 
 };
 
-exports.GetReservasPorFecha = async (fechaInicio, fechaFin, enviado) => {
+exports.GetReservasConfirmacionNoEnviada = async (fechaInicio, fechaFin, enviado) => {
     try {
+// { emailConfirmacionReservaEnviado: false, fechaAlta: { "$gte": "2021-7-1T00:00:00", "$lte": "2021-7-31T23:59:59" }}
+// { emailConfirmacionReservaEnviado: false, fechaAlta: { $gte: "2021-07-1T00:00:00" } }
         const datos = await collectionReservas
-        // .find({ "emailConfirmacionReservaEnviado": true })
         .find(
             {
                 "emailConfirmacionReservaEnviado": enviado,
-                "fechaEnvioConfirmacionReserva": 
+                "fechaAlta": 
                     { 
-                        "$gte": new Date(`${fechaInicio}T00:00:00Z`),
-                        "$lt": new Date(`${fechaFin}T00:00:00Z`)
+                    "$gte": fechaInicio,
+                    "$lt": fechaFin
                     } 
             })
-        .sort("fechaEnvioConfirmacionReserva", -1).toArray();
+            .sort("fechaAlta", -1).toArray();
         return datos;
 
     }
@@ -808,5 +809,28 @@ exports.GetReservasPorFecha = async (fechaInicio, fechaFin, enviado) => {
     }
 
 };
+
+exports.GetReservasConfirmacionEnviada = async (fechaInicio, fechaFin, enviado) => {
+    try {
+        const datos = await collectionReservas
+            .find(
+                {
+                    "emailConfirmacionReservaEnviado": enviado,
+                    "fechaEnvioConfirmacionReserva":
+                    {
+                        "$gte": fechaInicio,
+                        "$lt": fechaFin
+                    }
+                })
+            .sort("fechaEnvioConfirmacionReserva", -1).toArray();
+        return datos;
+
+    }
+    catch (error) {
+        console.log("error" + error);
+    }
+
+};
+
 
 // { fechaAlta: { $gte: "2021-07-15" } }

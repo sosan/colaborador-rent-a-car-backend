@@ -344,9 +344,10 @@ const ObtenerCurrentDate = async () =>
     const hora = date_ob.getUTCHours().toString().padStart(2, "00");
     const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
     const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");;
-    const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
+    // const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
 
-    const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}:${ms}`;
+    // const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}:${ms}`;
+    const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}`;
 
     return cadena;
 
