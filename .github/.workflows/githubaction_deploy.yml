@@ -1,11 +1,5 @@
-name: backend
+name: nginx
 
-# on:
-#   push:
-#     tags:
-#       - 'v*'
-    # branches:
-    #   - backend
 
 on:
   push:

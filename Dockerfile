@@ -17,7 +17,7 @@ COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
 # RUN chown root:root /opt/bitnami/nginx/conf/server*
 # RUN chmod 600 /opt/bitnami/nginx/conf/server*
 
-
+# https://github.com/wmnnd/nginx-certbot/blob/master/docker-compose.yml
 
 USER 1001
 
@@ -50,7 +50,10 @@ COPY ./lego /usr/local/bin
 VOLUME /certs
 
 USER 1001
-CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
+# CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
+CMD [ "/bin/sh", "-c", "'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'" ]
+
+#  "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
 # CMD [ "sh", "-c", "cron && nginx -g 'daemon off;'" ]
 
