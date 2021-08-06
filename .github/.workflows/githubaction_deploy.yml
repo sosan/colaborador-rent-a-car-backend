@@ -1,16 +1,10 @@
 name: nginx
-
-
 on:
   push:
     branches: [ nginx ]
-
-
 jobs:
   build_nginx:
     runs-on: ubuntu-20.04
-    # if: "contains(github.event.*.message, 'subir')"
-    # if: github.event.*.message === "subir"
     if: "contains(github.event.head_commit.message, '/a')"
     steps:
       - name: Checkout
