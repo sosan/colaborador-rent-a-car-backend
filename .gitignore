@@ -1,0 +1,35 @@
+# Logs
+*.log
+
+# Node
+node_modules/
+.env
+.vscode/
+secrets/
+certificados_locales/
+certs/
+
+docker-compose*
+
+# Unit test / coverage reports
+coverage/
+.nyc_output
+
+# OS auto-generated files
+.DS_Store
+._*
+.~lock*
+
+*.local
+
+# Vim
+*~
+*.swp
+*.swo
+
+# IDE files
+.idea/
+
+.vercel
+
+backend
