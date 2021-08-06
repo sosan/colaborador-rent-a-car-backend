@@ -13,10 +13,20 @@ ARG DOMAIN_2
 
 USER 0
 
-RUN --mount=type=secret,id=SERVER_KEY_SSL cat /run/secrets/SERVER_KEY_SSL
-RUN --mount=type=secret,id=SERVER_CRT_SSL cat /run/secrets/SERVER_CRT_SSL
-RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL cat /run/secrets/SERVER_LOCAL_KEY_SSL
-RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL cat /run/secrets/SERVER_LOCAL_CRT_SSL
+RUN --mount=type=secret,id=SERVER_KEY_SSL echo "done"
+RUN --mount=type=secret,id=SERVER_CRT_SSL echo "done"
+RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL echo "done"
+RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL echo "done"
+
+
+# RUN --mount=type=secret,id=SERVER_KEY_SSL cat /run/secrets/SERVER_KEY_SSL
+# RUN --mount=type=secret,id=SERVER_CRT_SSL cat /run/secrets/SERVER_CRT_SSL
+# RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL cat /run/secrets/SERVER_LOCAL_KEY_SSL
+# RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL cat /run/secrets/SERVER_LOCAL_CRT_SSL
+
+
+
+USER 1001
 
 COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
 
@@ -26,7 +36,6 @@ COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
 
 # https://github.com/wmnnd/nginx-certbot/blob/master/docker-compose.yml
 
-USER 1001
 
 COPY ./lego /usr/local/bin
 
@@ -57,8 +66,9 @@ COPY ./lego /usr/local/bin
 VOLUME /certs
 
 USER 1001
+CMD [ "sh", "-c", "sleep 6h" ]
 # CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
-CMD [ "/bin/sh", "-c", "'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'" ]
+# CMD [ "/bin/sh", "-c", "while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'" ]
 
 #  "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
 
