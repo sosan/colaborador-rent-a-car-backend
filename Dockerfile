@@ -11,6 +11,12 @@ ARG CERTBOT_EMAIL=info@domain.com
 ARG DOMAIN_1
 ARG DOMAIN_2
 
+
+RUN --mount=type=secret,id=SERVER_KEY_SSL cat /run/secrets/SERVER_KEY_SSL
+RUN --mount=type=secret,id=SERVER_CRT_SSL cat /run/secrets/SERVER_CRT_SSL
+RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL cat /run/secrets/SERVER_LOCAL_KEY_SSL
+RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL cat /run/secrets/SERVER_LOCAL_CRT_SSL
+
 COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
 
 # USER 0

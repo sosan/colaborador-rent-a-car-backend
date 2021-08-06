@@ -32,6 +32,11 @@ jobs:
           tags: | 
             sosan/nginx-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
             sosan/nginx-rentacarmallorca:latest
+          secrets: |
+            "SERVER_KEY_SSL=${{ secrets.SERVER_KEY_SSL }}"
+            "SERVER_CRT_SSL=${{ secrets.SERVER_CRT_SSL }}"
+            "SERVER_LOCAL_KEY_SSL=${{ secrets.SERVER_LOCAL_KEY_SSL }}"
+            "SERVER_LOCAL_CRT_SSL=${{ secrets.SERVER_LOCAL_CRT_SSL }}"
 
       - name: Comandos SSH Servidor
         if: "contains(github.event.head_commit.message, '/b')"
@@ -44,9 +49,12 @@ jobs:
           script: |
             cd /tmp
             mkdir certs
-            echo ${{secrets.SERVER_KEY_SSL}} > ./certs/server.key && \
-            echo ${{secrets.SERVER_CRT_SSL}} > ./certs/server.crt && \
-            echo ${{secrets.SERVER_LOCAL_KEY_SSL}} > ./certs/server_local.key && \
-            echo ${{secrets.SERVER_LOCAL_CRT_SSL}} > ./certs/server_local.crt && \
+            cat /run/secrets/SERVER_KEY_SSL > ./certs/server.key && \
+            cat /run/secrets/SERVER_CRT_SSL > ./certs/server.crt && \
+            cat /run/secrets/SERVER_LOCAL_KEY_SSL > ./certs/server_local.key && \
+            cat /run/secrets/SERVER_LOCAL_CRT_SSL > ./certs/server_local.crt && \
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
             /home/alvaro/bin/docker pull sosan/nginx-rentacarmallorca:latest && \
+
+
+# curl -H "Authorization: token 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"  -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/sosan/Colaborador-rent-a-car-backend/actions/secrets/SERVER_KEY_SSL
