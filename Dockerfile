@@ -11,6 +11,7 @@ ARG CERTBOT_EMAIL=info@domain.com
 ARG DOMAIN_1
 ARG DOMAIN_2
 
+USER 0
 
 RUN --mount=type=secret,id=SERVER_KEY_SSL cat /run/secrets/SERVER_KEY_SSL
 RUN --mount=type=secret,id=SERVER_CRT_SSL cat /run/secrets/SERVER_CRT_SSL
