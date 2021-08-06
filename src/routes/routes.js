@@ -65,7 +65,8 @@ router.get(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await lo
 router.post(
     process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res));
 
-router.get(process.env.ENDPOINT_GET_GENERAL_STATS, async (req, res) => await logicStats.GetStats(req, res) )
+router.get(process.env.ENDPOINT_GET_GENERAL_STATS, async (req, res) => await logicStats.GetStats(req, res));
+
 router.get("/reservas_noenviadas", async (req, res) => await logicGetReservas.GetReservasNotSended(req, res) );
 router.get("/reservas_enviadas", async (req, res) => await logicGetReservas.GetReservasSended(req, res));
 router.post("/envioCorreoConfirmacionReserva", async (req, res) => await logicGetReservas.ConfirmarReserva(req, res) );
