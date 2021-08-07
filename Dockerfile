@@ -18,8 +18,11 @@ COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
 # VOLUME /certs
 COPY ./lego /usr/local/bin
 
+CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
+
+
 # WORKDIR /app
-CMD [ "sh", "-c", "sleep 6h" ]
+# CMD [ "sh", "-c", "sleep 6h" ]
 # ENTRYPOINT [ "/opt/bitnami/scripts/nginx/entrypoint.sh" ]
 # CMD [ "/opt/bitnami/scripts/nginx/run.sh" ]
 
@@ -55,7 +58,7 @@ CMD [ "sh", "-c", "sleep 6h" ]
 # RUN ln -s /etc/lego/certificates/DOMAIN.key /certs/server.key \
 #     && ln -s /etc/lego/certificates/DOMAIN.crt /certs/server.crt
 
-# CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
+
 # CMD [ "/bin/sh", "-c", "while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'" ]
 
 #  "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
