@@ -10,7 +10,7 @@ RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL,target=/run/secrets/SERVER_LOCAL
 USER 1001
 
 # EXPOSE 8080 8443
-ARG CERTBOT_EMAIL=info@domain.com
+ARG EMAIL_CERTIFICATION=info@domain.com
 ARG DOMAIN_1
 ARG DOMAIN_2
 COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
@@ -36,7 +36,7 @@ CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
 
 # RUN lego \
 #     --server=https://acme-staging-v02.api.letsencrypt.org/directory \
-#     --email="${CERTBOT_EMAIL}" \
+#     --email="${EMAIL_CERTIFICATION}" \
 #     --domains=${DOMAIN_1} \
 #     --domains=${DOMAIN_2} \
 #     --path="/certs/" \

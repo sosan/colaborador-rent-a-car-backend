@@ -29,6 +29,10 @@ jobs:
           context: ./
           platforms: linux/amd64
           push: true
+          build-args: |
+            EMAIL_CERTIFICATION=${{ secrets.EMAIL_CERTIFICATION }}
+            DOMAIN_1=${{ secrets.DOMAIN_1 }}
+            DOMAIN_2=${{ secrets.DOMAIN_2 }}
           tags: | 
             sosan/nginx-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
             sosan/nginx-rentacarmallorca:latest
