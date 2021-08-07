@@ -8,6 +8,8 @@ node_modules/
 secrets/
 certificados_locales/
 certs/
+rootfs/*
+prebuildfs/*
 
 docker-compose*
 

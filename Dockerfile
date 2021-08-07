@@ -1,34 +1,28 @@
-# FROM golang:latest as builder
-# RUN git clone https://github.com/go-acme/lego.git && cd lego/\
-#     && make build
-# COPY --from=builder /go/lego/dist/lego /usr/local/bin/lego
-
-
-# syntax = docker/dockerfile:1.3
-FROM docker.io/bitnami/nginx:1.21
-
-ARG CERTBOT_EMAIL=info@domain.com
-ARG DOMAIN_1
-ARG DOMAIN_2
+# syntax = docker/dockerfile:1.2
+FROM docker.io/bitnami/nginx:latest
 
 USER 0
-
-RUN --mount=type=secret,id=SERVER_KEY_SSL echo "done"
-RUN --mount=type=secret,id=SERVER_CRT_SSL echo "done"
-RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL echo "done"
-RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL echo "done"
-
-
-# RUN --mount=type=secret,id=SERVER_KEY_SSL cat /run/secrets/SERVER_KEY_SSL
-# RUN --mount=type=secret,id=SERVER_CRT_SSL cat /run/secrets/SERVER_CRT_SSL
-# RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL cat /run/secrets/SERVER_LOCAL_KEY_SSL
-# RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL cat /run/secrets/SERVER_LOCAL_CRT_SSL
-
-
+RUN --mount=type=secret,id=SERVER_KEY_SSL,target=/run/secrets/SERVER_KEY_SSL cp /run/secrets/SERVER_KEY_SSL /certs/server_nginx.key
+RUN --mount=type=secret,id=SERVER_CRT_SSL,target=/run/secrets/SERVER_CRT_SSL cp /run/secrets/SERVER_CRT_SSL /certs/server_nginx.crt
+RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL,target=/run/secrets/SERVER_LOCAL_KEY_SSL cp /run/secrets/SERVER_LOCAL_KEY_SSL /certs/server_local.key
+RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL,target=/run/secrets/SERVER_LOCAL_CRT_SSL cp /run/secrets/SERVER_LOCAL_CRT_SSL /certs/server_local.crt
 
 USER 1001
 
+# EXPOSE 8080 8443
+ARG CERTBOT_EMAIL=info@domain.com
+ARG DOMAIN_1
+ARG DOMAIN_2
 COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
+
+# VOLUME /certs
+COPY ./lego /usr/local/bin
+
+# WORKDIR /app
+CMD [ "sh", "-c", "sleep 6h" ]
+# ENTRYPOINT [ "/opt/bitnami/scripts/nginx/entrypoint.sh" ]
+# CMD [ "/opt/bitnami/scripts/nginx/run.sh" ]
+
 
 # USER 0
 # RUN chown root:root /opt/bitnami/nginx/conf/server*
@@ -36,8 +30,6 @@ COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
 
 # https://github.com/wmnnd/nginx-certbot/blob/master/docker-compose.yml
 
-
-COPY ./lego /usr/local/bin
 
 # RUN lego \
 #     --server=https://acme-staging-v02.api.letsencrypt.org/directory \
@@ -63,10 +55,6 @@ COPY ./lego /usr/local/bin
 # RUN ln -s /etc/lego/certificates/DOMAIN.key /certs/server.key \
 #     && ln -s /etc/lego/certificates/DOMAIN.crt /certs/server.crt
 
-VOLUME /certs
-
-USER 1001
-CMD [ "sh", "-c", "sleep 6h" ]
 # CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
 # CMD [ "/bin/sh", "-c", "while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'" ]
 

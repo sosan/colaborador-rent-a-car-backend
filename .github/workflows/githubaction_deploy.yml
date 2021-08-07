@@ -47,14 +47,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
-            cd /tmp
-            mkdir certs
-            cat /run/secrets/SERVER_KEY_SSL > ./certs/server.key && \
-            cat /run/secrets/SERVER_CRT_SSL > ./certs/server.crt && \
-            cat /run/secrets/SERVER_LOCAL_KEY_SSL > ./certs/server_local.key && \
-            cat /run/secrets/SERVER_LOCAL_CRT_SSL > ./certs/server_local.crt && \
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
             /home/alvaro/bin/docker pull sosan/nginx-rentacarmallorca:latest && \
 
-
-# curl -H "Authorization: token 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"  -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/sosan/Colaborador-rent-a-car-backend/actions/secrets/SERVER_KEY_SSL
