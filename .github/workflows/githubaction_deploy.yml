@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-20.04
     if: "contains(github.event.head_commit.message, '/a')"
     steps:
+      - name: Avoid redudant builds
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v2
       
@@ -27,6 +31,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
+          file: Dockerfile_github
           platforms: linux/amd64
           push: true
           build-args: |
@@ -34,13 +39,13 @@ jobs:
             DOMAIN_1=${{ secrets.DOMAIN_1 }}
             DOMAIN_2=${{ secrets.DOMAIN_2 }}
           tags: | 
-            sosan/nginx-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
-            sosan/nginx-rentacarmallorca:latest
-          secrets: |
-            "SERVER_KEY_SSL=${{ secrets.SERVER_KEY_SSL }}"
-            "SERVER_CRT_SSL=${{ secrets.SERVER_CRT_SSL }}"
-            "SERVER_LOCAL_KEY_SSL=${{ secrets.SERVER_LOCAL_KEY_SSL }}"
-            "SERVER_LOCAL_CRT_SSL=${{ secrets.SERVER_LOCAL_CRT_SSL }}"
+            sosan/envoy-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
+            sosan/envoy-rentacarmallorca:latest
+          # secrets: |
+          #   "SERVER_KEY_SSL=${{ secrets.SERVER_KEY_SSL }}"
+          #   "SERVER_CRT_SSL=${{ secrets.SERVER_CRT_SSL }}"
+          #   "SERVER_LOCAL_KEY_SSL=${{ secrets.SERVER_LOCAL_KEY_SSL }}"
+          #   "SERVER_LOCAL_CRT_SSL=${{ secrets.SERVER_LOCAL_CRT_SSL }}"
 
       - name: Comandos SSH Servidor
         if: "contains(github.event.head_commit.message, '/b')"
@@ -52,5 +57,5 @@ jobs:
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
-            /home/alvaro/bin/docker pull sosan/nginx-rentacarmallorca:latest
+            /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest
 

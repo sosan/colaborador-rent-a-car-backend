@@ -1,11 +1,12 @@
 # syntax = docker/dockerfile:1.2
 FROM docker.io/bitnami/nginx:latest
 
-# USER 0
-# RUN --mount=type=secret,id=SERVER_KEY_SSL,target=/run/secrets/SERVER_KEY_SSL cp /run/secrets/SERVER_KEY_SSL /certs/server_nginx.key
-# RUN --mount=type=secret,id=SERVER_CRT_SSL,target=/run/secrets/SERVER_CRT_SSL cp /run/secrets/SERVER_CRT_SSL /certs/server_nginx.crt
-# RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL,target=/run/secrets/SERVER_LOCAL_KEY_SSL cp /run/secrets/SERVER_LOCAL_KEY_SSL /certs/server_local.key
-# RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL,target=/run/secrets/SERVER_LOCAL_CRT_SSL cp /run/secrets/SERVER_LOCAL_CRT_SSL /certs/server_local.crt
+
+USER 0
+RUN --mount=type=secret,id=SERVER_KEY_SSL,target=/run/secrets/SERVER_KEY_SSL cp /run/secrets/SERVER_KEY_SSL /certs/server_nginx.key
+RUN --mount=type=secret,id=SERVER_CRT_SSL,target=/run/secrets/SERVER_CRT_SSL cp /run/secrets/SERVER_CRT_SSL /certs/server_nginx.crt
+RUN --mount=type=secret,id=SERVER_LOCAL_KEY_SSL,target=/run/secrets/SERVER_LOCAL_KEY_SSL cp /run/secrets/SERVER_LOCAL_KEY_SSL /certs/server_local.key
+RUN --mount=type=secret,id=SERVER_LOCAL_CRT_SSL,target=/run/secrets/SERVER_LOCAL_CRT_SSL cp /run/secrets/SERVER_LOCAL_CRT_SSL /certs/server_local.crt
 
 USER 1001
 
@@ -18,11 +19,11 @@ COPY ./nginx.conf /opt/bitnami/nginx/conf/server_blocks/nginx.conf
 # VOLUME /certs
 COPY ./lego /usr/local/bin
 
-CMD [ "sh", "-c", "sleep 6h" ]
-# CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
+CMD [ "sh", "-c", "nginx -g 'daemon off;'" ]
 
 
 # WORKDIR /app
+# CMD [ "sh", "-c", "sleep 6h" ]
 # ENTRYPOINT [ "/opt/bitnami/scripts/nginx/entrypoint.sh" ]
 # CMD [ "/opt/bitnami/scripts/nginx/run.sh" ]
 
