@@ -53,6 +53,7 @@ static_resources:
               - match:
                   prefix: "/rent"
                 redirect:
+                  # prefix_rewrite: "/"
                   path_redirect: "/rent"
                   https_redirect: true
                 # route:

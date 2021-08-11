@@ -1,8 +1,7 @@
 FROM envoyproxy/envoy-alpine:v1.19-latest
-# RUN apk add curl
 ARG EMAIL_CERTIFICATION
 ARG DOMAIN_1
 ARG DOMAIN_2
-COPY /config_frontend_envoy.yaml /etc/front-envoy.yaml
+COPY ./config_frontend_envoy.yaml /etc/front-envoy.yaml
 RUN chmod go+r /etc/front-envoy.yaml
 CMD /usr/local/bin/envoy -c /etc/front-envoy.yaml --service-cluster front-proxy
