@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:1.2
-FROM mhart/alpine-node:16.2.0 as builder
+FROM mhart/alpine-node:16.4.2 as builder
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci --only=production
