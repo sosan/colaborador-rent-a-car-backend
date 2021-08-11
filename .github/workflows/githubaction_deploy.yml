@@ -41,61 +41,16 @@ jobs:
       #   run: |
       #     NODE_ENV=production npm run test
 
-  build_nginx:
-    runs-on: ubuntu-20.04
-    # if: "contains(github.event.*.message, 'subir')"
-    # if: github.event.*.message === "subir"
-    if: "contains(github.event.head_commit.message, '/a')"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      
-      - name: Get current date
-        id: date
-        run: echo ::set-output name=DATE_NOW::$(date +'%Y_%m_%dT%H_%M_%S')
-      
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      
-      - name: Build
-        uses: docker/build-push-action@v2
-        with:
-          context: ./nginx
-          platforms: linux/amd64
-          push: true
-          tags: | 
-            sosan/nginx-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
-            sosan/nginx-rentacarmallorca:latest
-
-      - name: Comandos SSH Servidor
-        if: "contains(github.event.head_commit.message, '/b')"
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_SERVIDOR }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY}}
-          port:  ${{ secrets.PORT_SERVIDOR }}
-          script: |
-            cd /tmp
-            mkdir certs
-            echo ${{secrets.SERVER_KEY_SSL}} > ./certs/server.key && \
-            echo ${{secrets.SERVER_CRT_SSL}} > ./certs/server.crt && \
-            echo ${{secrets.SERVER_LOCAL_KEY_SSL}} > ./certs/server_local.key && \
-            echo ${{secrets.SERVER_LOCAL_CRT_SSL}} > ./certs/server_local.crt && \
-
-
   build_backend:
     runs-on: ubuntu-20.04
     # if: "contains(github.event.*.message, 'subir')"
     # if: github.event.*.message === "subir"
     if: "contains(github.event.head_commit.message, '/a')"
     steps:
+      - name: Avoid redudant builds
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v2
       
@@ -149,47 +104,44 @@ jobs:
             echo ${{secrets.PORT_BACKOFFICE}} > /tmp/port_backoffice.txt && \
             echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt && \
             echo ${{secrets.TOKEN_FOR_BACKEND_ACCESS}} > /tmp/token_for_backend_access.txt && \
+            echo ${{secrets.SERVER_CRT_SSL}} > /etc/server_http_cert.pem && \
+            echo ${{secrets.SERVER_KEY_SSL}} > /etc/server_http_key.pem && \
             cat <<EOF > /tmp/deploy-compose.txt
             version: "3.7"
             networks:
               gateway: {}
             services:
-              nginx:
-                build:
-                  context: "./"
-                  dockerfile: "Dockerfile_nginx"
-                  network: host
-                  args:
-                    - CERTBOT_EMAIL=servicios@rentcarmallorca.es
-                    - DOMAIN_1=rentcarmallorca.es
-                    - DOMAIN_2=www.rentcarmallorca.es
-                restart: always
-                deploy:
-                  replicas: 1
-                depends_on:
-                  - frontend
-                links: 
-                  - frontend
-                  - backoffice
-                  - frontend_basico
-                ports: 
-                  - 80:80
-                  - 443:443
-                # secrets:
-                #   - NGINX_URL_LOGIN_SECRET
-                #volumes:
-                # - ./nginx.conf:/opt/bitnami/nginx/conf/server_blocks/nginx.conf:ro
-                # - ./certs:/certs
-                networks:
-                  - gateway
-                  # - exterior
+              frontenvoy:
+              build:
+                context: .
+                dockerfile: Dockerfile.frontenvoy
+              restart: always
+              deploy:
+                replicas: 1
+              depends_on:
+                - frontend
+              links: 
+                - frontend
+                - backoffice
+                - frontend_basico
+              expose:
+                - "443"
+                - "5000"
+                - "8001"
+                - "80"
+              ports: 
+                - "80:80"
+                - "443:443"
+              volumes:
+                - /etc/server_http_cert.pem:/etc/cert.pem
+                - /etc/server_http_key.pem:/etc/privkey.pem
+              networks:
+                - gateway
               frontend:
+                image: sosan/frontend-rentacarmallorca:latest
                 restart: always
                 deploy:
                   replicas: 1
-                build:
-                  context: "../colaborador-rent-a-car-frontend"
-                  dockerfile: "Dockerfile"
                 expose: 
                   - 8080
                 environment:
@@ -207,12 +159,10 @@ jobs:
                 depends_on:
                   - backend
               backoffice:
+                image: sosan/backoffice-rentacarmallorca:latest
                 restart: always
                 deploy:
                   replicas: 1
-                build:
-                  context: "../colaborador-rent-a-car-backoffice"
-                  dockerfile: "Dockerfile"
                 expose: 
                   - 3100
                 environment:
@@ -231,12 +181,10 @@ jobs:
                 depends_on:
                   - backend
               backend:
+                image: sosan/backend-rentacarmallorca:latest
                 restart: always
                 deploy:
                   replicas: 1
-                build:
-                  context: "../colaborador-rent-a-car-backend"
-                  dockerfile: "Dockerfile"
                 expose: 
                   - 3000
                 networks:
@@ -256,33 +204,31 @@ jobs:
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
               frontend_basico:
+                image: sosan/frontend_basico-rentacarmallorca:latest
                 restart: always
                 deploy:
                   replicas: 1
-                build:
-                  context: "../colaborador-rentcar-frontend-basico"
-                  dockerfile: "Dockerfile"
                 expose: 
                   - 443
                 networks:
                   - gateway
             secrets:
               REDISDB_PASSWORD:
-                file: "../colaborador-rent-a-car-backend/secrets/redisdb_password.txt"
+                file: "/tmp/redisdb_password.txt"
               REDISDB_PORT:
-                file: "../colaborador-rent-a-car-backend/secrets/redisdb_port.txt"
+                file: "/tmp/redisdb_port.txt"
               REDISDB_HOST:
-                file: "../colaborador-rent-a-car-backend/secrets/redisdb_host.txt"
+                file: "/tmp/redisdb_host.txt"
               PORT_FRONTEND:
-                file: "../colaborador-rent-a-car-backend/secrets/port_frontend.txt"
+                file: "/tmp/port_frontend.txt"
               PORT_BACKEND:
-                file: "../colaborador-rent-a-car-backend/secrets/port_backend.txt"
+                file: "/tmp/port_backend.txt"
               ENDPOINT_VARIABLES_FRONTEND:
-                file: "../colaborador-rent-a-car-backend/secrets/endpoint_variables_frontend.txt"
+                file: "/tmp/endpoint_variables_frontend.txt"
               TOKEN_FOR_BACKEND_ACCESS:
-                file: "../colaborador-rent-a-car-backend/secrets/token_for_backend_access.txt"
+                file: "/tmp/token_for_backend_access.txt"
               PORT_BACKOFFICE:
-                file: "../colaborador-rent-a-car-backend/secrets/port_backoffice.txt"
+                file: "/tmp/port_backoffice.txt"
 
             EOF
             ls && \
