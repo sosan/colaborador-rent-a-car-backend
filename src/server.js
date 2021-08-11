@@ -4,15 +4,15 @@ exports.InitServer = async () =>
 {
 
     require("dotenv").config();
-    const cors = require("cors");
-    const morgan = require("morgan");
-    const helmet = require("helmet");
+    // const cors = require("cors");
+    // const morgan = require("morgan");
+    // const helmet = require("helmet");
     const express = require("express");
-    const session = require('express-session');
+    // const session = require('express-session');
     const eta = require("eta");
     var compression = require("compression");
     const userAgent = require("express-useragent")
-    const rateLimit = require("express-rate-limit");
+    // const rateLimit = require("express-rate-limit");
     const router = require("./routes/router");
     const path = require("path");
 
@@ -45,6 +45,8 @@ exports.InitServer = async () =>
 
     app.set("view engine", "html");
     app.use("/", express.static(path.join(__dirname, "../public")));
+    
+    app.use(process.env.ENDPOINT_FRONTEND_PANEL_CONTROL, express.static(path.join(__dirname, "../public")));
     app.use("/dashboard", express.static(path.join(__dirname, "../public")));
     app.use("/", router);
 

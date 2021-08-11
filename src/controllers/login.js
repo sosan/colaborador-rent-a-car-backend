@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const path = require("path");
 const nanoid = require("nanoid");
 const Joi = require("joi");
 const fetch = require("node-fetch");
@@ -7,7 +8,7 @@ const fetch = require("node-fetch");
 const URI_PANEL_CONTROL_BACKEND = `${process.env.URL_BACKEND}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER}`;
 
 
-exports.checkRegisterLogin = async (req, res) => 
+exports.pathcheckRegisterLogin = async (req, res) =>
 {
 
     if (req.body.boton === "registrar")

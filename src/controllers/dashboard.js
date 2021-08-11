@@ -1,5 +1,6 @@
+require("dotenv").config();
+
 const fetch = require("node-fetch");
-const eta = require("eta");
 const path = require("path");
 
 const urlbackend = process.env.URL_BACKEND || "localhost";
@@ -12,11 +13,12 @@ const GET_GENERAL_STATS = `${protocolo}${urlbackend}:${process.env.PORT_BACKEND}
 exports.GetDashboard = async (req, res) =>
 {
 
+    console.log("apunto enviar a dashboard de backend")
     const rawResponse = await fetch(GET_GENERAL_STATS, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        // headers: {
+        //     "Content-Type": "application/json",
+        // },
         credentials: "include"
     });
 

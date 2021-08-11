@@ -37,17 +37,15 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
-    "chai-change": "^2.1.2",
-    "dirty-chai": "^2.0.1",
-    "mocha": "^8.3.2",
     "nodemon": "^2.0.7"
   },
   "bin": "./src/index.js",
   "pkg": {
     "assets": [
+      "public/*",
       "public/**/*",
       "public/css/*",
+      "public/img/*",
       "public/img/**/*",
       "public/js/*"
     ]

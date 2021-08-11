@@ -39,6 +39,7 @@ exports.GetBackendVars = async () => {
     const URI_VARIABLES = `${protocolo}${host}:${port_backend}${endpoint_variables_frontend}`;
     // console.log("uri_variable=" + URI_VARIABLES);
 
+    console.log("obteniendo las variables" + URI_VARIABLES );
     const responseRaw = await fetch(URI_VARIABLES, {
         method: "GET",
         headers: {
@@ -54,12 +55,19 @@ exports.GetBackendVars = async () => {
 
     const buf = Buffer.from(datos.variables);
     const envConfig = dotenv.parse(buf);
+    // let tempForm = {};
+    
     for (const key in envConfig) {
 
         const variableSanitizada = await sanitizar(envConfig[key]);
         process.env[key] = variableSanitizada;
         // console.log(`texto sanitizado=${key}:${variableSanitizada}`);
     }
+
+    //  = tempForm;
+
+    // console.log("env=>" )
+
 
 };
 
