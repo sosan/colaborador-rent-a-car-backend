@@ -22,6 +22,7 @@ exports.GetDashboard = async (req, res) =>
         credentials: "include"
     });
 
+    
     const datos = await rawResponse.json();
     
     res.render(path.join(__dirname, '../../public/dashboard.html'), {
