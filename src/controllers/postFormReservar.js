@@ -16,15 +16,11 @@ exports.postRealizarReserva = async (req, res) =>
         return res.send({ "isOk": false, "errorFormulario": "" });
     }
     
+    // res.send({ isOk: true, numeroRegistro: "SDFSDFSDSF" });
+
     const resultadoInsercion = await logicInterface.ProcesarReserva(formulario);
-    
-    //TODO: generar token
-
     res.send({ isOk: resultadoInsercion.isInserted, numeroRegistro: resultadoInsercion.numeroRegistro });
-
     const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
-    
-    // console.log("emailenviados" + emailsEnviados.isAdminEmailSended + " ")
     await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, resultadoInsercion.objectId);
 
 };
