@@ -57,4 +57,3 @@ jobs:
           script: |
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
             /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest
-
