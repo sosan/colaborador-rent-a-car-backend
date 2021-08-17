@@ -1,9 +1,9 @@
-name: nginx
+name: envoy
 on:
   push:
     branches: [ envoy ]
 jobs:
-  build_nginx:
+  build_envoy:
     runs-on: ubuntu-20.04
     if: "contains(github.event.head_commit.message, '/a')"
     steps:
