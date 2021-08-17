@@ -77,7 +77,8 @@ static_resources:
               - match:
                   prefix: "/"
                 route:
-                  cluster: frontend_basico_cluster
+                  cluster: frontend_cluster
+                  # cluster: frontend_basico_cluster
           http_filters:
           - name: envoy.filters.http.router
       transport_socket:
@@ -86,7 +87,7 @@ static_resources:
           "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
           common_tls_context:
             tls_params:
-              tls_minimum_protocol_version: TLSv1_0
+              tls_minimum_protocol_version: TLSv1_2
               tls_maximum_protocol_version: TLSv1_3
             tls_certificates:
               - certificate_chain:
@@ -123,7 +124,7 @@ static_resources:
           "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
           common_tls_context:
             tls_params:
-              tls_minimum_protocol_version: TLSv1_0
+              tls_minimum_protocol_version: TLSv1_2
               tls_maximum_protocol_version: TLSv1_3
             tls_certificates:
               - certificate_chain:
