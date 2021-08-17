@@ -206,7 +206,7 @@ jobs:
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
               frontend_basico:
-                image: sosan/frontend_basico-rentacarmallorca:latest
+                image: sosan/frontend-rentacarmallorca-basico:latest
                 restart: always
                 deploy:
                   replicas: 1
