@@ -96,16 +96,16 @@ jobs:
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
             ls && \
-            echo ${{secrets.REDISDB_PASSWORD}} > /tmp/redisdb_password.txt && \
-            echo ${{secrets.REDISDB_PORT}} > /tmp/redisdb_port.txt && \
-            echo ${{secrets.REDISDB_HOST}} > /tmp/redisdb_host.txt && \
-            echo ${{secrets.PORT_FRONTEND}} > /tmp/port_frontend.txt && \
-            echo ${{secrets.PORT_BACKEND}} > /tmp/port_backend.txt && \
-            echo ${{secrets.PORT_BACKOFFICE}} > /tmp/port_backoffice.txt && \
-            echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt && \
-            echo ${{secrets.TOKEN_FOR_BACKEND_ACCESS}} > /tmp/token_for_backend_access.txt && \
-            echo ${{secrets.SERVER_CRT_SSL}} > /home/alvaro/certs/server_http_cert.pem && \
-            echo ${{secrets.SERVER_KEY_SSL}} > /home/alvaro/certs/server_http_key.pem && \
+            echo "${{secrets.REDISDB_PASSWORD}}" > /tmp/redisdb_password.txt && \
+            echo "${{secrets.REDISDB_PORT}}" > /tmp/redisdb_port.txt && \
+            echo "${{secrets.REDISDB_HOST}}" > /tmp/redisdb_host.txt && \
+            echo "${{secrets.PORT_FRONTEND}}" > /tmp/port_frontend.txt && \
+            echo "${{secrets.PORT_BACKEND}}" > /tmp/port_backend.txt && \
+            echo "${{secrets.PORT_BACKOFFICE}}" > /tmp/port_backoffice.txt && \
+            echo "${{secrets.ENDPOINT_VARIABLES_FRONTEND}}" > /tmp/endpoint_variables_frontend.txt && \
+            echo "${{secrets.TOKEN_FOR_BACKEND_ACCESS}}" > /tmp/token_for_backend_access.txt && \
+            echo "${{secrets.SERVER_CRT_SSL}}" > /home/alvaro/certs/server_http_cert.pem && \
+            echo "${{secrets.SERVER_KEY_SSL}}" > /home/alvaro/certs/server_http_key.pem && \
             cat <<EOF > /tmp/deploy-compose.txt
             version: "3.7"
             networks:
@@ -237,7 +237,7 @@ jobs:
             /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
             /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
             /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest && \
-            /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest:latest && \
+            /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest && \
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
             /home/alvaro/bin/docker rmi $(/home/alvaro/bin/docker images | grep "<none>" | awk '{print $3}') 2>/dev/null || echo "No hay images por borrar"
             
