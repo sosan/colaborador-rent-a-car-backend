@@ -1,7 +1,7 @@
 name: nginx
 on:
   push:
-    branches: [ nginx ]
+    branches: [ envoy ]
 jobs:
   build_nginx:
     runs-on: ubuntu-20.04
@@ -13,7 +13,6 @@ jobs:
           access_token: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v2
-      
       - name: Get current date
         id: date
         run: echo ::set-output name=DATE_NOW::$(date +'%Y_%m_%dT%H_%M_%S')
@@ -34,10 +33,10 @@ jobs:
           file: Dockerfile
           platforms: linux/amd64
           push: true
-          build-args: |
-            EMAIL_CERTIFICATION=${{ secrets.EMAIL_CERTIFICATION }}
-            DOMAIN_1=${{ secrets.DOMAIN_1 }}
-            DOMAIN_2=${{ secrets.DOMAIN_2 }}
+          # build-args: |
+            # EMAIL_CERTIFICATION=${{ secrets.EMAIL_CERTIFICATION }}
+            # DOMAIN_1=${{ secrets.DOMAIN_1 }}
+            # DOMAIN_2=${{ secrets.DOMAIN_2 }}
           tags: | 
             sosan/envoy-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
             sosan/envoy-rentacarmallorca:latest
