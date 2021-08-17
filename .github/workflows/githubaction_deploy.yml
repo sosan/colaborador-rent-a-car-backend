@@ -111,32 +111,34 @@ jobs:
             networks:
               gateway: {}
             services:
-              # frontenvoy:
-              # build:
-              #   context: .
-              #   dockerfile: Dockerfile.frontenvoy
-              # restart: always
-              # deploy:
-              #   replicas: 1
-              # depends_on:
-              #   - frontend
-              # links: 
-              #   - frontend
-              #   - backoffice
-              #   - frontend_basico
-              # expose:
-              #   - "443"
-              #   - "5000"
-              #   - "8001"
-              #   - "80"
-              # ports: 
-              #   - "80:80"
-              #   - "443:443"
-              # volumes:
-              #   - /etc/server_http_cert.pem:/etc/cert.pem
-              #   - /etc/server_http_key.pem:/etc/privkey.pem
-              # networks:
-              #   - gateway
+              frontenvoy:
+                image: sosan/envoy-rentacarmallorca:latest
+                restart: always
+                deploy:
+                  replicas: 1
+                depends_on:
+                  - frontend
+                links: 
+                  - frontend
+                  - backoffice
+                  - frontend_basico
+                expose:
+                  - "80"
+                  - "443"
+                  - "8080"
+                  - "8081"
+                  - "8443"
+                ports: 
+                  - "80:80"
+                  - "443:443"
+                  - "8080:8080"
+                  - "8081:8081"
+                  - "8443:8443"
+                volumes:
+                  - /etc/server_http_cert.pem:/etc/cert.pem
+                  - /etc/server_http_key.pem:/etc/privkey.pem
+                networks:
+                  - gateway
               frontend:
                 image: sosan/frontend-rentacarmallorca:latest
                 restart: always
