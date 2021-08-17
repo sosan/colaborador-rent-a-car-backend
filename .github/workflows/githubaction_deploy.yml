@@ -104,8 +104,8 @@ jobs:
             echo ${{secrets.PORT_BACKOFFICE}} > /tmp/port_backoffice.txt && \
             echo ${{secrets.ENDPOINT_VARIABLES_FRONTEND}} > /tmp/endpoint_variables_frontend.txt && \
             echo ${{secrets.TOKEN_FOR_BACKEND_ACCESS}} > /tmp/token_for_backend_access.txt && \
-            echo ${{secrets.SERVER_CRT_SSL}} > /etc/server_http_cert.pem && \
-            echo ${{secrets.SERVER_KEY_SSL}} > /etc/server_http_key.pem && \
+            echo ${{secrets.SERVER_CRT_SSL}} > /home/alvaro/certs/server_http_cert.pem && \
+            echo ${{secrets.SERVER_KEY_SSL}} > /home/alvaro/certs/server_http_key.pem && \
             cat <<EOF > /tmp/deploy-compose.txt
             version: "3.7"
             networks:
@@ -135,8 +135,8 @@ jobs:
                   - "8081:8081"
                   - "8443:8443"
                 volumes:
-                  - /etc/server_http_cert.pem:/etc/cert.pem
-                  - /etc/server_http_key.pem:/etc/privkey.pem
+                  - /home/alvaro/certs/server_http_cert.pem:/etc/cert.pem
+                  - /home/alvaro/certs/server_http_key.pem:/etc/privkey.pem
                 networks:
                   - gateway
               frontend:
@@ -231,13 +231,13 @@ jobs:
                 file: "/tmp/token_for_backend_access.txt"
               PORT_BACKOFFICE:
                 file: "/tmp/port_backoffice.txt"
-
             EOF
             ls && \
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
             /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
             /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
             /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest && \
+            /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest:latest && \
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
             /home/alvaro/bin/docker rmi $(/home/alvaro/bin/docker images | grep "<none>" | awk '{print $3}') 2>/dev/null || echo "No hay images por borrar"
             
