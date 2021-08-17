@@ -51,7 +51,7 @@ static_resources:
                 # route:
                   # cluster: frontend_cluster
                 redirect:
-                  path_redirect: "/"
+                  # path_redirect: "/"
                   https_redirect: true
                   port_redirect: 8443
           http_filters:
