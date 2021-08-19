@@ -19,7 +19,7 @@ const htmlEmail = `
 
 <body>
     <a href="0000">
-        <img src="http://www.rentcarmallorca.es:8080/img/Img-Logo/rentacar_logo_header.png">
+        <img src="https://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png">
     </a><br><br>
     XXXXXX
 <br>
@@ -128,7 +128,7 @@ exports.ConfirmarReserva = async (req, res ) =>
         .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
         .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
         .replace(new RegExp("{Z3}", "g"), `<img src="${this.descripcionVehiculos[formulario.descripcion_vehiculo]}">` )
-        .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="http://www.rentcarmallorca.es:8080/img/imagenlocalizacion.webp" width="200"></a>`)
+        .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="https://www.rentcarmallorca.es/img/imagenlocalizacion.webp" width="200"></a>`)
         .replace(new RegExp("{C1}", "g"), "RentCarMallorca.es")
         .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("{J1}", "g"), "Camino de Can Pastilla, 51")
@@ -137,7 +137,7 @@ exports.ConfirmarReserva = async (req, res ) =>
 
     
     const bodyConfirmacionEmail = htmlEmail
-        .replace("0000", "http://www.rentcarmallorca.es:8080/")
+        .replace("0000", "https://www.rentcarmallorca.es/")
         .replace("XXXXXX", email)
         ;
 

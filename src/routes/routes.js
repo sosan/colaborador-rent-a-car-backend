@@ -34,6 +34,7 @@ router.post(process.env.ENDPOINT_GETCAR_FROM_CARD_BACKEND, async (req, res) => a
 
 //reservar de frontend a backend
 router.post(process.env.ENDPOINT_REALIZAR_RESERVA_BACKEND, async (req, res) => await reservarPost.postRealizarReserva(req, res));
+router.post(process.env.ENDPOINT_REALIZAR_PAGO_BACKEND, async (req, res) => reservarPost.PeticionPago(req, res));
 
 router.post(process.env.ENDPOINT_NEWSLETTER_BACKEND, async (req, res) => await newsletter.ProcesarEmail(req, res));
 

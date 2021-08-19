@@ -5,6 +5,7 @@ const traducciones = require("../controllers/location");
 const fetch = require("node-fetch");
 const { transporter } = require("./logicSendEmail");
 const { descripcionVehiculos } = require("./logicGetReservas");
+const crypto = require("crypto");
 const nanoid = require("nanoid");
 
 
@@ -35,7 +36,7 @@ const htmlEmail = `
 
 <body>
     <a href="0000">
-        <img src="http://www.rentcarmallorca.es:8080/img/Img-Logo/rentacar_logo_header.png">
+        <img src="https://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png">
     </a><br><br>
     XXXXXX
 <br>
@@ -115,14 +116,14 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
         .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
         .replace(new RegExp("{Z3}", "g"), `<img src="${descripcionVehiculos[formulario.descripcion_vehiculo]}">`)
-        .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="http://www.rentcarmallorca.es:8080/img/imagenlocalizacion.webp" width="200"></a>`)
+        .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="https://www.rentcarmallorca.es/img/imagenlocalizacion.webp" width="200"></a>`)
         .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("{J1}", "g"), "Camino de Can Pastilla, 51")
         .replace(new RegExp("{K1}", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
     
     const bodyConfirmacionEmail = htmlEmail
-        .replace("0000", "http://www.rentcarmallorca.es:8080/")
+        .replace("0000", "https://www.rentcarmallorca.es/")
         .replace("XXXXXX", texto)
     ;
 
@@ -390,6 +391,12 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
     formulario["numeroRegistro"] = numeroRegistro;
     formulario["emailConfirmacionReservaEnviado"] = false;
     
+    const isReservaValida = await CheckReservaValida(formulario);
+    if (isReservaValida === false)
+    {
+        return { "isInserted": false, "objectId": undefined, "numeroRegistro": numeroRegistro };
+    }
+
     let isInserted = false;
     let incrementalCount = 1;
     while (isInserted === false)
@@ -402,7 +409,7 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
             incrementalCount++;
         }
     }
-    return { "isInserted": isInserted, "objectId": result.objectId, "numeroRegistro": numeroRegistro};
+    return { "isInserted": isInserted, "objectId": result.objectId, "numeroRegistro": numeroRegistro };
 
 };
 
@@ -535,6 +542,162 @@ const ControlSchema = async (body, schema) => {
 
 };
 
+const CheckReservaValida = async (formulario) =>
+{
+    // comprobar si los datos que recibimos se correcponde a la realidad
+    return true;
+
+};
+
+exports.CreateMerchantPayment = async (formulario, codigo, key) =>
+{
+
+    const jsonMerchantParameters = 
+    {
+
+        "DS_MERCHANT_AMOUNT": formulario["pago_online"].toString().replace(".", ""),
+        "DS_MERCHANT_CURRENCY": "978",
+        "DS_MERCHANT_CVV2": formulario["card-cvv"].toString(),
+        "DS_MERCHANT_EXPIRYDATE": formulario["card-expiration"].toString(),
+        "DS_MERCHANT_MERCHANTCODE": codigo.toString(),
+        "DS_MERCHANT_ORDER": formulario["numeroRegistro"].toString(),
+        "DS_MERCHANT_PAN": formulario["card-number"].toString(),
+        "DS_MERCHANT_TERMINAL": "1",
+        "DS_MERCHANT_TRANSACTIONTYPE": "0"
+
+    };
+
+    const encodecSignature = await createMerchantSignature(process.env.MERCHANT_KEY_CODED, jsonMerchantParameters);
+    const base64MerchantParameters = await createMerchantParameters(jsonMerchantParameters);
+
+    return {
+        "Ds_MerchantParameters": base64MerchantParameters,
+        "Ds_Signature": encodecSignature,
+        "Ds_SignatureVersion": "HMAC_SHA256_V1"
+    };
+
+};
+
+
+
+
+
+//--------------
+// const encrypt3DES = async (str, key) =>
+// {
+//     const secretKey = Buffer.from(key, 'base64');
+//     const iv = Buffer.alloc(8, 0);
+//     const cipher = crypto.createCipheriv('des-ede3-cbc', secretKey, iv);
+//     cipher.setAutoPadding(false);
+//     const relleno = await zeroPad(str, 8);
+//     return cipher.update(relleno, 'utf8', 'base64') + cipher.final('base64');
+// }
+
+// const encrypt3DES = async (order_id, secret) =>
+// {
+//     var secretKey = Buffer("123456789012345678901234", 'base64');
+//     var iv = crypto.randomBytes(8);
+//     var cipher = crypto.createCipheriv('des-ede3-cbc', secretKey, iv);
+//     cipher.setAutoPadding(false);
+//     var res = cipher.update(order_id, 'utf8', 'base64') + cipher.final('base64');
+//     return res;
+
+// };
+
+
+const encrypt3DES = async (str, key) =>
+{
+    const secretKey = Buffer.from(key, 'base64');
+    const iv = Buffer.alloc(8, 0);
+    const cipher = crypto.createCipheriv('des-ede3-cbc', secretKey, iv);
+    cipher.setAutoPadding(false);
+    const relleno = await zeroPad(str, 8);
+    const en_key = cipher.update(relleno, 'utf8', 'binary') + cipher.final('binary');
+    const maxPos = Math.ceil(str.length / 8) * 8;
+    
+    return Buffer.from(en_key.substr(0, maxPos), 'binary').toString('base64');
+};
+
+
+
+const decrypt3DES = async (str, key) => 
+{
+    const secretKey = Buffer.from(key, 'base64');
+    const iv = Buffer.alloc(8, 0);
+    const cipher = crypto.createDecipheriv('des-ede3-cbc', secretKey, iv);
+    cipher.setAutoPadding(false);
+    const relleno = await zeroUnpad(str, 8);
+    const res = cipher.update(relleno, 'base64', 'utf8') + cipher.final('utf8');
+    return res.replace(/\0/g, '');
+}
+
+const mac256 = async (data, key) =>
+{
+    return crypto.createHmac('sha256', Buffer.from(key, 'base64'))
+        .update(data)
+        .digest('base64');
+}
+
+const createMerchantParameters = async (data) => 
+{
+    return Buffer.from(JSON.stringify(data), 'utf8').toString('base64');
+}
+
+const decodeMerchantParameters = async (data) => {
+    const decodedData = JSON.parse(base64url.decode(data, 'utf8'));
+    const res = {};
+    Object.keys(decodedData).forEach((param) => {
+        res[decodeURIComponent(param)] = decodeURIComponent(decodedData[param]);
+    });
+    return res;
+}
+
+const createMerchantSignature = async (key, data) => 
+{
+    const merchantParameters = await createMerchantParameters(data);
+    const orderId = data.DS_MERCHANT_ORDER;
+    const orderKey = await encrypt3DES(orderId, key);
+
+    return await mac256(merchantParameters, orderKey);
+}
+
+const createMerchantSignatureNotif = async (key, data) =>
+{
+    const merchantParameters = this.decodeMerchantParameters(data);
+    const orderId = merchantParameters.Ds_Order || merchantParameters.DS_ORDER;
+    const orderKey = await encrypt3DES(orderId, key);
+
+    const res = await mac256(data, orderKey);
+    return base64url.encode(res, 'base64');
+};
+
+
+
+//----------
+
+
+
+
+
+const zeroPad = async (buf, blocksize) =>
+{
+    const buffer = typeof buf === 'string' ? Buffer.from(buf, 'utf8') : buf;
+    const pad = Buffer.alloc((blocksize - (buffer.length % blocksize)) % blocksize, 0);
+    return Buffer.concat([buffer, pad]);
+};
+
+
+const zeroUnpad = async (buf, blocksize) =>
+{
+    let lastIndex = buf.length;
+    while (lastIndex >= 0 && lastIndex > buf.length - blocksize - 1) {
+        lastIndex -= 1;
+        if (buf[lastIndex] !== 0) {
+            break;
+        }
+    }
+    return buf.slice(0, lastIndex + 1).toString('utf8');
+};
 
 
 exports.SumarVisitaVehiculo = async (vehiculo) =>
