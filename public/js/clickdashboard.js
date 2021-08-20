@@ -54,7 +54,7 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     
     botonConfirmaciones.classList.add("navList__subheading_clicked");
     
-    const rawResponse = await fetch("/confirmaciones", {
+    const rawResponse = await fetch("/dashboard/confirmaciones", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

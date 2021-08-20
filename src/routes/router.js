@@ -28,7 +28,7 @@ router.get("/reservasenviadas", async (req, res) => await confirmar.MostrarReser
 router.get("/reservasnoenviadas", async (req, res) => await confirmar.MostrarReservasNoEnviadas(req, res));
 
 router.post("/busquedareservasporfecha", async (req, res) => await confirmar.MostrarReservasPorFecha(req, res));
-router.get("/confirmaciones", async (req, res) => await confirmar.MostrarConfirmaciones(req, res));
+router.get("/dashboard/confirmaciones", async (req, res) => await confirmar.MostrarConfirmaciones(req, res));
 router.get("/confirmar", async (req, res) => await confirmar.MostrarReservas(req, res) );
 
 router.get("/templates", async (req, res) => await templates.GetMainTemplates(req, res));
