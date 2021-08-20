@@ -121,7 +121,6 @@ jobs:
                 links: 
                   - frontend
                   - backoffice
-                  - frontend_basico
                 expose:
                   - "80"
                   - "443"
@@ -205,17 +204,6 @@ jobs:
                   URL_FRONTEND: frontend
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
-              frontend_basico:
-                image: sosan/frontend-rentacarmallorca-basico:latest
-                restart: always
-                deploy:
-                  replicas: 1
-                expose: 
-                  - 8085
-                ports: 
-                  - 8085:8085
-                networks:
-                  - gateway
             secrets:
               REDISDB_PASSWORD:
                 file: "/tmp/redisdb_password.txt"
