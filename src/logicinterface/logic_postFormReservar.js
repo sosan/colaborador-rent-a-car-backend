@@ -397,6 +397,12 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
         return { "isInserted": false, "objectId": undefined, "numeroRegistro": numeroRegistro };
     }
 
+    const merchantPayment = await this.CreateMerchantPayment(
+        formulario,
+        process.env.MERCHANT_CODE,
+        process.env.MERCHANT_KEY_CODED
+    );
+
     let isInserted = false;
     let incrementalCount = 1;
     while (isInserted === false)
@@ -409,7 +415,14 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
             incrementalCount++;
         }
     }
-    return { "isInserted": isInserted, "objectId": result.objectId, "numeroRegistro": numeroRegistro };
+
+
+    return { 
+        "isInserted": isInserted,
+        "objectId": result.objectId,
+        "numeroRegistro": numeroRegistro,
+        "merchantPayment": merchantPayment
+    };
 
 };
 
@@ -552,22 +565,22 @@ const CheckReservaValida = async (formulario) =>
 exports.CreateMerchantPayment = async (formulario, codigo, key) =>
 {
 
-    // const jsonMerchantParameters = 
-    // {
+    const amount = Number(formulario["pago_online"]).toFixed(2);
 
-    //     "DS_MERCHANT_AMOUNT": formulario["pago_online"].toString().replace(".", ""),
-    //     "DS_MERCHANT_CURRENCY": "978",
-    //     "DS_MERCHANT_CVV2": formulario["card-cvv"].toString(),
-    //     "DS_MERCHANT_EXPIRYDATE": formulario["card-expiration"].toString(),
-    //     "DS_MERCHANT_MERCHANTCODE": codigo.toString(),
-    //     "DS_MERCHANT_ORDER": formulario["numeroRegistro"].toString(),
-    //     "DS_MERCHANT_PAN": formulario["card-number"].toString(),
-    //     "DS_MERCHANT_TERMINAL": "1",
-    //     "DS_MERCHANT_TRANSACTIONTYPE": "0"
+    const jsonMerchantParameters = 
+    {
+        
+        "DS_MERCHANT_MERCHANTURL": "https://www.rentcarmallorca.es/notificacion",
+        "DS_MERCHANT_URLKO": "https://www.rentcarmallorca.es/nocorrecto",
+        "DS_MERCHANT_URLOK": "https://www.rentcarmallorca.es/correcto",
+        "DS_MERCHANT_AMOUNT": amount.toString().replace(".", ""),
+        "DS_MERCHANT_CURRENCY": "978",
+        "DS_MERCHANT_MERCHANTCODE": codigo.toString(),
+        "DS_MERCHANT_ORDER": formulario["numeroRegistro"].toString(),
+        "DS_MERCHANT_TERMINAL": "1",
+        "DS_MERCHANT_TRANSACTIONTYPE": "0"
 
-    // };
-
-    const jsonMerchantParameters = "";
+    };
 
     const encodecSignature = await createMerchantSignature(process.env.MERCHANT_KEY_CODED, jsonMerchantParameters);
     const base64MerchantParameters = await createMerchantParameters(jsonMerchantParameters);
@@ -579,32 +592,6 @@ exports.CreateMerchantPayment = async (formulario, codigo, key) =>
     };
 
 };
-
-
-
-
-
-//--------------
-// const encrypt3DES = async (str, key) =>
-// {
-//     const secretKey = Buffer.from(key, 'base64');
-//     const iv = Buffer.alloc(8, 0);
-//     const cipher = crypto.createCipheriv('des-ede3-cbc', secretKey, iv);
-//     cipher.setAutoPadding(false);
-//     const relleno = await zeroPad(str, 8);
-//     return cipher.update(relleno, 'utf8', 'base64') + cipher.final('base64');
-// }
-
-// const encrypt3DES = async (order_id, secret) =>
-// {
-//     var secretKey = Buffer("123456789012345678901234", 'base64');
-//     var iv = crypto.randomBytes(8);
-//     var cipher = crypto.createCipheriv('des-ede3-cbc', secretKey, iv);
-//     cipher.setAutoPadding(false);
-//     var res = cipher.update(order_id, 'utf8', 'base64') + cipher.final('base64');
-//     return res;
-
-// };
 
 
 const encrypt3DES = async (str, key) =>
@@ -674,13 +661,6 @@ const createMerchantSignatureNotif = async (key, data) =>
 };
 
 
-
-//----------
-
-
-
-
-
 const zeroPad = async (buf, blocksize) =>
 {
     const buffer = typeof buf === 'string' ? Buffer.from(buf, 'utf8') : buf;
@@ -700,6 +680,13 @@ const zeroUnpad = async (buf, blocksize) =>
     }
     return buf.slice(0, lastIndex + 1).toString('utf8');
 };
+
+
+//----------
+
+
+
+
 
 
 exports.SumarVisitaVehiculo = async (vehiculo) =>
