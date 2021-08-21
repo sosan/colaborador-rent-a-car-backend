@@ -1,18 +1,7 @@
 name: backend
-
-# on:
-#   push:
-#     tags:
-#       - 'v*'
-    # branches:
-    #   - backend
-
 on:
   push:
     branches: [ backend ]
-#   pull_request:
-#     branches: [ backend ]
-
 jobs:
   # test:
     # runs-on: ubuntu-20.04
