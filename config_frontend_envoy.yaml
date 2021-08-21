@@ -146,24 +146,25 @@ static_resources:
               - "*"
               routes:
               - match:
-                  prefix: "/dashboard"
+                  prefix: "/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI"
                 route:
                   cluster: backoffice_cluster
+              
           http_filters:
           - name: envoy.filters.http.router
-      # transport_socket:
-      #   name: envoy.transport_sockets.tls
-      #   typed_config:
-      #     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
-      #     common_tls_context:
-      #       tls_params:
-      #         tls_minimum_protocol_version: TLSv1_2
-      #         tls_maximum_protocol_version: TLSv1_3
-      #       tls_certificates:
-      #         - certificate_chain:
-      #             filename: "/etc/cert.pem"
-      #           private_key:
-      #             filename: "/etc/privkey.pem"
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+          common_tls_context:
+            tls_params:
+              tls_minimum_protocol_version: TLSv1_2
+              tls_maximum_protocol_version: TLSv1_3
+            tls_certificates:
+              - certificate_chain:
+                  filename: "/etc/cert.pem"
+                private_key:
+                  filename: "/etc/privkey.pem"
 
   clusters:
   - name: frontend_cluster
