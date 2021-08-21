@@ -216,7 +216,7 @@ Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroR
 </table>
 </body>
 </html>
-`
+`;
 
     let bodyEmail =
     {
@@ -363,12 +363,8 @@ const ObtenernumeroRegistro = async () =>
     const mes = (date_ob.getMonth() + 1).toString().padStart(2, "00");
     const anyo = date_ob.getFullYear();
 
-    const cadenaComprobarDia = `${anyo}:${mes}:${dia}`;
-    // const cantidadReservasDia = await dbInterfaces.ConsultarCantidadReservasDia(cadenaComprobarDia);
-    // const numeroRegistro = `${idRandom}${anyo}${mes}${dia}${cantidadReservasDia.toString().padStart(2, "00")}`;
-    //cross sucess => reserva localizador
     const idRandom = nanoid.nanoid().substring(0, 3).toUpperCase();
-    const numeroRegistro = `${idRandom}${anyo}${mes}${dia}`;
+    let numeroRegistro = `${idRandom}${anyo}${mes}${dia}`;
 
     // comprobar que no exista el numero
     const existe = await dbInterfaces.ConsultarLocalizador(numeroRegistro);
@@ -618,19 +614,19 @@ const decrypt3DES = async (str, key) =>
     const relleno = await zeroUnpad(str, 8);
     const res = cipher.update(relleno, 'base64', 'utf8') + cipher.final('utf8');
     return res.replace(/\0/g, '');
-}
+};
 
 const mac256 = async (data, key) =>
 {
     return crypto.createHmac('sha256', Buffer.from(key, 'base64'))
         .update(data)
         .digest('base64');
-}
+};
 
 const createMerchantParameters = async (data) => 
 {
     return Buffer.from(JSON.stringify(data), 'utf8').toString('base64');
-}
+};
 
 const decodeMerchantParameters = async (data) => {
     const decodedData = JSON.parse(base64url.decode(data, 'utf8'));
@@ -639,7 +635,7 @@ const decodeMerchantParameters = async (data) => {
         res[decodeURIComponent(param)] = decodeURIComponent(decodedData[param]);
     });
     return res;
-}
+};
 
 const createMerchantSignature = async (key, data) => 
 {
@@ -648,7 +644,7 @@ const createMerchantSignature = async (key, data) =>
     const orderKey = await encrypt3DES(orderId, key);
 
     return await mac256(merchantParameters, orderKey);
-}
+};
 
 const createMerchantSignatureNotif = async (key, data) =>
 {

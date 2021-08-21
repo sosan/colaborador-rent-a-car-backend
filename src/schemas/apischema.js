@@ -9,14 +9,4 @@ const apiSchema = [
 
 ];
 
-const claveVehiculo = [
-    "basico",
-    "openAutomatic",
-    "5pax",
-    "7pax",
-    "motos1",
-    "motos2"
-];
-
-
 module.exports = apiSchema;

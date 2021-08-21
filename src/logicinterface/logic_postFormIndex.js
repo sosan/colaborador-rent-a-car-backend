@@ -379,7 +379,7 @@ const GenerarParametros = async (reservado, conductor_con_experiencia) => {
         };
     }
 
-}
+};
 
 const TransformarPreciosPorClase = async (preciosPorClase) => {
 

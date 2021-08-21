@@ -725,7 +725,7 @@ exports.GetImagenBase64 = async () =>
         console.log("error" + error);
 
     }
-}
+};
 
 
 exports.ConsultarLocalizador = async (localizador) =>

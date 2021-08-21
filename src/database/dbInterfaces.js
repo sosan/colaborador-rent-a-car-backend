@@ -3,9 +3,6 @@ const redis_dao = require("../database/redis_dao");
 
 const { ObjectId } = require('mongodb');
 
-const DAY_IN_MILISECONDS = 86400000;
-const DIA_DATE = new Date(DAY_IN_MILISECONDS);
-
 let tokenFromFrontend = "incial";
 
 

@@ -1,7 +1,6 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const traducciones = require("../controllers/location");
 const logic_postFormReservar = require("./logic_postFormReservar");
-const { transporter } = require("./logicSendEmail");
 
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
@@ -31,17 +30,17 @@ const htmlEmail = `
 
 
 exports.descripcionVehiculos = {
-    "Toyota Aygo": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/toyotaAygoRed_Card.png",
-    "Suzuky Burgman 125": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/Suzuki-Burgman_125cc_Card.png",
-    "Citröen C1 Open": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/CitroenC1_open_Card.png",
-    "Toyota Aygo Open": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/toyotaAygoOpenWhite_Card.png",
-    "Peugeot 108": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/peugeot108Blue_Card.png",
-    "Peugeot 807": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/peugeot807Grey_Card.png",
-    "Citröen C1": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/citroenC1White_Card.png",
-    "Piaggio Liberty 125": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/PiaggioLiberty_125cc_Card.png",
-    "Citröen C3": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/citroenC3WhiteRed_Card.png",
-    "Citröen C1 Auto": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/citroenC1AutomaticPlata_Card.png",
-    "Peugeot 208": "http://rentcarmallorca.es:8080/img/Img-Vehiculos/peugeot_208_Card.png"
+    "Toyota Aygo": "https://rentcarmallorca.es/img/Img-Vehiculos/toyotaAygoRed_Card.png",
+    "Suzuky Burgman 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/Suzuki-Burgman_125cc_Card.png",
+    "Citröen C1 Open": "https://www.rentcarmallorca.es/img/Img-Vehiculos/CitroenC1_open_Card.png",
+    "Toyota Aygo Open": "https://www.rentcarmallorca.es/img/Img-Vehiculos/toyotaAygoOpenWhite_Card.png",
+    "Peugeot 108": "http://nwww.rentcarmallorca.es/img/Img-Vehiculos/peugeot108Blue_Card.png",
+    "Peugeot 807": "http://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot807Grey_Card.png",
+    "Citröen C1": "http://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1White_Card.png",
+    "Piaggio Liberty 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/PiaggioLiberty_125cc_Card.png",
+    "Citröen C3": "http://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC3WhiteRed_Card.png",
+    "Citröen C1 Auto": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1AutomaticPlata_Card.png",
+    "Peugeot 208": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot_208_Card.png"
 
 }
 

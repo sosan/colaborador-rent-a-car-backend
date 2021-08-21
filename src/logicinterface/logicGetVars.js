@@ -9,22 +9,20 @@ exports.GetBackendVars = async () =>
 
     dotenv.config();
 
-    let port_backend = "";
-    let port_frontend = "";
+    // let port_backend = "";
+    // let port_frontend = "";
     let redisdb_port = "";
     let redisdb_host = "";
     let redisdb_password = "";
-    let endpoint_variables_frontend = "";
 
     if (process.env.LOCAL_SECRETS === "true")
     {
 
-        port_backend =  process.env.PORT_BACKEND;
-        port_frontend = process.env.PORT_FRONTEND;
+        // port_backend =  process.env.PORT_BACKEND;
+        // port_frontend = process.env.PORT_FRONTEND;
         redisdb_port =  process.env.REDISDB_PORT;
         redisdb_host =  process.env.REDISDB_HOST;
         redisdb_password = process.env.REDISDB_PASSWORD;
-        endpoint_variables_frontend = process.env.ENDPOINT_VARIABLES_FRONTEND; 
 
         // port_backend = await readLocalSecret("../../secrets/port_backend.txt") || process.env.PORT_BACKEND;
         // port_frontend = await readLocalSecret("../../secrets/port_frontend.txt") || process.env.PORT_FRONTEND;
@@ -37,18 +35,17 @@ exports.GetBackendVars = async () =>
     }
     else
     {
-        port_backend = await readSecret("/run/secrets/PORT_BACKEND");
-        port_frontend = await  readSecret("/run/secrets/PORT_FRONTEND");
+        // port_backend = await readSecret("/run/secrets/PORT_BACKEND");
+        // port_frontend = await  readSecret("/run/secrets/PORT_FRONTEND");
         redisdb_port = await  readSecret("/run/secrets/REDISDB_PORT");
         redisdb_host = await  readSecret("/run/secrets/REDISDB_HOST");
         redisdb_password = await  readSecret("/run/secrets/REDISDB_PASSWORD");
-        endpoint_variables_frontend = await readSecret("/run/secrets/ENDPOINT_VARIABLES_FRONTEND");
 
     }
     
 
-    port_backend = await sanitizar(port_backend);
-    port_frontend = await sanitizar(port_frontend);
+    // port_backend = await sanitizar(port_backend);
+    // port_frontend = await sanitizar(port_frontend);
     redisdb_port = await sanitizar(redisdb_port);
     redisdb_host = await sanitizar(redisdb_host);
     redisdb_password = await sanitizar(redisdb_password);
@@ -118,27 +115,6 @@ const readSecret = async (secretNameAndPath) => {
         }
     }
 };
-
-
-
-const readLocalSecret = async (secretNameAndPath) => {
-    try 
-    {
-        const archivo = path.resolve(__dirname, secretNameAndPath);
-        const dataSinSanitizar = fs.readFileSync(archivo, "utf8");
-        return dataSinSanitizar;
-    } 
-    catch (err)
-    {
-        if (err.code !== "ENOENT")
-        {
-            console.error(`An error occurred while trying to read the secret: ${secretNameAndPath}. Err: ${err}`);
-        } else {
-            console.debug(`Could not find the secret ${secretNameAndPath}. Err: ${err}`);
-        }
-    }
-};
-
 
 
 exports.GetFrontendVars = async (req, res) => 

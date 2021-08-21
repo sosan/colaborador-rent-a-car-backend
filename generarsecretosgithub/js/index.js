@@ -44,10 +44,10 @@ const enviarGist = async (evento) =>
         const encrypted = Buffer.from(encryptedBytes).toString('base64');
         console.log(encrypted);
 
-        data = {
+        let data = {
             "encrypted_value": encrypted,
             "key_id": resultadoPublicKey.key_id
-        }
+        };
     
         const createRaw = await fetch(`https://api.github.com/repos/${nombreusuario}/${nombrerepo}/actions/secrets/${nombreSecreto}`, {
             method: "PUT",

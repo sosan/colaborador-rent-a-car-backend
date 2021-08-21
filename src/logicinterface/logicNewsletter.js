@@ -41,7 +41,7 @@ exports.ContruirEmailUsuario = async (formulario, traduccion) => {
 
 
     // .replace("USUARIO", formulario.nombre)
-    bodyConfirmacionEmail = traduccion["registro_newsletter"]
+    let bodyConfirmacionEmail = traduccion["registro_newsletter"]
         .replace(new RegExp("URL_IMAGEN", "g"), "cid:logo_rentcarmallorca")
         .replace(new RegExp("NOMBRE_MARCA", "g"), "RentcarMallorca")
         .replace(new RegExp("EMAIL_MARCA", "g"), "servicios@rentcarmallorca.es")
