@@ -14,7 +14,7 @@ botonNoEnviados.addEventListener("click", async (evento) =>
 {
     evento.preventDefault();
     await RecibirDatos({
-        url: "/reservasnoenviadas",
+        url: "/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/reservasnoenviadas",
         relleno: "noenviados",
         idBorrar: "borrarnoenviados",
         botonBusqueda: "botonBusqueda_noenviado",
@@ -87,7 +87,7 @@ var RecibirDatos = async (config) =>
             evento.preventDefault();
 
             let datosEnviar = {
-                url: "/busquedareservasporfecha",
+                url: "/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/busquedareservasporfecha",
                 relleno: config.relleno,
                 idBorrar: config.idBorrar,
                 botonBusqueda: config.botonBusqueda,
@@ -116,7 +116,7 @@ botonEnviados.addEventListener("click", async (evento) =>
 { 
     evento.preventDefault();
     await RecibirDatos({
-        url: "/reservasenviadas",
+        url: "/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/reservasenviadas",
         relleno: "enviados",
         idBorrar: "borrarenviados",
         botonBusqueda: "botonBusqueda_enviado",
@@ -198,7 +198,7 @@ var AnadirEventosFormularios = async () =>
             const data = new FormData(formularios[i]);
             let body = Object.fromEntries(data);
     
-            const responseRaw = await fetch("/enviocorreo", {
+            const responseRaw = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/enviocorreo", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

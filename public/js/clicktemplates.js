@@ -14,7 +14,7 @@ for (let i = 0; i < botonesEditar.length; i++)
             "accion": botonesEditar[i].id
         };
 
-        const responseRaw = await fetch(`/mostrartemplate`, {
+        const responseRaw = await fetch(`/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/mostrartemplate`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -67,7 +67,7 @@ var SetBotonesDetalleTemplate = async () =>
                 "textarea": document.getElementById("textarea").value,
             };
 
-            const responseRaw = await fetch(`/mostrardetalletemplate`, {
+            const responseRaw = await fetch(`/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/mostrardetalletemplate`, {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",

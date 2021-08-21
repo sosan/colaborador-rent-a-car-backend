@@ -54,7 +54,7 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     
     botonConfirmaciones.classList.add("navList__subheading_clicked");
     
-    const rawResponse = await fetch("/dashboard/confirmaciones", {
+    const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/confirmaciones", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -96,7 +96,7 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     var script = document.createElement('script');
     script.id = "borrar_script_mostrar_reservas";
     script.type = 'text/javascript';
-    script.src = '../js/mostrar_reservas.js';
+    script.src = '/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/mostrar_reservas.js';
     head.appendChild(script);
 
     
@@ -109,7 +109,7 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
             evento.preventDefault();
 
             let datosEnviar = {
-                url: "/busquedareservasporfecha",
+                url: "/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/busquedareservasporfecha",
                 relleno: "noenviados",
                 idBorrar: "borrarnoenviados",
                 botonBusqueda: "botonBusqueda_noenviado",
@@ -147,7 +147,7 @@ botonTraducciones.addEventListener("click", async (evento) =>
 
     botonTraducciones.classList.add("navList__subheading_clicked");
 
-    const rawResponse = await fetch("/traducciones", {
+    const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/traducciones", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -184,20 +184,20 @@ botonTraducciones.addEventListener("click", async (evento) =>
     borrarContenido.appendChild(scriptDataTable);
 
     const scriptXspreadSheet = document.createElement('script');
-    scriptXspreadSheet.src = "../js/hojacalculo/xspreadsheet.js";
+    scriptXspreadSheet.src = "/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/hojacalculo/xspreadsheet.js";
     borrarContenido.appendChild(scriptXspreadSheet);
 
     scriptXspreadSheet.addEventListener("load", () => {
         
         const loadData = document.createElement('script');
-        loadData.src = '../js/hojacalculo/loaddata.js';
+        loadData.src = '/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/hojacalculo/loaddata.js';
         borrarContenido.appendChild(loadData);
         
         var botonActualizarDataSheet = document.getElementById("actualizarTraduccion");
         botonActualizarDataSheet.addEventListener("click", async () =>
         {
 
-            const rawResponse = await fetch("/actualizartraducciones", {
+            const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/actualizartraducciones", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -231,7 +231,7 @@ botonTraducciones.addEventListener("click", async (evento) =>
     
             const hojaCalculoDatos = await ReturnData();
 
-            const rawResponse = await fetch("/guardartraducciones", {
+            const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/guardartraducciones", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -278,7 +278,7 @@ const LogicBotonTemplates = async (slideActualizar) =>
     botonTemplates.classList.add("navList__subheading_clicked");
 
 
-    const rawResponse = await fetch("/templates", {
+    const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/templates", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -310,7 +310,7 @@ const LogicBotonTemplates = async (slideActualizar) =>
     var script = document.createElement('script');
     script.id = "borrar_script_mostrar_templates";
     script.type = 'text/javascript';
-    script.src = '../js/clicktemplates.js';
+    script.src = '/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/clicktemplates.js';
     head.appendChild(script);
 
     if (slideActualizar === true)

@@ -36,7 +36,7 @@ const OnlyFechaES=(fecha)=> {
 
 <ul>
     <li class="centrado contenido-centrado">
-        <form class="formulario-busqueda contenido-centrado" id="formulario_busqueda_reservas" action="/xxxxx" method="post">
+        <form class="formulario-busqueda contenido-centrado" id="formulario_busqueda_reservas" action="/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/xxxxx" method="post">
             <label for="fechaInicioBusqueda">Inicio</label>
             <% if (it.fechaInicio) { %>
                 <input class="inputFecha" type="date" name="fechaInicioBusqueda" id="fechaInicioBusquedaEnviada" value="<%=it.fechaInicio%>">
@@ -107,7 +107,7 @@ const OnlyFechaES=(fecha)=> {
                                 <% } %>
             </div>
             <div class="tamanyo-201">
-                <form class="formulario" action="/enviocorreo" method="post">
+                <form class="formulario" action="/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/enviocorreo" method="post">
                     <input type="hidden" name="_id" value="<%=it.enviados[i]._id %>">
                     <input type="hidden" name="localizador" value="<%=it.enviados[i].numeroRegistro %>">
                     <input type="hidden" name="nombre" value="<%=it.enviados[i].nombre %>">

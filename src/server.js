@@ -44,11 +44,16 @@ exports.InitServer = async () =>
     app.set("views", path.join(__dirname, "../public"));
 
     app.set("view engine", "html");
-    app.use("/", express.static(path.join(__dirname, "../public")));
-    
-    app.use(process.env.ENDPOINT_FRONTEND_PANEL_CONTROL, express.static(path.join(__dirname, "../public")));
-    app.use("/dashboard", express.static(path.join(__dirname, "../public")));
     app.use("/", router);
+    // app.use("/", express.static(path.join(__dirname, "../public")));
+    // app.use(express.static('public'))
+    
+    // app.use(`/${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard`, express.static(path.join(__dirname, "../public")));
+    // app.use(`/`, express.static(path.join(__dirname, "../public")));
+    // app.use(`/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/traducciones`, express.static(path.join(__dirname, "../public")));
+    app.use(`/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard`, express.static(path.join(__dirname, "../public")));
+    app.use(`/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/hojacalculo`, express.static(path.join(__dirname, "../public")));
+    
 
     app.listen(3100, (error) => {
             if (error) {

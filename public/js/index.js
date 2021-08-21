@@ -28,7 +28,7 @@ botonRegistro.addEventListener("click", async (evento) =>
         "boton": registro
     };
 
-    const responseRaw = await fetch("/0_QJFs2NH9a_f_a_BQ", {
+    const responseRaw = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

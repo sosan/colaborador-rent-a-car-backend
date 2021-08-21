@@ -36,7 +36,7 @@ return fechaActual;
 <ul>
 
     <li class="centrado contenido-centrado">
-        <form class="formulario-busqueda contenido-centrado" action="/xxxxx" id="formulario_busqueda_reservas" method="post">
+        <form class="formulario-busqueda contenido-centrado" action="/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/xxxxx" id="formulario_busqueda_reservas" method="post">
             <label for="fechaInicioBusqueda">Inicio</label>
             <% if (it.fechaInicio) { %>
                 <input class="inputFecha" type="date" name="fechaInicioBusqueda" id="fechaInicioBusquedaNoEnviada" value="<%=it.fechaInicio%>">
@@ -114,7 +114,7 @@ return fechaActual;
                                 <% } %>
             </div>
             <div class="tamanyo-201">
-                <form class="formulario" action="/enviocorreo" method="post">
+                <form class="formulario" action="/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/enviocorreo" method="post">
                     <input type="hidden" name="_id" value="<%=it.noenviados[i]._id %>">
                     <input type="hidden" name="localizador" value="<%=it.noenviados[i].numeroRegistro %>">
                     <input type="hidden" name="nombre" value="<%=it.noenviados[i].nombre %>">
