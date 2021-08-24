@@ -61,12 +61,18 @@ exports.PeticionPago = async (req, res) => {
 exports.DescodificarMerchantParameters = async (req, res) =>
 {
 
-    
-
     const decodedMerchantParameters = await logicInterface.RecibeCodedMerchantParameters(req.body.Ds_MerchantParameters);
-    console.log("decodedMerchantParrameters" + JSON.stringify(decodeMerchantParameters));
+    console.log("decodedMerchantParrameters" + JSON.stringify(decodedMerchantParameters));
 
-    res.send({});
+    res.send({"ok": "test"});
 
+
+};
+
+
+exports.TestMerchantParameters = async (req, res) =>
+{
+
+    res.send("TestMerchantParameters");
 
 };
