@@ -6,6 +6,7 @@ const fetch = require("node-fetch");
 const { transporter } = require("./logicSendEmail");
 const { descripcionVehiculos } = require("./logicGetReservas");
 const crypto = require("crypto");
+const base64url = require("base64url");
 const nanoid = require("nanoid");
 
 
