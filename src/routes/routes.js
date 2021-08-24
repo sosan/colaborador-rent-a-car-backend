@@ -16,6 +16,7 @@ const logicGetReservas = require("../logicinterface/logicGetReservas");
 const logicTemplates = require("../logicinterface/logicGetTemplate");
 const logicTraducciones = require("../logicinterface/logicTraducciones");
 const logicStats = require("../logicinterface/logicStats");
+const live = require("../controllers/live");
 
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
@@ -79,5 +80,8 @@ router.post(process.env.ENDPOINT_DETALLE_TEMPLATE_FRONTEND, async (req, res) => 
 router.get(process.env.ENDPOINT_TRADUCCIONES_BACKEND, async (req, res) => await logicTraducciones.MostrarTraducciones(req, res) );
 router.post(process.env.ENDPOINT_TRADUCCIONES_GUARDAR, async (req, res) => await logicTraducciones.GuardarTraducciones(req, res));
 router.get(process.env.ENDPOINT_TRADUCCIONES_ACTUALIZAR, async (req, res) => await logicTraducciones.ActualizarTraducciones(req, res));
+
+
+router.get(`/islive_0_QJFs_a_IiW_mFtZS2_f_A_BQ_NTib_Y3O6Ik_D0WNH9I`, async (req, res) => await live.IsLive(req, res));
 
 module.exports = router;

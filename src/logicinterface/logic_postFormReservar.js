@@ -566,7 +566,7 @@ exports.CreateMerchantPayment = async (formulario, codigo, key) =>
     const jsonMerchantParameters = 
     {
         
-        "DS_MERCHANT_MERCHANTURL": "https://www.rentcarmallorca.es/notificacion",
+        "DS_MERCHANT_MERCHANTURL": `https://www.rentcarmallorca.es${process.env.ENDPOINT_NOTIFICACION_PAYGATEWAY}`,
         "DS_MERCHANT_URLKO": "https://www.rentcarmallorca.es/nocorrecto",
         "DS_MERCHANT_URLOK": "https://www.rentcarmallorca.es/correcto",
         "DS_MERCHANT_AMOUNT": amount.toString().replace(".", ""),
