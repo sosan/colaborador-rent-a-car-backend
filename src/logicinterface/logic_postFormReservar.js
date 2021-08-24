@@ -589,6 +589,15 @@ exports.CreateMerchantPayment = async (formulario, codigo, key) =>
 
 };
 
+exports.RecibeCodedMerchantParameters = async (merchantParameters) =>
+{
+
+    const decodedMerchantParameters = await decodeMerchantParameters(merchantParameters);
+    console.log(JSON.stringify(decodeMerchantParameters));
+
+
+};
+
 
 const encrypt3DES = async (str, key) =>
 {

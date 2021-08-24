@@ -26,8 +26,10 @@ exports.postRealizarReserva = async (req, res) =>
         numeroRegistro: resultadoInsercion.numeroRegistro,
         merchantPayment: resultadoInsercion.merchantPayment
     });
-    const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
-    await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, resultadoInsercion.objectId);
+
+
+    // const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
+    // await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, resultadoInsercion.objectId);
 
 };
 
@@ -56,4 +58,15 @@ exports.PeticionPago = async (req, res) => {
 
 };
 
+exports.DescodificarMerchantParameters = async (req, res) =>
+{
 
+    
+
+    const decodedMerchantParameters = await logicInterface.RecibeCodedMerchantParameters(req.body.Ds_MerchantParameters);
+    console.log("decodedMerchantParrameters" + JSON.stringify(decodeMerchantParameters));
+
+    res.send({});
+
+
+};
