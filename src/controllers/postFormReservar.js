@@ -61,8 +61,11 @@ exports.PeticionPago = async (req, res) => {
 exports.DescodificarMerchantParameters = async (req, res) =>
 {
 
+    console.log("antes merchante params=" + req.body.Ds_MerchantParameters);
     const decodedMerchantParameters = await logicInterface.RecibeCodedMerchantParameters(req.body.Ds_MerchantParameters);
     console.log("decodedMerchantParrameters" + JSON.stringify(decodedMerchantParameters));
+
+    // // DS_MERCHANT_ORDER
 
     res.send({"ok": "test"});
 
