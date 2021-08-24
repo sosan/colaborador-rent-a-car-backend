@@ -58,7 +58,7 @@ exports.PeticionPago = async (req, res) => {
 
 };
 
-exports.DescodificarMerchantParameters = async (req, res) =>
+exports.ProcesarMerchantParameters = async (req, res) =>
 {
 
     console.log("antes merchante params=" + req.body.Ds_MerchantParameters);
@@ -66,8 +66,45 @@ exports.DescodificarMerchantParameters = async (req, res) =>
     console.log("decodedMerchantParrameters" + JSON.stringify(decodedMerchantParameters));
 
     // // DS_MERCHANT_ORDER
+    /*
+    {
+        "Ds_Date":"24/08/2021",
+        "Ds_Hour":"23:03",
+        "Ds_SecurePayment":"1",
+        "Ds_Card_Country":"724",
+        "Ds_Amount":"13440",
+        "Ds_Currency":"978",
+        "Ds_Order":"MVT20210824",
+        "Ds_MerchantCode":"352969752",
+        "Ds_Terminal":"001",
+        "Ds_Response":"0000",
+        "Ds_MerchantData":"",
+        "Ds_TransactionType":"0",
+        "Ds_ConsumerLanguage":"1",
+        "Ds_AuthorisationCode":"216449",
+        "Ds_Card_Brand":"1",
+        "Ds_ProcessedPayMethod":"5"
+    }
+    
+    */
 
+    const responseTransaction = decodedMerchantParameters.Ds_Response - 0;
+
+    // transaccion realizada correctamente
+    if (responseTransaction >= 0 && responseTransaction <= 99)
+    {
+
+        // buscar y modificar la reserva, enviar los correos
+        decodedMerchantParameters.Ds_Order;
+    }
+    else
+    {
+        // trasaccion no realizada correctamente
+    }
+    
+    
     res.send({"ok": "test"});
+
 
 
 };
