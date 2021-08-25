@@ -1,6 +1,6 @@
 exports.IsLive = async (req, res ) =>
 {
 
-    res.send({"isOk": true});
+    res.status(200).send({"isOk": true});
 
 };
