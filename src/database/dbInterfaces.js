@@ -95,13 +95,6 @@ exports.GetCondicionesGenerales = async () =>
     return resultados;
 };
 
-// exports.GetPagoRecogida = async () =>
-// {
-
-//     const resultados = await mongo_dao.GetPagoRecogida();
-//     return resultados;
-
-// };
 
 
 exports.GetMasValorados = async () => 
@@ -150,6 +143,14 @@ exports.ProcesarReserva = async (formulario) => {
 
     const resultado = await mongo_dao.ProcesarReserva(formulario);
     return resultado;
+
+};
+
+exports.UpdateReservasByLocalizador = async (localizador, merchantParameters) =>
+{
+
+    const isUpdated = await mongo_dao.UpdateReservasByLocalizador(localizador, merchantParameters);
+    return isUpdated;
 
 };
 

@@ -286,52 +286,52 @@ const EnviarCorreoIo = async (data) =>
 };
 
 
-const EnviarCorreoApiJet = async (uri, data) =>
-{
+// const EnviarCorreoApiJet = async (uri, data) =>
+// {
 
-    let isSended = false;
-    let incrementalCount = 1;
-    let resultadoEnvioEmail =
-    {
-        "isSended": false,
-        "messageId": 0,
-        "messageUUID": 0,
-        "cannotSend": false
-    };
+//     let isSended = false;
+//     let incrementalCount = 1;
+//     let resultadoEnvioEmail =
+//     {
+//         "isSended": false,
+//         "messageId": 0,
+//         "messageUUID": 0,
+//         "cannotSend": false
+//     };
     
    
 
-    while (isSended === false)
-    {
-        const responseRaw = await fetch(uri, data);
+//     while (isSended === false)
+//     {
+//         const responseRaw = await fetch(uri, data);
 
-        const emailIsSended = await responseRaw.json();
-        if (emailIsSended.Messages.length > 0)
-        {
-            if (emailIsSended.Messages[0].Status === "success")
-            {
-                isSended = true;
-                resultadoEnvioEmail["isSended"] = true ;
-                resultadoEnvioEmail["messageId"] = emailIsSended.Messages[0].To[0].MessageID;
-                resultadoEnvioEmail["messageUUID"] = emailIsSended.Messages[0].To[0].MessageUUID;
-            }
-        }
-        else 
-        {
-            await sleep(5000 * incrementalCount);
-            incrementalCount++;
-        }
+//         const emailIsSended = await responseRaw.json();
+//         if (emailIsSended.Messages.length > 0)
+//         {
+//             if (emailIsSended.Messages[0].Status === "success")
+//             {
+//                 isSended = true;
+//                 resultadoEnvioEmail["isSended"] = true ;
+//                 resultadoEnvioEmail["messageId"] = emailIsSended.Messages[0].To[0].MessageID;
+//                 resultadoEnvioEmail["messageUUID"] = emailIsSended.Messages[0].To[0].MessageUUID;
+//             }
+//         }
+//         else 
+//         {
+//             await sleep(5000 * incrementalCount);
+//             incrementalCount++;
+//         }
 
-        if (incrementalCount >= 10)
-        {
-            resultadoEnvioEmail["cannotSend"] = true;
-            break;
-        }
-    }
+//         if (incrementalCount >= 10)
+//         {
+//             resultadoEnvioEmail["cannotSend"] = true;
+//             break;
+//         }
+//     }
 
-    return resultadoEnvioEmail;
+//     return resultadoEnvioEmail;
 
-};
+// };
 
 
 //2020-01-07T11:28:03.588+00:00
@@ -596,6 +596,28 @@ exports.RecibeCodedMerchantParameters = async (merchantParameters) =>
     const decodedMerchantParameters = await decodeMerchantParameters(merchantParameters);
     
     return decodedMerchantParameters;
+
+};
+
+
+exports.BuscarReservaModificar = async (merchantParameters) =>
+{
+
+
+    let incrementalCount = 1;
+    let isUpdated = false;
+    while (isUpdated === false)
+    {
+        isUpdated = await dbInterfaces.UpdateReservasByLocalizador(merchantParameters.Ds_Order, merchantParameters);
+        
+        if (isUpdated === false) {
+            await sleep(5000 * incrementalCount);
+            incrementalCount++;
+        }
+    }
+
+    return reserva;
+
 
 };
 

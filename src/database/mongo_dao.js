@@ -652,6 +652,36 @@ exports.ProcesarReserva = async (formulario) =>
     
 };
 
+
+exports.UpdateReservasByLocalizador = async (localizador, merchantParameters) =>
+{
+
+    try {
+
+        const resultados = await collectionReservas.findOneAndUpdate(
+            { "numeroRegistro": localizador },
+            { 
+                $set: merchantParameters
+            },
+            {
+                upsert: true,
+                returnDocument: 'after',
+            }
+        );
+
+        console.log("resultados actualizacion=" + JSON.stringify(resultados));
+        const isUpdated = resultados.ok === 1;
+        return isUpdated;
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Reservas`;
+        console.error(error);
+    }
+
+};
+
 exports.CheckEmailNewsletter = async (email) =>
 {
 

@@ -95,7 +95,11 @@ exports.ProcesarMerchantParameters = async (req, res) =>
     {
 
         // buscar y modificar la reserva, enviar los correos
-        decodedMerchantParameters.Ds_Order;
+        
+        const reserva = await logicInterface.BuscarReservaModificar(decodedMerchantParameters);
+        
+        const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(reserva, reserva);
+        await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, reserva._id);
     }
     else
     {
