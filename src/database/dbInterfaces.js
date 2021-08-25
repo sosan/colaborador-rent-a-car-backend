@@ -149,8 +149,8 @@ exports.ProcesarReserva = async (formulario) => {
 exports.UpdateReservasByLocalizador = async (localizador, merchantParameters) =>
 {
 
-    const isUpdated = await mongo_dao.UpdateReservasByLocalizador(localizador, merchantParameters);
-    return isUpdated;
+    const [isUpdated, reserva ]= await mongo_dao.UpdateReservasByLocalizador(localizador, merchantParameters);
+    return [isUpdated, reserva];
 
 };
 

@@ -603,12 +603,12 @@ exports.RecibeCodedMerchantParameters = async (merchantParameters) =>
 exports.BuscarReservaModificar = async (merchantParameters) =>
 {
 
-
     let incrementalCount = 1;
     let isUpdated = false;
+    let reserva = undefined;
     while (isUpdated === false)
     {
-        isUpdated = await dbInterfaces.UpdateReservasByLocalizador(merchantParameters.Ds_Order, merchantParameters);
+        [isUpdated, reserva] = await dbInterfaces.UpdateReservasByLocalizador(merchantParameters.Ds_Order, merchantParameters);
         
         if (isUpdated === false) {
             await sleep(5000 * incrementalCount);
@@ -617,7 +617,6 @@ exports.BuscarReservaModificar = async (merchantParameters) =>
     }
 
     return reserva;
-
 
 };
 

@@ -670,8 +670,9 @@ exports.UpdateReservasByLocalizador = async (localizador, merchantParameters) =>
         );
 
         console.log("resultados actualizacion=" + JSON.stringify(resultados));
-        const isUpdated = resultados.ok === 1;
-        return isUpdated;
+        
+        const isUpdated = resultados.lastErrorObject.updatedExisting === true; //resultados.ok === 1;
+        return [isUpdated, resultados.value] ;
 
     }
     catch (err) {

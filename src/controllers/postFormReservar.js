@@ -97,7 +97,7 @@ exports.ProcesarMerchantParameters = async (req, res) =>
         // buscar y modificar la reserva, enviar los correos
         
         const reserva = await logicInterface.BuscarReservaModificar(decodedMerchantParameters);
-        
+        console.log("reserva total=" + JSON.stringify(reserva));
         const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(reserva, reserva);
         await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, reserva._id);
     }
