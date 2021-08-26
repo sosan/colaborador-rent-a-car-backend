@@ -126,7 +126,7 @@ static_resources:
                   filename: "/etc/cert.pem"
                 private_key:
                   filename: "/etc/privkey.pem"
-            alpn_protocols: [ “h2,http/1.1” ]
+            alpn_protocols: [ "h2,http/1.1" ]
   
   - address:
       socket_address:
@@ -166,7 +166,7 @@ static_resources:
                   filename: "/etc/cert.pem"
                 private_key:
                   filename: "/etc/privkey.pem"
-            alpn_protocols: [ “h2,http/1.1” ]
+            alpn_protocols: [ "h2,http/1.1" ]
   
   - address:
       socket_address:
@@ -206,7 +206,7 @@ static_resources:
                   filename: "/etc/cert.pem"
                 private_key:
                   filename: "/etc/privkey.pem"
-            alpn_protocols: [ “h2,http/1.1” ]
+            alpn_protocols: [ "h2,http/1.1" ]
 
   clusters:
   - name: netdata_cluster
