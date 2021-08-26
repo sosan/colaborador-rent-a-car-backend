@@ -865,3 +865,26 @@ exports.GetReservasConfirmacionEnviada = async (fechaInicio, fechaFin, enviado) 
 
 
 // { fechaAlta: { $gte: "2021-07-15" } }
+
+exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
+{
+
+    try {
+        const resultados = await collectionEmailNewsletter
+            .findOneAndUpdate(
+                { "email": correo },
+                {
+                    $set: { "incorrecto": validez },
+                }
+            )
+            ;
+        const isUpdated = resultados.ok === 1;
+        return isUpdated;
+
+    }
+    catch (error) {
+        console.log("error" + error);
+    }
+
+
+};

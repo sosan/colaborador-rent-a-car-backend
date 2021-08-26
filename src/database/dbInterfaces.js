@@ -241,3 +241,9 @@ exports.GetReservasConfirmacionNoEnviada = async (fechaInicio, fechaFin, enviado
     return resultado;
 };
 
+exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
+{
+    const resultado = await mongo_dao.MarcarCorreoNewsletterCorrectoIncorrecto(correo, validez);
+    return resultado;
+
+}

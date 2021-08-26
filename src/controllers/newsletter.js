@@ -39,6 +39,7 @@ exports.ProcesarEmail = async (req, res) => {
     let bodyEmail = await news.ContruirEmailUsuario(req.body, traduccion);
 
     const resultadoUserEmailSended = await news.EnviarCorreoIo(bodyEmail);
+    await news.MarcarCorreoNewsletterCorrectoIncorrecto(req.body.email, resultadoUserEmailSended.cannotSend);
 
 
 };

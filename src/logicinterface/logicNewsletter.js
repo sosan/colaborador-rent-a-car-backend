@@ -83,30 +83,58 @@ exports.EnviarCorreoIo = async (data) => {
         "cannotSend": false
     };
 
-    while (isSended === false) {
-
-        const responseRaw = await transporter.sendMail(data);
-
-        if (responseRaw.messageId !== undefined) {
-
-            isSended = true;
-            resultadoEnvioEmail["isSended"] = true;
-            resultadoEnvioEmail["messageId"] = responseRaw.messageId;
+    while (isSended === false)
+    {
+        try
+        {
+            const responseRaw = await transporter.sendMail(data);
+    
+            if (responseRaw.messageId !== undefined) {
+    
+                isSended = true;
+                resultadoEnvioEmail["isSended"] = true;
+                resultadoEnvioEmail["messageId"] = responseRaw.messageId;
+    
+            }
+            else {
+                await sleep(5000 * incrementalCount);
+                incrementalCount++;
+            }
+    
+            if (incrementalCount >= 10) {
+                resultadoEnvioEmail["cannotSend"] = true;
+                break;
+            }
 
         }
-        else {
-            await sleep(5000 * incrementalCount);
-            incrementalCount++;
-        }
-
-        if (incrementalCount >= 10) {
+        catch (error)
+        {
+            console.log(`${incrementalCount} No posible enviar Correo=${data.to}`);
+            // await sleep(5000 * incrementalCount);
+            // incrementalCount++;
             resultadoEnvioEmail["cannotSend"] = true;
-            break;
+            return resultadoEnvioEmail;
         }
     }
 
+    // console.log(JSON.stringify(resultadoEnvioEmail));
     return resultadoEnvioEmail;
 
 
+
+};
+
+
+exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
+{
+
+    await dbInterface.MarcarCorreoNewsletterCorrectoIncorrecto(correo, validez);
+
+};
+
+const sleep = async (ms) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
 
 };
