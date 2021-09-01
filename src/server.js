@@ -40,13 +40,35 @@ exports.InitServer = async () =>
     
     const listadoIP = await GetIP();
     
-    app.listen(process.env.PORT_BACKEND, (error) => {
+    const express_server = app.listen(process.env.PORT_BACKEND, (error) => {
             if (error) {
                 console.error(`[process ${process.pid}] Error ${error} ${listadoIP} at ${process.env.PORT_BACKEND}`);
             }
         console.info(`[process ${process.pid}] Listening ${listadoIP} at ${process.env.PORT_BACKEND}`);
         }
     );
+
+    process.on("SIGINT", function onSigint() {
+        console.info("Got SIGINT (aka ctrl-c in docker). Graceful shutdown ", new Date().toISOString());
+        shutdown();
+    });
+
+    process.on("SIGTERM", function onSigterm() {
+        console.info("Got SIGTERM (docker container stop). Graceful shutdown ", new Date().toISOString());
+        shutdown();
+    })
+
+    // shut down server
+    const shutdown = () => {
+
+        express_server.close(function onServerClosed(err) {
+            if (err) {
+                console.error(err);
+                process.exitCode = 1;
+            }
+            process.exit();
+        })
+    };
     
 };
 
