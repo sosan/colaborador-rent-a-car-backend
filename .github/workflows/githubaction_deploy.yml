@@ -96,8 +96,6 @@ jobs:
             echo "${{secrets.ENDPOINT_VARIABLES_FRONTEND}}" > /tmp/endpoint_variables_frontend.txt && \
             echo "${{secrets.TOKEN_FOR_BACKEND_ACCESS}}" > /tmp/token_for_backend_access.txt && \
             echo "${{secrets.TOKEN_PGP}}" > /tmp/token_pgp.txt && \
-            echo "${{secrets.PUBLIC_PGP}}" > /tmp/public_pgp.txt && \
-            echo "${{secrets.PRIVATE_PGP}}" > /tmp/private_pgp.txt && \
             echo "${{secrets.SERVER_CRT_SSL}}" > /home/alvaro/certs/server_http_cert.pem && \
             echo "${{secrets.SERVER_KEY_SSL}}" > /home/alvaro/certs/server_http_key.pem && \
             cat <<EOF > /tmp/deploy-compose.txt
