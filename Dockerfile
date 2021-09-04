@@ -30,7 +30,7 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/backend .
 COPY --from=util_builder /bin/wget /usr/bin/wget
 
-CMD /usr/src/app/backend
+CMD [ "/usr/src/app/backend" ]
 
 HEALTHCHECK --interval=60s \
     --start-period=5s \
