@@ -1,5 +1,6 @@
 const dbInterfaces = require("../database/dbInterfaceGetVar");
 const dotenv = require("dotenv");
+const openpgp = require("openpgp");
 const fs = require("fs");
 const path = require("path");
 
@@ -9,8 +10,6 @@ exports.GetBackendVars = async () =>
 
     dotenv.config();
 
-    // let port_backend = "";
-    // let port_frontend = "";
     let redisdb_port = "";
     let redisdb_host = "";
     let redisdb_password = "";
@@ -18,25 +17,12 @@ exports.GetBackendVars = async () =>
     if (process.env.LOCAL_SECRETS === "true")
     {
 
-        // port_backend =  process.env.PORT_BACKEND;
-        // port_frontend = process.env.PORT_FRONTEND;
         redisdb_port =  process.env.REDISDB_PORT;
         redisdb_host =  process.env.REDISDB_HOST;
         redisdb_password = process.env.REDISDB_PASSWORD;
-
-        // port_backend = await readLocalSecret("../../secrets/port_backend.txt") || process.env.PORT_BACKEND;
-        // port_frontend = await readLocalSecret("../../secrets/port_frontend.txt") || process.env.PORT_FRONTEND;
-        // redisdb_port = await readLocalSecret("../../secrets/redisdb_port.txt") || process.env.REDISDB_PORT;
-        // redisdb_host = await readLocalSecret("../../secrets/redisdb_host.txt") || process.env.REDISDB_HOST;
-        // redisdb_password = await readLocalSecret("../../secrets/redisdb_password.txt") || process.env.REDISDB_PASSWORD;
-        // endpoint_variables_frontend = await readLocalSecret("../../secrets/endpoint_variables_frontend.txt") || process.env.ENDPOINT_VARIABLES_FRONTEND;
-
-
     }
     else
     {
-        // port_backend = await readSecret("/run/secrets/PORT_BACKEND");
-        // port_frontend = await  readSecret("/run/secrets/PORT_FRONTEND");
         redisdb_port = await  readSecret("/run/secrets/REDISDB_PORT");
         redisdb_host = await  readSecret("/run/secrets/REDISDB_HOST");
         redisdb_password = await  readSecret("/run/secrets/REDISDB_PASSWORD");
@@ -44,8 +30,6 @@ exports.GetBackendVars = async () =>
     }
     
 
-    // port_backend = await sanitizar(port_backend);
-    // port_frontend = await sanitizar(port_frontend);
     redisdb_port = await sanitizar(redisdb_port);
     redisdb_host = await sanitizar(redisdb_host);
     redisdb_password = await sanitizar(redisdb_password);
@@ -56,10 +40,12 @@ exports.GetBackendVars = async () =>
     console.log("Seteando variables...");
 
     await dbInterfaces.ConnectVault(redisdb_port, redisdb_host, redisdb_password );
-    // await esperar();
-
-    const variablesSinSanitizar =  await dbInterfaces.GetBackendVariables();
     
+
+    const varsEncoded = await dbInterfaces.GetBackendVariables();
+    const [publicKey, privateKey] = await dbInterfaces.GetKeysPGP();
+    const variablesSinSanitizar = await DecodeVars(varsEncoded, publicKey, privateKey);
+
     const buf = Buffer.from(variablesSinSanitizar);
     const envConfig = dotenv.parse(buf);
     let tempEnv = {};
@@ -85,6 +71,43 @@ const sanitizar = async (textoSinSanitizar) => {
 
     const textoSanitizado = textoSinSanitizar.replace("\n", "");
     return textoSanitizado;
+
+};
+
+const DecodeVars = async (encriptedVarsNotSanitazed, publicBlockKey, privateBlockKey) =>
+{
+
+    // const encriptedVars = encriptedVarsNotSanitazed.replace(new RegExp("_", 'g'), "\n")
+    const encriptedVars = encriptedVarsNotSanitazed.trim();
+
+    // const options = {
+    //     userIDs: [{ name: "serviciosrentcar", email: "servicios@rentcarmallorca.es" }],
+    //     curve: "ed25519",
+    //     passphrase: process.env.TOKEN_PGP,
+    // };
+
+    // const key = await openpgp.generateKey(options);
+
+    const privateKeyArmored = privateBlockKey;
+    const publicKeyArmored = publicBlockKey;
+
+    const publicKey = await openpgp.readKey({ armoredKey: publicKeyArmored });
+    const privateKey = await openpgp.decryptKey({
+        privateKey: await openpgp.readPrivateKey({ armoredKey: privateKeyArmored }),
+        passphrase: process.env.TOKEN_PGP
+    });
+
+    const message = await openpgp.readMessage({
+        armoredMessage: encriptedVars
+    });
+    const { data: decrypted, signatures } = await openpgp.decrypt({
+        message,
+        verificationKeys: publicKey, //optionl
+        decryptionKeys: privateKey,
+        
+    });
+
+    return decrypted;
 
 };
 

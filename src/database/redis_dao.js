@@ -79,3 +79,18 @@ exports.GetVariables = async (key) => {
         console.error(error);
     }
 }
+
+exports.GetKeyPGP = async (key) =>
+{
+
+    try {
+
+        const vars = await redisClient.get(key);
+        return vars;
+
+    }
+    catch (error) {
+        console.error(error);
+    }
+
+};

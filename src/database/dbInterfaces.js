@@ -48,6 +48,13 @@ exports.GetCarsByReservado = async (filtrado) => {
 
 };
 
+exports.GetCarByDescripcion = async (descripcion) =>
+{
+    const vehiculo = await mongo_dao.GetCarByDescripcion(descripcion);
+    return vehiculo;
+
+};
+
 exports.GetClaseVehiculosOrdenados = async () =>
 {
 

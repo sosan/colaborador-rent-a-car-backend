@@ -18,4 +18,14 @@ exports.GetFrontendVariables = async () => {
     return resultado;
 };
 
+exports.GetKeysPGP = async () =>
+{
+
+    const publicKey = await redis_dao.GetKeyPGP("public_pgp");
+    const privateKey = await redis_dao.GetKeyPGP("private_pgp");
+
+    return [publicKey, privateKey];
+    
+};
+
 

@@ -5,6 +5,7 @@ const traducciones = require("../controllers/location");
 const fetch = require("node-fetch");
 const { transporter } = require("./logicSendEmail");
 const { descripcionVehiculos } = require("./logicGetReservas");
+const logicPostFormIndex = require("./logic_postFormIndex");
 const crypto = require("crypto");
 const base64url = require("base64url");
 const nanoid = require("nanoid");
@@ -555,6 +556,118 @@ const ControlSchema = async (body, schema) => {
 const CheckReservaValida = async (formulario) =>
 {
     // comprobar si los datos que recibimos se correcponde a la realidad
+    // formulario.dias
+    // formulario.descripcion_vehiculo
+    // formulario.conductor_con_experiencia: "on" / "off"
+    // fomrulario.pago_online
+    // formulario.pagoRecogida
+
+    /* 
+{
+token: "sdj&/k.(fk)j#.#$d.a#s%djf.l7).as!#%as/kue#$!.!.#.$!.#$",
+ useragent: {
+    isYaBrowser: false,
+    isAuthoritative: true,
+    isMobile: false,
+    isMobileNative: false,
+    isTablet: false,
+    isiPad: false,
+    isiPod: false,
+    isiPhone: false,
+    isiPhoneNative: false,
+    isAndroid: false,
+    isAndroidNative: false,
+    isBlackberry: false,
+    isOpera: false,
+    isIE: false,
+    isEdge: false,
+    isIECompatibilityMode: false,
+    isSafari: false,
+    isFirefox: false,
+    isWebkit: false,
+    isChrome: true,
+    isKonqueror: false,
+    isOmniWeb: false,
+    isSeaMonkey: false,
+    isFlock: false,
+    isAmaya: false,
+    isPhantomJS: false,
+    isEpiphany: false,
+    isDesktop: true,
+    isWindows: false,
+    isLinux: true,
+    isLinux64: true,
+    isMac: false,
+    isChromeOS: false,
+    isBada: false,
+    isSamsung: false,
+    isRaspberry: false,
+    isBot: false,
+    isCurl: false,
+    isAndroidTablet: false,
+    isWinJs: false,
+    isKindleFire: false,
+    isSilk: false,
+    isCaptive: false,
+    isSmartTV: false,
+    isUC: false,
+    isFacebook: false,
+    isAlamoFire: false,
+    isElectron: false,
+    silkAccelerated: false,
+    browser: "Chrome",
+    version: "92.0.4515.159",
+    os: "Linux 64",
+    platform: "Linux",
+    geoIp: {
+    },
+    source: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36",
+    isWechat: false,
+  },
+  location: {
+    timezone: "",
+    agent: {
+      isBot: false,
+    },
+    ip: "::1",
+  },
+  descripcion_vehiculo: "Peugeot 108",
+  fechaRecogida: "Jue,02-09-2021",
+  horaRecogida: "09:00",
+  fechaDevolucion: "Sab,04-09-2021",
+  horaDevolucion: "20:00",
+  dias: "3",
+  alquiler: "168",
+  conductor_con_experiencia: "on",
+  total_suplmento_tipo_conductor: "0",
+  pagoRecogida: "33.6",
+  pago_online: "134.4",
+  numero_sillas_nino: "0",
+  trato: "no-especificado",
+  numero_booster: "0",
+  nombre: "Tttttt",
+  apellidos: "Sssssssss",
+  email: "sdfsdf@sdf.com",
+  telefono: "skdfsdf",
+  idioma: "es",
+  fechaAlta: "2021-09-01T20:23:20",
+  numeroRegistro: "QAV20210901",
+  emailConfirmacionReservaEnviado: false,
+}
+
+*/
+
+    // const vehiculos = await logicPostFormIndex.
+
+    // const datosVehiculo = await dbInterfaces.GetCarByDescripcion(formulario.descripcion_vehiculo);
+    // const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
+    // const datosSuplementoGenerico = await dbInterfaces.GetSuplementoGenerico();
+    
+    // const preciosPorClase = await dbInterfaces.GetPreciosPorClase(datosVehiculo.resultados.clasevehiculo);
+    // const transformadosPreciosPorClase = await TransformarPreciosPorClase(preciosPorClase.resultados);
+    
+    // const porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
+
     return true;
 
 };

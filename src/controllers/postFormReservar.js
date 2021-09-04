@@ -34,7 +34,7 @@ exports.postRealizarReserva = async (req, res) =>
 };
 
 
-
+// no usado para REST
 exports.PeticionPago = async (req, res) => {
 
     const merchantPayment = await logicInterface.CreateMerchantPayment(
