@@ -74,7 +74,9 @@ jobs:
             "REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }}"
             "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
             "TOKEN_FOR_BACKEND_ACCESS=${{ secrets.TOKEN_FOR_BACKEND_ACCESS }}"
-
+            "TOKEN_PGP=${{ secrets.TOKEN_PGP }}"
+            "PUBLIC_PGP=${{ secrets.PUBLIC_PGP }}"
+            "PRIVATE_PGP=${{ secrets.PRIVATE_PGP }}"
       - name: Comandos SSH Servidor
         if: "contains(github.event.head_commit.message, '/b')"
         uses: appleboy/ssh-action@master
@@ -93,6 +95,9 @@ jobs:
             echo "${{secrets.PORT_BACKOFFICE}}" > /tmp/port_backoffice.txt && \
             echo "${{secrets.ENDPOINT_VARIABLES_FRONTEND}}" > /tmp/endpoint_variables_frontend.txt && \
             echo "${{secrets.TOKEN_FOR_BACKEND_ACCESS}}" > /tmp/token_for_backend_access.txt && \
+            echo "${{secrets.TOKEN_PGP}}" > /tmp/token_pgp.txt && \
+            echo "${{secrets.PUBLIC_PGP}}" > /tmp/public_pgp.txt && \
+            echo "${{secrets.PRIVATE_PGP}}" > /tmp/private_pgp.txt && \
             echo "${{secrets.SERVER_CRT_SSL}}" > /home/alvaro/certs/server_http_cert.pem && \
             echo "${{secrets.SERVER_KEY_SSL}}" > /home/alvaro/certs/server_http_key.pem && \
             cat <<EOF > /tmp/deploy-compose.txt
@@ -190,6 +195,9 @@ jobs:
                   - REDISDB_PASSWORD
                   - ENDPOINT_VARIABLES_FRONTEND
                   - TOKEN_FOR_BACKEND_ACCESS
+                  - TOKEN_PGP
+                  # - PUBLIC_PGP
+                  # - PRIVATE_PGP
                 environment:
                   URL_BACKEND: backend
                   URL_FRONTEND: frontend
@@ -210,6 +218,12 @@ jobs:
                 file: "/tmp/endpoint_variables_frontend.txt"
               TOKEN_FOR_BACKEND_ACCESS:
                 file: "/tmp/token_for_backend_access.txt"
+              TOKEN_PGP:
+                file: "/tmp/token_pgp.txt"
+              # PUBLIC_PGP:
+              #   file: "/tmp/public_pgp.txt"
+              # PRIVATE_PGP:
+              #   file: "/tmp/private_pgp.txt"
               PORT_BACKOFFICE:
                 file: "/tmp/port_backoffice.txt"
             EOF

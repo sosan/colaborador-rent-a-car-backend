@@ -13,19 +13,21 @@ exports.GetBackendVars = async () =>
     let redisdb_port = "";
     let redisdb_host = "";
     let redisdb_password = "";
-
+    let token_pgp = "";
     if (process.env.LOCAL_SECRETS === "true")
     {
 
         redisdb_port =  process.env.REDISDB_PORT;
         redisdb_host =  process.env.REDISDB_HOST;
         redisdb_password = process.env.REDISDB_PASSWORD;
+        token_pgp = process.env.TOKEN_PGP;
     }
     else
     {
         redisdb_port = await  readSecret("/run/secrets/REDISDB_PORT");
         redisdb_host = await  readSecret("/run/secrets/REDISDB_HOST");
         redisdb_password = await  readSecret("/run/secrets/REDISDB_PASSWORD");
+        token_pgp = await readSecret("/run/secrets/TOKEN_PGP");
 
     }
     
@@ -33,6 +35,7 @@ exports.GetBackendVars = async () =>
     redisdb_port = await sanitizar(redisdb_port);
     redisdb_host = await sanitizar(redisdb_host);
     redisdb_password = await sanitizar(redisdb_password);
+    token_pgp = await sanitizar(token_pgp);
 
     // port_backend = port_backend - 0;
     // port_frontend = port_frontend - 0;
@@ -44,7 +47,7 @@ exports.GetBackendVars = async () =>
 
     const varsEncoded = await dbInterfaces.GetBackendVariables();
     const [publicKey, privateKey] = await dbInterfaces.GetKeysPGP();
-    const variablesSinSanitizar = await DecodeVars(varsEncoded, publicKey, privateKey);
+    const variablesSinSanitizar = await DecodeVars(varsEncoded, publicKey, privateKey, token_pgp);
 
     const buf = Buffer.from(variablesSinSanitizar);
     const envConfig = dotenv.parse(buf);
@@ -74,19 +77,10 @@ const sanitizar = async (textoSinSanitizar) => {
 
 };
 
-const DecodeVars = async (encriptedVarsNotSanitazed, publicBlockKey, privateBlockKey) =>
+const DecodeVars = async (encriptedVarsNotSanitazed, publicBlockKey, privateBlockKey, token_pgp) =>
 {
 
-    // const encriptedVars = encriptedVarsNotSanitazed.replace(new RegExp("_", 'g'), "\n")
     const encriptedVars = encriptedVarsNotSanitazed.trim();
-
-    // const options = {
-    //     userIDs: [{ name: "serviciosrentcar", email: "servicios@rentcarmallorca.es" }],
-    //     curve: "ed25519",
-    //     passphrase: process.env.TOKEN_PGP,
-    // };
-
-    // const key = await openpgp.generateKey(options);
 
     const privateKeyArmored = privateBlockKey;
     const publicKeyArmored = publicBlockKey;
@@ -94,7 +88,7 @@ const DecodeVars = async (encriptedVarsNotSanitazed, publicBlockKey, privateBloc
     const publicKey = await openpgp.readKey({ armoredKey: publicKeyArmored });
     const privateKey = await openpgp.decryptKey({
         privateKey: await openpgp.readPrivateKey({ armoredKey: privateKeyArmored }),
-        passphrase: process.env.TOKEN_PGP
+        passphrase: token_pgp
     });
 
     const message = await openpgp.readMessage({
