@@ -335,6 +335,33 @@ exports.GetPreciosPorClase = async (tiposClases) =>
 
 };
 
+exports.GetPreciosUnicaClase = async (tipoClase) =>
+{
+
+    try {
+
+        const resultados = await collectionPrecios.find(
+            {
+                "CLASE": tipoClase
+            }
+        ).project({ _id: 0 }).toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados[0], errores: "" };
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Precios`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (error) {
+        console.error(error);
+    }
+
+};
+
 
 exports.CheckUserPassword = async (email, password) => {
     try {

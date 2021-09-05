@@ -95,6 +95,14 @@ exports.GetPreciosPorClase = async (tiposClases) => {
 
 };
 
+exports.GetPreciosUnicaClase = async (tipoClase) =>
+{
+
+    const resultados = await mongo_dao.GetPreciosUnicaClase(tipoClase);
+    return resultados;
+
+};
+
 exports.GetCondicionesGenerales = async () =>
 {
 
