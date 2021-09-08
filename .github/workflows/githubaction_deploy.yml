@@ -234,5 +234,5 @@ jobs:
             /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest && \
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
             /home/alvaro/bin/docker rmi $(/home/alvaro/bin/docker images | grep "<none>" | awk '{print $3}') 2>/dev/null || echo "No hay images por borrar"
-            
+            /home/alvaro/bin/docker system prune --force
             
