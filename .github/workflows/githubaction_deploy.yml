@@ -77,6 +77,15 @@ jobs:
             "TOKEN_PGP=${{ secrets.TOKEN_PGP }}"
             "PUBLIC_PGP=${{ secrets.PUBLIC_PGP }}"
             "PRIVATE_PGP=${{ secrets.PRIVATE_PGP }}"
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'sosan/backend-rentacarmallorca:latest'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
       - name: Comandos SSH Servidor
         if: "contains(github.event.head_commit.message, '/b')"
         uses: appleboy/ssh-action@master
@@ -95,15 +104,36 @@ jobs:
             echo "${{secrets.PORT_BACKOFFICE}}" > /tmp/port_backoffice.txt && \
             echo "${{secrets.ENDPOINT_VARIABLES_FRONTEND}}" > /tmp/endpoint_variables_frontend.txt && \
             echo "${{secrets.TOKEN_FOR_BACKEND_ACCESS}}" > /tmp/token_for_backend_access.txt && \
+            echo "${{secrets.URL_LOKI}}" > /tmp/url_loki.txt && \
             echo "${{secrets.TOKEN_PGP}}" > /tmp/token_pgp.txt && \
             echo "${{secrets.SERVER_CRT_SSL}}" > /home/alvaro/certs/server_http_cert.pem && \
-            echo "${{secrets.SERVER_KEY_SSL}}" > /home/alvaro/certs/server_http_key.pem && \
+            echo "${{secrets.SERVER_KEY_SSL}}" > /home/alvaro/certs/server_http_key.pem && \            
             cat <<EOF > /tmp/deploy-compose.txt
-            version: "3.7"
+            version: "3.9"
             networks:
-              gateway: {}
+              eth0:
+                ipam:
+                  driver: default
+                  config:
+                      - subnet: 172.22.0.0/16
+                        gateway: 172.22.0.1
             services:
-              frontenvoy:
+              fluentbit:
+                container_name: fluentbit_server
+                restart: always
+                image: sosan/fluentloki-rentacarmallorca:latest
+                ports:
+                  - "2020:2020"
+                  - "2020:2020/udp"
+                secrets:
+                  - URL_LOKI
+                environment:
+                  LOKI_URL: URL_LOKI
+                networks: 
+                  eth0:
+                    ipv4_address: 172.22.0.2
+              envoy:
+                container_name: envoy_server
                 image: sosan/envoy-rentacarmallorca:latest
                 restart: always
                 deploy:
@@ -117,22 +147,19 @@ jobs:
                   - "80"
                   - "443"
                   - "3100"
-                  # - "8080"
-                  # - "8081"
-                  # - "8443"
                 ports: 
                   - "80:80"
                   - "443:443"
                   - "3100:3100"
-                  # - "8080:8080"
-                  # - "8081:8081"
-                  # - "8443:8443"
                 volumes:
                   - /home/alvaro/certs/server_http_cert.pem:/etc/cert.pem
                   - /home/alvaro/certs/server_http_key.pem:/etc/privkey.pem
                 networks:
-                  - gateway
+                  eth0:
+                    ipv4_address: 172.22.0.3
+                
               frontend:
+                container_name: frontend_server
                 image: sosan/frontend-rentacarmallorca:latest
                 restart: always
                 deploy:
@@ -148,12 +175,13 @@ jobs:
                   - ENDPOINT_VARIABLES_FRONTEND
                   - TOKEN_FOR_BACKEND_ACCESS
                 networks:
-                  - gateway
-                  # - exterior
-                  # - interior
+                  eth0:
+                    ipv4_address: 172.22.0.4
                 depends_on:
                   - backend
+                  - fluentbit
               backoffice:
+                container_name: backoffice_server
                 image: sosan/backoffice-rentacarmallorca:latest
                 restart: always
                 deploy:
@@ -170,12 +198,12 @@ jobs:
                     - ENDPOINT_VARIABLES_FRONTEND
                     - TOKEN_FOR_BACKEND_ACCESS
                 networks:
-                  - gateway
-                  # - exterior
-                  # - interior
+                  eth0:
+                    ipv4_address: 172.22.0.5
                 depends_on:
                   - backend
               backend:
+                container_name: backend_server
                 image: sosan/backend-rentacarmallorca:latest
                 restart: always
                 deploy:
@@ -183,8 +211,8 @@ jobs:
                 expose: 
                   - 3000
                 networks:
-                  - gateway
-                  # - interior
+                  eth0:
+                    ipv4_address: 172.22.0.6
                 secrets:
                   - PORT_FRONTEND
                   - PORT_BACKEND
@@ -194,14 +222,15 @@ jobs:
                   - ENDPOINT_VARIABLES_FRONTEND
                   - TOKEN_FOR_BACKEND_ACCESS
                   - TOKEN_PGP
-                  # - PUBLIC_PGP
-                  # - PRIVATE_PGP
+                  
                 environment:
                   URL_BACKEND: backend
                   URL_FRONTEND: frontend
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
             secrets:
+              URL_LOKI:
+                file: "/tmp/url_loki.txt"
               REDISDB_PASSWORD:
                 file: "/tmp/redisdb_password.txt"
               REDISDB_PORT:
@@ -225,13 +254,13 @@ jobs:
               PORT_BACKOFFICE:
                 file: "/tmp/port_backoffice.txt"
             EOF
-            ls && \
-            export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
+            /home/alvaro/bin/docker context use rootless
             /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
             /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
             /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest && \
             /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca-basico:latest && \
             /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest && \
+            /home/alvaro/bin/docker pull sosan/fluentloki-rentacarmallorca:latest && \
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
             /home/alvaro/bin/docker rmi $(/home/alvaro/bin/docker images | grep "<none>" | awk '{print $3}') 2>/dev/null || echo "No hay images por borrar"
             /home/alvaro/bin/docker system prune --force
