@@ -95,7 +95,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
-            ls && \
             echo "${{secrets.REDISDB_PASSWORD}}" > /tmp/redisdb_password.txt && \
             echo "${{secrets.REDISDB_PORT}}" > /tmp/redisdb_port.txt && \
             echo "${{secrets.REDISDB_HOST}}" > /tmp/redisdb_host.txt && \
@@ -104,7 +103,6 @@ jobs:
             echo "${{secrets.PORT_BACKOFFICE}}" > /tmp/port_backoffice.txt && \
             echo "${{secrets.ENDPOINT_VARIABLES_FRONTEND}}" > /tmp/endpoint_variables_frontend.txt && \
             echo "${{secrets.TOKEN_FOR_BACKEND_ACCESS}}" > /tmp/token_for_backend_access.txt && \
-            echo "${{secrets.URL_LOKI}}" > /tmp/url_loki.txt && \
             echo "${{secrets.TOKEN_PGP}}" > /tmp/token_pgp.txt && \
             echo "${{secrets.SERVER_CRT_SSL}}" > /home/alvaro/certs/server_http_cert.pem && \
             echo "${{secrets.SERVER_KEY_SSL}}" > /home/alvaro/certs/server_http_key.pem && \            
@@ -130,10 +128,8 @@ jobs:
                 ports:
                   - "2020:2020"
                   - "2020:2020/udp"
-                secrets:
-                  - URL_LOKI
                 environment:
-                  LOKI_URL: URL_LOKI
+                  LOKI_URL: ${{secrets.URL_LOKI}}
                 networks: 
                   eth0:
                     ipv4_address: 172.22.0.2
@@ -236,8 +232,6 @@ jobs:
                   NODE_ENV: production
                 logging: *default-logging
             secrets:
-              URL_LOKI:
-                file: "/tmp/url_loki.txt"
               REDISDB_PASSWORD:
                 file: "/tmp/redisdb_password.txt"
               REDISDB_PORT:
