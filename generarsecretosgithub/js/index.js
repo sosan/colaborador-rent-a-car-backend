@@ -22,6 +22,7 @@ const enviarGist = async (evento) =>
         
     });
 
+    
     const resultadoPublicKey = await getPublicKeyRaw.json();
     let listadoResultados = [];
     
