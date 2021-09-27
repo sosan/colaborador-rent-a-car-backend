@@ -1,0 +1,48 @@
+name: fluentbit
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build_envoy:
+    runs-on: ubuntu-20.04
+    if: "contains(github.event.head_commit.message, '/a')"
+    steps:
+      - name: Avoid redudant builds
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get current date
+        id: date
+        run: echo ::set-output name=DATE_NOW::$(date +'%Y_%m_%dT%H_%M_%S')
+      
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: | 
+            sosan/fluentloki-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
+            sosan/fluentloki-rentacarmallorca:latest
+      - name: Comandos SSH Servidor
+        if: "contains(github.event.head_commit.message, '/b')"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_SERVIDOR }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          port:  ${{ secrets.PORT_SERVIDOR }}
+          script: |
+            /home/alvaro/bin/docker context use rootless && \
+            /home/alvaro/bin/docker pull sosan/fluentloki-rentacarmallorca:latest
