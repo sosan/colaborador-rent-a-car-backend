@@ -115,8 +115,8 @@ jobs:
                 ipam:
                   driver: default
                   config:
-                      - subnet: 172.22.0.0/16
-                        gateway: 172.22.0.1
+                    - subnet: 172.22.0.0/16
+                      gateway: 172.22.0.1
             services:
               fluentbit:
                 container_name: fluentbit_server
@@ -157,7 +157,6 @@ jobs:
                 networks:
                   eth0:
                     ipv4_address: 172.22.0.3
-                
               frontend:
                 container_name: frontend_server
                 image: sosan/frontend-rentacarmallorca:latest
@@ -222,7 +221,6 @@ jobs:
                   - ENDPOINT_VARIABLES_FRONTEND
                   - TOKEN_FOR_BACKEND_ACCESS
                   - TOKEN_PGP
-                  
                 environment:
                   URL_BACKEND: backend
                   URL_FRONTEND: frontend
@@ -247,10 +245,6 @@ jobs:
                 file: "/tmp/token_for_backend_access.txt"
               TOKEN_PGP:
                 file: "/tmp/token_pgp.txt"
-              # PUBLIC_PGP:
-              #   file: "/tmp/public_pgp.txt"
-              # PRIVATE_PGP:
-              #   file: "/tmp/private_pgp.txt"
               PORT_BACKOFFICE:
                 file: "/tmp/port_backoffice.txt"
             EOF
