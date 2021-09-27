@@ -110,6 +110,11 @@ jobs:
             echo "${{secrets.SERVER_KEY_SSL}}" > /home/alvaro/certs/server_http_key.pem && \            
             cat <<EOF > /tmp/deploy-compose.txt
             version: "3.9"
+            x-logging:
+              &default-logging
+                driver: fluentd
+                options:
+                  fluentd-address: 172.22.0.1:2020
             networks:
               eth0:
                 ipam:
@@ -152,11 +157,12 @@ jobs:
                   - "443:443"
                   - "3100:3100"
                 volumes:
-                  - /home/alvaro/certs/server_http_cert.pem:/etc/cert.pem
-                  - /home/alvaro/certs/server_http_key.pem:/etc/privkey.pem
+                  - ~/certs/server_http_cert.pem:/etc/cert.pem
+                  - ~/certs/server_http_key.pem:/etc/privkey.pem
                 networks:
                   eth0:
                     ipv4_address: 172.22.0.3
+                logging: *default-logging
               frontend:
                 container_name: frontend_server
                 image: sosan/frontend-rentacarmallorca:latest
@@ -179,6 +185,7 @@ jobs:
                 depends_on:
                   - backend
                   - fluentbit
+                logging: *default-logging
               backoffice:
                 container_name: backoffice_server
                 image: sosan/backoffice-rentacarmallorca:latest
@@ -201,6 +208,7 @@ jobs:
                     ipv4_address: 172.22.0.5
                 depends_on:
                   - backend
+                logging: *default-logging
               backend:
                 container_name: backend_server
                 image: sosan/backend-rentacarmallorca:latest
@@ -226,6 +234,7 @@ jobs:
                   URL_FRONTEND: frontend
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
+                logging: *default-logging
             secrets:
               URL_LOKI:
                 file: "/tmp/url_loki.txt"
