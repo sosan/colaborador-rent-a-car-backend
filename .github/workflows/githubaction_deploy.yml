@@ -119,7 +119,7 @@ jobs:
               &default-logging
                 driver: fluentd
                 options:
-                  fluentd-address: 172.22.0.1:2020
+                  fluentd-address: 172.22.0.2:2020
             networks:
               eth0:
                 ipam:
@@ -148,6 +148,7 @@ jobs:
                   replicas: 1
                 depends_on:
                   - frontend
+                  - fluentbit
                 links: 
                   - frontend
                   - backoffice
@@ -211,6 +212,7 @@ jobs:
                     ipv4_address: 172.22.0.5
                 depends_on:
                   - backend
+                  - fluentbit
                 logging: *default-logging
               backend:
                 container_name: backend_server
@@ -237,6 +239,8 @@ jobs:
                   URL_FRONTEND: frontend
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
+                depends_on:
+                  - fluentbit
                 logging: *default-logging
             secrets:
               REDISDB_PASSWORD:
