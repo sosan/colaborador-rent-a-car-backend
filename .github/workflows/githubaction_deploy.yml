@@ -77,15 +77,35 @@ jobs:
             "TOKEN_PGP=${{ secrets.TOKEN_PGP }}"
             "PUBLIC_PGP=${{ secrets.PUBLIC_PGP }}"
             "PRIVATE_PGP=${{ secrets.PRIVATE_PGP }}"
+      
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'sosan/backend-rentacarmallorca:latest'
-          format: 'table'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: nodejsscan scan
+        id: njsscan
+        uses: ajinabraham/njsscan-action@master
+        with:
+          args: '. --sarif --output results.sarif || true'
+
+      - name: Upload njsscan report
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: nodejsscan-results.sarif
+
       - name: Comandos SSH Servidor
         if: "contains(github.event.head_commit.message, '/b')"
         uses: appleboy/ssh-action@master
