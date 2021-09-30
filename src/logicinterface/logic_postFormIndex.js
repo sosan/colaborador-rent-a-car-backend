@@ -3,7 +3,6 @@ const porcentajeVehiculo = require("../controllers/porcentajeTipoVehiculo");
 const Joi = require("joi");
 
 const DAY_IN_MILISECONDS = 86400000;
-const DIA_DATE = new Date(DAY_IN_MILISECONDS);
 
 // TODO: generar string a partir del secreto
 const GenerateTokenBackendToFrontend = async () => {
@@ -684,24 +683,34 @@ const ObtenerConversionFecha = async (fechaRaw, horaRaw) => {
 
 
     let fechaRecogidaFormSplitted = undefined;
+    let anyo = 0;
+    let mes = 0;
+    let dia = 0;
     if (fechaRaw.split(",").length >= 2) {
         fechaRecogidaFormSplitted = fechaRaw.split(",")[1].split("-");
 
     }
     else {
+
+        if (fechaRaw.indexOf("T") !== -1)
+        {
+            fechaRaw = fechaRaw.split("T")[0];
+
+        }
         fechaRecogidaFormSplitted = fechaRaw.split("-");
     }
 
-    const anyo = fechaRecogidaFormSplitted[2] - 0;
-    const mes = fechaRecogidaFormSplitted[1] - 0;
-    const dia = fechaRecogidaFormSplitted[0] - 0;
+    // anyo = fechaRecogidaFormSplitted[2] - 0;
+    // mes = fechaRecogidaFormSplitted[1] - 0;
+    // dia = fechaRecogidaFormSplitted[0] - 0;
 
-    // const horaSplitted = horaRaw.split(":");
-    // const hora = horaSplitted[0] - 0;
-
+    dia = fechaRecogidaFormSplitted[2] - 0;
+    mes = fechaRecogidaFormSplitted[1] - 0;
+    anyo = fechaRecogidaFormSplitted[0] - 0;
 
     //comprobar que el mes este entre 0 y 11, dia entre 1 y 30 y 1900-
-    if (mes < 1 || mes > 12) {
+    if (mes < 1 || mes > 12) 
+    {
         console.error("Mes - Conversion erronea");
         return undefined;
     }
