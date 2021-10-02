@@ -9,7 +9,9 @@ const confirmar = require("../controllers/confirmarReserva");
 const dashboard = require("../controllers/dashboard");
 const templates = require("../controllers/templates");
 const traducciones = require("../controllers/traducciones");
+const logs = require("../controllers/logs");
 const live = require("../controllers/live");
+
 
 const router = express.Router();
 
@@ -41,6 +43,10 @@ router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/actualizart
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/islive_0_QJFs_a_IiW_mFtZS2_f_A_BQ_NTib_Y3O6Ik_D0WNH9I`, async (req, res) => await live.IsLive(req, res));
 
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/xxxxx`, async (req, res) => await dashboard.RedirectGetDashboard(req, res));
+
+router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/logs`, async (req, res) => await logs.GetMainLogs(req, res));
+
+// /0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/logs
 
 module.exports = router;
 

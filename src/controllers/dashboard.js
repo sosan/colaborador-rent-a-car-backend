@@ -31,8 +31,11 @@ exports.GetDashboard = async (req, res) =>
 
 };
 
+
 exports.RedirectGetDashboard = async (req, res) => {
 
     res.redirect("/dashboard");
 
 };
+
+

@@ -1,9 +1,12 @@
 
 
 const botonConfirmaciones = document.getElementById("confirmaciones");
+const botonConfirmacionesOnMain = document.getElementById("confirmacionesMain");
 const botonTemplates = document.getElementById("templates");
 const botonTraducciones = document.getElementById("traducciones");
 const todosBotones = document.getElementsByClassName("navList__subheading");
+
+const botonLogs = document.getElementById("logs");
 
 const sidenavEl = document.getElementById('sidenav');
 const gridEl = document.getElementById('grid');
@@ -44,16 +47,29 @@ const borrarColorTodosBotones = async () =>
 
 };
 
+botonConfirmacionesOnMain.addEventListener("click", async (evento) =>
+{
+    evento.preventDefault();
+    await botonConfirmacionesPrincipal(evento);
+
+});
 
 botonConfirmaciones.addEventListener("click", async (evento) =>
 {
-
+    
     evento.preventDefault();
+    await botonConfirmacionesPrincipal(evento);
+
+});
+
+
+const botonConfirmacionesPrincipal = async (evento) =>
+{
 
     await borrarColorTodosBotones();
-    
+
     botonConfirmaciones.classList.add("navList__subheading_clicked");
-    
+
     const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/confirmaciones", {
         method: "GET",
         headers: {
@@ -61,22 +77,22 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
         },
         credentials: "include"
     });
-    
+
     const datos = await rawResponse.json();
-    
+
     const relleno = document.getElementById("main");
-    
+
     const borrarMain = document.getElementById("borrar_main");
     if (borrarMain) {
         borrarMain.remove();
     }
-    
+
     const trozoHtml = document.createElement("div");
     trozoHtml.id = "borrar_main";
     trozoHtml.innerHTML = datos.html;
-    
+
     relleno.appendChild(trozoHtml);
-    
+
     const fechaInicio = document.getElementById("fechaInicioBusquedaNoEnviada");
     const fechaDestino = document.getElementById("fechaDestinoBusquedaNoEnviada");
 
@@ -87,8 +103,7 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     fechaInicio.value = destino.getFullYear().toString() + '-' + (destino.getMonth() + 1).toString().padStart(2, 0) + '-' + destino.getDate().toString().padStart(2, 0);
 
     const borrarScript = document.getElementById("borrar_script_mostrar_reservas");
-    if (borrarScript)
-    {
+    if (borrarScript) {
         borrarScript.remove();
     }
 
@@ -99,12 +114,11 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
     script.src = '/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/mostrar_reservas.js';
     head.appendChild(script);
 
-    
+
     toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
-    
+
     const botonBusqueda = document.getElementById("botonBusqueda_noenviado");
-    if (botonBusqueda) 
-    {
+    if (botonBusqueda) {
         botonBusqueda.addEventListener("click", async (evento) => {
             evento.preventDefault();
 
@@ -126,8 +140,9 @@ botonConfirmaciones.addEventListener("click", async (evento) =>
         });
 
     }
-});
 
+
+};
 
 botonTemplates.addEventListener("click", async (evento) =>
 {
@@ -321,3 +336,41 @@ const LogicBotonTemplates = async (slideActualizar) =>
 
 
 };
+
+
+botonLogs.addEventListener("click", async (evento) =>
+{
+    evento.preventDefault();
+
+    await borrarColorTodosBotones();
+
+    botonTemplates.classList.add("navList__subheading_clicked");
+
+
+    const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/logs", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include"
+    });
+
+    const datos = await rawResponse.json();
+
+    const relleno = document.getElementById("main");
+
+    const borrarMain = document.getElementById("borrar_main");
+    if (borrarMain) {
+        borrarMain.remove();
+    }
+
+    const trozoHtml = document.createElement("div");
+    trozoHtml.id = "borrar_main";
+    trozoHtml.innerHTML = datos.html;
+
+    relleno.appendChild(trozoHtml);
+
+
+    toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
+
+});

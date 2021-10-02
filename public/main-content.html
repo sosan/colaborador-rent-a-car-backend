@@ -13,13 +13,17 @@
                         <span class="text-light">Reservas hoy</span>
                     </div>
                 </div>
-                <div class="quickview__item">
-                    <div class="quickview__item-total"><%=it.stats.numeroEmailsPorEnviar %></div>
-                    <div class="quickview__item-description">
-                        <i class="far fa-comment"></i>
-                        <span class="text-light">Reservas por Confirmar</span>
+                <a href="/confirmaciones" class="link">
+                    <div id="confirmacionesMain">
+                        <div class="quickview__item">
+                            <div class="quickview__item-total"><%=it.stats.numeroEmailsPorEnviar %></div>
+                            <div class="quickview__item-description">
+                                <i class="far fa-comment"></i>
+                                <span class="text-light">Reservas por Confirmar</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </a>
 
             </div>
         </div>

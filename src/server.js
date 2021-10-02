@@ -53,15 +53,38 @@ exports.InitServer = async () =>
     // app.use(`/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/traducciones`, express.static(path.join(__dirname, "../public")));
     app.use(`/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard`, express.static(path.join(__dirname, "../public")));
     app.use(`/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/hojacalculo`, express.static(path.join(__dirname, "../public")));
-    
 
-    app.listen(3100, (error) => {
+    const express_server = app.listen(3100, (error) => {
             if (error) {
                 console.error(`[process ${process.pid}] Error ${error} 3100`);
             }
         console.info(`[process ${process.pid}] Listening at port 3100`);
         }
     );
+
+    process.on("SIGINT", function onSigint() {
+        console.info("Got SIGINT (aka ctrl-c in docker). Graceful shutdown ", new Date().toISOString());
+        shutdown();
+    });
+
+    process.on("SIGTERM", function onSigterm() {
+        console.info("Got SIGTERM (docker container stop). Graceful shutdown ", new Date().toISOString());
+        shutdown();
+    })
+
+    // shut down server
+    const shutdown = () => 
+    {
+        express_server.close(function onServerClosed(err)
+        {
+            if (err)
+            {
+                console.error(err);
+                process.exitCode = 1;
+            }
+            process.exit();
+        })
+    };
 
 };
 
