@@ -203,10 +203,10 @@ jobs:
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
                 secrets:
-                    - PORT_BACKEND
-                    - PORT_BACKOFFICE
-                    - ENDPOINT_VARIABLES_FRONTEND
-                    - TOKEN_FOR_BACKEND_ACCESS
+                  - PORT_BACKEND
+                  - PORT_BACKOFFICE
+                  - ENDPOINT_VARIABLES_FRONTEND
+                  - TOKEN_FOR_BACKEND_ACCESS
                 networks:
                   eth0:
                     ipv4_address: 172.22.0.5
