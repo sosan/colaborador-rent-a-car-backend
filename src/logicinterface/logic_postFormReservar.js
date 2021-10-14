@@ -23,8 +23,6 @@ const EMAIL_USER_SECRET_TOKEN_API = `${process.env.EMAIL_USER_SECRET_TOKEN_API}`
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
 
-// const authBase64 = Buffer.from(`${EMAIL_USER_TOKEN_API}:${EMAIL_USER_SECRET_TOKEN_API}`, "utf-8").toString("base64");
-// let imagen_base64 = undefined;
 
 const htmlEmail = `
 <!DOCTYPE html>

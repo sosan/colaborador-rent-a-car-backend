@@ -92,7 +92,6 @@ const GenerateHeaders = async (headersList) =>
         if (headersList[key].text === "idioma_web") continue;
 
         const keyForJson = headersList[key].text;
-        // hojaCalculoJson[keyForJson] = { "position_header": key };
         hojaCalculoJson[keyForJson] = {  };
     }
 
