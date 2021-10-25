@@ -47,7 +47,7 @@ static_resources:
                   prefix: "/"
                 redirect:
                   host_redirect: "www.rentcarmallorca.es"
-                  https_redirect: true
+                  # https_redirect: true
             - name: service
               domains:
               - "www.rentcarmallorca.es"
