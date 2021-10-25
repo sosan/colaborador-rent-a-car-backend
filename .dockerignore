@@ -1,0 +1,6 @@
+**/*.md
+!README.md
+.git
+logs/
+*/temp
+**/test/

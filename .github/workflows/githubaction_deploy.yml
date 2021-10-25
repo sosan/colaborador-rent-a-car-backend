@@ -46,5 +46,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
-            export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock && \
+            /home/alvaro/bin/docker context use rootless
             /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest

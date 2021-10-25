@@ -11,4 +11,8 @@ RUN chmod go+r /etc/front-envoy.yaml
     # && chmod go+x /etc/privkey.pem \
     # && chmod go+r /etc/certs/*
 USER 1001
-CMD /usr/local/bin/envoy -c /etc/front-envoy.yaml
+# CMD ["/usr/local/bin/envoy", "-c /etc/front-envoy.yaml", "-l", "debug"]
+CMD ["/usr/local/bin/envoy", "-c /etc/front-envoy.yaml" ]
+
+
+
