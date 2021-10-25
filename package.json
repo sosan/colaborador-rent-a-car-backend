@@ -39,9 +39,9 @@
     "joi": "^17.4.2",
     "mongodb": "^3.7.1",
     "morgan": "^1.10.0",
-    "nanoid": "^3.1.28",
-    "node-fetch": "^2.6.4",
-    "nodemailer": "^6.6.5",
+    "nanoid": "^3.1.25",
+    "node-fetch": "^2.6.5",
+    "nodemailer": "^6.6.3",
     "openpgp": "^5.0.0"
     
   },
