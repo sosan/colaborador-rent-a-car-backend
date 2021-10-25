@@ -48,3 +48,4 @@ jobs:
           script: |
             /home/alvaro/bin/docker context use rootless
             /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest
+            /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
