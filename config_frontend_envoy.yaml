@@ -39,15 +39,6 @@ static_resources:
           route_config:
             name: local_route_web
             virtual_hosts:
-            # - name: acme_challange
-            #   domains:
-            #   - ""
-            #   routes:
-            #   - match:
-            #       prefix: "/"
-            #     route:
-            #       cluster: frontend_cluster
-
             - name: sin_www_service
               domains:
               - "rentcarmallorca.es"
