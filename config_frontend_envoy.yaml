@@ -30,16 +30,25 @@ static_resources:
           codec_type: auto
           stat_prefix: ingress_http
           use_remote_address: true
-# ---------------------------------- new config
+
           xff_num_trusted_hops: 0
           normalize_path: true
           merge_slashes: true
           path_with_escaped_slashes_action: UNESCAPE_AND_REDIRECT
-## -------------------------------------------- fin new config
+
           route_config:
             name: local_route_web
             virtual_hosts:
-            - name: www_service
+            # - name: acme_challange
+            #   domains:
+            #   - ""
+            #   routes:
+            #   - match:
+            #       prefix: "/"
+            #     route:
+            #       cluster: frontend_cluster
+
+            - name: sin_www_service
               domains:
               - "rentcarmallorca.es"
               routes:
@@ -47,11 +56,15 @@ static_resources:
                   prefix: "/"
                 redirect:
                   host_redirect: "www.rentcarmallorca.es"
-                  # https_redirect: true
-            - name: service
+              
+            - name: www_service
               domains:
               - "www.rentcarmallorca.es"
               routes:
+              - match:
+                  prefix: "/.well-known/acme-challenge/"
+                route:
+                  cluster: frontend_cluster
               - match:
                   prefix: "/"
                 redirect:
@@ -104,7 +117,7 @@ static_resources:
           - name: envoy.filters.http.router
           common_http_protocol_options:
               idle_timeout: 840s
-# ----------- new config
+
           http2_protocol_options:
             max_concurrent_streams: 100
             initial_stream_window_size: 65536  # 64 KiB
