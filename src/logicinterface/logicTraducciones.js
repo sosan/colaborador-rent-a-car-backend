@@ -5,13 +5,11 @@ const logicGithub = require("./logicGithub");
 
 exports.MostrarTraducciones = async (req, res ) =>
 {
-
     const resultado = await dbInterfaces.GetTranslations();
 
     res.send({
         "traducciones": resultado,
     });
-
 
 };
 
