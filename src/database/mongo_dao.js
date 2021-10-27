@@ -595,11 +595,11 @@ exports.ActualizarTraduccion = async (hojaCalculo, nombreId) =>
 
 };
 
-exports.InsertarTraduccion = async (hojaCalculo) =>
+exports.InsertarTraduccion = async (traduccionJson) =>
 {
 
     try {
-        const resultados = await collectionLocations.insertOne(hojaCalculo);
+        const resultados = await collectionLocations.insertOne(traduccionJson);
 
         const isInserted = resultados.insertedCount === 1;
         return isInserted;

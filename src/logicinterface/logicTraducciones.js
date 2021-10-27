@@ -16,41 +16,43 @@ exports.MostrarTraducciones = async (req, res ) =>
 exports.GuardarTraducciones = async (req, res) =>
 {
 
-    const hojaCalculoRaw = req.body;
+    const listadoTraducciones = req.body.listadoTraducciones;
+
+    // const hojaCalculoRaw = req.body;
     
-    let hojaCalculoJson = await GenerateHeaders(hojaCalculoRaw[0].cells);
+    // let hojaCalculoJson = await GenerateHeaders(hojaCalculoRaw[0].cells);
 
-    for (let key in hojaCalculoRaw)
-    {
+    // for (let key in hojaCalculoRaw)
+    // {
 
-        let currentFila = hojaCalculoRaw[key].cells;
-        for (let keyCurrentFila in currentFila)
-        {
-            switch(keyCurrentFila)
-            {
-                case "1": 
-                    hojaCalculoJson["en"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
+    //     let currentFila = hojaCalculoRaw[key].cells;
+    //     for (let keyCurrentFila in currentFila)
+    //     {
+    //         switch(keyCurrentFila)
+    //         {
+    //             case "1": 
+    //                 hojaCalculoJson["en"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
                 
-                break;
-                case "2":
-                    hojaCalculoJson["es"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
+    //             break;
+    //             case "2":
+    //                 hojaCalculoJson["es"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
 
-                break;
-                case "3":
-                    hojaCalculoJson["it"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
-                break;
-                case "4":
-                    hojaCalculoJson["de"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
-                break;
-            }
-        }
+    //             break;
+    //             case "3":
+    //                 hojaCalculoJson["it"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
+    //             break;
+    //             case "4":
+    //                 hojaCalculoJson["de"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
+    //             break;
+    //         }
+    //     }
     
-    }
+    // }
 
     const traduccionAnterior = await dbInterfaces.GetTranslations();
     const borrar = await dbInterfaces.BorrarTraduccionAnterior("locations_copia");
     const resultadoTraduccionAnterior = await dbInterfaces.InsertarTraduccion(traduccionAnterior, "locations_copia");
-    const resultado = await dbInterfaces.ActualizarTraduccion(hojaCalculoJson, "locations");
+    const resultado = await dbInterfaces.ActualizarTraduccion(listadoTraducciones, "locations");
 
     // actualizar la variable 
     const actualizacion = await controllerLocation.Backend_TO_Frontend();
@@ -61,7 +63,7 @@ exports.GuardarTraducciones = async (req, res) =>
     });
     
     const resultadoCommit = await logicGithub.GuardarTraduccion(
-        hojaCalculoJson,
+        listadoTraducciones,
         process.env.USUARIO_AUTO_GIT,
         process.env.USUARIO_AUTO_NOMBRE_REPO
     );

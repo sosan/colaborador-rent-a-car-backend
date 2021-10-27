@@ -32,17 +32,17 @@ exports.BorrarTraduccionAnterior = async (nombreId) =>
 
 };
 
-exports.ActualizarTraduccion = async (hojaCalculo, nombreId) =>
+exports.ActualizarTraduccion = async (traduccionJson, nombreId) =>
 {
 
-    const resultado = await mongo_dao.ActualizarTraduccion(hojaCalculo, nombreId);
+    const resultado = await mongo_dao.ActualizarTraduccion(traduccionJson, nombreId);
     return resultado;
 };
 
-exports.InsertarTraduccion = async (hojaCalculo, nombreId) =>
+exports.InsertarTraduccion = async (traduccionJson, nombreId) =>
 {
-    hojaCalculo["id"] = nombreId;
-    const resultado = await mongo_dao.InsertarTraduccion(hojaCalculo);
+    traduccionJson["id"] = nombreId;
+    const resultado = await mongo_dao.InsertarTraduccion(traduccionJson);
     return resultado;
 };
 
