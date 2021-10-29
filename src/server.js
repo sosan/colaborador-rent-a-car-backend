@@ -22,7 +22,7 @@ exports.InitServer = async () =>
     
     const apiLimiter = rateLimit({
         windowMs: 1 * 60 * 1000, //1min
-        max: 20
+        max: 50
     });
     
     app.use(cookieParser());

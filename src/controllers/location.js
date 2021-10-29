@@ -2,10 +2,10 @@ const fetch = require("node-fetch");
 const dbinterface = require("../database/dbInterfaces");
 
 
-const urlfrontend = process.env.URL_FRONTEND || "localhost";
+// const urlfrontend = process.env.URL_FRONTEND || "localhost";
 const protocolo = "http://";
 
-const URI_LOCATIONS = `${protocolo}${urlfrontend}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_LOCATION}`;
+// const URI_LOCATIONS = `${protocolo}${process.env.URL_FRONTEND}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_LOCATION}`;
 
 let locations = undefined;
 
@@ -42,7 +42,8 @@ exports.Backend_TO_Frontend = async (req, res) => {
     locations = await dbinterface.GetLocation();
 
     const body = { "token": process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET, datos: locations };
-
+    const URI_LOCATIONS = `${protocolo}${process.env.URL_FRONTEND}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_LOCATION}`;
+    console.log("URI LOC" + URI_LOCATIONS);
     try
     {
         // enviarlo al frontend

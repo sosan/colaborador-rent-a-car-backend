@@ -16,7 +16,7 @@ exports.MostrarTraducciones = async (req, res ) =>
 exports.GuardarTraducciones = async (req, res) =>
 {
 
-    const listadoTraducciones = req.body.listadoTraducciones;
+    const traduccionNueva = req.body;
 
     // const hojaCalculoRaw = req.body;
     
@@ -49,10 +49,10 @@ exports.GuardarTraducciones = async (req, res) =>
     
     // }
 
-    const traduccionAnterior = await dbInterfaces.GetTranslations();
-    const borrar = await dbInterfaces.BorrarTraduccionAnterior("locations_copia");
-    const resultadoTraduccionAnterior = await dbInterfaces.InsertarTraduccion(traduccionAnterior, "locations_copia");
-    const resultado = await dbInterfaces.ActualizarTraduccion(listadoTraducciones, "locations");
+    const traduccionActual = await dbInterfaces.GetTranslations();
+    const resultadoBorradoTraduccionAnterior = await dbInterfaces.BorrarTraduccionAnterior("locations_copia");
+    const resultadoInsercionTraduccionAnterior = await dbInterfaces.InsertarTraduccion(traduccionActual, "locations_copia");
+    const resultado = await dbInterfaces.ActualizarTraduccion(traduccionNueva, "locations");
 
     // actualizar la variable 
     const actualizacion = await controllerLocation.Backend_TO_Frontend();
@@ -63,7 +63,7 @@ exports.GuardarTraducciones = async (req, res) =>
     });
     
     const resultadoCommit = await logicGithub.GuardarTraduccion(
-        listadoTraducciones,
+        traduccionNueva,
         process.env.USUARIO_AUTO_GIT,
         process.env.USUARIO_AUTO_NOMBRE_REPO
     );

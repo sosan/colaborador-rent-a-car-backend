@@ -35,6 +35,7 @@ exports.BorrarTraduccionAnterior = async (nombreId) =>
 exports.ActualizarTraduccion = async (traduccionJson, nombreId) =>
 {
 
+    traduccionJson["id"] = nombreId;
     const resultado = await mongo_dao.ActualizarTraduccion(traduccionJson, nombreId);
     return resultado;
 };
