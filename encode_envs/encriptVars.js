@@ -7,11 +7,11 @@ let publicKeyArmored = undefined;
 
 async function encryptVars() {
 
-    // const options = {
-    //     userIDs: [{ name: "serviciosrentcar", email: "servicios@rentcarmallorca.es" }],
-    //     curve: "ed25519",
-    //     passphrase: "dummy_qwerty_CHANGE_5252827edac9787f671_8f_433c0eCc673f_B3519IiOiI_xM5_5282DkwIi",
-    // };
+    const options = {
+        userIDs: [{ name: "serviciosrentcar", email: "servicios@rentcarmallorca.es" }],
+        curve: "ed25519",
+        passphrase: "dummy_qwerty_CHANGE_5252827edac9787f671_8f_433c0eCc673f_B3519IiOiI_xM5_5282DkwIi",
+    };
 
     // const key = await openpgp.generateKey(options);
 
@@ -33,7 +33,7 @@ async function encryptVars() {
     });
 
     // // console.log(encrypted);
-    console.log("encrypted in encrypted-secrets.local");
+    console.log("encrypted in encrypted-secrets.local. ");
 
     // const encryptedSanitazed = encrypted.replace(new RegExp("\n", 'g'), ";");
 
