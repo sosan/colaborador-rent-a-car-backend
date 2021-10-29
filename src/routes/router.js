@@ -38,15 +38,13 @@ router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/mostrardet
 
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/traducciones`, async (req, res) => await traducciones.GetTraducciones(req, res));
 router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/guardartraducciones`, async (req, res) => await traducciones.GuardarTraducciones(req, res));
-router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/actualizartraducciones`, async (req, res) => await traducciones.ActualizarTraducciones(req, res));
+// router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/actualizartraducciones`, async (req, res) => await traducciones.ActualizarTraducciones(req, res));
 
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/islive_0_QJFs_a_IiW_mFtZS2_f_A_BQ_NTib_Y3O6Ik_D0WNH9I`, async (req, res) => await live.IsLive(req, res));
 
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/xxxxx`, async (req, res) => await dashboard.RedirectGetDashboard(req, res));
 
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/logs`, async (req, res) => await logs.GetMainLogs(req, res));
-
-// /0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/logs
 
 module.exports = router;
 

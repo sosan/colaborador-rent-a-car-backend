@@ -190,99 +190,150 @@ botonTraducciones.addEventListener("click", async (evento) =>
 
     relleno.appendChild(trozoHtml);
     
-    borrarContenido = document.getElementById("borrarcontenido");
+    // borrarContenido = document.getElementById("borrarcontenido");
 
-    const scriptDataTable = document.createElement('input');
-    scriptDataTable.id = "dataTable";
-    scriptDataTable.type = "hidden";
-    scriptDataTable.value = `${JSON.stringify(datos.traducciones)}`;
-    borrarContenido.appendChild(scriptDataTable);
+    await ClickGuardarTraducciones();
 
-    const scriptXspreadSheet = document.createElement('script');
-    scriptXspreadSheet.src = "/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/hojacalculo/xspreadsheet.js";
-    borrarContenido.appendChild(scriptXspreadSheet);
-
-    scriptXspreadSheet.addEventListener("load", () => {
-        
-        const loadData = document.createElement('script');
-        loadData.src = '/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/hojacalculo/loaddata.js';
-        borrarContenido.appendChild(loadData);
-        
-        var botonActualizarDataSheet = document.getElementById("actualizarTraduccion");
-        botonActualizarDataSheet.addEventListener("click", async () =>
-        {
-
-            const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/actualizartraducciones", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-
-            });
-
-            const datos = await rawResponse.json();
-            if (datos.isOk === true) {
-                botonActualizarDataSheet.innerText = "Actualizado";
-                botonActualizarDataSheet.classList.add("verde");
-
-            }
-            else {
-                botonActualizarDataSheet.innerText = "FALLO!";
-                botonActualizarDataSheet.classList.add("rojo");
-            }
-
-
-            setTimeout(() => {
-                botonActualizarDataSheet.innerText = "Actualizar Traduccion Frontend";
-                botonActualizarDataSheet.classList.remove("verde");
-                botonActualizarDataSheet.classList.remove("rojo");
-            }, 3000);
-
-        });
-
-        var botonGuardarDataSheet = document.getElementById("guardarTraduccion");
-        botonGuardarDataSheet.addEventListener("click", async () => {
     
-            const hojaCalculoDatos = await ReturnData();
 
-            const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/guardartraducciones", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify(hojaCalculoDatos)
+    // const scriptDataTable = document.createElement('input');
+    // scriptDataTable.id = "dataTable";
+    // scriptDataTable.type = "hidden";
+    // scriptDataTable.value = `${JSON.stringify(datos.traducciones)}`;
+    // borrarContenido.appendChild(scriptDataTable);
 
-            });
+    // const scriptXspreadSheet = document.createElement('script');
+    // scriptXspreadSheet.src = "/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/hojacalculo/xspreadsheet.js";
+    // borrarContenido.appendChild(scriptXspreadSheet);
 
-            const datos = await rawResponse.json();
-            if (datos.isOk === true)
-            {
-                botonGuardarDataSheet.innerText = "Guardado";
-                botonGuardarDataSheet.classList.add("verde");
+    // scriptXspreadSheet.addEventListener("load", () => {
+        
+    //     const loadData = document.createElement('script');
+    //     loadData.src = '/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/js/hojacalculo/loaddata.js';
+    //     borrarContenido.appendChild(loadData);
+        
+    //     var botonActualizarDataSheet = document.getElementById("actualizarTraduccion");
+    //     botonActualizarDataSheet.addEventListener("click", async () =>
+    //     {
 
-            }
-            else
-            {
-                botonGuardarDataSheet.innerText = "FALLO!";
-                botonGuardarDataSheet.classList.add("rojo");
-            }
+    //         const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/actualizartraducciones", {
+    //             method: "GET",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             credentials: "include",
+
+    //         });
+
+    //         const datos = await rawResponse.json();
+    //         if (datos.isOk === true) {
+    //             botonActualizarDataSheet.innerText = "Actualizado";
+    //             botonActualizarDataSheet.classList.add("verde");
+
+    //         }
+    //         else {
+    //             botonActualizarDataSheet.innerText = "FALLO!";
+    //             botonActualizarDataSheet.classList.add("rojo");
+    //         }
 
 
-            setTimeout(() => {
-                botonGuardarDataSheet.innerText = "Guardar";
-                botonGuardarDataSheet.classList.remove("verde");
-                botonGuardarDataSheet.classList.remove("rojo");
-            }, 3000);
+    //         setTimeout(() => {
+    //             botonActualizarDataSheet.innerText = "Actualizar Traduccion Frontend";
+    //             botonActualizarDataSheet.classList.remove("verde");
+    //             botonActualizarDataSheet.classList.remove("rojo");
+    //         }, 3000);
+
+    //     });
+
+    //     var botonGuardarDataSheet = document.getElementById("guardarTraduccion");
+    //     botonGuardarDataSheet.addEventListener("click", async () => {
     
-        });
-    });
+    //         const hojaCalculoDatos = await ReturnData();
+
+    //         const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/guardartraducciones", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             credentials: "include",
+    //             body: JSON.stringify(hojaCalculoDatos)
+
+    //         });
+
+    //         const datos = await rawResponse.json();
+    //         if (datos.isOk === true)
+    //         {
+    //             botonGuardarDataSheet.innerText = "Guardado";
+    //             botonGuardarDataSheet.classList.add("verde");
+
+    //         }
+    //         else
+    //         {
+    //             botonGuardarDataSheet.innerText = "FALLO!";
+    //             botonGuardarDataSheet.classList.add("rojo");
+    //         }
+
+
+    //         setTimeout(() => {
+    //             botonGuardarDataSheet.innerText = "Guardar";
+    //             botonGuardarDataSheet.classList.remove("verde");
+    //             botonGuardarDataSheet.classList.remove("rojo");
+    //         }, 3000);
+    
+    //     });
+    // });
 
 
     toggleClass(sidenavEl, SIDENAV_ACTIVE_CLASS);
 
 });
+
+const ClickGuardarTraducciones = async () =>
+{
+
+    var botonGuardar = document.getElementById("guardarTraduccion");
+    
+    botonGuardar.addEventListener("click", async () => {
+
+        const textoTraduccionesRaw = document.getElementById("textotraducciones").value;
+        const textoTraduccionesComas = textoTraduccionesRaw.replace(new RegExp("\t", "g"), ";");
+        const envioDatos = 
+        {
+            "textoTraduccionesComas": textoTraduccionesComas
+        }
+
+        const rawResponse = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/guardartraducciones", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(envioDatos)
+
+        });
+
+        const datos = await rawResponse.json();
+        if (datos.isOk === true) {
+            botonGuardar.innerText = "Guardado";
+            botonGuardar.classList.add("verde");
+
+        }
+        else {
+            botonGuardar.innerText = "FALLO!";
+            botonGuardar.classList.add("rojo");
+        }
+
+
+        setTimeout(() => {
+            botonGuardar.innerText = "Guardar";
+            botonGuardar.classList.remove("verde");
+            botonGuardar.classList.remove("rojo");
+        }, 3000);
+
+    });
+
+
+};
 
 const LogicBotonTemplates = async (slideActualizar) =>
 {
