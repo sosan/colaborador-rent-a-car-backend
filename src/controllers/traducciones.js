@@ -39,7 +39,7 @@ exports.GuardarTraducciones = async (req, res) =>
 
     try
     {
-        const listadoRawTraducciones = csv2json(traduccionesRaw, { separator: ";", parseNumbers: true, transpose: true });
+        const listadoRawTraducciones = csv2json(traduccionesRaw, { separator: "#", parseNumbers: true, transpose: true });
 
         if (listadoRawTraducciones.length === 0)
         {

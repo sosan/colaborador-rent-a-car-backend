@@ -296,7 +296,7 @@ const ClickGuardarTraducciones = async () =>
     botonGuardar.addEventListener("click", async () => {
 
         const textoTraduccionesRaw = document.getElementById("textotraducciones").value;
-        const textoTraduccionesComas = textoTraduccionesRaw.replace(new RegExp("\t", "g"), ";");
+        const textoTraduccionesComas = textoTraduccionesRaw.replace(new RegExp("\t", "g"), "#");
         const envioDatos = 
         {
             "textoTraduccionesComas": textoTraduccionesComas
