@@ -313,8 +313,9 @@ const ClickGuardarTraducciones = async () =>
         });
 
         const datos = await rawResponse.json();
-        if (datos.isOk === true) {
-            botonGuardar.innerText = "Guardado";
+        if (datos.isOk === true && datos.actualizacion === true)
+        {
+            botonGuardar.innerText = "Guardado correcto";
             botonGuardar.classList.add("verde");
 
         }

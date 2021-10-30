@@ -75,10 +75,11 @@ exports.GuardarTraducciones = async (req, res) =>
         });
     
         const datos = await rawResponse.json();
-        
-            res.send({
-                "isOk": datos.isOk,
-            });
+        // console.log("datos=" + JSON.stringify(datos));
+        res.send({
+            "isOk": datos.isOk,
+            "actualizacion": datos.actualizacion,
+        });
 
     }
     catch (error)
