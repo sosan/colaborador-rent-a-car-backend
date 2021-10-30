@@ -43,7 +43,7 @@ exports.Backend_TO_Frontend = async (req, res) => {
 
     const body = { "token": process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET, datos: locations };
     const URI_LOCATIONS = `${protocolo}${process.env.URL_FRONTEND}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_LOCATION}`;
-    console.log("URI LOC" + URI_LOCATIONS);
+    
     try
     {
         // enviarlo al frontend
@@ -56,7 +56,9 @@ exports.Backend_TO_Frontend = async (req, res) => {
             body: JSON.stringify(body)
         });
     
+        
         const dataResponse = await responseRaw.json();
+
         if (res !== undefined)
         {
             res.send({"isOk": dataResponse.isOk})

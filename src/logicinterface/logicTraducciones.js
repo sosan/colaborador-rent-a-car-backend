@@ -17,38 +17,6 @@ exports.GuardarTraducciones = async (req, res) =>
 {
 
     const traduccionNueva = req.body;
-
-    // const hojaCalculoRaw = req.body;
-    
-    // let hojaCalculoJson = await GenerateHeaders(hojaCalculoRaw[0].cells);
-
-    // for (let key in hojaCalculoRaw)
-    // {
-
-    //     let currentFila = hojaCalculoRaw[key].cells;
-    //     for (let keyCurrentFila in currentFila)
-    //     {
-    //         switch(keyCurrentFila)
-    //         {
-    //             case "1": 
-    //                 hojaCalculoJson["en"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
-                
-    //             break;
-    //             case "2":
-    //                 hojaCalculoJson["es"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
-
-    //             break;
-    //             case "3":
-    //                 hojaCalculoJson["it"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
-    //             break;
-    //             case "4":
-    //                 hojaCalculoJson["de"][hojaCalculoRaw[key].cells[0].text] = hojaCalculoRaw[key].cells[keyCurrentFila].text;
-    //             break;
-    //         }
-    //     }
-    
-    // }
-
     const traduccionActual = await dbInterfaces.GetTranslations();
     const resultadoBorradoTraduccionAnterior = await dbInterfaces.BorrarTraduccionAnterior("locations_copia");
     const resultadoInsercionTraduccionAnterior = await dbInterfaces.InsertarTraduccion(traduccionActual, "locations_copia");
@@ -59,7 +27,7 @@ exports.GuardarTraducciones = async (req, res) =>
     
     res.send({
         "isOk": resultado,
-        "actualizcion": actualizacion,
+        "actualizacion": actualizacion,
     });
     
     const resultadoCommit = await logicGithub.GuardarTraduccion(
