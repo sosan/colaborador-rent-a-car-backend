@@ -20,10 +20,10 @@ exports.InitServer = async () =>
     
     app = express();
     
-    const apiLimiter = rateLimit({
-        windowMs: 1 * 60 * 1000, //1min
-        max: 50
-    });
+    // const apiLimiter = rateLimit({
+    //     windowMs: 1 * 60 * 1000, //1min
+    //     max: 50
+    // });
     
     app.use(cookieParser());
     app.use(compression());
@@ -35,7 +35,7 @@ exports.InitServer = async () =>
     app.use(morgan("combined"));
     
     
-    app.use("/", apiLimiter);
+    // app.use("/", apiLimiter);
     app.use("/", router);
     
     const listadoIP = await GetIP();
