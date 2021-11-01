@@ -22,11 +22,6 @@ exports.CheckEmailUsernamePassword = async (username, email, password) => {
 
     let isOk = true;
 
-    // if (email === undefined || password === undefined)
-    // {
-    //     isOk = false;
-    // }
-
     if (username !== "") {
         isOk = false;
     }

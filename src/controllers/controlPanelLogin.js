@@ -5,7 +5,7 @@ const nanoid = require("nanoid");
 exports.GetPanelLogin = async (req, res) =>
 {
 
-    
+    console.log("entradoa");
 
 };
 

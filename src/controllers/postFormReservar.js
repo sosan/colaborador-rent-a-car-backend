@@ -16,9 +16,6 @@ exports.postRealizarReserva = async (req, res) =>
         return res.send({ "isOk": false, "errorFormulario": "" });
     }
     
-    
-    // res.send({ isOk: true, numeroRegistro: "TEMPORAL" });
-    
     const resultadoInsercion = await logicInterface.ProcesarReserva(formulario);
 
     res.send({ 
@@ -27,9 +24,6 @@ exports.postRealizarReserva = async (req, res) =>
         merchantPayment: resultadoInsercion.merchantPayment
     });
 
-
-    // const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(resultadoInsercion, formulario);
-    // await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, resultadoInsercion.objectId);
 
 };
 
@@ -61,9 +55,7 @@ exports.PeticionPago = async (req, res) => {
 exports.ProcesarMerchantParameters = async (req, res) =>
 {
 
-    // console.log("antes merchante params=" + req.body.Ds_MerchantParameters);
     const decodedMerchantParameters = await logicInterface.RecibeCodedMerchantParameters(req.body.Ds_MerchantParameters);
-    // console.log("decodedMerchantParrameters" + JSON.stringify(decodedMerchantParameters));
     
     const responseTransaction = decodedMerchantParameters.Ds_Response - 0;
 
@@ -75,7 +67,6 @@ exports.ProcesarMerchantParameters = async (req, res) =>
         // buscar y modificar la reserva, enviar los correos
         
         const reserva = await logicInterface.BuscarReservaModificar(decodedMerchantParameters);
-        // console.log("reserva total=" + JSON.stringify(reserva));
         const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(reserva, reserva);
         await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, reserva._id);
         res.send({ "resultadoEmailsEnviados": resultadoEmailsEnviados });

@@ -19,12 +19,6 @@ exports.InitServer = async () =>
     const cookieParser = require("cookie-parser");
     
     app = express();
-    
-    // const apiLimiter = rateLimit({
-    //     windowMs: 1 * 60 * 1000, //1min
-    //     max: 50
-    // });
-    
     app.use(cookieParser());
     app.use(compression());
     app.use(userAgent.express());
@@ -33,9 +27,6 @@ exports.InitServer = async () =>
     app.use(express.json({ limit: "2mb" }));
     app.use(cors());
     app.use(morgan("combined"));
-    
-    
-    // app.use("/", apiLimiter);
     app.use("/", router);
     
     const listadoIP = await GetIP();

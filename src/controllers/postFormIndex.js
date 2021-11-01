@@ -105,69 +105,7 @@ exports.postFormIndex = async (req, res) =>
         });
     }
 
-    // // de momento solo pilla los que estan libres, faltaria buscar por poblacion, localidad
-    // const cochesPreciosRaw = await logicInterface.GetCarsByReservado(formulario);
-
-    // if (cochesPreciosRaw.isOk === false)
-    // {
-    //     console.error(`|- ${cochesPreciosRaw.errores}`);
-    //     return res.send({
-    //         "isOk": false,
-    //         "data": [],
-    //         "errorFormulario": "error_formulario1",
-    //         "diasEntreRecogidaDevolucion": undefined
-    //     });
-
-    // }
-
-    // if (cochesPreciosRaw.resultados.length <= 0)
-    // {
-    //     return res.send({
-    //         "isOk": true,
-    //         "data": [],
-    //         "errorFormulario": "error_formulario2",
-    //         "diasEntreRecogidaDevolucion": undefined 
-    //     });
-    // }
-
-    // const masValorados = await logicInterface.GetMasValorados();
-
-    // const porcentajeVehiculo = await logicInterface.GetPorcentajeVehiculos();
-
-    // const resultadosObjetoCoches = await logicInterface.TransformarResultadosCoche(
-    //     cochesPreciosRaw.resultados, 
-    //     cochesPreciosRaw.preciosPorClase,
-    //     formulario,
-    //     cochesPreciosRaw.datosSuplementoGenerico.resultados,
-    //     cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
-    //     masValorados,
-    //     porcentajeVehiculo
-    // );
     
-    // if (resultadosObjetoCoches.isOk === false) 
-    // {
-        
-    //     console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
-    //     return res.send({
-    //         "isOk": false,
-    //         "data": [],
-    //         "errorFormulario": resultadosObjetoCoches.errorFormulario,
-    //         "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
-    //     });
-    // }
-
-    // return res.send({
-    //     "isOk": true,
-    //     "data": resultadosObjetoCoches.resultadosCoches,
-    //     "datosOrdenacion": cochesPreciosRaw.datosOrdenacion.resultados,
-    //     "errorFormulario": resultadosObjetoCoches.errorFormulario,
-    //     "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion,
-    //     "suplementogenerico_base": cochesPreciosRaw.datosSuplementoGenerico.resultados,
-    //     "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
-    //     "preciosPorClase": cochesPreciosRaw.preciosPorClase,
-    //     "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados,
-        
-    // });
 
 };
 

@@ -76,12 +76,12 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     //envio correo admins
     const resultadoAdminEmailSended = await EnviarCorreoIo(bodyEmail);
     
-    const emailsEnviados = {
+    return {
         "resultadoUserEmailSended": resultadoUserEmailSended,
         "resultadoAdminEmailSended": resultadoAdminEmailSended
     };
 
-    return emailsEnviados;
+    // return emailsEnviados;
 
 };
 
@@ -95,7 +95,7 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
     emailsEnviados.resultadoAdminEmailSended["fechaEmailsActualizado"] = currentDate;
 
     //buscar por id
-    const isUpdated = await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
+    await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
     console.log(`emails enviados:\n-> Usuarios: ${emailsEnviados.resultadoUserEmailSended.isSended}\n-> Admins: ${emailsEnviados.resultadoAdminEmailSended.isSended}` )
 
 };
@@ -127,8 +127,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace("XXXXXX", texto)
     ;
 
-    let bodyEmail = 
-    {
+    return {
         from: 
         {
             name: "RentCarMallorca.es Servicios",
@@ -140,8 +139,6 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
 
     };
 
-
-    return bodyEmail;
 
 };
 
@@ -218,15 +215,14 @@ Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroR
 </html>
 `;
 
-    let bodyEmail =
-    {
+    return {
         from: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`,
         to: [`${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`, `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}` ],
         subject: `${subject}`,
         html: `${html}`
     };
 
-    return bodyEmail;
+    
 
 };
 
@@ -235,11 +231,9 @@ exports.EnviarCorreoAh = async (data) =>
 {
 
     const result = await EnviarCorreoIo(data);
-    const datos = {
+    return {
         "datosEmailConfirmacionReserva": result,
     };
-
-    return datos;
 
 
 };
@@ -285,54 +279,6 @@ const EnviarCorreoIo = async (data) =>
 };
 
 
-// const EnviarCorreoApiJet = async (uri, data) =>
-// {
-
-//     let isSended = false;
-//     let incrementalCount = 1;
-//     let resultadoEnvioEmail =
-//     {
-//         "isSended": false,
-//         "messageId": 0,
-//         "messageUUID": 0,
-//         "cannotSend": false
-//     };
-    
-   
-
-//     while (isSended === false)
-//     {
-//         const responseRaw = await fetch(uri, data);
-
-//         const emailIsSended = await responseRaw.json();
-//         if (emailIsSended.Messages.length > 0)
-//         {
-//             if (emailIsSended.Messages[0].Status === "success")
-//             {
-//                 isSended = true;
-//                 resultadoEnvioEmail["isSended"] = true ;
-//                 resultadoEnvioEmail["messageId"] = emailIsSended.Messages[0].To[0].MessageID;
-//                 resultadoEnvioEmail["messageUUID"] = emailIsSended.Messages[0].To[0].MessageUUID;
-//             }
-//         }
-//         else 
-//         {
-//             await sleep(5000 * incrementalCount);
-//             incrementalCount++;
-//         }
-
-//         if (incrementalCount >= 10)
-//         {
-//             resultadoEnvioEmail["cannotSend"] = true;
-//             break;
-//         }
-//     }
-
-//     return resultadoEnvioEmail;
-
-// };
-
-
 //2020-01-07T11:28:03.588+00:00
 const ObtenerCurrentDate = async () =>
 {
@@ -344,13 +290,9 @@ const ObtenerCurrentDate = async () =>
 
     const hora = date_ob.getUTCHours().toString().padStart(2, "00");
     const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
-    const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");;
-    // const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
-
-    // const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}:${ms}`;
-    const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}`;
-
-    return cadena;
+    const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");
+    
+    return `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}`;
 
 };
 
@@ -664,9 +606,7 @@ exports.CreateMerchantPayment = async (formulario, codigo, key) =>
 exports.RecibeCodedMerchantParameters = async (merchantParameters) =>
 {
 
-    const decodedMerchantParameters = await decodeMerchantParameters(merchantParameters);
-    
-    return decodedMerchantParameters;
+    return await decodeMerchantParameters(merchantParameters);
 
 };
 
@@ -808,10 +748,5 @@ exports.AñadirEstadisticas = async (formulario) =>
 exports.ActualizarEstadisticas = async (formulario) => {
 
     const resultado = await logicStats.ActualizarEstadisticas(formulario);
-
-
-    // const resultado = await logicStats.ActualizarEstadisticas(formulario);
-
-
 
 };

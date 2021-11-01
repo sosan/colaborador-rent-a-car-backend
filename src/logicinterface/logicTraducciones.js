@@ -18,8 +18,8 @@ exports.GuardarTraducciones = async (req, res) =>
 
     const traduccionNueva = req.body;
     const traduccionActual = await dbInterfaces.GetTranslations();
-    const resultadoBorradoTraduccionAnterior = await dbInterfaces.BorrarTraduccionAnterior("locations_copia");
-    const resultadoInsercionTraduccionAnterior = await dbInterfaces.InsertarTraduccion(traduccionActual, "locations_copia");
+    await dbInterfaces.BorrarTraduccionAnterior("locations_copia");
+    await dbInterfaces.InsertarTraduccion(traduccionActual, "locations_copia");
     const resultado = await dbInterfaces.ActualizarTraduccion(traduccionNueva, "locations");
 
     // actualizar la variable 

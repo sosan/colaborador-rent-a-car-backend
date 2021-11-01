@@ -18,7 +18,6 @@ exports.PostInitStats = async(req, res) =>
         //TODO: mejorar
         console.error("control schema invalido");
         return res.send({"isOk": false});
-        // return res.status(404).send("Not found");
         
     }
     
@@ -50,18 +49,11 @@ exports.ActualizarStats = async (req, res) =>
         //TODO: mejorar a redireccion ?
         // blocklist?
         console.error("postFormReservar > Esquema invalido");
-        // return res.status(404).send("Not found");
         return res.send({ "isOk": false });
 
     }
 
     res.send({ "isOk": true });
-
-    // const resultado = await logicInterface.SumarVisitaVehiculo(formulario.vehiculo);
-
-    // if (resultado === undefined) {
-    //     console.log(`no se ha sumado +1 al vehiculo ${vehiculo}`);
-    // }
 
     await logicInterface.ActualizarEstadisticas(formulario);
 

@@ -37,9 +37,6 @@ exports.GetBackendVars = async () =>
     redisdb_password = await sanitizar(redisdb_password);
     token_pgp = await sanitizar(token_pgp);
 
-    // port_backend = port_backend - 0;
-    // port_frontend = port_frontend - 0;
-    // redisdb_port = redisdb_port - 0;
     console.log("Seteando variables...");
 
     await dbInterfaces.ConnectVault(redisdb_port, redisdb_host, redisdb_password );
@@ -58,12 +55,11 @@ exports.GetBackendVars = async () =>
         {
             const variableSanitizadas = await sanitizar(envConfig[k]);
             tempEnv[k] = variableSanitizadas;
-            // console.log(`texto sanitizado=${k}=${variableSanitizadas}`);
         }
         else
         {
             tempEnv[k] = envConfig[k];
-            // console.log(`+++ texto=${k}:${envConfig[k]}`);
+
         }
     }
     process.env = tempEnv;
@@ -112,7 +108,7 @@ function esperar() {
         setTimeout(() => {
             
             resolve();
-            ;
+            
         }, 3000
         );
     });

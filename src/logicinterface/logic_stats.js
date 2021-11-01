@@ -162,37 +162,11 @@ const sleep = async (ms) => {
 
 exports.ActualizarEstadisticas = async (formulario) => {
 
-    // formulario["alta"] = new Date(new Date().toUTCString());
-    // formulario.fase = formulario.fase - 0;
-
-    // const comprador = {
-    //     "compradorId": formulario.success,
-    //     "faseActual": formulario.fase,
-    //     "rutaDatos":
-    //     {
-    //         "fase": formulario.fase,
-    //         ...formulario
-    //     }
-
-    // }
-
-    // const resultado = dbInterfaces.ActualizarPosibleComprador(comprador);
-
-
+ 
 
     formulario["alta"] = new Date(new Date().toUTCString());
     formulario["fase"] = formulario["fase"] - 0;
-
-    // const visitanteActualizado = {
-    //     // "faseActual": formulario["fase"],
-    //     "rutaDatos": [
-    //         {
-    //             ...formulario
-    //         }
-    //     ]
-
-    // };
-
+ 
     const visitanteActualizado = {
         ...formulario
     };

@@ -10,8 +10,8 @@ exports.asyncFetchGet = async (url) => {
             "Content-type": "application/json"
         }
     });
-    const result = await response.json();
-    return result;
+    return await response.json();
+
 };
 
 exports.asyncFetchPost = async (url, data) => {
@@ -24,7 +24,7 @@ exports.asyncFetchPost = async (url, data) => {
         credentials: "include",
         body: JSON.stringify(data)
     });
-    const result = await response.json();
-    return result;
+    return await response.json();
+    
 };
 

@@ -1,5 +1,5 @@
 const dbInterfaces = require("../database/dbInterfaces");
-const porcentajeVehiculo = require("../controllers/porcentajeTipoVehiculo");
+const porcentajeVehiculoInterface = require("../controllers/porcentajeTipoVehiculo");
 const Joi = require("joi");
 
 const DAY_IN_MILISECONDS = 86400000;
@@ -187,7 +187,7 @@ exports.GetAllCars = async (formulario) => {
         false
     );
 
-    let datosDevueltos = { "isOk": false };
+    let datosDevueltos = { };
     if (resultadosObjetoCoches.isOk === false) {
 
         console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
@@ -759,11 +759,11 @@ const GetMasValorados = async () => {
 
 const GetPorcentajeVehiculos = async () => {
 
-    let porcentajeTipoVehiculo = await porcentajeVehiculo.GetPorcentajeTipoVehiculo();
+    let porcentajeTipoVehiculo = await porcentajeVehiculoInterface.GetPorcentajeTipoVehiculo();
 
     if (porcentajeTipoVehiculo === undefined) {
         porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
-        porcentajeVehiculo.SetPorcentajeTipoVehiculo(porcentajeTipoVehiculo);
+        porcentajeVehiculoInterface.SetPorcentajeTipoVehiculo(porcentajeTipoVehiculo);
     }
 
     return porcentajeTipoVehiculo;

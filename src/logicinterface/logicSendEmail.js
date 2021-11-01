@@ -10,6 +10,7 @@ const PUBLIC_SMTP_KEY = `${process.env.PUBLIC_SMTP_KEY}`.replace(new RegExp("_",
 exports.transporter = nodemailer.createTransport({
     host: `${SERVIDOR_SMTP}`,
     port: 587,
+    secure: false, //STARTTLS necesita empezar como texto plano, luego encripta el mensaje
     auth: {
         user: `${USUARIO_CORREO}`,
         pass: `${PASSWORD_CORREO}`,
