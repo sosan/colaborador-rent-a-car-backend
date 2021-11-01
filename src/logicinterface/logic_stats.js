@@ -68,9 +68,6 @@ exports.CheckToken = async (res, req, tokenFromFrontend) => {
     if (req.useragent.browser === "node-fetch") {
         isValid = true;
     }
-    else {
-        isValid = false;
-    }
 
     if (req.body.token === tokenFromFrontend) {
         isValid = true;

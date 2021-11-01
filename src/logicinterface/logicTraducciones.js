@@ -30,7 +30,7 @@ exports.GuardarTraducciones = async (req, res) =>
         "actualizacion": actualizacion,
     });
     
-    const resultadoCommit = await logicGithub.GuardarTraduccion(
+    await logicGithub.GuardarTraduccion(
         traduccionNueva,
         process.env.USUARIO_AUTO_GIT,
         process.env.USUARIO_AUTO_NOMBRE_REPO

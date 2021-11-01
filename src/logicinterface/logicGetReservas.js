@@ -156,7 +156,7 @@ exports.ConfirmarReserva = async (req, res ) =>
     const respuestaReservaConfirmacion = await logic_postFormReservar.EnviarCorreoAh(bodyEmail); //transporter.sendMail(bodyEmail);
 
     //enviarlo a la db
-    const currentDate = await ObtenerCurrentDate(); //new Date().toISOString();
+    const currentDate = await ObtenerCurrentDate();
 
     respuestaReservaConfirmacion["fechaEnvioConfirmacionReserva"] = currentDate;
     respuestaReservaConfirmacion["emailConfirmacionReservaEnviado"] = respuestaReservaConfirmacion.datosEmailConfirmacionReserva.isSended;
@@ -204,7 +204,6 @@ const ObtenerCurrentDate = async () => {
     const hora = date_ob.getUTCHours().toString().padStart(2, "00");
     const minutos = date_ob.getUTCMinutes().toString().padStart(2, "00");
     const segundos = date_ob.getUTCSeconds().toString().padStart(2, "00");
-    // const ms = date_ob.getUTCMilliseconds().toString().padStart(2, "00");
 
     const cadena = `${anyo}-${mes}-${dia}T${hora}:${minutos}:${segundos}`;
 

@@ -697,7 +697,7 @@ exports.UpdateReservasByLocalizador = async (localizador, merchantParameters) =>
 
         console.log("resultados actualizacion=" + JSON.stringify(resultados));
         
-        const isUpdated = resultados.lastErrorObject.updatedExisting === true; //resultados.ok === 1;
+        const isUpdated = resultados.lastErrorObject.updatedExisting === true;
         return [isUpdated, resultados.value] ;
 
     }
@@ -883,8 +883,6 @@ exports.GetReservasConfirmacionEnviada = async (fechaInicio, fechaFin, enviado) 
 
 };
 
-
-// { fechaAlta: { $gte: "2021-07-15" } }
 
 exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
 {

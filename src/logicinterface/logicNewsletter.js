@@ -110,8 +110,6 @@ exports.EnviarCorreoIo = async (data) => {
         catch (error)
         {
             console.log(`${incrementalCount} No posible enviar Correo=${data.to}`);
-            // await sleep(5000 * incrementalCount);
-            // incrementalCount++;
             resultadoEnvioEmail["cannotSend"] = true;
             return resultadoEnvioEmail;
         }
