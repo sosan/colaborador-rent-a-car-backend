@@ -264,7 +264,7 @@ exports.GetCars = async (formulario, token) => {
 
 
 
-    let datosDevueltos = { "isOk": false };
+    let datosDevueltos = { };
     if (resultadosObjetoCoches.isOk === false) {
 
         console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);

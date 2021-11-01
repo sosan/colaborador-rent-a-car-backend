@@ -506,7 +506,7 @@ const CheckReservaValida = async (formulario) =>
     
 
     const datosVehiculo = await dbInterfaces.GetCarByDescripcion(formulario.descripcion_vehiculo);
-    const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
+    // const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
     const preciosPorClase = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo);
     
     const porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
@@ -730,8 +730,7 @@ const zeroUnpad = async (buf, blocksize) =>
 exports.SumarVisitaVehiculo = async (vehiculo) =>
 {
 
-    const resultado = await dbInterfaces.SumarVisitaVehiculo(vehiculo);
-    return resultado;
+    return await dbInterfaces.SumarVisitaVehiculo(vehiculo);
 
 };
 
@@ -739,7 +738,7 @@ exports.SumarVisitaVehiculo = async (vehiculo) =>
 exports.AñadirEstadisticas = async (formulario) =>
 {
 
-    const resultado = await logicStats.AñadirEstadisticas(formulario);
+    await logicStats.AñadirEstadisticas(formulario);
     
 };
 
@@ -747,6 +746,6 @@ exports.AñadirEstadisticas = async (formulario) =>
 
 exports.ActualizarEstadisticas = async (formulario) => {
 
-    const resultado = await logicStats.ActualizarEstadisticas(formulario);
+    await logicStats.ActualizarEstadisticas(formulario);
 
 };

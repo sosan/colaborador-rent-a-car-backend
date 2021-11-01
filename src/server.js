@@ -9,7 +9,7 @@ exports.InitServer = async () =>
     const express = require("express");
     const compression = require("compression");
     const userAgent = require("express-useragent");
-    const rateLimit = require("express-rate-limit");
+    
     const dbInterfaces = require("./database/dbInterfaces");
 
     // --- conexion base de datos
