@@ -9,7 +9,7 @@ exports.InitServer = async () =>
     const express = require("express");
     const compression = require("compression");
     const userAgent = require("express-useragent");
-    
+    const rateLimit = require("express-rate-limit");
     const dbInterfaces = require("./database/dbInterfaces");
 
     // --- conexion base de datos
@@ -18,6 +18,11 @@ exports.InitServer = async () =>
     const router = require("./routes/routes");
     const cookieParser = require("cookie-parser");
     
+    const apiLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 20
+    });
+
     app = express();
     app.use(cookieParser());
     app.use(compression());
@@ -28,6 +33,7 @@ exports.InitServer = async () =>
     app.use(cors());
     app.use(morgan("combined"));
     app.use("/", router);
+    app.use(process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, apiLimiter);
     
     const listadoIP = await GetIP();
     
