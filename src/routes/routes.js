@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const rateLimit = require("express-rate-limit");
 
 // Controladores
 const index = require("../controllers/showIndex");
@@ -17,6 +18,7 @@ const logicTemplates = require("../logicinterface/logicGetTemplate");
 const logicTraducciones = require("../logicinterface/logicTraducciones");
 const logicStats = require("../logicinterface/logicStats");
 const live = require("../controllers/live");
+
 
 // ---- admin
 const controlPanelLogin = require("../controllers/controlPanelLogin");
@@ -63,9 +65,13 @@ router.get(process.env.ENDPOINT_PORCENTAJE_VEHICULO, async (req, res) => await p
 // obtener los vars para frontend
 router.get(process.env.ENDPOINT_VARIABLES_FRONTEND, async (req, res) => await logicVars.GetFrontendVars(req, res));
 
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 20
+});
 
 router.post(
-    process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res));
+    process.env.ENDPOINT_BACKEND_PANEL_CONTROL_LOGIN_REGISTER, loginLimiter, async (req, res) => await controlPanelLogin.PanelLoginRegister(req, res));
 
 router.get(process.env.ENDPOINT_GET_GENERAL_STATS, async (req, res) => await logicStats.GetStats(req, res));
 
