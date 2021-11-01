@@ -345,7 +345,7 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
     let incrementalCount = 1;
     while (isInserted === false)
     {
-        result = await dbInterfaces.ProcesarReserva(formulario);
+        const result = await dbInterfaces.ProcesarReserva(formulario);
         isInserted = result.isInserted;
         if (isInserted === false)
         {

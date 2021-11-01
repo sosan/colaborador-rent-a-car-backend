@@ -57,7 +57,7 @@ exports.PanelLoginRegister = async (req, res) =>
 exports.GenerateHMTLForGeneralConditions = async (req, res) =>
 {
 
-    
+    console.log("generar html");
 
 
   
@@ -66,7 +66,7 @@ exports.GenerateHMTLForGeneralConditions = async (req, res) =>
 
 exports.ActualizarTraducciones = async (req, res) => {
 
-
+    console.log("actualizar traducciones");
 
 
 

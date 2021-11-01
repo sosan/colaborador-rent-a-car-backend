@@ -24,8 +24,7 @@ exports.ConnectDB = async () =>
 
 exports.GetLocation = async () =>
 {
-    const datos = await mongo_dao.GetLocation();
-    return datos;
+    return await mongo_dao.GetLocation();
 
 };
 
@@ -43,31 +42,28 @@ exports.GetTokenFromFrontend = () =>
 
 exports.GetCarsByReservado = async (filtrado) => {
 
-    const datos = await mongo_dao.GetCarsByReservado(filtrado);
-    return datos;
+    return await mongo_dao.GetCarsByReservado(filtrado);
+    
 
 };
 
 exports.GetCarByDescripcion = async (descripcion) =>
 {
-    const vehiculo = await mongo_dao.GetCarByDescripcion(descripcion);
-    return vehiculo;
+    return await mongo_dao.GetCarByDescripcion(descripcion);
 
 };
 
 exports.GetClaseVehiculosOrdenados = async () =>
 {
 
-    const datos = await mongo_dao.GetClaseVehiculosOrdenados();
-    return datos;
+    return await mongo_dao.GetClaseVehiculosOrdenados();
 
 };
 
 exports.GetSuplementosTipoChofer = async () =>
 {
 
-    const datosAll = await mongo_dao.GetAllSuplementosTipoChofer();
-    return datosAll;
+    return await mongo_dao.GetAllSuplementosTipoChofer();
 
 };
 
@@ -75,55 +71,51 @@ exports.GetSuplementosTipoChofer = async () =>
 
 exports.GetSuplementoGenerico = async () => {
 
-    const datos = await mongo_dao.GetSuplementoGenerico();
-    return datos;
+    return await mongo_dao.GetSuplementoGenerico();
 
 };
 
 
 exports.GetTiposClases = async () => {
 
-    const resultados = await mongo_dao.GetTiposClases();
-    return resultados;
+    return await mongo_dao.GetTiposClases();
 
 };
 
 exports.GetPreciosPorClase = async (tiposClases) => {
 
-    const resultados = await mongo_dao.GetPreciosPorClase(tiposClases);
-    return resultados;
+    return await mongo_dao.GetPreciosPorClase(tiposClases);
 
 };
 
 exports.GetPreciosUnicaClase = async (tipoClase) =>
 {
 
-    const resultados = await mongo_dao.GetPreciosUnicaClase(tipoClase);
-    return resultados;
+    return await mongo_dao.GetPreciosUnicaClase(tipoClase);
 
 };
 
 exports.GetCondicionesGenerales = async () =>
 {
 
-    const resultados = await mongo_dao.GetCondicionesGenerales();
-    return resultados;
+    return await mongo_dao.GetCondicionesGenerales();
+    
 };
 
 
 
 exports.GetMasValorados = async () => 
 {
-    const result = await redis_dao.GetMasValorados();
-    return result;
+    return await redis_dao.GetMasValorados();
+    
 
 
 };
 
 exports.SumarVisitaVehiculo = async (vehiculo) =>
 {
-    const resultado = await redis_dao.SumarVisitaVehiculo(vehiculo);
-    return resultado;
+    return await redis_dao.SumarVisitaVehiculo(vehiculo);
+    
 
 };
 
@@ -132,16 +124,16 @@ exports.SumarVisitaVehiculo = async (vehiculo) =>
 
 exports.InsertarPosibleComprador = async (comprador) => {
 
-    const resultado = await mongo_dao.InsertarPosibleComprador(comprador);
-    return resultado;
+    return await mongo_dao.InsertarPosibleComprador(comprador);
+    
 
 };
 
 exports.ActualizarPosibleComprador = async (idVisitante, faseActual, visitanteActualizado) =>
 {
 
-    const resultado = await mongo_dao.ActualizarPosibleComprador(idVisitante, faseActual, visitanteActualizado);
-    return resultado;
+    return await mongo_dao.ActualizarPosibleComprador(idVisitante, faseActual, visitanteActualizado);
+    
 
 
 };
@@ -149,15 +141,15 @@ exports.ActualizarPosibleComprador = async (idVisitante, faseActual, visitanteAc
 
 exports.GetPorcentajeTipoVehiculo = async () =>
 {
-    const resultado = await mongo_dao.GetPorcentajeTipoVehiculo();
-    return resultado;
+    return await mongo_dao.GetPorcentajeTipoVehiculo();
+    
 };
 
 
 exports.ProcesarReserva = async (formulario) => {
 
-    const resultado = await mongo_dao.ProcesarReserva(formulario);
-    return resultado;
+    return await mongo_dao.ProcesarReserva(formulario);
+    
 
 };
 
@@ -173,23 +165,23 @@ exports.UpdateReservasByLocalizador = async (localizador, merchantParameters) =>
 exports.ConsultarCantidadReservasDia = async(cadenaComprobarDia) =>
 {
 
-    const resultado = await redis_dao.ConsultarCantidadReservasDia(cadenaComprobarDia);
-    return resultado;
+    return await redis_dao.ConsultarCantidadReservasDia(cadenaComprobarDia);
+    
 
 };
 
 exports.CheckEmailNewsletter = async (email) =>
 {
 
-    const resultado = await mongo_dao.CheckEmailNewsletter(email);
-    return resultado;
+    return await mongo_dao.CheckEmailNewsletter(email);
+    
 
 };
 
 exports.AddEmailNewsletter = async (email) => 
 {
-    const resultado = await mongo_dao.AddEmailNewsletter(email);
-    return resultado;
+    return await mongo_dao.AddEmailNewsletter(email);
+    
 
 
 };
@@ -197,16 +189,16 @@ exports.AddEmailNewsletter = async (email) =>
 
 exports.UpdateReserva = async (emailsEnviados, objectId, currentDate) =>
 {
-    const resultado = await mongo_dao.UpdateReserva(emailsEnviados, objectId);
-    return resultado;
+    return await mongo_dao.UpdateReserva(emailsEnviados, objectId);
+    
 
 };
 
 exports.UpdateReservaWithString = async (emailsEnviados, objectId, currentDate) =>
 {
 
-    const resultado = await mongo_dao.UpdateReserva(emailsEnviados, ObjectId(objectId));
-    return resultado;
+    return await mongo_dao.UpdateReserva(emailsEnviados, ObjectId(objectId));
+    
 
     
 
@@ -215,30 +207,29 @@ exports.UpdateReservaWithString = async (emailsEnviados, objectId, currentDate) 
 
 exports.GetImagenBase64 = async () =>
 {
-    const resultado = await mongo_dao.GetImagenBase64();
-    return resultado;
+    return await mongo_dao.GetImagenBase64();
+    
 };
 
 
 exports.ConsultarLocalizador = async (localizador) =>
 {
 
-    const resultado = await mongo_dao.ConsultarLocalizador(localizador);
-    return resultado;
+    return await mongo_dao.ConsultarLocalizador(localizador);
+    
 
 };
 
 exports.GetReservasNotSended = async () =>
 {
-    const resultado = await mongo_dao.GetReservasNotSended();
-    return resultado;
+    return await mongo_dao.GetReservasNotSended();
+    
 
 
 };
 
 exports.GetReservasSended = async () => {
-    const resultado = await mongo_dao.GetReservasSended();
-    return resultado;
+    return await mongo_dao.GetReservasSended();
 
 
 };
@@ -246,19 +237,16 @@ exports.GetReservasSended = async () => {
 
 exports.GetReservasConfirmacionEnviada = async (fechaInicio, fechaFin, enviado) => {
 
-    const resultado = await mongo_dao.GetReservasConfirmacionEnviada(fechaInicio, fechaFin, enviado);
-    return resultado;
+    return await mongo_dao.GetReservasConfirmacionEnviada(fechaInicio, fechaFin, enviado);
 };
 
 exports.GetReservasConfirmacionNoEnviada = async (fechaInicio, fechaFin, enviado) => {
 
-    const resultado = await mongo_dao.GetReservasConfirmacionNoEnviada(fechaInicio, fechaFin, enviado);
-    return resultado;
+    return await mongo_dao.GetReservasConfirmacionNoEnviada(fechaInicio, fechaFin, enviado);
 };
 
 exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
 {
-    const resultado = await mongo_dao.MarcarCorreoNewsletterCorrectoIncorrecto(correo, validez);
-    return resultado;
+    return await mongo_dao.MarcarCorreoNewsletterCorrectoIncorrecto(correo, validez);
 
 }

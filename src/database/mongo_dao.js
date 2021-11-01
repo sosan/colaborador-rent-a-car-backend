@@ -424,14 +424,14 @@ exports.GetCondicionesGenerales = async () => {
         let data = {};
         if (resultados !== undefined) {
             data = { isOk: true, resultados: resultados[0], errores: "" };
-            // return { isOk: true, resultados: resultados[0], errores: "" };
+            
         }
         else
         {
             const error = `${EnumTiposErrores.SinDatos} Coleccion Cars`;
             console.error(error);
             data = { isOk: false, resultados: undefined, errores: error };
-            // return { isOk: false, resultados: undefined, errores: error };
+            
         }
 
         return data;
@@ -444,35 +444,6 @@ exports.GetCondicionesGenerales = async () => {
     
 };
 
-// exports.GetPagoRecogida = async () =>
-// {
-//     try
-//     {
-//         const resultados = await collectionHelper.find({ id: "pago_recogida" })
-//             .project({ _id: 0 })
-//             .toArray();
-
-//         let data = {};
-//         if (resultados !== undefined) {
-//             data = { isOk: true, resultados: resultados[0], errores: "" };
-//             // return { isOk: true, resultados: resultados[0], errores: "" };
-//         }
-//         else {
-//             const error = `${EnumTiposErrores.SinDatos} Coleccion Helper`;
-//             console.error(error);
-//             data = { isOk: false, resultados: undefined, errores: error };
-//             // return { isOk: false, resultados: undefined, errores: error };
-//         }
-
-//         return data;
-//     }
-//         catch (err) {
-//         //TODO: enviar a otra db error, redis
-//         const error = `${err} Coleccion Cars`;
-//         console.error(error);
-//     }
-
-// };
 
 exports.InsertarPosibleComprador = async (visitante) => {
 
@@ -757,13 +728,7 @@ exports.AddEmailNewsletter = async (email) => {
 
     try {
         const result = await collectionEmailNewsletter.insertOne({ "email": email });
-        let isInserted = false;
-        if (result.insertedCount === 1)
-        {
-            isInserted = true;
-        }
-        
-        // const isInserted = result.insertedCount === 1;
+        const isInserted = result.insertedCount === 1;
         return isInserted;
 
     } catch (error) {
