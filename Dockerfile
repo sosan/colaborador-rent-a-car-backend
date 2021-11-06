@@ -28,7 +28,7 @@ FROM gcr.io/distroless/cc:nonroot
 USER 1001
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/backend .
-COPY --from=util_builder /bin/wget /usr/bin/wget
+COPY --from=util_builder /bin/wget /usr/bin/wgetnpm run devhub
 
 CMD [ "/usr/src/app/backend" ]
 
