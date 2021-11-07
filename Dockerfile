@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy-alpine:v1.19-latest
+FROM envoyproxy/envoy-alpine:v1.20-latest
 
 ARG EMAIL_CERTIFICATION
 ARG DOMAIN_1
@@ -13,6 +13,3 @@ RUN chmod go+r /etc/front-envoy.yaml
 USER 1001
 # CMD ["/usr/local/bin/envoy", "-c /etc/front-envoy.yaml", "-l", "debug"]
 CMD ["/usr/local/bin/envoy", "-c /etc/front-envoy.yaml" ]
-
-
-
