@@ -48,4 +48,6 @@ jobs:
           script: |
             /home/alvaro/bin/docker context use rootless
             /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest
+            echo "${{secrets.SERVER_CRT_SSL}}" > /home/alvaro/certs/server_http_cert.pem
+            echo "${{secrets.SERVER_KEY_SSL}}" > /home/alvaro/certs/server_http_key.pem
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
