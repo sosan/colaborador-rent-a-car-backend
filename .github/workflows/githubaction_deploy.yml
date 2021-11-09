@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-20.04
     # if: "contains(github.event.*.message, 'subir')"
     # if: github.event.*.message === "subir"
-    if: "contains(github.event.head_commit.message, '/a')"
+    if: "contains(github.event.head_commit.message, '/d')"
     steps:
       - name: Avoid redudant builds
         uses: styfle/cancel-workflow-action@0.9.1
@@ -94,7 +94,7 @@ jobs:
           sarif_file: 'trivy-results.sarif'
 
       - name: Comandos SSH Servidor
-        if: "contains(github.event.head_commit.message, '/b')"
+        if: "contains(github.event.head_commit.message, '/d')"
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_SERVIDOR }}
