@@ -32,7 +32,7 @@ exports.conectDb = async () => {
     try {
         const connect = await client.connect();
 
-        if (connect.isConnected() === true)
+        // if (connect.IsConnected() === true)
         {
             console.log(`[process ${process.pid}] CONNECTED TO MONGO DB`);
             const currentDb = client.db(process.env.MONGO_DB_NAME);
