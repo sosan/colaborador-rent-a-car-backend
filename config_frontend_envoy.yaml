@@ -76,9 +76,9 @@ static_resources:
               - match:
                   prefix: "/"
                 redirect:
-                  # path_redirect: "/"
+                  path_redirect: "/"
                   https_redirect: true
-                  # port_redirect: 443
+                  port_redirect: 443
           http_filters:
           - name: envoy.filters.http.buffer
             typed_config:
