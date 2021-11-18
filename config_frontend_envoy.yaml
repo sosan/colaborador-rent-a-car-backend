@@ -53,21 +53,18 @@ static_resources:
           route_config:
             name: local_route_web
             virtual_hosts:
-            # - name: sin_www_service
-              # domains:
-              # - "rentcarmallorca.es"
-              # routes:
-              # - match:
-                  # prefix: "/"
-                # redirect:
-                  # host_redirect: "www.rentcarmallorca.es"
-                  # https_redirect: true
-                  # host_redirect: "rentcarmallorca.es"
-                
+            - name: sin_www_service
+              domains:
+              - "rentcarmallorca.es"
+              routes:
+              - match:
+                  prefix: "/"
+                redirect:
+                  host_redirect: "www.rentcarmallorca.es"
             - name: www_service
               domains:
-              # - "www.rentcarmallorca.es"
-              - "*"
+              - "www.rentcarmallorca.es"
+              # - "*"
               routes:
               - match:
                   prefix: "/.well-known/acme-challenge/"
@@ -76,9 +73,9 @@ static_resources:
               - match:
                   prefix: "/"
                 redirect:
-                  path_redirect: "/"
                   https_redirect: true
-                  port_redirect: 443
+                  # path_redirect: "/"
+                  # port_redirect: 443
           http_filters:
           - name: envoy.filters.http.buffer
             typed_config:
