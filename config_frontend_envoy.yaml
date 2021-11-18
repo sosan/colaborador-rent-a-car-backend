@@ -61,6 +61,7 @@ static_resources:
                   prefix: "/"
                 redirect:
                   host_redirect: "www.rentcarmallorca.es"
+                  https_redirect: true
             - name: www_service
               domains:
               - "www.rentcarmallorca.es"
