@@ -17,6 +17,12 @@
 
 # https://dev.to/ishankhare07/dabbling-with-envoy-configurations-part-i-3lfi
 
+# https://github.com/envoyproxy/envoy/issues/17228
+# https://github.com/envoyproxy/envoy/pull/10553
+# https://github.com/envoyproxy/envoy/issues/9847
+# https://github.com/envoyproxy/envoy/blob/26da59944339363e7b6e90664f55b9f73b5923b5//configs/envoyproxy_io_proxy_http3_downstream.yaml
+# https://tools.keycdn.com/brotli-test
+
 static_resources:
   listeners:
 
@@ -55,10 +61,8 @@ static_resources:
                   prefix: "/"
                 redirect:
                   host_redirect: "rentcarmallorca.es"
-
                 # route:
                 #   host_rewrite_literal: "www.rentcarmallorca.es"
-                  
             - name: www_service
               domains:
               - "www.rentcarmallorca.es"
