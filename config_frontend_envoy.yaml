@@ -53,21 +53,21 @@ static_resources:
           route_config:
             name: local_route_web
             virtual_hosts:
-            - name: sin_www_service
-              domains:
-              - "rentcarmallorca.es"
-              routes:
-              - match:
-                  prefix: "/"
-                redirect:
-                  host_redirect: "www.rentcarmallorca.es"
-                  https_redirect: true
+            # - name: sin_www_service
+              # domains:
+              # - "rentcarmallorca.es"
+              # routes:
+              # - match:
+                  # prefix: "/"
+                # redirect:
+                  # host_redirect: "www.rentcarmallorca.es"
+                  # https_redirect: true
                   # host_redirect: "rentcarmallorca.es"
-                # route:
-                #   host_rewrite_literal: "www.rentcarmallorca.es"
+                
             - name: www_service
               domains:
-              - "www.rentcarmallorca.es"
+              # - "www.rentcarmallorca.es"
+              - "*"
               routes:
               - match:
                   prefix: "/.well-known/acme-challenge/"
