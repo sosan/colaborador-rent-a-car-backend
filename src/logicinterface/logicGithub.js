@@ -28,6 +28,11 @@ exports.GuardarTraduccion = async (traduccion, nombreusuario, nombrerepo) =>
     });
     
     const resultadoUpdateFile = await updateFileGithubRaw.json();
+    if (resultadoUpdateFile === undefined || resultadoUpdateFile.commit === undefined)
+    {
+        return false;
+    }
+    
     return resultadoUpdateFile["commit"]["sha"] !== undefined;
 
 }

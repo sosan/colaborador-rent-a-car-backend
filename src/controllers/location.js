@@ -36,12 +36,18 @@ exports.Backend_TO_Frontend = async (req, res) => {
     locations = await dbinterface.GetLocation();
 
     const body = { "token": process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET, datos: locations };
-    const URI_LOCATIONS = `${protocolo}${process.env.URL_FRONTEND}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_LOCATION}`;
+
+    let urlfrontend = process.env.URL_FRONTEND || "localhost";
+    if (process.env.NODE_ENV === "development")
+    {
+        urlfrontend = "localhost";
+    }
+    const URI_FRONTEND_LOCATION = `${protocolo}${urlfrontend}:${process.env.PORT_FRONTEND}${process.env.ENDPOINT_LOCATION}`;
     
     try
     {
         // enviarlo al frontend
-        const responseRaw = await fetch(URI_LOCATIONS, {
+        const responseRaw = await fetch(URI_FRONTEND_LOCATION, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
