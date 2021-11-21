@@ -39,7 +39,7 @@ exports.GetBackendVars = async () => {
     const URI_VARIABLES = `${protocolo}${host}:${port_backend}${endpoint_variables_frontend}`;
     // console.log("uri_variable=" + URI_VARIABLES);
 
-    console.log("obteniendo las variables" + URI_VARIABLES );
+    console.log("obteniendo las variables " + URI_VARIABLES );
     const responseRaw = await fetch(URI_VARIABLES, {
         method: "GET",
         headers: {

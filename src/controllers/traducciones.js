@@ -7,7 +7,7 @@ const urlbackend = process.env.URL_BACKEND || "localhost";
 const protocolo = "http://";
 
 // const TRADUCCIONES_BACKEND = `${protocolo}${urlbackend}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_TRADUCCIONES_BACKEND}`;
-const TRADUCCIONES_GUARDAR = `${protocolo}${urlbackend}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_TRADUCCIONES_GUARDAR}`;
+const TRADUCCIONES_GUARDAR = `${protocolo}${process.env.URL_BACKEND}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_TRADUCCIONES_GUARDAR}`;
 const TRADUCCIONES_ACTUALIZAR = `${protocolo}${urlbackend}:${process.env.PORT_BACKEND}${process.env.ENDPOINT_TRADUCCIONES_ACTUALIZAR}`;
 
 exports.GetTraducciones = async (req, res) =>
@@ -36,10 +36,11 @@ exports.GuardarTraducciones = async (req, res) =>
 {
     
     const traduccionesRaw = req.body.textoTraduccionesComas;
+    const textoTraducccionesTab = traduccionesRaw.replace(new RegExp("#", "g"), "\t");
 
     try
     {
-        const listadoRawTraducciones = csv2json(traduccionesRaw, { separator: "#", parseNumbers: true, transpose: true });
+        const listadoRawTraducciones = csv2json(textoTraducccionesTab, { separator: "\t", parseNumbers: true, transpose: true });
 
         if (listadoRawTraducciones.length === 0)
         {
