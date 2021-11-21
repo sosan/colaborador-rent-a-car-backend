@@ -22,15 +22,18 @@ exports.conectDb = async (redisdb_port, redisdb_host, redisdb_password) =>
         if (await redisClient.ping() === "PONG")
         {
             console.log(`[process ${process.pid}] CONNECTED TO REDIS DB`);
+            return true;
         }
         else
         {
             console.log("CONEXION NO POSIBLE A REDIS");
+            return false;
         }
     
     } 
     catch (error) {
         console.error(error);
+        return false;
     }
 
 };

@@ -16,7 +16,6 @@ exports.GetBackendVars = async () =>
     let token_pgp = "";
     if (process.env.LOCAL_SECRETS === "true")
     {
-
         redisdb_port =  process.env.REDISDB_PORT;
         redisdb_host =  process.env.REDISDB_HOST;
         redisdb_password = process.env.REDISDB_PASSWORD;

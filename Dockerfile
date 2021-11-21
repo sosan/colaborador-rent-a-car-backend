@@ -11,7 +11,7 @@ COPY ./src ./src
 RUN npm install -g pkg && \
     pkg ./src/index.js --targets node16-linux-x64 --compress GZip --output /usr/src/app/backend -c ./package.json
 
-FROM busybox AS util_builder
+FROM busybox:latest AS util_builder
 
 FROM gcr.io/distroless/cc:nonroot
 

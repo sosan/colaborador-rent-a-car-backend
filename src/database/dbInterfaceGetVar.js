@@ -1,8 +1,15 @@
 const redis_dao = require("../database/redis_dao");
+let redisIsConnected = false;
 
 exports.ConnectVault = async (redisdb_port, redisdb_host, redisdb_password) => {
 
-    await redis_dao.conectDb(redisdb_port, redisdb_host, redisdb_password);
+    const redisIsConnected = await redis_dao.conectDb(redisdb_port, redisdb_host, redisdb_password);
+    if (redisIsConnected === false)
+    {
+
+    }
+
+
 };
 
 
