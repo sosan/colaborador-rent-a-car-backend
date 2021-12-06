@@ -31,7 +31,7 @@
     "cors": "^2.8.5",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
-    "express-rate-limit": "^5.5.0",
+    "express-rate-limit": "^5.5.1",
     "express-useragent": "^1.0.15",
     "fs": "^0.0.2",
     "helmet": "^4.6.0",
