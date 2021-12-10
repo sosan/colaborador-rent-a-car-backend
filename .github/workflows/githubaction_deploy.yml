@@ -149,7 +149,8 @@ jobs:
                   - "443:443"
                   - "3100:3100"
                 volumes:
-                  - ${HOME}/envoy/certificates/:/etc/envoycerts/
+                  - ${HOME}/envoy/certificates/www.rentcarmallorca.es.crt:/etc/rentcarmallorca_es.crt
+                  - ${HOME}/envoy/certificates/www.rentcarmallorca.es.key:/etc/rentcarmallorca_es.key
                 networks:
                   eth0:
                     ipv4_address: 172.22.0.3
