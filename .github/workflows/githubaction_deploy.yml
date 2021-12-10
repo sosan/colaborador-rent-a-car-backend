@@ -151,7 +151,7 @@ jobs:
                 volumes:
                   # - ~/certs/server_http_cert.pem:/etc/cert.pem
                   # - ~/certs/server_http_key.pem:/etc/privkey.pem
-                  - ${HOME}/envoy/certificates/:/etc/
+                  - ${HOME}/envoy/certificates/:/etc/envoy/
                 networks:
                   eth0:
                     ipv4_address: 172.22.0.3
