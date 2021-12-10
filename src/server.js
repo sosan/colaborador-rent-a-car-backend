@@ -29,13 +29,13 @@ exports.InitServer = async () =>
     app.use(morgan("combined"));
     app.use("/", router);
     
-    const listadoIP = await GetIP();
+    const localhostIP = await GetIP();
     
     const express_server = app.listen(process.env.PORT_BACKEND, (error) => {
             if (error) {
-                console.error(`[process ${process.pid}] Error ${error} ${listadoIP} at ${process.env.PORT_BACKEND}`);
+                console.error(`[process ${process.pid}] Error ${error} ${localhostIP} at ${process.env.PORT_BACKEND}`);
             }
-        console.info(`[process ${process.pid}] Listening ${listadoIP} at ${process.env.PORT_BACKEND}`);
+        console.info(`[process ${process.pid}] Listening ${localhostIP} at ${process.env.PORT_BACKEND}`);
         }
     );
 
@@ -61,11 +61,7 @@ exports.InitServer = async () =>
         })
     };
     
-};
-
-exports.app = app;
-
-
+};    
 
 const GetIP = async () =>
 {
@@ -87,3 +83,4 @@ const GetIP = async () =>
 
 };
 
+exports.app = app;
