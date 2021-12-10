@@ -163,6 +163,7 @@ jobs:
                 volumes:
                   - ~/certs/server_http_cert.pem:/etc/cert.pem
                   - ~/certs/server_http_key.pem:/etc/privkey.pem
+                  - ${HOME}/envoy/:/etc/envoy/
                 networks:
                   eth0:
                     ipv4_address: 172.22.0.3
@@ -173,7 +174,7 @@ jobs:
                 restart: always
                 deploy:
                   replicas: 1
-                expose: 
+                expose:
                   - 8080
                 environment:
                   URL_BACKEND: backend
@@ -183,6 +184,8 @@ jobs:
                   - PORT_BACKEND
                   - ENDPOINT_VARIABLES_FRONTEND
                   - TOKEN_FOR_BACKEND_ACCESS
+                volumes:
+                  - ${HOME}/envoy/acmechallenge/:/usr/src/app/acmechallenge/
                 networks:
                   eth0:
                     ipv4_address: 172.22.0.4
