@@ -202,9 +202,9 @@ static_resources:
               tls_maximum_protocol_version: TLSv1_3
             tls_certificates:
               - certificate_chain:
-                  filename: "/etc/envoy/certificates/www.rentcarmallorca.es.crt"
+                  filename: "/etc/www.rentcarmallorca.es.crt"
                 private_key:
-                  filename: "/etc/envoy/certificates/www.rentcarmallorca.es.key"
+                  filename: "/etc/www.rentcarmallorca.es.key"
             alpn_protocols: [ "h2,http/1.1" ]
   
   - name: backoffice
@@ -248,9 +248,9 @@ static_resources:
               tls_maximum_protocol_version: TLSv1_3
             tls_certificates:
               - certificate_chain:
-                  filename: "/etc/envoy/certificates/www.rentcarmallorca.es.crt"
+                  filename: "/etc/www.rentcarmallorca.es.crt"
                 private_key:
-                  filename: "/etc/envoy/certificates/www.rentcarmallorca.es.key"
+                  filename: "/etc/www.rentcarmallorca.es.key"
             alpn_protocols: [ "h2,http/1.1" ]
   - name: netdata_stats
     address:
@@ -293,9 +293,9 @@ static_resources:
               tls_maximum_protocol_version: TLSv1_3
             tls_certificates:
               - certificate_chain:
-                  filename: "/etc/envoy/certificates/www.rentcarmallorca.es.crt"
+                  filename: "/etc/www.rentcarmallorca.es.crt"
                 private_key:
-                  filename: "/etc/envoy/certificates/www.rentcarmallorca.es.key"
+                  filename: "/etc/www.rentcarmallorca.es.key"
             alpn_protocols: [ "h2,http/1.1" ]
 
   
