@@ -65,19 +65,7 @@ jobs:
           tags: | 
             sosan/backend-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
             sosan/backend-rentacarmallorca:latest
-          # secrets: |
-          #   "PORT_BACKEND=${{ secrets.PORT_BACKEND }}"
-          #   "PORT_FRONTEND=${{ secrets.PORT_FRONTEND }}"
-          #   "PORT_BACKOFFICE=${{ secrets.PORT_BACKOFFICE }}"
-          #   "REDISDB_PORT=${{ secrets.REDISDB_PORT }}"
-          #   "REDISDB_HOST=${{ secrets.REDISDB_HOST }}"
-          #   "REDISDB_PASSWORD=${{ secrets.REDISDB_PASSWORD }}"
-          #   "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
-          #   "TOKEN_FOR_BACKEND_ACCESS=${{ secrets.TOKEN_FOR_BACKEND_ACCESS }}"
-          #   "TOKEN_PGP=${{ secrets.TOKEN_PGP }}"
-          #   "PUBLIC_PGP=${{ secrets.PUBLIC_PGP }}"
-          #   "PRIVATE_PGP=${{ secrets.PRIVATE_PGP }}"
-      
+               
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@master
         with:
