@@ -149,9 +149,9 @@ jobs:
                   - "443:443"
                   - "3100:3100"
                 volumes:
-                  - ~/certs/server_http_cert.pem:/etc/cert.pem
-                  - ~/certs/server_http_key.pem:/etc/privkey.pem
-                  - ${HOME}/envoy/:/etc/envoy/
+                  # - ~/certs/server_http_cert.pem:/etc/cert.pem
+                  # - ~/certs/server_http_key.pem:/etc/privkey.pem
+                  - ${HOME}/envoy/certificates/:/etc/
                 networks:
                   eth0:
                     ipv4_address: 172.22.0.3
