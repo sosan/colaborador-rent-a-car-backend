@@ -51,14 +51,11 @@ static_resources:
             virtual_hosts:
             - name: sin_www_service
               domains:
-              - "rentcarmallorca.es"
-              # - "*"
+              # - "rentcarmallorca.es"
+              - "*"
               routes:
               - match:
                   prefix: "/"
-                # route:
-                #   host_rewrite_literal: www.rentcarmallorca.es
-                #   # cluster: service_google
                 redirect:
                   host_redirect: "www.rentcarmallorca.es"
                   # https_redirect: true
