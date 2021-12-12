@@ -142,6 +142,16 @@ static_resources:
           route_config:
             name: local_route
             virtual_hosts:
+            - name: sin_www_service
+              domains:
+              - "rentcarmallorca.es"
+              routes:
+              - match:
+                  prefix: "/"
+                redirect:
+                  host_redirect: "www.rentcarmallorca.es"
+                  https_redirect: true
+
             - name: service
               domains:
               - "www.rentcarmallorca.es"
