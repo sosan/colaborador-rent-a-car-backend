@@ -56,12 +56,12 @@ static_resources:
               routes:
               - match:
                   prefix: "/"
-                route:
-                  host_rewrite_literal: www.rentcarmallorca.es
-                  # cluster: service_google
-                # redirect:
-                #   host_redirect: "www.rentcarmallorca.es"
-                #   https_redirect: true
+                # route:
+                #   host_rewrite_literal: www.rentcarmallorca.es
+                #   # cluster: service_google
+                redirect:
+                  host_redirect: "www.rentcarmallorca.es"
+                  https_redirect: true
             - name: www_service
               domains:
               - "www.rentcarmallorca.es"
