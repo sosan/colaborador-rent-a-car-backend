@@ -51,14 +51,14 @@ static_resources:
             virtual_hosts:
             - name: sin_www_service
               domains:
-              # - "rentcarmallorca.es"
-              - "*"
+              - "rentcarmallorca.es"
+              # - "*"
               routes:
               - match:
                   prefix: "/"
                 redirect:
                   host_redirect: "www.rentcarmallorca.es"
-                  # https_redirect: true
+                  https_redirect: true
             - name: www_service
               domains:
               - "www.rentcarmallorca.es"
@@ -72,8 +72,7 @@ static_resources:
                   prefix: "/"
                 redirect:
                   https_redirect: true
-                  # path_redirect: "/"
-                  # port_redirect: 443
+                  
           http_filters:
           - name: envoy.filters.http.buffer
             typed_config:
