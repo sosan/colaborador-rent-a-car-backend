@@ -36,3 +36,10 @@ coverage/
 
 backend
 certbot
+version_testing.yaml
+
+sin_www_a_www_envoy_config.yaml
+
+promtail_config.yaml
+
+fluentd-docker-compose.yaml
