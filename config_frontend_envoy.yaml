@@ -57,7 +57,7 @@ static_resources:
               - match:
                   prefix: "/"
                 route:
-                  host_rewrite_literal: www.rentcarmallorca.es:443
+                  host_rewrite_literal: www.rentcarmallorca.es
                   # cluster: service_google
                 # redirect:
                 #   host_redirect: "www.rentcarmallorca.es"
