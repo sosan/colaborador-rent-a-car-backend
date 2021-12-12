@@ -61,7 +61,7 @@ static_resources:
                 #   # cluster: service_google
                 redirect:
                   host_redirect: "www.rentcarmallorca.es"
-                  https_redirect: true
+                  # https_redirect: true
             - name: www_service
               domains:
               - "www.rentcarmallorca.es"
