@@ -101,43 +101,11 @@ static_resources:
                     - image/svg+xml
                 disable_on_etag_header: true
               compressor_library:
-                name: compresion_brotli
+                name: compresion_gzip
                 typed_config:
-                  "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
+                  "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
+                  memory_level: 3
                   window_bits: 10
-                # typed_config:
-                #   "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
-                #   window_bits: 10
-                  # quality: 3
-                  # encoder_mode: TEXT
-                  # input_block_bits: 24
-                  # chunk_size: 4096
-          # - name: envoy.filters.http.compressor
-          #   typed_config:
-          #     "@type": type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
-          #     response_direction_config:
-          #       common_config:
-          #         min_content_length: 100
-          #         content_type:
-          #         - text/html
-          #         - text/plain
-          #         - text/css
-          #         - text/xml
-          #         - text/javascript
-          #         - application/json
-          #         - application/javascript
-          #         - application/x-javascript 
-          #         - application/xml
-          #         - application/xml+rss
-          #         - application/xhtml+xml
-          #         - image/svg+xml
-          #       disable_on_etag_header: true
-          #     compressor_library:
-          #       name: compresion_gzip
-          #       typed_config:
-          #         "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
-          #         memory_level: 3
-          #         window_bits: 10
           - name: envoy.filters.http.router
             typed_config: {}
           common_http_protocol_options:
@@ -213,43 +181,11 @@ static_resources:
                     - image/svg+xml
                 disable_on_etag_header: true
               compressor_library:
-                name: compresion_brotli
+                name: compresion_gzip
                 typed_config:
-                  "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
+                  "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
+                  memory_level: 3
                   window_bits: 10
-                # typed_config:
-                #   "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
-                #   window_bits: 10
-                  # quality: 3
-                  # encoder_mode: TEXT
-                  # input_block_bits: 24
-                  # chunk_size: 4096
-          # - name: envoy.filters.http.compressor
-          #   typed_config:
-          #     "@type": type.googleapis.com/envoy.extensions.filters.http.compressor.v3.Compressor
-          #     response_direction_config:
-          #       common_config:
-          #         min_content_length: 100
-          #         content_type:
-          #         - text/html
-          #         - text/plain
-          #         - text/css
-          #         - text/xml
-          #         - text/javascript
-          #         - application/json
-          #         - application/javascript
-          #         - application/x-javascript 
-          #         - application/xml
-          #         - application/xml+rss
-          #         - application/xhtml+xml
-          #         - image/svg+xml
-          #       disable_on_etag_header: true
-          #     compressor_library:
-          #       name: compresion_gzip
-          #       typed_config:
-          #         "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
-          #         memory_level: 3
-          #         window_bits: 10
           - name: envoy.filters.http.router
             typed_config: {}
       transport_socket:
@@ -265,6 +201,8 @@ static_resources:
                   filename: "/etc/rentcarmallorca_es.crt"
                 private_key:
                   filename: "/etc/rentcarmallorca_es.key"
+              - watched_directory:
+                  path: "/etc/"
             alpn_protocols: [ "h2,http/1.1" ]
   
   - name: backoffice
