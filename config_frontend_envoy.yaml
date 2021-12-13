@@ -105,6 +105,9 @@ static_resources:
                 typed_config:
                   "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
                   window_bits: 10
+                # typed_config:
+                #   "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
+                #   window_bits: 10
                   # quality: 3
                   # encoder_mode: TEXT
                   # input_block_bits: 24
@@ -214,6 +217,9 @@ static_resources:
                 typed_config:
                   "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
                   window_bits: 10
+                # typed_config:
+                #   "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
+                #   window_bits: 10
                   # quality: 3
                   # encoder_mode: TEXT
                   # input_block_bits: 24
