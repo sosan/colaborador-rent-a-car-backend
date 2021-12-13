@@ -52,7 +52,6 @@ static_resources:
             - name: sin_www_service
               domains:
               - "rentcarmallorca.es"
-              # - "*"
               routes:
               - match:
                   prefix: "/"
@@ -62,7 +61,6 @@ static_resources:
             - name: www_service
               domains:
               - "www.rentcarmallorca.es"
-              # - "*"
               routes:
               - match:
                   prefix: "/.well-known/acme-challenge/"
@@ -72,7 +70,6 @@ static_resources:
                   prefix: "/"
                 redirect:
                   https_redirect: true
-                  
           http_filters:
           - name: envoy.filters.http.buffer
             typed_config:
@@ -106,16 +103,17 @@ static_resources:
               compressor_library:
                 name: text_optimized
                 typed_config:
-                  "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
-                  memory_level: 3
-                  window_bits: 10
-          # - name: envoy.health_check
-          #   typed_config:
-          #     "@type": type.googleapis.com/envoy.extensions.filters.http.health_check.v3.HealthCheck
-          #     pass_through_mode: false
-          #     headers:
-          #       - name: ":path"
-          #         exact_match: "/.well-known/acme-challenge/"
+                  "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
+                  quality: 3
+                  encoder_mode: TEXT
+                  window_bits: 18
+                  input_block_bits: 24
+                  chunk_size: 4096
+
+                  ## Encoder Gzip
+                  # "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
+                  # memory_level: 3
+                  # window_bits: 10
           - name: envoy.filters.http.router
           common_http_protocol_options:
               idle_timeout: 840s
@@ -194,9 +192,15 @@ static_resources:
               compressor_library:
                 name: text_optimized
                 typed_config:
-                  "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
-                  memory_level: 3
-                  window_bits: 10
+                  "@type": type.googleapis.com/envoy.extensions.compression.brotli.compressor.v3.Brotli
+                  quality: 3
+                  encoder_mode: TEXT
+                  window_bits: 18
+                  input_block_bits: 24
+                  chunk_size: 4096
+                  # "@type": type.googleapis.com/envoy.extensions.compression.gzip.compressor.v3.Gzip
+                  # memory_level: 3
+                  # window_bits: 10
           - name: envoy.filters.http.router
       transport_socket:
         name: envoy.transport_sockets.tls
@@ -323,14 +327,14 @@ static_resources:
     type: STRICT_DNS
     lb_policy: ROUND_ROBIN
     connect_timeout: 0.50s
-    health_checks:
-      timeout: 3s
-      interval: 120s
-      unhealthy_threshold: 3
-      healthy_threshold: 3
-      always_log_health_check_failures: false
-      http_health_check:
-        path: /islive_0_QJFs_a_IiW_mFtZS2_f_A_BQ_NTib_Y3O6Ik_D0WNH9I
+    # health_checks: # comentado porque solo hay una instancia
+    #   timeout: 3s
+    #   interval: 120s
+    #   unhealthy_threshold: 3
+    #   healthy_threshold: 3
+    #   always_log_health_check_failures: false
+    #   http_health_check:
+    #     path: /islive_0_QJFs_a_IiW_mFtZS2_f_A_BQ_NTib_Y3O6Ik_D0WNH9I
     load_assignment:
       cluster_name: frontend_cluster
       endpoints:
@@ -369,11 +373,7 @@ static_resources:
     #       http2_protocol_options:
     #         initial_stream_window_size: 65536  # 64 KiB
     #         initial_connection_window_size: 1048576  # 1 MiB
-# admin:
-#   address:
-#     socket_address:
-#       address: 0.0.0.0
-#       port_value: 8081
+
 layered_runtime:
   layers:
   - name: static_layer_0
