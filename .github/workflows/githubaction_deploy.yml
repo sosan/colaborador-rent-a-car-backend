@@ -165,7 +165,7 @@ jobs:
                   URL_BACKEND: backend
                   URL_FRONTEND: frontend
                   NODE_ENV: production
-                  
+                  SECRET_MOUNT_PATH: /run/secrets
                 secrets:
                   - PORT_BACKEND
                   - ENDPOINT_VARIABLES_FRONTEND
