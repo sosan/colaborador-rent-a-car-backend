@@ -265,3 +265,18 @@ var ObtenerCurrentDate = async (fecha) => {
     return fechaActual;
 
 };
+
+
+const listadoBotonesMasDetalles = docuemnt.getElementsByClassName("botonMasDetalles");
+
+for (let i = 0; i < listadoBotonesMasDetalles.length; i++)
+{
+
+    listadoBotonesMasDetalles.addEventListener("click", (evento) =>
+    {
+
+        
+
+    });
+
+}
