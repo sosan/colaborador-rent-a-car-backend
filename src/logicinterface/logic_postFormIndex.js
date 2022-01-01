@@ -584,7 +584,8 @@ const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia
 
     let currentTipoChofer = {};
 
-    if (conductor_con_experiencia === "on") {
+    if (conductor_con_experiencia === "on" || conductor_con_experiencia === "true")
+    {
         if (claseVehiculo === "motos2") {
             currentTipoChofer = suplementoTipoChofer["choferPlus252Motos"];
         }
@@ -592,7 +593,8 @@ const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia
             currentTipoChofer = suplementoTipoChofer["choferPlus232Cars"];
         }
     }
-    else {
+    else
+    {
         if (claseVehiculo === "motos2") {
             currentTipoChofer = suplementoTipoChofer["choferPlusNovelMotos"];
         }

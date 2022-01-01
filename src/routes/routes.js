@@ -32,7 +32,6 @@ router.get(process.env.ENDPOINT_API_BACKEND, async(req, res) => await indexGet.g
 
 // obtener todos los vehiculos
 router.post(process.env.ENDPOINT_GETALL_BACKEND, async (req, res) => await indexPost.GetAllVehicles(req, res));
-
 router.post(process.env.ENDPOINT_GETCAR_FROM_CARD_BACKEND, async (req, res) => await indexPost.GetCarsFromCard(req, res));
 
 //reservar de frontend a backend
@@ -47,8 +46,6 @@ router.post(process.env.ENDPOINT_NEWSLETTER_BACKEND, async (req, res) => await n
 router.post(process.env.ENDPOINT_STATS_BACKEND, async (req, res) => await statsPost.PostInitStats(req, res) );
 router.post("/0LQm12kz57Lmqa_f_aMBQ", async (req, res) => await statsPost.ActualizarStats(req, res));
 
-
-    
 // generar html
 router.post("/generar", async (req, res) => await controlPanelLogin.GenerateHMTLForGeneralConditions(req, res));
 router.get("/actualizar-traduccion", async (req, res) => await controlPanelLogin.ActualizarTraducciones(req, res));

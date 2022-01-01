@@ -135,7 +135,7 @@ jobs:
                 depends_on:
                   - frontend
                   - fluentbit
-                links: 
+                links:
                   - frontend
                   - backoffice
                 expose:
@@ -165,6 +165,7 @@ jobs:
                   URL_BACKEND: backend
                   URL_FRONTEND: frontend
                   NODE_ENV: production
+                  
                 secrets:
                   - PORT_BACKEND
                   - ENDPOINT_VARIABLES_FRONTEND
@@ -227,6 +228,7 @@ jobs:
                   URL_FRONTEND: frontend
                   URL_BACKOFFICE: backoffice
                   NODE_ENV: production
+                  SECRET_MOUNT_PATH: /run/secrets
                 depends_on:
                   - fluentbit
                 logging: *default-logging

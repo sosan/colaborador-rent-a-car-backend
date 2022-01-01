@@ -23,10 +23,10 @@ exports.GetBackendVars = async () =>
     }
     else
     {
-        redisdb_port = await  readSecret("/run/secrets/REDISDB_PORT");
-        redisdb_host = await  readSecret("/run/secrets/REDISDB_HOST");
-        redisdb_password = await  readSecret("/run/secrets/REDISDB_PASSWORD");
-        token_pgp = await readSecret("/run/secrets/TOKEN_PGP");
+        redisdb_port = await readSecret(`${process.env.SECRET_MOUNT_PATH}/REDISDB_PORT`);
+        redisdb_host = await readSecret(`${process.env.SECRET_MOUNT_PATH}/REDISDB_HOST`);
+        redisdb_password = await readSecret(`${process.env.SECRET_MOUNT_PATH}/REDISDB_PASSWORD`);
+        token_pgp = await readSecret(`${process.env.SECRET_MOUNT_PATH}/TOKEN_PGP`);
 
     }
     
