@@ -357,7 +357,6 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
 
     return { 
         "isInserted": isInserted,
-        "objectId": result.objectId,
         "numeroRegistro": numeroRegistro,
         "merchantPayment": merchantPayment
     };
