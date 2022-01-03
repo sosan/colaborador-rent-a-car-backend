@@ -34,11 +34,11 @@ jobs:
           tags: | 
             sosan/backoffice-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
             sosan/backoffice-rentacarmallorca:latest
-          secrets: |
-            "PORT_BACOFFICE=${{ secrets.PORT_BACKOFFICE }}"
-            "PORT_BACKEND=${{ secrets.PORT_BACKEND }}"
-            "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
-            "TOKEN_FOR_BACKEND_ACCESS=${{ secrets.TOKEN_FOR_BACKEND_ACCESS }}"
+          # secrets: |
+          #   "PORT_BACOFFICE=${{ secrets.PORT_BACKOFFICE }}"
+          #   "PORT_BACKEND=${{ secrets.PORT_BACKEND }}"
+          #   "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
+          #   "TOKEN_FOR_BACKEND_ACCESS=${{ secrets.TOKEN_FOR_BACKEND_ACCESS }}"
       # - name: Send discord failure message
       #   if: ${{ failure() }}
       #   uses: appleboy/discord-action@master
@@ -71,7 +71,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
-            export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+            /home/alvaro/bin/docker context use rootless
             /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
       # - name: Send discord failure message
