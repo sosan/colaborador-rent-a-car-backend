@@ -43,6 +43,7 @@ async function encryptVars() {
     });
 
     fs.writeFileSync(path.join(__dirname, "./decrypted-secrets.local"), decrypted);
+    console.log("encriptado en encrypted-secrets.local")
 }
 
 encryptVars();

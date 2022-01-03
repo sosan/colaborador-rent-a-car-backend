@@ -21,7 +21,7 @@ async function generateKeys() {
     fs.writeFileSync(path.join(__dirname, "../secrets/private_pgp.txt"), key.privateKey);
     fs.writeFileSync(path.join(__dirname, "../secrets/public_pgp.txt"), key.publicKey);
 
-    
+    console.log("las keys estan en ../secrets/private_pgp.txt y ../secrets/public_pgp.txt. subir las keys a la db");
 }
 
 generateKeys();
