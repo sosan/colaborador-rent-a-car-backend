@@ -250,3 +250,11 @@ exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
     return await mongo_dao.MarcarCorreoNewsletterCorrectoIncorrecto(correo, validez);
 
 }
+
+
+exports.InivisibleReserva = async (_id) =>
+{
+
+    return await mongo_dao.InivisibleReserva(_id);
+
+};

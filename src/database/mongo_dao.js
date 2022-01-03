@@ -539,7 +539,7 @@ exports.GetLocation = async () =>
         return datos[0];
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -560,7 +560,7 @@ exports.ActualizarTraduccion = async (hojaCalculo, nombreId) =>
         return isUpdated;
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -576,7 +576,7 @@ exports.InsertarTraduccion = async (traduccionJson) =>
         return isInserted;
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -591,7 +591,7 @@ exports.BorrarTraduccion = async (nombreId) =>
         return isRemoved;
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -603,13 +603,13 @@ exports.NumeroEmailsConfirmacionPorEnviar = async () =>
 {
 
     try {
-        const resultados = await collectionReservas.countDocuments({ "emailConfirmacionReservaEnviado": false });
+        const resultados = await collectionReservas.countDocuments({ "emailConfirmacionReservaEnviado": false, "isvisible": true });
 
         return resultados;
         
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -637,7 +637,7 @@ exports.NumeroReservasPorDia = async (fechaInicio, fechaFin) =>
 
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -650,7 +650,7 @@ exports.GetPorcentajeTipoVehiculo = async () =>
         return datos[0];
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -717,7 +717,7 @@ exports.CheckEmailNewsletter = async (email) =>
         return datos;
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -732,7 +732,7 @@ exports.AddEmailNewsletter = async (email) => {
         return isInserted;
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 
@@ -773,7 +773,7 @@ exports.GetImagenBase64 = async () =>
         return datos[0].imagen;
 
     } catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
 
     }
 };
@@ -788,7 +788,7 @@ exports.ConsultarLocalizador = async (localizador) =>
 
     }
     catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
     }
 
 };
@@ -803,7 +803,7 @@ exports.GetAllReservas = async () =>
     }
     catch (error)
     {
-        console.log("error" + error);
+        console.log(`error ${error}`);
     }
 
 };
@@ -815,7 +815,7 @@ exports.GetReservasNotSended = async () => {
 
     }
     catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
     }
 
 };
@@ -832,7 +832,7 @@ exports.GetReservasSended = async () => {
 
     }
     catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
     }
 
 };
@@ -856,7 +856,7 @@ exports.GetReservasConfirmacionNoEnviada = async (fechaInicio, fechaFin, enviado
 
     }
     catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
     }
 
 };
@@ -878,7 +878,7 @@ exports.GetReservasConfirmacionEnviada = async (fechaInicio, fechaFin, enviado) 
 
     }
     catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
     }
 
 };
@@ -901,8 +901,35 @@ exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
 
     }
     catch (error) {
-        console.log("error" + error);
+        console.log(`error ${error}`);
+        
     }
 
+
+};
+
+exports.InivisibleReserva = async (_id) =>
+{
+
+    try
+    {
+
+        let objectId = ObjectId(_id);
+        const resultados = await collectionReservas.findOneAndUpdate(
+            { "_id": objectId },
+            {
+                $set: { "isvisible": false },
+
+            }
+        );
+
+        const isUpdated = resultados.ok === 1;
+        return isUpdated;
+
+    }   
+    catch(error)
+    {
+        console.log(`error ${_id} ${error}`);
+    } 
 
 };

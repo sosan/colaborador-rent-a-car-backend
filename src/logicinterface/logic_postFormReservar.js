@@ -328,6 +328,7 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
     const numeroRegistro = await ObtenernumeroRegistro();
     formulario["numeroRegistro"] = numeroRegistro;
     formulario["emailConfirmacionReservaEnviado"] = false;
+    formulario["isvisible"] = true;
     
     const isReservaValida = await CheckReservaValida(formulario);
     if (isReservaValida === false)

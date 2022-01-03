@@ -210,3 +210,21 @@ const ObtenerCurrentDate = async () => {
     return cadena;
 
 };
+
+
+exports.BorrarReserva = async (req, res) =>
+{
+
+    if (req.body.token !== process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET)
+    {
+        return;
+    }
+
+    const resultado = await dbInterfaces.InivisibleReserva(req.body._id);
+    
+    res.send({
+        isOk: resultado
+    });
+
+
+};
