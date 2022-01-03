@@ -217,10 +217,12 @@ exports.BorrarReserva = async (req, res) =>
 
     if (req.body.token !== process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET)
     {
+        console.log("no son iguales tokens");
         return;
     }
 
     const resultado = await dbInterfaces.InivisibleReserva(req.body._id);
+    console.log("resultado=" + resultado);
     
     res.send({
         isOk: resultado
