@@ -177,14 +177,23 @@ body
 .botonMasDetalles
 {
 
-     padding: 10px;
+    padding: 10px;
     border-radius: 7px;
-    
     color: white;
-
     background-color: rgb(186 0 0);
 
 }
+
+.botonBorrarReserva
+{
+    padding: 10px;
+    border-radius: 7px;
+    color: white;
+    background-color: rgb(186 0 0);
+    z-index: 1000000;
+
+}
+
 
 .azul
 {
@@ -203,3 +212,142 @@ body
     color: white;
 }
 
+
+/* VENTANA MODAL */
+
+
+.modal-visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-invisible
+{
+  visibility: hidden;
+  opacity: 0;
+}
+
+.overlay-transparente
+{
+  display: block;
+  background: rgba(0, 0, 0, 0.563);
+  
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  overflow: hidden;
+
+
+}
+
+.details-modal {
+
+  position: relative;
+
+  background: rgb(255, 255, 255);
+  border-radius: 0.5em;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  padding-bottom: 32px; 
+  padding-right: 0px;
+  overflow: auto;
+  
+  width: 80%;
+  height: 400px;
+  opacity: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding-left: 25px;
+
+  
+}
+
+@media screen and (max-width: 414px) {
+  .details-modal
+  {
+    width: 100%;
+
+  }
+}
+
+
+.details-modal-close {
+  position: absolute;
+  
+  align-items: center;
+  color: rgb(17, 24, 39);
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  
+  right: 0;
+  top: 0;
+  width: 65px;
+  cursor: pointer;
+}
+
+.details-modal-title {
+  color: rgb(17, 24, 39);
+  padding: 1.5em 2em;
+  /* pointer-events: all;
+  position: relative;
+  width: calc(100% - 4.5em); */
+}
+
+.details-modal-title-text 
+{
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.subtitulo-contenido-modal
+{
+  font-size: 15px;
+  font-weight: 900;
+  margin-top: 20px;
+  text-align: left;
+  padding-right: 30px;
+}
+.negrita
+{
+  
+  font-weight: 700;
+}
+
+.boton-cerrar-modal
+{
+  display: flex;
+}
+
+/* FIN VENTANA MODAL */
+
+.sub-contenido-modal
+{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.gridmodal
+{
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: left;
+    gap: 6px;
+}
+
+.texto-alineado-derecha
+{
+    text-align: right;
+}

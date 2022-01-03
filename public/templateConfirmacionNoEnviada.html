@@ -86,9 +86,11 @@ return fechaActual;
             Boton
         </div>
     </li>
-
+    <% let contador = 0; %>
     <% for (let i=0; i < it.noenviados.length; i++) { %>
-
+        <% if (it.noenviados[i].isvisible===false) { continue; } %>
+        
+        
         <li class="centrado">
             <div class="tamanyo-200">
                 <b>
@@ -103,7 +105,6 @@ return fechaActual;
                 <%=it.noenviados[i].email %>
             </div>
             <div class="tamanyo-200">
-
                 <% const alta=FechasES(it.noenviados[i].fechaAlta) %>
                     <%= alta %>
             </div>
@@ -117,8 +118,96 @@ return fechaActual;
                                 <% } %>
             </div>
             <div class="tamanyo-202">
-                <button id="botonMasDetalles_<%=i%>" class="botonMasDetalles" >Mas datos</button>
-                
+                <button id="botonMasDetalles_<%=contador%>" class="botonMasDetalles" >Mas datos</button>
+                <div id="overlay-botonmasdetalles_<%=contador%>" class="overlay-transparente modal-invisible">
+                    <ul class="details-modal resetul ">
+                        <li class="details-modal-close">
+                            <a class="boton-cerrar-modal" role="button">
+                                <img class="cerrar-modal" src="./img/svg/cerrar_modal.svg" alt="boton cerrar modal">
+                            </a>
+                        </li>
+                        <li class="details-modal-title">
+                            <h5 class="details-modal-title-text">
+                                DETALLES
+                            </h5>
+                        </li>
+                        <li class="sub-contenido-modal">
+                            <div class="gridmodal">
+                                <span class="texto-alineado-derecha">Numero Registro:</span>
+                                <span><%=it.noenviados[i].numeroRegistro %></span>
+                                <span class="texto-alineado-derecha">Idioma:</span>
+                                <span><%=it.noenviados[i].idioma %></span>
+                                <span class="texto-alineado-derecha">Trato:</span>
+                                <span>
+                                    <%=it.noenviados[i].trato %>
+                                </span>
+                                <span class="texto-alineado-derecha">Nombre:</span>
+                                <span><%=it.noenviados[i].nombre %></span>
+                                <span class="texto-alineado-derecha">Apellidos:</span>
+                                <span class=""><%=it.noenviados[i].apellidos %></span>
+                                <span class="texto-alineado-derecha">Email:</span>
+                                <span><%=it.noenviados[i].email %></span>
+                                <span class="texto-alineado-derecha">Telefono:</span>
+                                <span>
+                                    <%=it.noenviados[i].telefono %>
+                                </span>
+                                <span class="texto-alineado-derecha">Vehiculo:</span>
+                                <span><%=it.noenviados[i].descripcion_vehiculo %></span>
+                                <span class="texto-alineado-derecha">Conductor con experiencia:</span>
+                                <span>
+                                    <%=it.noenviados[i].conductor_con_experiencia %>
+                                </span>
+                                
+                                <span class="texto-alineado-derecha">Recogida Fecha:</span>
+                                <span><%=it.noenviados[i].fechaRecogida %></span>
+                                <span class="texto-alineado-derecha">Recogida Hora :</span>
+                                <span><%=it.noenviados[i].horaRecogida %></span>
+                                
+                                <span class="texto-alineado-derecha">Devolucion Fecha:</span>
+                                <span>
+                                    <%=it.noenviados[i].fechaDevolucion %>
+                                </span>
+                                <span class="texto-alineado-derecha">Devolucion Hora :</span>
+                                <span>
+                                    <%=it.noenviados[i].horaDevolucion %>
+                                </span>
+                                
+                                <span class="texto-alineado-derecha">Dias:</span>
+                                <span><%=it.noenviados[i].dias %></span>
+                                
+                                <span class="texto-alineado-derecha">Alquiler:</span>
+                                <span>
+                                    <%=it.noenviados[i].alquiler %>
+                                </span>
+                                <span class="texto-alineado-derecha">total suplmento tipo conductor:</span>
+                                <span>
+                                    <%=it.noenviados[i].total_suplmento_tipo_conductor %>
+                                </span>
+                                <span class="texto-alineado-derecha">Pago Recogida:</span>
+                                <span>
+                                    <%=it.noenviados[i].pagoRecogida %>
+                                </span>
+                                
+                                <span class="texto-alineado-derecha">Pago Online:</span>
+                                <span>
+                                    <%=it.noenviados[i].pago_online %>
+                                </span>
+                                
+                                <span class="texto-alineado-derecha">Cantidad de sillas bebe:</span>
+                                <span><%=it.noenviados[i].numero_sillas_nino %></span>
+                                <span class="texto-alineado-derecha">Cantidad Booster:</span>
+                                <span><%=it.noenviados[i].numero_booster %></span>
+
+                                
+                            </div>
+
+                        </li>
+                        <li class="">
+                            <input type="hidden" id="_id_<%=contador%>" name="_id" value="<%=it.noenviados[i]._id %>">
+                            <button class="botonBorrarReserva" type="submit" >BORRAR</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="tamanyo-201">
                 <form class="formulario" action="/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/enviocorreo" method="post">
@@ -131,11 +220,9 @@ return fechaActual;
                     <input type="hidden" name="horaRecogida" value="<%=it.noenviados[i].horaRecogida %>">
                     <input type="hidden" name="fechaDevolucion" value="<%=it.noenviados[i].fechaDevolucion %>">
                     <input type="hidden" name="horaDevolucion" value="<%=it.noenviados[i].horaDevolucion %>">
-                    <input type="hidden" name="numero_sillas_nino"
-                        value="<%=it.noenviados[i].numero_sillas_nino %>">
+                    <input type="hidden" name="numero_sillas_nino" value="<%=it.noenviados[i].numero_sillas_nino %>">
                     <input type="hidden" name="numero_booster" value="<%=it.noenviados[i].numero_booster %>">
-                    <input type="hidden" name="descripcion_vehiculo"
-                        value="<%=it.noenviados[i].descripcion_vehiculo %>">
+                    <input type="hidden" name="descripcion_vehiculo" value="<%=it.noenviados[i].descripcion_vehiculo %>">
 
                     <button id="botonEnviar" class="centrado-boton_correo azul" type="submit">
                         Enviar correo
@@ -143,6 +230,7 @@ return fechaActual;
                 </form>
             </div>
         </li>
-        <% } %>
+        <% contador++%>
+    <% } %>
 
 </ul>

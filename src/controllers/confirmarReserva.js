@@ -148,6 +148,37 @@ exports.MostrarReservasPorFecha = async (req, res) =>
 
 };
 
+exports.BorrarReserva = async (req, res) =>
+{
+    console.log("borrar reserva");
+    const body = {
+        "token": process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET,
+        ...req.body
+    }
+
+    const response = await fetch(`http://${process.env.URL_BACKEND}:3000/borrarreserva`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(body)
+    })
+
+    const datos = await response.json();
+
+    if (datos.isOk === false)
+    {
+        console.log(`fallo de cambio en reserva=${req.body._id}`);
+    }
+
+    // this.MostrarReservasNoEnviadas(req, res);
+
+    res.send({
+        "isOk": datos.isOk
+    });
+
+};
 
 
 exports.RedirigirEnvioCorreo = async (req, res) =>

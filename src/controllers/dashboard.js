@@ -16,9 +16,6 @@ exports.GetDashboard = async (req, res) =>
     console.log("apunto enviar a dashboard de backend")
     const rawResponse = await fetch(GET_GENERAL_STATS, {
         method: "GET",
-        // headers: {
-        //     "Content-Type": "application/json",
-        // },
         credentials: "include"
     });
 

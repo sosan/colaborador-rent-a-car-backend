@@ -27,6 +27,8 @@ router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/enviocorreo
 
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/reservasenviadas`, async (req, res) => await confirmar.MostrarReservasEnviadas(req, res));
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/reservasnoenviadas`, async (req, res) => await confirmar.MostrarReservasNoEnviadas(req, res));
+router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/borrarreserva`, async (req, res) => await confirmar.BorrarReserva(req, res));
+
 
 router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/busquedareservasporfecha`, async (req, res) => await confirmar.MostrarReservasPorFecha(req, res));
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/confirmaciones`, async (req, res) => await confirmar.MostrarConfirmaciones(req, res));
@@ -38,7 +40,8 @@ router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/mostrardet
 
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/traducciones`, async (req, res) => await traducciones.GetTraducciones(req, res));
 router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/guardartraducciones`, async (req, res) => await traducciones.GuardarTraducciones(req, res));
-// router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/actualizartraducciones`, async (req, res) => await traducciones.ActualizarTraducciones(req, res));
+
+
 
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/islive_0_QJFs_a_IiW_mFtZS2_f_A_BQ_NTib_Y3O6Ik_D0WNH9I`, async (req, res) => await live.IsLive(req, res));
 
