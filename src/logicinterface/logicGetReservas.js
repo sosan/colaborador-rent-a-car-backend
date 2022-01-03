@@ -215,9 +215,6 @@ const ObtenerCurrentDate = async () => {
 exports.BorrarReserva = async (req, res) =>
 {
 
-    console.log("req.body.token=" + req.body.token);
-    console.log("process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET=" + process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET)
-    
     if (req.body.token !== process.env.TOKEN_BACKEND_TO_FRONTEND_SECRET)
     {
         console.log("no son iguales tokens");
@@ -225,7 +222,6 @@ exports.BorrarReserva = async (req, res) =>
     }
 
     const resultado = await dbInterfaces.InivisibleReserva(req.body._id);
-    console.log("resultado=" + resultado);
     
     res.send({
         isOk: resultado
