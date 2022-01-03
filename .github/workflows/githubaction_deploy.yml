@@ -65,7 +65,7 @@ jobs:
           tags: | 
             sosan/backend-rentacarmallorca:${{steps.date.outputs.DATE_NOW}}
             sosan/backend-rentacarmallorca:latest
-               
+
       - name: Run Trivy vulnerability scanner in repo mode
         uses: aquasecurity/trivy-action@master
         with:
