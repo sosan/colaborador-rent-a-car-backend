@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    if: "contains(github.event.head_commit.message, '/a')"
+    if: "contains(github.event.head_commit.message, '/d')"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,23 +39,23 @@ jobs:
             "PORT_BACKEND=${{ secrets.PORT_BACKEND }}"
             "ENDPOINT_VARIABLES_FRONTEND=${{ secrets.ENDPOINT_VARIABLES_FRONTEND }}"
             "TOKEN_FOR_BACKEND_ACCESS=${{ secrets.TOKEN_FOR_BACKEND_ACCESS }}"
-      - name: Send discord failure message
-        if: ${{ failure() }}
-        uses: appleboy/discord-action@master
-        with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-          color: "#FF0000"
-          message: "BACKOFFICE: FALLO BUILD!!!"
+      # - name: Send discord failure message
+      #   if: ${{ failure() }}
+      #   uses: appleboy/discord-action@master
+      #   with:
+      #     webhook_id: ${{ secrets.WEBHOOK_ID }}
+      #     webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+      #     color: "#FF0000"
+      #     message: "BACKOFFICE: FALLO BUILD!!!"
 
-      - name: Send discord success message
-        if: ${{ success() }}
-        uses: appleboy/discord-action@master
-        with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-          color: "#48f442"
-          message: "BACKOFFICE: BUILD OK"
+      # - name: Send discord success message
+      #   if: ${{ success() }}
+      #   uses: appleboy/discord-action@master
+      #   with:
+      #     webhook_id: ${{ secrets.WEBHOOK_ID }}
+      #     webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+      #     color: "#48f442"
+      #     message: "BACKOFFICE: BUILD OK"
   upload:
     runs-on: ubuntu-20.04
     needs: [build]
@@ -74,22 +74,22 @@ jobs:
             export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
             /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest
             /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
-      - name: Send discord failure message
-        if: ${{ failure() }}
-        uses: appleboy/discord-action@master
-        with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-          color: "#FF0000"
-          message: "BACKOFFICE: FALLO SUBIDA"
+      # - name: Send discord failure message
+      #   if: ${{ failure() }}
+      #   uses: appleboy/discord-action@master
+      #   with:
+      #     webhook_id: ${{ secrets.WEBHOOK_ID }}
+      #     webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+      #     color: "#FF0000"
+      #     message: "BACKOFFICE: FALLO SUBIDA"
 
-      - name: Send discord success message
-        if: ${{ success() }}
-        uses: appleboy/discord-action@master
-        with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-          color: "#48f442"
-          message: "BACKOFFICE: SUBIDA OK"
+      # - name: Send discord success message
+      #   if: ${{ success() }}
+      #   uses: appleboy/discord-action@master
+      #   with:
+      #     webhook_id: ${{ secrets.WEBHOOK_ID }}
+      #     webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+      #     color: "#48f442"
+      #     message: "BACKOFFICE: SUBIDA OK"
     
 
