@@ -503,7 +503,7 @@ const CheckResultadosCoches = async (
         }
         else {
             precioDiaPorClase = listadoPrecios[2];
-            precioTotalDias = listadoPrecios[numeroDiasRecogidaDevolucion];
+            precioTotalDias = listadoPrecios[numeroDiasRecogidaDevolucion + 1];
 
         }
 
