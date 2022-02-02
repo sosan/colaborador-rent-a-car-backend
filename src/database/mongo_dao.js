@@ -308,12 +308,13 @@ exports.GetTiposClases = async () =>
     }
 };
 //TODO: ahora recoge en collectionPRecios, pero hay un array optimizado para los precios modificar
-exports.GetPreciosPorClase = async (tiposClases) =>
+exports.GetPreciosPorClase = async (tiposClases, temporada) =>
 {
     try {
         
         const resultados = await collectionPrecios.find(
             {
+                "TEMPORADA": temporada,
                 "CLASE": { $in: tiposClases }
             }
         ).project({_id: 0}).toArray();

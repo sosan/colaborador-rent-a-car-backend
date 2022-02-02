@@ -82,9 +82,9 @@ exports.GetTiposClases = async () => {
 
 };
 
-exports.GetPreciosPorClase = async (tiposClases) => {
+exports.GetPreciosPorClase = async (tiposClases, temporada) => {
 
-    return await mongo_dao.GetPreciosPorClase(tiposClases);
+    return await mongo_dao.GetPreciosPorClase(tiposClases, temporada);
 
 };
 

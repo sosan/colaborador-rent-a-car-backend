@@ -298,7 +298,7 @@ exports.GetCars = async (formulario, token) => {
 
 const GetCarsByReservado = async (formulario) => {
 
-    const filtrado = await GenerarParametros(false, formulario.conductor_con_experiencia);
+    const filtrado = await GenerarParametros(false, formulario);
     const datosVehiculos = await dbInterfaces.GetCarsByReservado(filtrado);
 
 
@@ -327,8 +327,7 @@ const GetCarsByReservado = async (formulario) => {
     }
 
     datosVehiculos["datosSuplementoGenerico"] = datosSuplementoGenerico;
-
-
+    
     const tiposClases = await dbInterfaces.GetTiposClases();
 
     if (tiposClases.isOk === false) {
@@ -336,8 +335,9 @@ const GetCarsByReservado = async (formulario) => {
         console.error(error);
         return { isOk: false, resultados: undefined, errores: error };
     }
-
-    const preciosPorClase = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados);
+    // no es necesario si viene de index
+    const temporada = await CalcularTemporada(formulario.fechaRecogida) || "C";
+    const preciosPorClase = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados, temporada);
 
     if (preciosPorClase.isOk === false) {
         const error = `| - NO hay collecion preciosporclase `;
@@ -356,6 +356,8 @@ const GetCarsByReservado = async (formulario) => {
 
     datosVehiculos["preciosPorClase"] = transformadosPreciosPorClase;
 
+
+
     const condicionesGenerales = await dbInterfaces.GetCondicionesGenerales();
     datosVehiculos["condicionesgenerales"] = condicionesGenerales;
 
@@ -366,17 +368,75 @@ const GetCarsByReservado = async (formulario) => {
 
 };
 
-// funcion donde genera el objeto para filtrar en la db
-const GenerarParametros = async (reservado, conductor_con_experiencia) => {
+const CalcularTemporada = async (textoFechaRecogida) =>
+{
+    const fechaRecogida = new Date(textoFechaRecogida);
+    let temporada = "C";
 
-    if (conductor_con_experiencia === "on") {
-        return { "reservado": reservado };
+    switch (fechaRecogida.getMonth()) {
+        case 0: // enero
+        case 1: // febrero
+        case 2: // marzo
+            temporada = "A";
+            break;
+        case 3: // abril
+        case 4: // mayo
+            temporada = "B";
+            break;
+        case 5: // junio
+            if (fechaRecogida.getDate() >= 1 && fechaRecogida.getDate() <= 15) {
+                temporada = "B";
+            }
+            else {
+                temporada = "C";
+            }
+            break;
+        case 6: // julio
+            temporada = "C";
+            break;
+        case 7: // agosto
+            temporada = "C";
+            break;
+        case 8: // septiembre
+            if (fechaRecogida.getDate() >= 1 && fechaRecogida.getDate() <= 15) {
+                temporada = "C";
+            }
+            else {
+                temporada = "B";
+            }
+            break;
+        case 9: // octubre
+            temporada = "B";
+            break;
+        case 10: // noviembre
+            temporada = "A";
+            break;
+        case 11: // diciembre
+            temporada = "A";
+            break;
+        default:
+            temporada = "C";
+            break;
     }
-    else {
-        return {
-            "reservado": reservado,
-        };
-    }
+
+    return temporada;
+
+}
+
+// funcion donde genera el objeto para filtrar en la db
+const GenerarParametros = async (reservado, formulario) => {
+
+    let dato = { "reservado": reservado };
+    return dato;
+
+    
+
+    // if (formulario.conductor_con_experiencia === "on") {
+    //     return { "reservado": reservado };
+    // }
+    // else {
+    //     return { "reservado": reservado };
+    // }
 
 };
 
@@ -434,7 +494,7 @@ const CheckResultadosCoches = async (
 
         let precioDiaPorClase = 0;
         let precioTotalDias = 0;
-        let precioDiaSinDescuento = listadoPrecios[1];
+        let precioDiaSinDescuento = listadoPrecios[2];
 
         if (numeroDiasRecogidaDevolucion > 7) {
             precioDiaPorClase = listadoPrecios[listadoPrecios.length - 1];
@@ -442,7 +502,7 @@ const CheckResultadosCoches = async (
 
         }
         else {
-            precioDiaPorClase = listadoPrecios[1];
+            precioDiaPorClase = listadoPrecios[2];
             precioTotalDias = listadoPrecios[numeroDiasRecogidaDevolucion];
 
         }
