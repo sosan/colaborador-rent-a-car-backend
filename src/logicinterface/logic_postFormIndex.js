@@ -336,7 +336,7 @@ const GetCarsByReservado = async (formulario) => {
         return { isOk: false, resultados: undefined, errores: error };
     }
     // no es necesario si viene de index
-    const temporada = await CalcularTemporada(formulario.fechaRecogida) || "C";
+    const temporada = await  this.CalcularTemporada(formulario.fechaRecogida) || "C";
     const preciosPorClase = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados, temporada);
 
     if (preciosPorClase.isOk === false) {
@@ -368,8 +368,21 @@ const GetCarsByReservado = async (formulario) => {
 
 };
 
-const CalcularTemporada = async (textoFechaRecogida) =>
+exports.CalcularTemporada = async (textoFechaRecogida) =>
 {
+
+    if (textoFechaRecogida === undefined) return;
+    
+    if (textoFechaRecogida.indexOf("-") != 0)
+    {
+        const fechaSplitted = textoFechaRecogida.split("-");
+        const dia = fechaSplitted[0] - 0;
+        const mes = fechaSplitted[1] - 1;
+        const anyo = fechaSplitted[2] - 0;
+
+        textoFechaRecogida = new Date(anyo, mes, dia   );
+
+    }
     const fechaRecogida = new Date(textoFechaRecogida);
     let temporada = "C";
 

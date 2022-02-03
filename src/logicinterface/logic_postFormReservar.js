@@ -333,6 +333,7 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
     const isReservaValida = await CheckReservaValida(formulario);
     if (isReservaValida === false)
     {
+        console.log("ERROR!! La reserva no es valida numeroRegistro=" + numeroRegistro)
         return { "isInserted": false, "objectId": undefined, "numeroRegistro": numeroRegistro };
     }
 
@@ -504,10 +505,11 @@ const CheckReservaValida = async (formulario) =>
     }
 
     
-
+    const temporada = await logicPostFormIndex.CalcularTemporada(formulario.fechaRecogida) || "C";
     const datosVehiculo = await dbInterfaces.GetCarByDescripcion(formulario.descripcion_vehiculo);
     // const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
-    const preciosPorClase = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo);
+
+    const preciosPorClase = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo, temporada);
     
     const porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
     const formularioDescuento = porcentajeTipoVehiculo[datosVehiculo.resultados.clasevehiculo] - 0;

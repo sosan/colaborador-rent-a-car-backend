@@ -88,10 +88,10 @@ exports.GetPreciosPorClase = async (tiposClases, temporada) => {
 
 };
 
-exports.GetPreciosUnicaClase = async (tipoClase) =>
+exports.GetPreciosUnicaClase = async (tipoClase, temporada) =>
 {
 
-    return await mongo_dao.GetPreciosUnicaClase(tipoClase);
+    return await mongo_dao.GetPreciosUnicaClase(tipoClase, temporada);
 
 };
 

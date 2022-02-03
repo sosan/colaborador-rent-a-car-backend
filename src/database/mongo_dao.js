@@ -336,13 +336,14 @@ exports.GetPreciosPorClase = async (tiposClases, temporada) =>
 
 };
 
-exports.GetPreciosUnicaClase = async (tipoClase) =>
+exports.GetPreciosUnicaClase = async (tipoClase, temporada) =>
 {
 
     try {
 
         const resultados = await collectionPrecios.find(
             {
+                "TEMPORADA": temporada,
                 "CLASE": tipoClase
             }
         ).project({ _id: 0 }).toArray();
