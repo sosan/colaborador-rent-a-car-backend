@@ -372,21 +372,38 @@ exports.CalcularTemporada = async (textoFechaRecogida) =>
 {
 
     if (textoFechaRecogida === undefined) return;
+    
+    if (textoFechaRecogida.indexOf("T") > 1)
+    {
+        
+        let fechaSplitted = textoFechaRecogida.split("T")[0];
+        fechaSplitted = fechaSplitted.split("-");
+
+        const anyo = fechaSplitted[0] - 0;
+        const mes = fechaSplitted[1] - 1;
+        const dia = fechaSplitted[2] - 0;
+    
+        textoFechaRecogida = new Date(anyo, mes, dia   );
+
+    }
+    else
+    {
+        
+        const fechaSplitted = textoFechaRecogida.split("-");
+
+        const dia = fechaSplitted[0] - 0;
+        const mes = fechaSplitted[1] - 1;
+        const anyo = fechaSplitted[2] - 0;
+
+        textoFechaRecogida = new Date(anyo, mes, dia);
+
+    }
+    
     let isValidDate = Date.parse(textoFechaRecogida);
 
     if (isNaN(isValidDate) === true)
     {
         console.log("textoFechaRecogida" + textoFechaRecogida);
-        if (textoFechaRecogida.indexOf("-") != 0)
-        {
-            const fechaSplitted = textoFechaRecogida.split("-");
-            const dia = fechaSplitted[0] - 0;
-            const mes = fechaSplitted[1] - 1;
-            const anyo = fechaSplitted[2] - 0;
-        
-            textoFechaRecogida = new Date(anyo, mes, dia   );
-
-        }
     }
     
     const fechaRecogida = new Date(textoFechaRecogida);

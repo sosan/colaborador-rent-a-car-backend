@@ -370,8 +370,8 @@ const SanitizarFormulario = async (formulario) =>
 {
     
     //quitar mayusculas, espacios, o caracteres no permitidos
-    formulario["nombre"] = await CapitalizarString(formulario["nombre"]);
-    formulario["apellidos"] = await CapitalizarString(formulario["apellidos"]);
+    formulario["nombre"] = await CapitalizarString(formulario["nombre"]) || formulario["nombre"];
+    formulario["apellidos"] = await CapitalizarString(formulario["apellidos"]) || formulario["apellidos"];
 
     formulario["email"] = formulario["email"].trim().toLowerCase();
     formulario["telefono"] = formulario["telefono"].trim().toLowerCase();
@@ -382,15 +382,28 @@ const SanitizarFormulario = async (formulario) =>
 
 const CapitalizarString = async (cadena) =>
 {
+    try
+    {
+        const palabras = cadena.toLowerCase().split(" ");
+    
+        for (let i = 0; i < palabras.length; i++) 
+        {
+            if (palabras[i][0] !== undefined)
+            {
+                palabras[i] = palabras[i][0].toUpperCase() + palabras[i].substr(1);
+            }
+    
+        }
+    
+        const texto = palabras.join(" ");
+        return texto;
 
-    const palabras = cadena.toLowerCase().split(" ");
-
-    for (let i = 0; i < palabras.length; i++) {
-        palabras[i] = palabras[i][0].toUpperCase() + palabras[i].substr(1);
+    }
+    catch(error)
+    {
+        return cadena;
     }
 
-    const texto = palabras.join(" ");
-    return texto;
 
 };
 
