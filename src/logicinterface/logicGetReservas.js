@@ -194,6 +194,15 @@ exports.ConfirmarReserva = async (req, res ) =>
 
 };
 
+exports.MostrarReservasErrores = async (req, res) =>
+{
+
+    resultado = await dbInterfaces.GetReservasErrores();
+
+    return res.send({"datos": resultado});
+
+};
+
 const ObtenerCurrentDate = async () => {
     let date_ob = new Date();
 

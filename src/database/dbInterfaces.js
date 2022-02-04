@@ -251,6 +251,12 @@ exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
 
 }
 
+exports.GetReservasErrores = async () =>
+{
+    return await mongo_dao.GetReservasErrores();
+
+};
+
 
 exports.InivisibleReserva = async (_id) =>
 {

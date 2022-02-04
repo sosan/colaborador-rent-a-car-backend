@@ -910,6 +910,24 @@ exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
 
 };
 
+exports.GetReservasErrores = async () => {
+
+    try {
+        const datos = await collectionReservas
+            .find(
+                {
+                    "resultadoUserEmailSended.cannotSend": false 
+                }).sort("fechaAlta", -1).toArray();
+        return datos;
+
+    }
+    catch (error) {
+        console.log(`error ${error}`);
+    }
+
+};
+
+
 exports.InivisibleReserva = async (_id) =>
 {
 
