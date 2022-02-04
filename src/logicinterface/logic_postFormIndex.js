@@ -371,16 +371,22 @@ const GetCarsByReservado = async (formulario) => {
 exports.CalcularTemporada = async (textoFechaRecogida) =>
 {
 
+    if (textoFechaRecogida === undefined) return;
     let isValidDate = Date.parse(textoFechaRecogida);
 
     if (isNaN(isValidDate) === true)
     {
-        const fechaSplitted = textoFechaRecogida.split("-");
-        const dia = fechaSplitted[0] - 0;
-        const mes = fechaSplitted[1] - 1;
-        const anyo = fechaSplitted[2] - 0;
-    
-        textoFechaRecogida = new Date(anyo, mes, dia   );
+        console.log("textoFechaRecogida" + textoFechaRecogida);
+        if (textoFechaRecogida.indexOf("-") != 0)
+        {
+            const fechaSplitted = textoFechaRecogida.split("-");
+            const dia = fechaSplitted[0] - 0;
+            const mes = fechaSplitted[1] - 1;
+            const anyo = fechaSplitted[2] - 0;
+        
+            textoFechaRecogida = new Date(anyo, mes, dia   );
+
+        }
     }
     
     const fechaRecogida = new Date(textoFechaRecogida);
