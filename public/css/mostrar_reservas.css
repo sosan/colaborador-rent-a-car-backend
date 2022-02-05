@@ -148,6 +148,11 @@ body
     flex-basis: 63px;
 }
 
+.tamanyo-40
+{
+    flex-basis: 40px;
+}
+
 .titulo
 {
     font-weight: 400;
@@ -196,6 +201,15 @@ body
     background-color: rgb(186 0 0);
     z-index: 1000000;
 
+}
+
+.botonEnviarEmail
+{
+    padding: 10px;
+    border-radius: 7px;
+    color: white;
+    background-color: rgb(0, 186, 15);
+    z-index: 1000000;
 }
 
 

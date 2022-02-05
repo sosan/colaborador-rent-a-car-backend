@@ -59,7 +59,7 @@ return fechaActual;
 
             <h3 class="titulo">La busqueda entre <%= fechaInicioTemp %> y <%= fechaDestinoTemp %> :</h3>
         <% } else { %>
-                <h3 class="titulo">Todas las confirmaciones</h3>
+                <h3 class="titulo">Todas las reservas</h3>
         <% } %>
     </li>
 
@@ -69,6 +69,9 @@ return fechaActual;
         </div>
         <div class="tamanyo-63">
             PAGADO
+        </div>
+        <div class="tamanyo-63">
+            EMAIL CONF
         </div>
         <div class="tamanyo-200">
             Nombre Apellidos
@@ -100,7 +103,7 @@ return fechaActual;
                     <%=it.noenviados[i].numeroRegistro %>
                 </b>
             </div>
-            <div class="tamanyo-63">
+            <div class="tamanyo-40">
                 <b>
                     <% if (it.noenviados[i].Ds_Response=== undefined ) { %>
                         <img src="./img/svg/rojo.svg" alt="NO PAGADO">
@@ -112,6 +115,19 @@ return fechaActual;
                         <% } %>
                     <% } %>
                     
+                </b>
+            </div>
+            <div class="tamanyo-63">
+                <b>
+                    <% if (it.noenviados[i].resultadoUserEmailSended===undefined ) { %>
+                        <img src="./img/svg/email-rojo.svg" alt="NO ENVIADO CORREO CONFIRMACION">
+                    <% } else { %>
+                        <% if (it.noenviados[i].resultadoUserEmailSended.cannotSend === false ) { %>
+                            <img src="./img/svg/email-verde.svg" alt="ENVIADO CORREO CONFIRMACION">
+                        <% } else { %>
+                            <img src="./img/svg/email-rojo.svg" alt="NO ENVIADO CORREO CONFIRMACION">
+                        <% } %>
+                    <% } %>
                 </b>
             </div>
             <div class="tamanyo-200">
@@ -230,6 +246,10 @@ return fechaActual;
                             <input type="hidden" id="_id_<%=contador%>" name="_id" value="<%=it.noenviados[i]._id %>">
                             <button class="botonBorrarReserva" type="submit" >OCULTAR</button>
                         </li>
+                        <li class="">
+                            <input type="hidden" id="_id_usuario_email_<%=contador%>" name="_id" value="<%=it.noenviados[i]._id %>">
+                            <button class="botonEnviarEmail" type="submit">ENVIAR EMAIL DE COMPRA POR USUARIO</button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -249,7 +269,7 @@ return fechaActual;
                     <input type="hidden" name="descripcion_vehiculo" value="<%=it.noenviados[i].descripcion_vehiculo %>">
 
                     <button id="botonEnviar" class="centrado-boton_correo azul" type="submit">
-                        Enviar correo
+                        Enviar confirmacion
                     </button>
                 </form>
             </div>

@@ -131,6 +131,26 @@ botonEnviados.addEventListener("click", async (evento) =>
 
 
 botonOtros.addEventListener("click", async (evento) => { abrirPestanyas(botonOtros, "otros"); });
+// botonOtros.addEventListener("click", async (evento) => {
+
+//     evento.preventDefault();
+
+
+//     const responseRaw = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/reservaserrores", {
+//         method: "GET",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         credentials: "include",
+//     });
+
+//     const datosDevueltos = await responseRaw.json();
+
+    
+    
+//     abrirPestanyas(botonOtros, "otros"); 
+
+// });
 
 
 var GetReservas = async (url) =>
@@ -372,6 +392,53 @@ var AnadirEventosFormularios = async () =>
     }
 
 
+    var listadoBotonesEnviarEmailUsuario = document.getElementsByClassName("botonEnviarEmail");
+
+    for (let i = 0; i < listadoBotonesEnviarEmailUsuario.length; i++)
+    {
+
+        listadoBotonesEnviarEmailUsuario[i].addEventListener("click", async (evento) =>
+        {
+            const _id = document.getElementById(`_id_usuario_email_${i}`).value;
+            const body = {
+                "_id": _id
+            };
+            const resultado = await fetch("/0_QJFs2NH9a_f_a_BQ_NTib_Y3O6Ik_DkWIiW_mFtZSI/dashboard/enviaremailusuario",
+                {
+
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(body)
+
+                });
+
+            const datos = await resultado.json();
+
+            if (datos.resultadoEmailsEnviados.resultadoUserEmailSended.cannotSend === false 
+                || datos.resultadoEmailsEnviados.resultadoAdminEmailSended.cannotSend === false
+                || datos.resultadoEmailsEnviados.reservaContieneErrores === false
+            )
+            {
+                listadoBotonesEnviarEmailUsuario[i].innerText = "ENVIADO";
+            }
+            else
+            {
+                listadoBotonesEnviarEmailUsuario[i].innerText = "ERROR";
+
+            }
+            
+            setTimeout(() => {
+                listadoBotonesEnviarEmailUsuario[i].innerText = "ENVIAR EMAIL DE COMPRA POR USUARIO";
+            }, 3000);
+            
+        });
+
+    }
+
+
 }
 
 AnadirEventosFormularios();
@@ -387,7 +454,7 @@ var ObtenerCurrentDate = async (fecha) => {
     const anyo = date_ob.getUTCFullYear();
     
     const minuto = date_ob.getMinutes().toString().padStart(2, "00");
-    const horas = date_ob.getHours().toString().padStart(2, "00");
+    const horas = date_ob.getUTCHours().toString().padStart(2, "00");
     const segundos = date_ob.getSeconds().toString().padStart(2, "00");
     
     // const textoDia = new Intl.DateTimeFormat("es").format(date_ob);

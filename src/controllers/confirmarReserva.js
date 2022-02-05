@@ -52,6 +52,48 @@ exports.MostrarReservas = async (req, res) =>
 
 };
 
+exports.MostrarReservasErrores = async (req, res) =>
+{
+
+    const response = await fetch(`http://${process.env.URL_BACKEND}:3000/reservaserrores`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include"
+    });
+
+    const datos = await response.json();
+
+    res.render(path.join(__dirname, '../../public/mostrar_reservas_errores.html'), {
+        reservaerrores: datos.resultados,
+        calcularFecha: true,
+    });
+
+};
+
+exports.EnviarEmailUsuario = async (req, res) =>
+{
+
+    const _body = req.body;
+
+    const response = await fetch(`http://${process.env.URL_BACKEND}:3000/enviaremailusuario`,
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(_body)
+    }
+    );
+
+    const data = await response.json();
+    res.send({"resultadoEmailsEnviados": data.resultadoEmailsEnviados})
+
+
+};
+
 exports.MostrarReservasEnviadas = async (req, res) => {
 
 

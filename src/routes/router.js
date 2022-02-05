@@ -34,6 +34,13 @@ router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/busquedare
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/confirmaciones`, async (req, res) => await confirmar.MostrarConfirmaciones(req, res));
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/confirmar`, async (req, res) => await confirmar.MostrarReservas(req, res) );
 
+router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/reservaserrores`, async (req, res) => await confirmar.MostrarReservasErrores(req, res));
+router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/enviaremailusuario`, async (req, res) => await confirmar.EnviarEmailUsuario(req, res));
+
+
+
+
+
 router.get(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/templates`, async (req, res) => await templates.GetMainTemplates(req, res));
 router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/mostrartemplate`, async (req, res) => await templates.MostrarTemplate(req, res));
 router.post(`${process.env.ENDPOINT_FRONTEND_PANEL_CONTROL}/dashboard/mostrardetalletemplate`, async (req, res) => await templates.DetalleTemplate(req, res));
