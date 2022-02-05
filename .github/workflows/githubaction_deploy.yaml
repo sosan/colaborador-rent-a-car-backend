@@ -71,9 +71,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
-            /home/alvaro/bin/docker context use rootless
-            /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest
-            /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
+            ${HOME}/bin/docker context use rootless
+            ${HOME}/bin/docker pull sosan/backoffice-rentacarmallorca:latest
+            /usr/bin/docker-compose -f ${HOME}/deploy-compose.txt up -d
       # - name: Send discord failure message
       #   if: ${{ failure() }}
       #   uses: appleboy/discord-action@master
