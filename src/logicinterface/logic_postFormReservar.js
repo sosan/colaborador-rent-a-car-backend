@@ -122,9 +122,9 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
     emailsEnviados.resultadoAdminEmailSended["fechaEmailsActualizado"] = currentDate;
 
     //buscar por id
-    await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
+    const isUpdated = await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
     console.log(`emails enviados:\n-> Usuarios: ${emailsEnviados.resultadoUserEmailSended.isSended}\n-> Admins: ${emailsEnviados.resultadoAdminEmailSended.isSended}` )
-
+    return isUpdated;
 };
 
 const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>

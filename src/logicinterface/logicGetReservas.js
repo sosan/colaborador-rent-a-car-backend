@@ -1,6 +1,7 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const traducciones = require("../controllers/location");
 const logic_postFormReservar = require("./logic_postFormReservar");
+const { ObjectId } = require('mongodb');
 
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
@@ -252,12 +253,9 @@ exports.EnviarEmailUsuario = async (req, res) =>
     }
 
     const resultadoEmailsEnviados = await logic_postFormReservar.EnviarCorreos(reserva, reserva);
-    await logic_postFormReservar.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, reserva._id);
+    const isUpdated = await logic_postFormReservar.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, ObjectId(_id));
+    resultadoEmailsEnviados["reservaContieneErrores"] = !isUpdated;
     res.send({ "resultadoEmailsEnviados": resultadoEmailsEnviados });
-
-    // req.body = reserva;
-    // req.body["_id"] = _id;
-    // await this.ConfirmarReserva(req, res);
 
 };
 
