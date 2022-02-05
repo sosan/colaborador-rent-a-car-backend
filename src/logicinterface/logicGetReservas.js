@@ -238,3 +238,26 @@ exports.BorrarReserva = async (req, res) =>
 
 
 };
+
+
+exports.EnviarEmailUsuario = async (req, res) =>
+{
+
+    const _id = req.body._id;
+
+    const reserva = await dbInterfaces.GetReservasById(_id);
+    if (reserva.numeroRegistro === undefined)
+    {
+        return res.send({});
+    }
+
+    const resultadoEmailsEnviados = await logic_postFormReservar.EnviarCorreos(reserva, reserva);
+    await logic_postFormReservar.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, reserva._id);
+    res.send({ "resultadoEmailsEnviados": resultadoEmailsEnviados });
+
+    // req.body = reserva;
+    // req.body["_id"] = _id;
+    // await this.ConfirmarReserva(req, res);
+
+};
+

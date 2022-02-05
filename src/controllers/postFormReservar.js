@@ -63,9 +63,7 @@ exports.ProcesarMerchantParameters = async (req, res) =>
     // https://pagosonline.redsys.es/codigosRespuesta.html
     if (responseTransaction >= 0 && responseTransaction <= 99)
     {
-
         // buscar y modificar la reserva, enviar los correos
-        
         const reserva = await logicInterface.BuscarReservaModificar(decodedMerchantParameters);
         const resultadoEmailsEnviados = await logicInterface.EnviarCorreos(reserva, reserva);
         await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, reserva._id);
@@ -74,6 +72,11 @@ exports.ProcesarMerchantParameters = async (req, res) =>
     else
     {
         // trasaccion no realizada correctamente
+        const reserva = await logicInterface.BuscarReservaModificar(decodedMerchantParameters);
+        const resultadoEmailsEnviados = await logicInterface.EnviarCorreosReservaConErrores(reserva, reserva, true);
+        await logicInterface.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, reserva._id);
+        console.log("ERROR RESERVA " + JSON.stringify(reserva));
+
     }
     
 

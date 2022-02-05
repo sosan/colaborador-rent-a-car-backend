@@ -953,3 +953,25 @@ exports.InivisibleReserva = async (_id) =>
     } 
 
 };
+
+exports.GetReservasById = async (_id) =>
+{
+
+    try {
+
+        let objectId = ObjectId(_id);
+        const resultados = await collectionReservas.find({ "_id": objectId } ).project({ _id: 0 }).toArray();
+
+        if (resultados?.length === 1)
+        {
+            return resultados[0];
+
+        }
+
+        return null;
+    }
+    catch (error) {
+        console.log(`error ${_id} ${error}`);
+    } 
+
+};

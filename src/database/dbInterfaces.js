@@ -264,3 +264,9 @@ exports.InivisibleReserva = async (_id) =>
     return await mongo_dao.InivisibleReserva(_id);
 
 };
+
+
+exports.GetReservasById = async (_id) =>
+{
+    return await mongo_dao.GetReservasById(_id);
+}

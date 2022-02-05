@@ -57,7 +57,14 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 
     const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
 
-    if (traduccion === undefined) return;
+    if (traduccion === undefined)
+    {
+        return {
+            "reservaContieneErrores": false,
+            "resultadoUserEmailSended": { isSended: false, messageId: -1, cannotSend: true },
+            "resultadoAdminEmailSended": { isSended: false, messageId: -1, cannotSend: true },
+        };
+    }
 
     let bodyEmail = await ContruirEmailUsuario(resultadoInsercion, formulario, traduccion);
 
@@ -84,6 +91,26 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     // return emailsEnviados;
 
 };
+
+exports.EnviarCorreosReservaConErrores = async (resultadoInsercion, formulario, contieneErrores) => {
+
+    // const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
+    // if (traduccion === undefined) return;
+
+    // envio correo administracion
+    let bodyEmail = await ConstruirEmailAdmins(resultadoInsercion, formulario, contieneErrores);
+
+    //envio correo admins
+    const resultadoAdminEmailSended = await EnviarCorreoIo(bodyEmail);
+
+    return {
+        "reservaContieneErrores": true,
+        "resultadoUserEmailSended": resultadoUserEmailSended,
+        "resultadoAdminEmailSended": resultadoAdminEmailSended
+    };
+
+};
+
 
 exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
 {
@@ -142,7 +169,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
 
 };
 
-const ConstruirEmailAdmins = async (resultadoInsercion, formulario) =>
+const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErrores) =>
 {
 
     let tabla = "";
@@ -166,6 +193,12 @@ const ConstruirEmailAdmins = async (resultadoInsercion, formulario) =>
         errorEmailSended = `ATENCION!!!! Ha habido un error al enviar correo al usuario ${formulario.email}`;
         subject = `Problemas! El Numero Registro: ${resultadoInsercion.numeroRegistro} tiene problemas`;
 
+    }
+
+    if (contieneErrores)
+    {
+        errorEmailSended += `ATENCION!!!! Ha habido un error al procesar la reserva al usuario ${formulario.email}`;
+        subject = `Problemas! El Numero Registro: ${resultadoInsercion.numeroRegistro} tiene problemas`;
     }
 
     let html = 
