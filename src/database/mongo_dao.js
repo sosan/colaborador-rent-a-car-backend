@@ -163,7 +163,7 @@ exports.GetClaseVehiculosOrdenados = async () =>
 
     try {
 
-        const resultados = await collectionHelper.find({ id: "ordenacion"})
+        const resultados = await collectionHelper.find({ id: "ordenacion_local"})
             .project({ _id: 0 })
             .toArray();
 
@@ -284,7 +284,7 @@ exports.GetTiposClases = async () =>
     {
         const tiposClases = await collectionHelper.find(
             {
-                "id": "clases"
+                "id": "clases_local"
             }
         )
         .project({ _id: 0 })
@@ -648,7 +648,7 @@ exports.NumeroReservasPorDia = async (fechaInicio, fechaFin) =>
 exports.GetPorcentajeTipoVehiculo = async () => 
 {
     try {
-        const datos = await collectionPorcentajeClaseVehiculos.find({ "id": "porcentaje_clase_vehiculos" }).project({ _id: 0, id: 0 }).toArray();
+        const datos = await collectionPorcentajeClaseVehiculos.find({ "id": "porcentaje_clase_vehiculos_local" }).project({ _id: 0, id: 0 }).toArray();
         return datos[0];
 
     } catch (error) {

@@ -99,7 +99,7 @@ jobs:
             echo "${{secrets.ENDPOINT_VARIABLES_FRONTEND}}" > ${HOME}/endpoint_variables_frontend.txt && \
             echo "${{secrets.TOKEN_FOR_BACKEND_ACCESS}}" > ${HOME}/token_for_backend_access.txt && \
             echo "${{secrets.TOKEN_PGP}}" > ${HOME}/token_pgp.txt && \
-            cat <<EOF > ${HOME}/deploy-compose.txt
+            cat <<EOF > ${HOME}/docker-compose.yaml
             version: "3.9"
             x-logging:
               &default-logging
@@ -259,7 +259,7 @@ jobs:
             ${HOME}/bin/docker pull sosan/frontend-rentacarmallorca-basico:latest && \
             ${HOME}/bin/docker pull sosan/envoy-rentacarmallorca:latest && \
             ${HOME}/bin/docker pull sosan/fluentloki-rentacarmallorca:latest && \
-            /usr/bin/docker-compose -f ${HOME}/deploy-compose.txt up -d
+            /usr/bin/docker-compose -f ${HOME}/docker-compose.yaml up -d
             ${HOME}/bin/docker rmi $(${HOME}/bin/docker images | grep "<none>" | awk '{print $3}') 2>/dev/null || echo "No hay images por borrar"
             ${HOME}/bin/docker system prune --force
             

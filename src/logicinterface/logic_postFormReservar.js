@@ -551,7 +551,7 @@ const CheckReservaValida = async (formulario) =>
     }
 
     
-    const temporada = await logicPostFormIndex.CalcularTemporada(formulario.fechaRecogida) || "C";
+    const temporada = await logicPostFormIndex.CalcularTemporada(formulario.fechaRecogida) || "3";
     const datosVehiculo = await dbInterfaces.GetCarByDescripcion(formulario.descripcion_vehiculo);
     // const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
 

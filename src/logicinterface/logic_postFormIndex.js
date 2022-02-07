@@ -336,7 +336,7 @@ const GetCarsByReservado = async (formulario) => {
         return { isOk: false, resultados: undefined, errores: error };
     }
     // no es necesario si viene de index
-    const temporada = await  this.CalcularTemporada(formulario.fechaRecogida) || "C";
+    const temporada = await  this.CalcularTemporada(formulario.fechaRecogida) || "3";
     const preciosPorClase = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados, temporada);
 
     if (preciosPorClase.isOk === false) {
@@ -407,51 +407,51 @@ exports.CalcularTemporada = async (textoFechaRecogida) =>
     }
     
     const fechaRecogida = new Date(textoFechaRecogida);
-    let temporada = "C";
+    let temporada = "3";
 
     switch (fechaRecogida.getMonth()) {
         case 0: // enero
         case 1: // febrero
         case 2: // marzo
-            temporada = "A";
+            temporada = "1";
             break;
         case 3: // abril
         case 4: // mayo
-            temporada = "B";
+            temporada = "2";
             break;
         case 5: // junio
             if (fechaRecogida.getDate() >= 1 && fechaRecogida.getDate() <= 15) {
-                temporada = "B";
+                temporada = "2";
             }
             else {
-                temporada = "C";
+                temporada = "3";
             }
             break;
         case 6: // julio
-            temporada = "C";
+            temporada = "3";
             break;
         case 7: // agosto
-            temporada = "C";
+            temporada = "3";
             break;
         case 8: // septiembre
             if (fechaRecogida.getDate() >= 1 && fechaRecogida.getDate() <= 15) {
-                temporada = "C";
+                temporada = "3";
             }
             else {
-                temporada = "B";
+                temporada = "2";
             }
             break;
         case 9: // octubre
-            temporada = "B";
+            temporada = "2";
             break;
         case 10: // noviembre
-            temporada = "A";
+            temporada = "1";
             break;
         case 11: // diciembre
-            temporada = "A";
+            temporada = "1";
             break;
         default:
-            temporada = "C";
+            temporada = "3";
             break;
     }
 
