@@ -560,16 +560,29 @@ const CheckReservaValida = async (formulario) =>
     const porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
     const formularioDescuento = porcentajeTipoVehiculo[datosVehiculo.resultados.clasevehiculo] - 0;
 
-    const precioAlquiler = await obtenerPrecioSegunCantidadDias(dias, preciosPorClase.resultados);
+    let precioAlquiler = await obtenerPrecioSegunCantidadDias(dias, preciosPorClase.resultados);
     
+    const cantidadBooster = formulario.numero_booster - 0;
+    const cantidadSillas = formulario.numero_sillas_nino - 0;
+    const totalSuplementoTipoConductor = formulario.total_suplmento_tipo_conductor - 0;
 
-    const precioPagoRecogida = (precioAlquiler * formularioDescuento) / 100 ;
-    const precioPagoOnline = precioAlquiler - precioPagoRecogida;
+    // precioAlquiler += totalSuplementoTipoConductor;
+    const precioBooster = (cantidadBooster * 3 * dias);
+    const precioSillas = (cantidadSillas * 3 * dias);
 
-    if (
-        precioAlquiler === (formulario.alquiler - 0) && 
-        precioPagoOnline === (formulario.pago_online - 0) &&
-        precioPagoRecogida === (formulario.pagoRecogida - 0)
+    precioAlquiler = ((precioAlquiler + (precioBooster + precioSillas)).toFixed(2)) - 0;
+
+    const precioPagoRecogida = ((precioAlquiler * formularioDescuento) / 100).toFixed(2) ;
+    const precioPagoOnline = (precioAlquiler - precioPagoRecogida).toFixed(2);
+
+    const pagoRecogidaConv = formulario.pagoRecogida - 0;
+    const pagoOnlineConv = formulario.pago_online - 0;
+
+    const precioAlquilerConv = ((pagoOnlineConv + pagoRecogidaConv).toFixed(2)) - 0;
+
+    if (precioAlquiler === precioAlquilerConv && 
+        precioPagoOnline === formulario.pago_online  &&
+        precioPagoRecogida === formulario.pagoRecogida
     )
     {
         return true;
