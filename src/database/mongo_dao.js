@@ -222,7 +222,7 @@ exports.GetAllSuplementosTipoChofer = async () => {
 
     try {
 
-        const resultados = await collectionsupleTipochoferVehiculo.find({"id": "experienciaConductor"})
+        const resultados = await collectionsupleTipochoferVehiculo.find({ "id": "experienciaConductor_local"})
         .project({ _id: 0, id: 0 })
         .toArray();
 

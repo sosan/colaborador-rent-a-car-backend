@@ -693,7 +693,7 @@ const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia
     }
     else
     {
-        if (claseVehiculo === "motos2") {
+        if (claseVehiculo === "motosC" || claseVehiculo === "motosD") {
             currentTipoChofer = suplementoTipoChofer["choferPlusNovelMotos"];
         }
         else {
