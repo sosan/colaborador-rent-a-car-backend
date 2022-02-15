@@ -930,20 +930,24 @@ const CheckResultadosCoches = async (
         let precioTotalDias = 0;
         let precioDiaSinDescuento = 0;
         
-        for (const keyPrecioPorClase in preciosPorClase)
+        for (const keyPrecioPorTemporada in preciosPorClase)
         {
-            if (!preciosPorClase[keyPrecioPorClase][claseVehiculo])
+            if (!preciosPorClase[keyPrecioPorTemporada][claseVehiculo])
             {
                 // console.error(`resultadoscoche ${resultadosCoches[i]} clasevehiculo ${claseVehiculo}`);
                 saltar = true;
                 break;
             }
             
-            const listadoPrecios = preciosPorClase[keyPrecioPorClase][claseVehiculo];
-            // precioDiaPorClase = 0;
-            // precioTotalDias = 0;
+            const listadoPrecios = preciosPorClase[keyPrecioPorTemporada][claseVehiculo];
             precioDiaSinDescuento = listadoPrecios[2]; ///////--------------
-            const numeroDias = preciosPorClase[keyPrecioPorClase]["dias"] - 0;
+            let numeroDias = numeroDiasRecogidaDevolucion;
+
+            if (preciosPorClase[keyPrecioPorTemporada]["dias"] === true)
+            {
+                numeroDias = preciosPorClase[keyPrecioPorTemporada]["dias"] - 0;
+            }
+            
             if (numeroDias > 7) {
                 precioDiaPorClase = listadoPrecios[listadoPrecios.length - 1];
                 precioTotalDias += precioDiaPorClase * numeroDias;
@@ -955,21 +959,12 @@ const CheckResultadosCoches = async (
     
             }
 
-            console.log("sdjsdf");
-
         }
 
         if (saltar === true)
         {
             continue;
         }
-        //si no existe la clase
-        // if (!preciosPorClase[claseVehiculo]) {
-        //     // console.error(`resultadoscoche ${resultadosCoches[i]} clasevehiculo ${claseVehiculo}`);
-        //     continue;
-        // }
-
-
 
         resultadosCoches[i]["preciototaldias"] = precioTotalDias;
 
