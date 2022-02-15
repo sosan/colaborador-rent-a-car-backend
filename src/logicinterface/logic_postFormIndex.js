@@ -943,7 +943,7 @@ const CheckResultadosCoches = async (
             precioDiaSinDescuento = listadoPrecios[2]; ///////--------------
             let numeroDias = numeroDiasRecogidaDevolucion;
 
-            if (preciosPorClase[keyPrecioPorTemporada]["dias"] === true)
+            if ("dias" in preciosPorClase[keyPrecioPorTemporada] === true)
             {
                 numeroDias = preciosPorClase[keyPrecioPorTemporada]["dias"] - 0;
             }
