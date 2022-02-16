@@ -343,7 +343,7 @@ const GetCarsByReservado = async (formulario) => {
     
     let preciosPorClase = [];
     let listadoDiasTemporada = [];
-    if (rangoFechaInicio === rangoFechaFin)
+    if ((rangoFechaInicio === rangoFechaFin) || ((rangoFechaInicio === 10 || rangoFechaInicio === 11) && rangoFechaFin === 1))
     {
         const precios = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados, temporadaFechaRecogida);
         preciosPorClase.push(precios);
@@ -547,15 +547,27 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
     
     let listadoTemporadaDias = [];
 
-    const pivotPoints = await DiasFinalesMeses(yearRecogida);
+    const pivotPoints = await DiasFinalesMeses(yearRecogida, yearDevolucion);
 
-    for (let key in pivotPoints)
+    // for (let key in pivotPoints)
+    for (let i = 0; i < pivotPoints.length; i++)
     {
-        const fechaFin = pivotPoints[key]["fin"];
-        const fechaInicio = pivotPoints[key]["inicio"];
-        // console.log("fechaFin =>" + new Date(fechaFin))
-        // console.log("fecha devolucion =>" + new Date(fechaDevolucion))
-        // console.log("dfgskjdflgsfg" )
+        let fechaFin = pivotPoints[i]["fin"];
+        let fechaInicio = pivotPoints[i]["inicio"];
+        // let fechaDevolucionTemp = fechaDevolucion;
+
+        // if (yearDevolucion !== yearRecogida) {
+            
+        //     fechaFin = fechaDevolucion;
+        //     fechaDevolucionTemp = pivotPoints[i]["fin"];
+        // }
+
+        // (StartDate1 <= EndDate2) and(EndDate1 >= StartDate2)
+        if (((fechaRecogida <= fechaFin) && (fechaDevolucion >= fechaInicio)) === false)
+        {
+            continue;
+        }
+
         if (fechaFin >= fechaDevolucion)
         {
             console.log("mayor");
@@ -566,6 +578,7 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
             if (temporadaFechaInicio !== temporadaFechaFin)
             {
                 //// enviar de nuevo
+                continue;
             }
 
             let diasEntreFechas = await CalcularDiasEntrePivotes(
@@ -582,179 +595,129 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
                     "temporadaFechaFin": temporadaFechaFin
                 });
 
-            break;
+            // break;
         }
         else
         {
             console.log("antes---")
 
-            const temporadaFechaInicio = await SwitchTemporada(fechaRecogida);
-            const temporadaFechaFin = await SwitchTemporada(fechaFin);
+            let diasEntreFechas = 0;
+            if (fechaInicio <= fechaRecogida)
+            {
+                diasEntreFechas = await CalcularDiasEntrePivotes(
+                    fechaRecogida,
+                    fechaFin
+                );
+                
+                const temporadaFechaInicio = await SwitchTemporada(fechaRecogida); //fechaRecogida
+                const temporadaFechaFin = await SwitchTemporada(fechaFin);
 
-            if (temporadaFechaInicio !== temporadaFechaFin) {
-                //// enviar de nuevo
+                listadoTemporadaDias.push(
+                    {
+                        "fechaInicio": fechaRecogida,
+                        "fechaFin": fechaFin,
+                        "diasEntreFechas": diasEntreFechas,
+                        "temporadaFechaInicio": temporadaFechaInicio,
+                        "temporadaFechaFin": temporadaFechaFin
+                    });
+
+            }
+            else
+            {
+                
+                diasEntreFechas = await CalcularDiasEntrePivotes(
+                    fechaInicio, // fechaRecogida
+                    fechaFin
+                    );
+
+                const temporadaFechaInicio = await SwitchTemporada(fechaInicio); //fechaRecogida
+                const temporadaFechaFin = await SwitchTemporada(fechaFin);
+                
+                listadoTemporadaDias.push(
+                {
+                    "fechaInicio": fechaInicio,
+                    "fechaFin": fechaFin,
+                    "diasEntreFechas": diasEntreFechas,
+                    "temporadaFechaInicio": temporadaFechaInicio,
+                    "temporadaFechaFin": temporadaFechaFin
+                });
             }
 
-            let diasEntreFechas = await CalcularDiasEntrePivotes(
-                fechaRecogida,
-                fechaFin
-            );
+            // const temporadaFechaInicio = await SwitchTemporada(fechaInicio); //fechaRecogida
+            // const temporadaFechaFin = await SwitchTemporada(fechaFin);
+
+            // if (temporadaFechaInicio !== temporadaFechaFin) {
+            //     //// enviar de nuevo
+            //     continue;
+            // }
 
 
-            listadoTemporadaDias.push(
-            {
-                "fechaInicio": fechaRecogida,
-                "fechaFin": fechaFin,
-                "diasEntreFechas": diasEntreFechas,
-                "temporadaFechaInicio": temporadaFechaInicio,
-                "temporadaFechaFin": temporadaFechaFin
-            });
+
         }
 
     }
 
     return listadoTemporadaDias;
 
-
-    // switch (rangoFechaInicio) 
-    // {
-    //     case 1:
-
-    //         if (rangoFechaFin === 2 || rangoFechaFin === 3)
-    //         {
-    //             if (fechaDevolucion.getMonth() === 3)
-    //             {
-
-    //                 let [diasEntreFechaRecogidaFechaPivote, diasEntreFechaPivoteFechaDestino ] = await CalcularDiasEntrePivotes(
-    //                     yearRecogida,
-    //                     fechaRecogida,
-    //                     fechaDevolucion
-    //                 );
-                    
-    //                 listadoTemporadaDias.push(
-    //                 {
-    //                     "diasEntreFechaRecogidaFechaPivote": diasEntreFechaRecogidaFechaPivote,
-    //                     "diasEntreFechaPivoteFechaDestino": diasEntreFechaPivoteFechaDestino,
-    //                     "temporadaFechaRecogidaFechaPivote": "1",
-    //                     "temporadaFechaPivoteFechaDevolucion": "2",
-    //                 });
-
-    //             }
-
-    //             if (fechaDevolucion.getMonth() === 4 || fechaDevolucion.getMonth() === 5)
-    //             {
-
-    //                 if (pivotPoints[rangoFechaFin] > fechaDevolucion)
-    //                 {
-
-    //                 }
-    //                 else
-    //                 {
-                        
-    //                 }
-
-    //                 let [diasEntreFechaRecogidaFechaPivote, diasEntreFechaPivoteFechaDestino] = await CalcularDiasEntrePivotes(
-    //                     yearRecogida,
-    //                     fechaRecogida,
-    //                     pivotPoints["1"]
-    //                 );
-    //                 listadoTemporadaDias.push(
-    //                     {
-    //                         "diasEntreFechaRecogidaFechaPivote": diasEntreFechaRecogidaFechaPivote,
-    //                         "diasEntreFechaPivoteFechaDestino": diasEntreFechaPivoteFechaDestino,
-    //                         "temporadaFechaRecogidaFechaPivote": "1",
-    //                         "temporadaFechaPivoteFechaDevolucion": "2",
-    //                     });
-
-    //                 const fechaInit = new Date(pivotPoints["1"]);
-    //                 fechaInit.setDate(fechaInit.getDate() + 1);
-    //                 [diasEntreFechaRecogidaFechaPivote, diasEntreFechaPivoteFechaDestino] = await CalcularDiasEntrePivotes(
-    //                     yearRecogida,
-    //                     fechaInit,
-    //                     fechaDevolucion,
-    //                 );
-
-    //                 listadoTemporadaDias.push(
-    //                     {
-    //                         "diasEntreFechaRecogidaFechaPivote": diasEntreFechaRecogidaFechaPivote,
-    //                         "diasEntreFechaPivoteFechaDestino": diasEntreFechaPivoteFechaDestino,
-    //                         "temporadaFechaRecogidaFechaPivote": "2",
-    //                         "temporadaFechaPivoteFechaDevolucion": "2",
-    //                     });
-
-                    
-
-    //             }
-    //         }
-
-    //         if (rangoFechaFin === 4)
-    //         {
-    //             if (fechaDevolucion.getMonth() === 5)
-    //             {
-
-    //             }
-    //         }
-
-
-    //     break;
-    //     case 2:
-    //     case 3:
-            
-    //     break;
-    
-    //     default:
-    //         break;
-    // }
-
-    // (StartDate1 <= EndDate2) and(EndDate1 >= StartDate2)
-
-    // const [rangoFechaInicio, temporadaFechaRecogida] = await FechaSuperpuesta(fechaRecogida);
-    // const [rangoFechaFin, temporadaFechaDevolucion] = await FechaSuperpuesta(fechaDevolucion);
+    // 
 
 };
 
 
-const DiasFinalesMeses = async (yearRecogida) =>
+const DiasFinalesMeses = async (yearRecogida, yearDevolucion) =>
 {
 
+    const matriz = [];
+    for (let yearCurrent = yearRecogida; yearCurrent <= yearDevolucion; yearCurrent++)
+    {
+
+        let diaFinalRango1 = new Date(yearCurrent, 3, 1);
+        diaFinalRango1.setDate(diaFinalRango1.getDate() - 1);
+        
+        let diaFinalRango2 = new Date(yearCurrent, 5, 15);
+        let diaFinalRango3 = new Date(yearCurrent, 8, 15);
     
-    let diaFinalRango1 = new Date(yearRecogida, 3, 1);
-    diaFinalRango1.setDate(diaFinalRango1.getDate() - 1);
+        let diaFinalRango4 = new Date(yearCurrent, 10, 1);
+        diaFinalRango4.setDate(diaFinalRango4.getDate() - 1);
     
-    let diaFinalRango2 = new Date(yearRecogida, 5, 15);
-    let diaFinalRango3 = new Date(yearRecogida, 8, 15);
-
-    let diaFinalRango4 = new Date(yearRecogida, 10, 1);
-    diaFinalRango4.setDate(diaFinalRango4.getDate() - 1);
-
-    let diaFinalRango5 = new Date(yearRecogida + 1, 0, 1);
-    diaFinalRango5.setDate(diaFinalRango5.getDate() - 1);
-
-    let diaInicioRango1 = new Date(yearRecogida, 0, 1);
-    let diaInicioRango2 = new Date(yearRecogida, 3, 1);
-    let diaInicioRango3 = new Date(yearRecogida, 5, 16);
-    let diaInicioRango4 = new Date(yearRecogida, 8, 16);
-    let diaInicioRango5 = new Date(yearRecogida, 10, 1);
+        let diaFinalRango5 = new Date(yearCurrent + 1, 0, 1);
+        diaFinalRango5.setDate(diaFinalRango5.getDate() - 1);
     
-    diaFinalRango1.setHours(0, 0, 0, 0);
-    diaFinalRango2.setHours(0, 0, 0, 0);
-    diaFinalRango3.setHours(0, 0, 0, 0);
-    diaFinalRango4.setHours(0, 0, 0, 0);
-    diaFinalRango5.setHours(0, 0, 0, 0);
+        let diaInicioRango1 = new Date(yearCurrent, 0, 1);
+        let diaInicioRango2 = new Date(yearCurrent, 3, 1);
+        let diaInicioRango3 = new Date(yearCurrent, 5, 16);
+        let diaInicioRango4 = new Date(yearCurrent, 8, 16);
+        let diaInicioRango5 = new Date(yearCurrent, 10, 1);
+        
+        diaFinalRango1.setHours(0, 0, 0, 0);
+        diaFinalRango2.setHours(0, 0, 0, 0);
+        diaFinalRango3.setHours(0, 0, 0, 0);
+        diaFinalRango4.setHours(0, 0, 0, 0);
+        diaFinalRango5.setHours(0, 0, 0, 0);
+    
+        diaInicioRango1.setHours(0, 0, 0, 0);
+        diaInicioRango2.setHours(0, 0, 0, 0);
+        diaInicioRango3.setHours(0, 0, 0, 0);
+        diaInicioRango4.setHours(0, 0, 0, 0);
+        diaInicioRango5.setHours(0, 0, 0, 0);
+    
+        matriz.push(
+            { "inicio": diaInicioRango1, "fin": diaFinalRango1 }, 
+            { "inicio": diaInicioRango2, "fin": diaFinalRango2 },
+            { "inicio": diaInicioRango3, "fin": diaFinalRango3 },
+            { "inicio": diaInicioRango4, "fin": diaFinalRango4 },
+            { "inicio": diaInicioRango5, "fin": diaFinalRango5 },
+        );
 
-    diaInicioRango1.setHours(0, 0, 0, 0);
-    diaInicioRango2.setHours(0, 0, 0, 0);
-    diaInicioRango3.setHours(0, 0, 0, 0);
-    diaInicioRango4.setHours(0, 0, 0, 0);
-    diaInicioRango5.setHours(0, 0, 0, 0);
-
-    const matriz = {
-        1: { "inicio": diaInicioRango1, "fin": diaFinalRango1 },
-        3: { "inicio": diaInicioRango2, "fin": diaFinalRango2 },
-        7: { "inicio": diaInicioRango3, "fin": diaFinalRango3 },
-        9: { "inicio": diaInicioRango4, "fin": diaFinalRango4 },
-        11: { "inicio": diaInicioRango5, "fin": diaFinalRango5 },
-    };
+        // const matriz = {
+        //     1: { "inicio": diaInicioRango1, "fin": diaFinalRango1 },
+        //     3: { "inicio": diaInicioRango2, "fin": diaFinalRango2 },
+        //     7: { "inicio": diaInicioRango3, "fin": diaFinalRango3 },
+        //     9: { "inicio": diaInicioRango4, "fin": diaFinalRango4 },
+        //     11: { "inicio": diaInicioRango5, "fin": diaFinalRango5 },
+        // };
+    }
+    
 
     return matriz;
 

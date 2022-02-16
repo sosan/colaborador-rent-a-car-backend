@@ -6,7 +6,7 @@ const PASSWORD_CORREO = `${process.env.PASSWORD_CORREO}`;
 const SERVIDOR_SMTP = `${process.env.SERVIDOR_SMTP}`;
 const PUBLIC_SMTP_KEY = `${process.env.PUBLIC_SMTP_KEY}`.replace(new RegExp("_", 'g'), "\n");
 
-console.log("SERVIDOR SMTP: " + process.env.SERVIDOR_SMTP);
+// console.log("SERVIDOR SMTP: " + process.env.SERVIDOR_SMTP);
 
 // TODO: generarlo como global
 exports.transporter = nodemailer.createTransport({
