@@ -366,30 +366,6 @@ const GetCarsByReservado = async (formulario) => {
 
     }
 
-    
-    /**
- 
-[
-{
-    fechaInicio: { },
-    fechaFin: { },
-    diasEntreFechas: 45,
-    temporadaFechaInicio: "1",
-    temporadaFechaFin: "1",
-},
-{
-    fechaInicio: { },
-    fechaFin: { },
-    diasEntreFechas: 1,
-    temporadaFechaInicio: "2",
-    temporadaFechaFin: "2",
-},
-]
- 
- 
-*/ 
-
-    
     if (preciosPorClase.length === 0) {
         const error = `| - NO hay collecion preciosporclase `;
         console.error(error);
@@ -549,19 +525,11 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
 
     const pivotPoints = await DiasFinalesMeses(yearRecogida, yearDevolucion);
 
-    // for (let key in pivotPoints)
     for (let i = 0; i < pivotPoints.length; i++)
     {
         let fechaFin = pivotPoints[i]["fin"];
         let fechaInicio = pivotPoints[i]["inicio"];
-        // let fechaDevolucionTemp = fechaDevolucion;
-
-        // if (yearDevolucion !== yearRecogida) {
-            
-        //     fechaFin = fechaDevolucion;
-        //     fechaDevolucionTemp = pivotPoints[i]["fin"];
-        // }
-
+        
         // (StartDate1 <= EndDate2) and(EndDate1 >= StartDate2)
         if (((fechaRecogida <= fechaFin) && (fechaDevolucion >= fechaInicio)) === false)
         {
@@ -570,7 +538,6 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
 
         if (fechaFin >= fechaDevolucion)
         {
-            console.log("mayor");
             
             const temporadaFechaInicio = await SwitchTemporada(fechaInicio);
             const temporadaFechaFin = await SwitchTemporada(fechaDevolucion);
@@ -595,11 +562,9 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
                     "temporadaFechaFin": temporadaFechaFin
                 });
 
-            // break;
         }
         else
         {
-            console.log("antes---")
 
             let diasEntreFechas = 0;
             if (fechaInicio <= fechaRecogida)
@@ -609,7 +574,7 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
                     fechaFin
                 );
                 
-                const temporadaFechaInicio = await SwitchTemporada(fechaRecogida); //fechaRecogida
+                const temporadaFechaInicio = await SwitchTemporada(fechaRecogida);
                 const temporadaFechaFin = await SwitchTemporada(fechaFin);
 
                 listadoTemporadaDias.push(
@@ -626,11 +591,11 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
             {
                 
                 diasEntreFechas = await CalcularDiasEntrePivotes(
-                    fechaInicio, // fechaRecogida
+                    fechaInicio,
                     fechaFin
                     );
 
-                const temporadaFechaInicio = await SwitchTemporada(fechaInicio); //fechaRecogida
+                const temporadaFechaInicio = await SwitchTemporada(fechaInicio);
                 const temporadaFechaFin = await SwitchTemporada(fechaFin);
                 
                 listadoTemporadaDias.push(
@@ -709,13 +674,6 @@ const DiasFinalesMeses = async (yearRecogida, yearDevolucion) =>
             { "inicio": diaInicioRango5, "fin": diaFinalRango5 },
         );
 
-        // const matriz = {
-        //     1: { "inicio": diaInicioRango1, "fin": diaFinalRango1 },
-        //     3: { "inicio": diaInicioRango2, "fin": diaFinalRango2 },
-        //     7: { "inicio": diaInicioRango3, "fin": diaFinalRango3 },
-        //     9: { "inicio": diaInicioRango4, "fin": diaFinalRango4 },
-        //     11: { "inicio": diaInicioRango5, "fin": diaFinalRango5 },
-        // };
     }
     
 
