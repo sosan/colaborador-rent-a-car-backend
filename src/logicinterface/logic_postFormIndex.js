@@ -538,33 +538,67 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
 
         if (fechaFin >= fechaDevolucion)
         {
-            
-            const temporadaFechaInicio = await SwitchTemporada(fechaInicio);
-            const temporadaFechaFin = await SwitchTemporada(fechaDevolucion);
 
-            if (temporadaFechaInicio !== temporadaFechaFin)
+            // zona de corte final
+            let diasEntreFechas = 0;
+            if (fechaInicio <= fechaRecogida)
             {
-                //// enviar de nuevo
-                continue;
-            }
-
-            let diasEntreFechas = await CalcularDiasEntrePivotes(
-                fechaInicio,
-                fechaDevolucion,
-            );
-
-            listadoTemporadaDias.push(
+                const temporadaFechaInicio = await SwitchTemporada(fechaRecogida); //fechaInicio
+                const temporadaFechaFin = await SwitchTemporada(fechaDevolucion);
+    
+                if (temporadaFechaInicio !== temporadaFechaFin)
                 {
-                    "fechaInicio": fechaInicio,
-                    "fechaFin": fechaDevolucion,
-                    "diasEntreFechas": diasEntreFechas,
-                    "temporadaFechaInicio": temporadaFechaInicio,
-                    "temporadaFechaFin": temporadaFechaFin
-                });
+                    //// enviar de nuevo
+                    continue;
+                }
+    
+                diasEntreFechas = await CalcularDiasEntrePivotes(
+                    fechaRecogida,
+                    fechaDevolucion,
+                );
+
+                listadoTemporadaDias.push(
+                    {
+                        "fechaInicio": fechaRecogida,
+                        "fechaFin": fechaDevolucion,
+                        "diasEntreFechas": diasEntreFechas,
+                        "temporadaFechaInicio": temporadaFechaInicio,
+                        "temporadaFechaFin": temporadaFechaFin
+                    });
+
+
+            }
+            else
+            {
+                const temporadaFechaInicio = await SwitchTemporada(fechaInicio); //
+                const temporadaFechaFin = await SwitchTemporada(fechaDevolucion);
+
+                if (temporadaFechaInicio !== temporadaFechaFin) {
+                    //// enviar de nuevo
+                    continue;
+                }
+
+                diasEntreFechas = await CalcularDiasEntrePivotes(
+                    fechaInicio,
+                    fechaDevolucion,
+                );
+                listadoTemporadaDias.push(
+                    {
+                        "fechaInicio": fechaInicio,
+                        "fechaFin": fechaDevolucion,
+                        "diasEntreFechas": diasEntreFechas,
+                        "temporadaFechaInicio": temporadaFechaInicio,
+                        "temporadaFechaFin": temporadaFechaFin
+                    });
+            }
+            
+
 
         }
         else
         {
+
+            //zona de corte entremedio
 
             let diasEntreFechas = 0;
             if (fechaInicio <= fechaRecogida)
@@ -608,23 +642,11 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
                 });
             }
 
-            // const temporadaFechaInicio = await SwitchTemporada(fechaInicio); //fechaRecogida
-            // const temporadaFechaFin = await SwitchTemporada(fechaFin);
-
-            // if (temporadaFechaInicio !== temporadaFechaFin) {
-            //     //// enviar de nuevo
-            //     continue;
-            // }
-
-
-
         }
 
     }
 
     return listadoTemporadaDias;
-
-    // 
 
 };
 
@@ -675,7 +697,6 @@ const DiasFinalesMeses = async (yearRecogida, yearDevolucion) =>
         );
 
     }
-    
 
     return matriz;
 
@@ -684,14 +705,8 @@ const DiasFinalesMeses = async (yearRecogida, yearDevolucion) =>
 const CalcularDiasEntrePivotes = async (fechaInicio, fechaFin) =>
 {
 
-    // let fechaPivote = new Date(yearRecogida, fechaFin.getMonth(), 1);
-    // fechaPivote.setDate(fechaPivote.getDate() - 1);
-
     let diferenciaFechas = fechaFin.getTime() - fechaInicio.getTime();
     let diasEntreFechas = (Math.round(diferenciaFechas / 86400000)) + 1;
-
-    // diferenciaFechas = fechaFin.getTime() - fechaPivote.getTime();
-    // let diasEntreFechaPivoteFechaDestino = Math.round(diferenciaFechas / 86400000);
 
     return diasEntreFechas;
 }
