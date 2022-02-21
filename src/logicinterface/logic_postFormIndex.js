@@ -335,7 +335,6 @@ const GetCarsByReservado = async (formulario) => {
         console.error(error);
         return { isOk: false, resultados: undefined, errores: error };
     }
-    // no es necesario si viene de index
 
     const [rangoFechaInicio, temporadaFechaRecogida] = await this.FechaSuperpuesta(formulario.fechaRecogida);
     const [rangoFechaFin, temporadaFechaDevolucion] = await this.FechaSuperpuesta(formulario.fechaDevolucion);
@@ -373,7 +372,7 @@ const GetCarsByReservado = async (formulario) => {
     }
 
     //TODO: mejorar estatico
-    const transformadosPreciosPorClase = await TransformarPreciosPorClase(preciosPorClase, listadoDiasTemporada);
+    const transformadosPreciosPorClase = await this.TransformarPreciosPorClase(preciosPorClase, listadoDiasTemporada);
 
     if (transformadosPreciosPorClase === undefined) {
         const error = `| - Transformacion no posible en preciosporclase `;
@@ -777,20 +776,9 @@ const GenerarParametros = async (reservado, formulario) => {
 
 };
 
-const TransformarPreciosPorClase = async (preciosPorClase, listadoDiasTemporada) => {
+exports.TransformarPreciosPorClase = async (preciosPorClase, listadoDiasTemporada) => {
 
     let schema = { };
-    // schema["fechas"] = [];
-
-    // for (let i = 0; i < listadoDiasTemporada.length; i++)
-    // {
-    //     schema["fechas"].push({
-    //         "diasEntreFechas": listadoDiasTemporada[i].diasEntreFechas,
-    //         "temporada": listadoDiasTemporada[i].temporadaFechaInicio,
-
-    //     })
-
-    // }
 
     for (let i = 0; i < preciosPorClase.length; i++) 
     {
@@ -842,6 +830,54 @@ const TransformarPreciosPorClase = async (preciosPorClase, listadoDiasTemporada)
 
 
 };
+
+exports.TransformarPreciosPorUnicaClase = async (preciosPorClase, listadoDiasTemporada) => {
+
+    let schema = {};
+
+    for (let i = 0; i < preciosPorClase.length; i++) {
+
+        if (preciosPorClase[i].resultados.length <= 0) {
+            break;
+        }
+
+        const temporada = preciosPorClase[i].resultados["TEMPORADA"];
+        const keyClase = preciosPorClase[i].resultados["CLASE"];
+
+        let elementos = {};
+        let arrayPrecios = [];
+
+        for (let key in preciosPorClase[i].resultados) {
+            if (key === "CLASE") continue;
+            const valorPrecio = preciosPorClase[i].resultados[key];
+            arrayPrecios.push(valorPrecio);
+
+        }
+        elementos[keyClase] = arrayPrecios;
+
+        
+        for (let o = 0; o < listadoDiasTemporada.length; o++) {
+
+            if (listadoDiasTemporada[o].temporadaFechaInicio.toString() === preciosPorClase[i].resultados["TEMPORADA"].toString()) {
+                elementos["dias"] = listadoDiasTemporada[o].diasEntreFechas;
+            }
+
+        }
+
+        schema[temporada] = elementos;
+
+    }
+
+    return schema;
+
+
+};
+
+
+
+
+
+
 //--
 
 const CheckResultadosCoches = async (

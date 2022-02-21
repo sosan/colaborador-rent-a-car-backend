@@ -551,16 +551,68 @@ const CheckReservaValida = async (formulario) =>
     }
 
     
-    const temporada = await logicPostFormIndex.CalcularTemporada(formulario.fechaRecogida) || "3";
+    // const temporada = await logicPostFormIndex.CalcularTemporada(formulario.fechaRecogida) || "3";
     const datosVehiculo = await dbInterfaces.GetCarByDescripcion(formulario.descripcion_vehiculo);
-    // const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
+    
+    // if (tiposClases.isOk === false) {
+        //     const error = `| - NO hay collecion tiposclases `;
+        //     console.error(error);
+    //     return { isOk: false, resultados: undefined, errores: error };
+    // }
 
-    const preciosPorClase = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo, temporada);
+    const [rangoFechaInicio, temporadaFechaRecogida] = await logicPostFormIndex.FechaSuperpuesta(formulario.fechaRecogida);
+    const [rangoFechaFin, temporadaFechaDevolucion] = await logicPostFormIndex.FechaSuperpuesta(formulario.fechaDevolucion);
+    
+    
+    let preciosPorClase = [];
+    let listadoDiasTemporada = [];
+    let precioAlquiler = 0;
+    let preciosFinales = [];
+
+    if ((rangoFechaInicio === rangoFechaFin) || ((rangoFechaInicio === 10 || rangoFechaInicio === 11) && rangoFechaFin === 1)) {
+        // const precios = await dbInterfaces.GetPreciosPorClase(datosVehiculo.resultados, temporadaFechaRecogida);
+        const precios = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo, temporadaFechaRecogida);
+        preciosPorClase.push(precios);
+        precioAlquiler = await obtenerPrecioSegunCantidadDias(dias, precios.resultados);
+
+    }
+    else {
+        listadoDiasTemporada = await logicPostFormIndex.CalcularTemporadaSegmentada(
+            formulario.fechaRecogida,
+            formulario.fechaDevolucion,
+            rangoFechaInicio,
+            rangoFechaFin
+        );
+
+        for (let i = 0; i < listadoDiasTemporada.length; i++) {
+            const precios = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo, listadoDiasTemporada[i].temporadaFechaInicio);
+            preciosPorClase.push(precios);
+            // const precios = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados, listadoDiasTemporada[i].temporadaFechaInicio);
+
+        }
+        
+        if (preciosPorClase.length === 0) {
+            const error = `| - NO hay collecion preciosporclase `;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+    
+        //TODO: mejorar estatico
+        const transformadosPreciosPorClase = await logicPostFormIndex.TransformarPreciosPorUnicaClase(preciosPorClase, listadoDiasTemporada);
+    
+        if (transformadosPreciosPorClase === undefined) {
+            const error = `| - Transformacion no posible en preciosporclase `;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+    
+        precioAlquiler = await obtenerPrecioSegunCantidadDiasSegmentado(transformadosPreciosPorClase);
+    
+    }
     
     const porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
     const formularioDescuento = porcentajeTipoVehiculo[datosVehiculo.resultados.clasevehiculo] - 0;
 
-    let precioAlquiler = await obtenerPrecioSegunCantidadDias(dias, preciosPorClase.resultados);
     
     const cantidadBooster = formulario.numero_booster - 0;
     const cantidadSillas = formulario.numero_sillas_nino - 0;
@@ -593,6 +645,64 @@ const CheckReservaValida = async (formulario) =>
 
 
 };
+
+
+const obtenerPrecioSegunCantidadDiasSegmentado = async (preciosPorClase) =>
+{
+
+    let precio = 0;
+
+    for (let keyTemporada in preciosPorClase)
+    {
+        for (let keyClase in preciosPorClase[keyTemporada])
+        {
+
+            if (keyClase === "dias") continue;
+
+            const listadoPrecios = preciosPorClase[keyTemporada][keyClase];
+            const dias = preciosPorClase[keyTemporada]["dias"];
+            switch (dias) {
+                case 0:
+                    precio += 0;
+                    break;
+                case 1:
+                    precio += listadoPrecios[2] - 0;
+                    break;
+                case 2:
+                    precio += listadoPrecios[3] - 0;
+                    break;
+                case 3:
+                    precio += listadoPrecios[4] - 0;
+                    break;
+                case 4:
+                    precio += listadoPrecios[5] - 0;
+                    break;
+                case 5:
+                    precio += listadoPrecios[6] - 0;
+                    break;
+                case 6:
+                    precio += listadoPrecios[7] - 0;
+                    break;
+                case 7:
+                    precio += listadoPrecios[8] - 0;
+                    break;
+                default:
+                    // precio = (preciosPorClase.PRECIOMAS7 - 0) * dias;
+                    precio += (listadoPrecios[9] - 0) * dias;
+                break;
+            }
+
+
+        }
+
+
+    }
+
+
+    return precio;
+
+
+}
 
 const obtenerPrecioSegunCantidadDias = async (dias, preciosPorClase) =>
 {
