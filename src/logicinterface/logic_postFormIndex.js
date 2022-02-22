@@ -393,7 +393,7 @@ const GetCarsByReservado = async (formulario) => {
 };
 
 
-const ConversionTextoAFecha = async (textoFecha) =>
+exports.ConversionTextoAFecha = async (textoFecha) =>
 {
 
     if (textoFecha === undefined) return;
@@ -435,7 +435,7 @@ const ConversionTextoAFecha = async (textoFecha) =>
 exports.CalcularTemporada = async (textoFechaRecogida) =>
 {
     if (textoFechaRecogida === undefined) return;
-    textoFechaRecogida = await ConversionTextoAFecha(textoFechaRecogida);
+    textoFechaRecogida = await this.ConversionTextoAFecha(textoFechaRecogida);
     
     const fechaRecogida = new Date(textoFechaRecogida);
 
@@ -503,11 +503,11 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
 
     if (textoFechaRecogida === undefined || textoFechaDevolucion === undefined) return;
 
-    textoFechaRecogida = await ConversionTextoAFecha(textoFechaRecogida);
+    textoFechaRecogida = await this.ConversionTextoAFecha(textoFechaRecogida);
     let fechaRecogida = new Date(textoFechaRecogida);
     fechaRecogida.setHours(0, 0, 0, 0);
 
-    textoFechaDevolucion = await ConversionTextoAFecha(textoFechaDevolucion);
+    textoFechaDevolucion = await this.ConversionTextoAFecha(textoFechaDevolucion);
     let fechaDevolucion = new Date(textoFechaDevolucion);
     fechaDevolucion.setHours(0, 0, 0, 0);
     
@@ -551,7 +551,7 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
                     continue;
                 }
     
-                diasEntreFechas = await CalcularDiasEntrePivotes(
+                diasEntreFechas = await this.CalcularDiasEntrePivotes(
                     fechaRecogida,
                     fechaDevolucion,
                 );
@@ -577,7 +577,7 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
                     continue;
                 }
 
-                diasEntreFechas = await CalcularDiasEntrePivotes(
+                diasEntreFechas = await this.CalcularDiasEntrePivotes(
                     fechaInicio,
                     fechaDevolucion,
                 );
@@ -602,7 +602,7 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
             let diasEntreFechas = 0;
             if (fechaInicio <= fechaRecogida)
             {
-                diasEntreFechas = await CalcularDiasEntrePivotes(
+                diasEntreFechas = await this.CalcularDiasEntrePivotes(
                     fechaRecogida,
                     fechaFin
                 );
@@ -623,7 +623,7 @@ exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevol
             else
             {
                 
-                diasEntreFechas = await CalcularDiasEntrePivotes(
+                diasEntreFechas = await this.CalcularDiasEntrePivotes(
                     fechaInicio,
                     fechaFin
                     );
@@ -701,7 +701,7 @@ const DiasFinalesMeses = async (yearRecogida, yearDevolucion) =>
 
 };
 
-const CalcularDiasEntrePivotes = async (fechaInicio, fechaFin) =>
+exports.CalcularDiasEntrePivotes = async (fechaInicio, fechaFin) =>
 {
 
     let diferenciaFechas = fechaFin.getTime() - fechaInicio.getTime();
@@ -715,7 +715,7 @@ exports.FechaSuperpuesta = async (fecha) =>
 {
     if (fecha === undefined) return [undefined, undefined];
 
-    fecha = await ConversionTextoAFecha(fecha);
+    fecha = await this.ConversionTextoAFecha(fecha);
     let rango = [-1,"-1"];
 
     switch (fecha.getMonth()) {

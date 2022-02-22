@@ -10,6 +10,8 @@ const crypto = require("crypto");
 const base64url = require("base64url");
 const nanoid = require("nanoid");
 
+const PRECIO_SILLA_UNIDAD = 3;
+const PRECIO_BOOSTER_UNIDAD = 3;
 
 const URI_EMAIL_ADMIN_API_BACKEND = `${process.env.URI_EMAIL_ADMIN_API_BACKEND}`;
 const EMAIL_ADMIN_TOKEN_API = `${process.env.EMAIL_ADMIN_TOKEN_API}`;
@@ -130,6 +132,31 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
 const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>
 {
 
+    // const reservaTemp = await dbInterfaces.FindReservasByLocalizador("AXZ20210903");
+
+    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * PRECIO_SILLA_UNIDAD).toFixed(2);
+    let precio_booster_ninos = ((formulario.numero_booster - 0) *(formulario.dias - 0) * PRECIO_BOOSTER_UNIDAD).toFixed(2);
+    let total_suplmento_tipo_conductor = (formulario.total_suplmento_tipo_conductor - 0).toFixed(2);
+    let pago_online = (formulario.pago_online - 0).toFixed(2);
+    let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
+    let pago_alquiler = (formulario.alquiler - 0).toFixed(2);
+
+    [
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler ] = await this.SanitizarPrecioDecimales(
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler
+    );
+
+
     const texto = traduccion["registro_confirmacion"]
         
         .replace(new RegExp("{A1}", "g"), formulario.nombre)
@@ -142,6 +169,12 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{G1}", "g"), resultadoInsercion.numeroRegistro)
         .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
         .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
+        .replace(new RegExp("{D4}", "g"), precio_sillas_ninos)
+        .replace(new RegExp("{D5}", "g"), precio_booster_ninos)
+        .replace(new RegExp("{D9}", "g"), total_suplmento_tipo_conductor)
+        .replace(new RegExp("{D6}", "g"), pago_online)
+        .replace(new RegExp("{D7}", "g"), pago_recogida)
+        .replace(new RegExp("{D8}", "g"), pago_alquiler)
         .replace(new RegExp("{Z3}", "g"), `<img src="${descripcionVehiculos[formulario.descripcion_vehiculo]}">`)
         .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="https://www.rentcarmallorca.es/img/imagenlocalizacion.webp" width="200"></a>`)
         .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
@@ -166,6 +199,51 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
 
     };
 
+
+};
+
+
+exports.SanitizarPrecioDecimales = async (
+    precio_sillas_ninos,
+    precio_booster_ninos,
+    total_suplmento_tipo_conductor,
+    pago_online,
+    pago_recogida,
+    pago_alquiler) =>
+{
+
+    if (precio_sillas_ninos === "0.00") {
+        precio_sillas_ninos = "0";
+    }
+
+    if (precio_booster_ninos === "0.00") {
+        precio_booster_ninos = "0";
+    }
+
+    if (total_suplmento_tipo_conductor === "0.00") {
+        total_suplmento_tipo_conductor = "0";
+    }
+
+    if (pago_online === "0.00") {
+        pago_online = "0";
+    }
+
+    if (pago_recogida === "0.00") {
+        pago_recogida = "0";
+    }
+
+    if (pago_alquiler === "0.00") {
+        pago_alquiler = "0";
+    }
+
+    return [
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler
+    ];
 
 };
 

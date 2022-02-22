@@ -681,6 +681,30 @@ exports.ProcesarReserva = async (formulario) =>
 };
 
 
+exports.FindReservasByLocalizador = async (localizador) =>
+{
+
+    try {
+
+        const resultados = await collectionReservas.find(
+            { "numeroRegistro": localizador },
+        ).project({ _id: 0, id: 0 }).toArray();
+
+        // console.log("resultados actualizacion=" + JSON.stringify(resultados));
+
+        return resultados;
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Reservas`;
+        console.error(error);
+    }
+
+
+};
+
+
 exports.UpdateReservasByLocalizador = async (localizador, merchantParameters) =>
 {
 

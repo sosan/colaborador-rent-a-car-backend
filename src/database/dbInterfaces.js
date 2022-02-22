@@ -153,6 +153,13 @@ exports.ProcesarReserva = async (formulario) => {
 
 };
 
+exports.FindReservasByLocalizador = async (localizador) =>
+{
+    const resultado = await mongo_dao.FindReservasByLocalizador(localizador);
+    return resultado;
+
+};
+
 exports.UpdateReservasByLocalizador = async (localizador, merchantParameters) =>
 {
 

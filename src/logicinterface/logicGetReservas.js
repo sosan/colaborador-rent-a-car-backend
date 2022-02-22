@@ -1,11 +1,14 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const traducciones = require("../controllers/location");
 const logic_postFormReservar = require("./logic_postFormReservar");
+const logicPostFormIndex = require("./logic_postFormIndex");
 const { ObjectId } = require('mongodb');
 
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
 
+const PRECIO_SILLA_UNIDAD = 3;
+const PRECIO_BOOSTER_UNIDAD = 3;
 
 const htmlEmail = `
 <!DOCTYPE html>
@@ -41,7 +44,11 @@ exports.descripcionVehiculos = {
     "Piaggio Liberty 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/PiaggioLiberty_125cc_Card.png",
     "Citröen C3": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC3WhiteRed_Card.png",
     "Citröen C1 Auto": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1AutomaticPlata_Card.png",
-    "Peugeot 208": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot_208_Card.png"
+    "Peugeot 208": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot_208_Card.png",
+    "Yamaha Majesty S 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/yamaha_majesty_125_Card.png",
+    "Piaggio Medley 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/piagio_medley_Card.png",
+    "Yamaha Tricity 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/yamaha_tricity_Card.png"
+    
 
 }
 
@@ -109,13 +116,51 @@ exports.MostrarReservasPorFecha = async (req, res) =>
 };
 
 
-
 exports.ConfirmarReserva = async (req, res ) =>
 {
 
+    // const reservaTemp = await dbInterfaces.FindReservasByLocalizador("AXZ20210903");
+    
     const formulario = req.body;
     const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
 
+    if (formulario.dias === undefined)
+    {
+        const fechaRecogidaTemp = await logicPostFormIndex. ConversionTextoAFecha(formulario.fechaRecogida);
+        const fechaDevolucionTemp = await logicPostFormIndex.ConversionTextoAFecha(formulario.fechaDevolucion);
+
+        formulario["dias"] = await logicPostFormIndex.CalcularDiasEntrePivotes(fechaRecogidaTemp, fechaDevolucionTemp);
+    }
+
+    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * PRECIO_SILLA_UNIDAD).toFixed(2);
+    let precio_booster_ninos = ((formulario.numero_booster - 0) * (formulario.dias - 0) * PRECIO_BOOSTER_UNIDAD).toFixed(2);
+    let total_suplmento_tipo_conductor = (formulario.conductor_joven - 0).toFixed(2);
+    let pago_online = (formulario.pago_online - 0).toFixed(2);
+
+
+    if (formulario.pagoRecogida === undefined)
+    {
+        formulario["pagoRecogida"] = formulario.pago_recogida;
+    }
+    let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
+    let pago_alquiler = (formulario.pago_alquiler - 0).toFixed(2);
+
+    [
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler] = await logic_postFormReservar.SanitizarPrecioDecimales(
+            precio_sillas_ninos,
+            precio_booster_ninos,
+            total_suplmento_tipo_conductor,
+            pago_online,
+            pago_recogida,
+            pago_alquiler
+        );
+
+    
     const email = traduccion["reserva_confirmacion"]
         .replace(new RegExp("{A1}", "g"), formulario.nombre)
         .replace(new RegExp("{D1}", "g"), formulario.descripcion_vehiculo)
@@ -124,9 +169,14 @@ exports.ConfirmarReserva = async (req, res ) =>
         .replace(new RegExp("{F1}", "g"), formulario.fechaDevolucion)
         .replace(new RegExp("{E4}", "g"), formulario.horaDevolucion)
         .replace(new RegExp("{G1}", "g"), formulario.localizador)
-        .replace(new RegExp("{L1}", "g"), formulario.localizador)
         .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
+        .replace(new RegExp("{D4}", "g"), precio_sillas_ninos)
         .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
+        .replace(new RegExp("{D5}", "g"), precio_booster_ninos)
+        .replace(new RegExp("{D9}", "g"), total_suplmento_tipo_conductor)
+        .replace(new RegExp("{D6}", "g"), pago_online)
+        .replace(new RegExp("{D7}", "g"), pago_recogida)
+        .replace(new RegExp("{D8}", "g"), pago_alquiler)
         .replace(new RegExp("{Z3}", "g"), `<img src="${this.descripcionVehiculos[formulario.descripcion_vehiculo]}">` )
         .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="https://www.rentcarmallorca.es/img/imagenlocalizacion.webp" width="200"></a>`)
         .replace(new RegExp("{C1}", "g"), "RentCarMallorca.es")
@@ -135,7 +185,6 @@ exports.ConfirmarReserva = async (req, res ) =>
         .replace(new RegExp("{K1}", "g"), "07610 Can Pastilla - Palma de Mallorca")
     ;
 
-    
     const bodyConfirmacionEmail = htmlEmail
         .replace("0000", "https://www.rentcarmallorca.es/")
         .replace("XXXXXX", email)
@@ -186,7 +235,7 @@ exports.ConfirmarReserva = async (req, res ) =>
         },
         to: [`${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`, `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}` ],
         subject: `Confirmacion de reserva enviado correctamente con ${formulario.localizador}`,
-        html: `Email de confirmacion de reserva enviado correctamente`,
+        html: `Email de confirmacion de reserva enviado correctamente ${formulario.email} con localizador ${formulario.localizador}`,
 
     };
 
@@ -194,6 +243,8 @@ exports.ConfirmarReserva = async (req, res ) =>
 
 
 };
+
+
 
 exports.MostrarReservasErrores = async (req, res) =>
 {
