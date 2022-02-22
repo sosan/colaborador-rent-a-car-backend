@@ -31,26 +31,46 @@ const htmlEmail = `
 </html>
 `;
 
+let descripcionVehiculos = {};
+
+exports.FillImagenesVehiculos = async (datosVehiculos) =>
+{
+
+    // let descripcionImagenes = {};
+    for (let i = 0; i < datosVehiculos.length; i++)
+    {
+        const descripcionKey = datosVehiculos[i].descripcion;
+        const imagen = `https://www.rentcarmallorca.es/img/Img-Vehiculos/${datosVehiculos[i].ImagenVehiclo}_Card.png`;
+        descripcionVehiculos[descripcionKey] = imagen;
+    }
+
+};
+
+exports.GetDescripcionVehiculos = async () =>
+{
+    return descripcionVehiculos;
+
+};
 
 
-exports.descripcionVehiculos = {
-    "Toyota Aygo": "https://rentcarmallorca.es/img/Img-Vehiculos/toyotaAygoRed_Card.png",
-    "Suzuky Burgman 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/Suzuki-Burgman_125cc_Card.png",
-    "Citröen C1 Open": "https://www.rentcarmallorca.es/img/Img-Vehiculos/CitroenC1_open_Card.png",
-    "Toyota Aygo Open": "https://www.rentcarmallorca.es/img/Img-Vehiculos/toyotaAygoOpenWhite_Card.png",
-    "Peugeot 108": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot108Blue_Card.png",
-    "Peugeot 807": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot807Grey_Card.png",
-    "Citröen C1": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1White_Card.png",
-    "Piaggio Liberty 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/PiaggioLiberty_125cc_Card.png",
-    "Citröen C3": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC3WhiteRed_Card.png",
-    "Citröen C1 Auto": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1AutomaticPlata_Card.png",
-    "Peugeot 208": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot_208_Card.png",
-    "Yamaha Majesty S 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/yamaha_majesty_125_Card.png",
-    "Piaggio Medley 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/piagio_medley_Card.png",
-    "Yamaha Tricity 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/yamaha_tricity_Card.png"
+// exports.descripcionVehiculos = {
+//     "Toyota Aygo": "https://rentcarmallorca.es/img/Img-Vehiculos/toyotaAygoRed_Card.png",
+//     "Suzuky Burgman 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/Suzuki-Burgman_125cc_Card.png",
+//     "Citröen C1 Open": "https://www.rentcarmallorca.es/img/Img-Vehiculos/CitroenC1_open_Card.png",
+//     "Toyota Aygo Open": "https://www.rentcarmallorca.es/img/Img-Vehiculos/toyotaAygoOpenWhite_Card.png",
+//     "Peugeot 108": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot108Blue_Card.png",
+//     "Peugeot 807": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot807Grey_Card.png",
+//     "Citröen C1": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1White_Card.png",
+//     "Piaggio Liberty 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/PiaggioLiberty_125cc_Card.png",
+//     "Citröen C3": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC3WhiteRed_Card.png",
+//     "Citröen C1 Auto": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1AutomaticPlata_Card.png",
+//     "Peugeot 208": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot_208_Card.png",
+//     "Yamaha Majesty S 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/yamaha_majesty_125_Card.png",
+//     "Piaggio Medley 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/piagio_medley_Card.png",
+//     "Yamaha Tricity 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/yamaha_tricity_Card.png"
     
 
-}
+// }
 
 
 exports.GetReservasNotSended = async (req, res) =>

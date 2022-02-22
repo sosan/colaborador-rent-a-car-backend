@@ -4,7 +4,7 @@ const logicStats = require("../logicinterface/logic_stats");
 const traducciones = require("../controllers/location");
 const fetch = require("node-fetch");
 const { transporter } = require("./logicSendEmail");
-const { descripcionVehiculos } = require("./logicGetReservas");
+const logicGetReservas = require("./logicGetReservas");
 const logicPostFormIndex = require("./logic_postFormIndex");
 const crypto = require("crypto");
 const base64url = require("base64url");
@@ -156,9 +156,10 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         pago_alquiler
     );
 
+    const descripcionVehiculos = await logicGetReservas.GetDescripcionVehiculos();
+    const imgSrc = descripcionVehiculos[formulario.descripcion_vehiculo];
 
     const texto = traduccion["registro_confirmacion"]
-        
         .replace(new RegExp("{A1}", "g"), formulario.nombre)
         .replace(new RegExp("{C1}", "g"), "RentCarMallorca")
         .replace(new RegExp("{D1}", "g"), formulario.descripcion_vehiculo)
@@ -175,7 +176,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{D6}", "g"), pago_online)
         .replace(new RegExp("{D7}", "g"), pago_recogida)
         .replace(new RegExp("{D8}", "g"), pago_alquiler)
-        .replace(new RegExp("{Z3}", "g"), `<img src="${descripcionVehiculos[formulario.descripcion_vehiculo]}">`)
+        .replace(new RegExp("{Z3}", "g"), `<img src="${imgSrc}">`)
         .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="https://www.rentcarmallorca.es/img/imagenlocalizacion.webp" width="200"></a>`)
         .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("{J1}", "g"), "Camino de Can Pastilla, 51")
