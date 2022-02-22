@@ -7,8 +7,18 @@ const { ObjectId } = require('mongodb');
 const EMAIL_ADMIN_RECIBIR_RESERVAS_1 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_1}`;
 const EMAIL_ADMIN_RECIBIR_RESERVAS_2 = `${process.env.EMAIL_ADMIN_RECIBIR_RESERVAS_2}`;
 
-const PRECIO_SILLA_UNIDAD = 3;
-const PRECIO_BOOSTER_UNIDAD = 3;
+exports.PRECIO_SILLA_UNIDAD = 3;
+exports.PRECIO_BOOSTER_UNIDAD = 3;
+
+
+exports.SetPrecioSillaBooster = async (precios) =>
+{
+
+    this.PRECIO_SILLA_UNIDAD = precios["silla"];
+    this.PRECIO_BOOSTER_UNIDAD = precios["booster"];
+
+};
+
 
 const htmlEmail = `
 <!DOCTYPE html>
@@ -152,8 +162,8 @@ exports.ConfirmarReserva = async (req, res ) =>
         formulario["dias"] = await logicPostFormIndex.CalcularDiasEntrePivotes(fechaRecogidaTemp, fechaDevolucionTemp);
     }
 
-    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * PRECIO_SILLA_UNIDAD).toFixed(2);
-    let precio_booster_ninos = ((formulario.numero_booster - 0) * (formulario.dias - 0) * PRECIO_BOOSTER_UNIDAD).toFixed(2);
+    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * this.PRECIO_SILLA_UNIDAD).toFixed(2);
+    let precio_booster_ninos = ((formulario.numero_booster - 0) * (formulario.dias - 0) * this.PRECIO_BOOSTER_UNIDAD).toFixed(2);
     let total_suplmento_tipo_conductor = (formulario.conductor_joven - 0).toFixed(2);
     let pago_online = (formulario.pago_online - 0).toFixed(2);
 

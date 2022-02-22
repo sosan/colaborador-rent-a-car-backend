@@ -10,8 +10,7 @@ const crypto = require("crypto");
 const base64url = require("base64url");
 const nanoid = require("nanoid");
 
-const PRECIO_SILLA_UNIDAD = 3;
-const PRECIO_BOOSTER_UNIDAD = 3;
+
 
 const URI_EMAIL_ADMIN_API_BACKEND = `${process.env.URI_EMAIL_ADMIN_API_BACKEND}`;
 const EMAIL_ADMIN_TOKEN_API = `${process.env.EMAIL_ADMIN_TOKEN_API}`;
@@ -134,8 +133,8 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
 
     // const reservaTemp = await dbInterfaces.FindReservasByLocalizador("AXZ20210903");
 
-    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * PRECIO_SILLA_UNIDAD).toFixed(2);
-    let precio_booster_ninos = ((formulario.numero_booster - 0) *(formulario.dias - 0) * PRECIO_BOOSTER_UNIDAD).toFixed(2);
+    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * logicGetReservas.PRECIO_SILLA_UNIDAD).toFixed(2);
+    let precio_booster_ninos = ((formulario.numero_booster - 0) * (formulario.dias - 0) * logicGetReservas.PRECIO_BOOSTER_UNIDAD).toFixed(2);
     let total_suplmento_tipo_conductor = (formulario.total_suplmento_tipo_conductor - 0).toFixed(2);
     let pago_online = (formulario.pago_online - 0).toFixed(2);
     let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);

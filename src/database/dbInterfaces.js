@@ -47,6 +47,12 @@ exports.GetCarsByReservado = async (filtrado) => {
 
 };
 
+exports.GetPrecioBoosterSillas = async () =>
+{
+    return await mongo_dao.GetPrecioBoosterSillas();
+    
+}
+
 exports.GetCarByDescripcion = async (descripcion) =>
 {
     return await mongo_dao.GetCarByDescripcion(descripcion);
