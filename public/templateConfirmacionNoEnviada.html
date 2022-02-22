@@ -248,7 +248,7 @@ return fechaActual;
                         </li>
                         <li class="">
                             <input type="hidden" id="_id_usuario_email_<%=contador%>" name="_id" value="<%=it.noenviados[i]._id %>">
-                            <button class="botonEnviarEmail" type="submit">ENVIAR EMAIL DE COMPRA POR USUARIO</button>
+                            <button class="botonEnviarEmail" type="submit">ENVIAR EMAIL REGISTRO CONFIRMACION</button>
                         </li>
                     </ul>
                 </div>
@@ -266,7 +266,32 @@ return fechaActual;
                     <input type="hidden" name="horaDevolucion" value="<%=it.noenviados[i].horaDevolucion %>">
                     <input type="hidden" name="numero_sillas_nino" value="<%=it.noenviados[i].numero_sillas_nino %>">
                     <input type="hidden" name="numero_booster" value="<%=it.noenviados[i].numero_booster %>">
+                    <% const diasT = (it.noenviados[i].dias - 0) %>
+                    <% const precioSillasnino = ((it.noenviados[i].numero_sillas_nino - 0) * 3) * diasT %>
+                    <% if (precioSillasnino === 0) { %>
+                        <input type="hidden" name="precio_sillas_ninos" value="0">
+                    <%} else {%>
+                        <input type="hidden" name="precio_sillas_ninos" value="<% precioSillasnino %>">
+                    <% } %>
+
+
+                    <% const precioBoosternino=((it.noenviados[i].numero_booster - 0) * 3)  * diasT%>
+                    <% if (precioBoosternino===0) { %>
+                        <input type="hidden" name="precio_booster_ninos" value="0">
+                    <%} else {%>
+                        <input type="hidden" name="precio_booster_ninos" value="<% precioBoosternino %>">
+                    <% } %>
                     <input type="hidden" name="descripcion_vehiculo" value="<%=it.noenviados[i].descripcion_vehiculo %>">
+
+                    <% if ((it.noenviados[i].total_suplmento_tipo_conductor - 0)===0 ) { %>
+                        <input type="hidden" name="conductor_joven" value="0">
+                    <%} else {%>
+                        <input type="hidden" name="conductor_joven" value="<%=it.noenviados[i].total_suplmento_tipo_conductor %>">
+                    <% } %>
+
+                    <input type="hidden" name="pago_online" value="<%=it.noenviados[i].pago_online %>">
+                    <input type="hidden" name="pago_recogida" value="<%=it.noenviados[i].pagoRecogida %>">
+                    <input type="hidden" name="pago_alquiler" value="<%=it.noenviados[i].alquiler %>">
 
                     <button id="botonEnviar" class="centrado-boton_correo azul" type="submit">
                         Enviar confirmacion
