@@ -1,6 +1,7 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const porcentajeVehiculoInterface = require("../controllers/porcentajeTipoVehiculo");
 const Joi = require("joi");
+const logicGetReservas = require("./logicGetReservas");
 
 const DAY_IN_MILISECONDS = 86400000;
 
@@ -231,7 +232,9 @@ exports.GetCars = async (formulario, token) => {
             "isOk": false,
             "data": [],
             "errorFormulario": "error_formulario1",
-            "diasEntreRecogidaDevolucion": undefined
+            "diasEntreRecogidaDevolucion": undefined,
+            "precio_sillas": logicGetReservas.PRECIO_SILLA_UNIDAD,
+            "precio_booster": logicGetReservas.PRECIO_BOOSTER_UNIDAD
         });
 
     }
@@ -241,7 +244,9 @@ exports.GetCars = async (formulario, token) => {
             "isOk": true,
             "data": [],
             "errorFormulario": "error_formulario2",
-            "diasEntreRecogidaDevolucion": undefined
+            "diasEntreRecogidaDevolucion": undefined,
+            "precio_sillas": logicGetReservas.PRECIO_SILLA_UNIDAD,
+            "precio_booster": logicGetReservas.PRECIO_BOOSTER_UNIDAD
         });
     }
 
@@ -263,8 +268,8 @@ exports.GetCars = async (formulario, token) => {
 
 
 
+    let datosDevueltos = {};
 
-    let datosDevueltos = { };
     if (resultadosObjetoCoches.isOk === false) {
 
         console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
@@ -272,7 +277,9 @@ exports.GetCars = async (formulario, token) => {
             "isOk": false,
             "data": [],
             "errorFormulario": resultadosObjetoCoches.errorFormulario,
-            "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
+            "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion,
+            "precio_sillas": logicGetReservas.PRECIO_SILLA_UNIDAD,
+            "precio_booster": logicGetReservas.PRECIO_BOOSTER_UNIDAD
         };
     }
     else {
@@ -286,7 +293,8 @@ exports.GetCars = async (formulario, token) => {
             "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
             "preciosPorClase": cochesPreciosRaw.preciosPorClase,
             "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados,
-
+            "precio_sillas": logicGetReservas.PRECIO_SILLA_UNIDAD,
+            "precio_booster": logicGetReservas.PRECIO_BOOSTER_UNIDAD
         };
 
     }
