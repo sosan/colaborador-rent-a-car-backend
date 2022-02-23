@@ -162,6 +162,14 @@ static_resources:
                   prefix: "/"
                 route:
                   cluster: frontend_cluster
+            - name: frontend_dev
+              domains:
+              - "www.rentcarmallorca.es"
+              routes:
+              - match:
+                  prefix: "/dev"
+                route:
+                  cluster: frontend_cluster_dev
           http_filters:
           - name: envoy.filters.http.buffer
             typed_config:
@@ -349,16 +357,20 @@ static_resources:
               routes:
               - match:
                   prefix: "/"
-                route:
-                  cluster: frontend_cluster_dev
+                redirect:
+                  # host_redirect: "www.rentcarmallorca.es"
+                  path_redirect: "/dev"
+                  https_redirect: true
             - name: www_service
               domains:
               - "www.rentcarmallorca.es"
               routes:
               - match:
                   prefix: "/"
-                route:
-                  cluster: frontend_cluster_dev
+                redirect:
+                  # host_redirect: "www.rentcarmallorca.es"
+                  path_redirect: "/dev"
+                  https_redirect: true
                 
           http_filters:
           - name: envoy.filters.http.buffer
