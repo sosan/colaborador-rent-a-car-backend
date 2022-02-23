@@ -130,7 +130,7 @@ exports.ConfirmarReserva = async (req, res ) =>
 
     // const reservaTemp = await dbInterfaces.FindReservasByLocalizador("AXZ20210903");
     
-    const formulario = req.body;
+    let formulario = req.body;
     const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
 
     if (formulario.dias === undefined)
@@ -153,8 +153,13 @@ exports.ConfirmarReserva = async (req, res ) =>
     }
     let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
     let pago_alquiler = ((pago_online - 0) + (pago_recogida - 0)).toFixed(2);
-    let precioBase = (formulario.alquiler - 0).toFixed(2);
-
+    
+    if (formulario.alquiler === undefined)
+    {
+        formulario["alquiler"] = formulario.pago_alquiler;
+    }
+    precioBase = (formulario.alquiler - 0).toFixed(2);
+    
     [
         precio_sillas_ninos,
         precio_booster_ninos,
