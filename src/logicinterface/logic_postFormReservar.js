@@ -251,30 +251,59 @@ exports.SanitizarPrecioDecimales = async (
         precio_sillas_ninos = "0";
     }
 
+    if (precio_sillas_ninos.indexOf(".00") !== 0)
+    {
+        precio_sillas_ninos = precio_sillas_ninos.split(".00")[0];
+    }
+
     if (precio_booster_ninos === "0.00") {
         precio_booster_ninos = "0";
     }
 
+    if (precio_booster_ninos.indexOf(".00") !== 0) {
+        precio_booster_ninos = precio_booster_ninos.split(".00")[0];
+    }
+
+
     if (total_suplmento_tipo_conductor === "0.00") {
         total_suplmento_tipo_conductor = "0";
+    }
+
+    if (total_suplmento_tipo_conductor.indexOf(".00") !== 0) {
+        total_suplmento_tipo_conductor = total_suplmento_tipo_conductor.split(".00")[0];
     }
 
     if (pago_online === "0.00") {
         pago_online = "0";
     }
 
+    if (pago_online.indexOf(".00") !== 0) {
+        pago_online = pago_online.split(".00")[0];
+    }
+
     if (pago_recogida === "0.00") {
         pago_recogida = "0";
+    }
+
+    if (pago_recogida.indexOf(".00") !== 0) {
+        pago_recogida = pago_recogida.split(".00")[0];
     }
 
     if (pago_alquiler === "0.00") {
         pago_alquiler = "0";
     }
 
+    if (pago_alquiler.indexOf(".00") !== 0) {
+        pago_alquiler = pago_alquiler.split(".00")[0];
+    }
+
     if (precioBase === "0.00") {
         precioBase = "0";
     }
     
+    if (precioBase.indexOf(".00") !== 0) {
+        precioBase = precioBase.split(".00")[0];
+    }
 
     return [
         precio_sillas_ninos,
