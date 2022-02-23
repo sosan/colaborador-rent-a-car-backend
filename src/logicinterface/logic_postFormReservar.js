@@ -138,7 +138,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
     let total_suplmento_tipo_conductor = (formulario.total_suplmento_tipo_conductor - 0).toFixed(2);
     let pago_online = (formulario.pago_online - 0).toFixed(2);
     let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
-    let pago_alquiler = (formulario.alquiler - 0).toFixed(2);
+    let pago_alquiler = ((pago_online - 0) + (pago_recogida - 0)).toFixed(2);
 
     [
         precio_sillas_ninos,
@@ -176,6 +176,8 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{J1}", "g"), "Camino de Can Pastilla, 51")
         .replace(new RegExp("{K1}", "g"), "07610 Can Pastilla - Palma de Mallorca")
         ;
+
+// Pago online: {D6}€ {br} Pago a la recogida: {D7}€ {br} Pago total: {D8}€
 
     const textoSillas = traduccion["remplazo_sillas"]
         .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)

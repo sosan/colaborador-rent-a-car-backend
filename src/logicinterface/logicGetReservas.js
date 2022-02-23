@@ -152,7 +152,7 @@ exports.ConfirmarReserva = async (req, res ) =>
         formulario["pagoRecogida"] = formulario.pago_recogida;
     }
     let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
-    let pago_alquiler = (formulario.pago_alquiler - 0).toFixed(2);
+    let pago_alquiler = ((pago_online - 0) + (pago_recogida - 0)).toFixed(2);
 
     [
         precio_sillas_ninos,
@@ -179,10 +179,6 @@ exports.ConfirmarReserva = async (req, res ) =>
         .replace(new RegExp("{E4}", "g"), formulario.horaDevolucion)
         .replace(new RegExp("{G1}", "g"), formulario.localizador)
         .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
-        // .replace(new RegExp("{D4}", "g"), precio_sillas_ninos)
-        // .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
-        // .replace(new RegExp("{D5}", "g"), precio_booster_ninos)
-        // .replace(new RegExp("{D9}", "g"), total_suplmento_tipo_conductor)
         .replace(new RegExp("{D6}", "g"), pago_online)
         .replace(new RegExp("{D7}", "g"), pago_recogida)
         .replace(new RegExp("{D8}", "g"), pago_alquiler)
@@ -206,7 +202,7 @@ exports.ConfirmarReserva = async (req, res ) =>
         .replace(new RegExp("{D9}", "g"), total_suplmento_tipo_conductor);
 
     if (total_suplmento_tipo_conductor !== "0") {
-        email = email.replace(new RegExp("{R1}", "g"), textoBooster);
+        email = email.replace(new RegExp("{R1}", "g"), textoConductorJoven);
     }
 
     if (precio_sillas_ninos !== "0") {
