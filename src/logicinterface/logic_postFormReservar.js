@@ -190,7 +190,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{D9}", "g"), total_suplmento_tipo_conductor);
 
     if (total_suplmento_tipo_conductor !== "0") {
-        texto = texto.replace(new RegExp("{R1}", "g"), textoBooster);
+        texto = texto.replace(new RegExp("{R1}", "g"), textoConductorJoven);
 
     }
 
