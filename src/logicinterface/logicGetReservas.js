@@ -247,7 +247,7 @@ exports.ConfirmarReserva = async (req, res ) =>
 
     };
 
-    const respuestaReservaConfirmacion = await logic_postFormReservar.EnviarCorreoAh(bodyEmail); //transporter.sendMail(bodyEmail);
+    const respuestaReservaConfirmacion = await logic_postFormReservar.EnviarCorreoAh(bodyEmail);
 
     //enviarlo a la db
     const currentDate = await ObtenerCurrentDate();
@@ -270,20 +270,20 @@ exports.ConfirmarReserva = async (req, res ) =>
     }
     
 
-    let bodyAdmin =
-    {
-        from:
-        {
-            name: "RentCarMallorca.es Servicios",
-            address: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`
-        },
-        to: [`${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`, `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}` ],
-        subject: `Confirmacion de reserva enviado correctamente con ${formulario.localizador}`,
-        html: `Email de confirmacion de reserva enviado correctamente ${formulario.email} con localizador ${formulario.localizador}`,
+    // let bodyAdmin =
+    // {
+    //     from:
+    //     {
+    //         name: "RentCarMallorca.es Servicios",
+    //         address: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`
+    //     },
+    //     to: [`${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`, `${EMAIL_ADMIN_RECIBIR_RESERVAS_2}` ],
+    //     subject: `Confirmacion de reserva enviado correctamente con ${formulario.localizador}`,
+    //     html: `Email de confirmacion de reserva enviado correctamente ${formulario.email} con localizador ${formulario.localizador}`,
 
-    };
+    // };
 
-    await logic_postFormReservar.EnviarCorreoAh(bodyAdmin);
+    // await logic_postFormReservar.EnviarCorreoAh(bodyAdmin);
 
 
 };
