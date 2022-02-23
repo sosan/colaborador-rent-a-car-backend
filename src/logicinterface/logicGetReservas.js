@@ -62,27 +62,6 @@ exports.GetDescripcionVehiculos = async () =>
 
 };
 
-
-// exports.descripcionVehiculos = {
-//     "Toyota Aygo": "https://rentcarmallorca.es/img/Img-Vehiculos/toyotaAygoRed_Card.png",
-//     "Suzuky Burgman 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/Suzuki-Burgman_125cc_Card.png",
-//     "Citröen C1 Open": "https://www.rentcarmallorca.es/img/Img-Vehiculos/CitroenC1_open_Card.png",
-//     "Toyota Aygo Open": "https://www.rentcarmallorca.es/img/Img-Vehiculos/toyotaAygoOpenWhite_Card.png",
-//     "Peugeot 108": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot108Blue_Card.png",
-//     "Peugeot 807": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot807Grey_Card.png",
-//     "Citröen C1": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1White_Card.png",
-//     "Piaggio Liberty 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/PiaggioLiberty_125cc_Card.png",
-//     "Citröen C3": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC3WhiteRed_Card.png",
-//     "Citröen C1 Auto": "https://www.rentcarmallorca.es/img/Img-Vehiculos/citroenC1AutomaticPlata_Card.png",
-//     "Peugeot 208": "https://www.rentcarmallorca.es/img/Img-Vehiculos/peugeot_208_Card.png",
-//     "Yamaha Majesty S 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/yamaha_majesty_125_Card.png",
-//     "Piaggio Medley 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/piagio_medley_Card.png",
-//     "Yamaha Tricity 125": "https://www.rentcarmallorca.es/img/Img-Vehiculos/yamaha_tricity_Card.png"
-    
-
-// }
-
-
 exports.GetReservasNotSended = async (req, res) =>
 {
 
@@ -207,7 +186,7 @@ exports.ConfirmarReserva = async (req, res ) =>
         .replace(new RegExp("{D6}", "g"), pago_online)
         .replace(new RegExp("{D7}", "g"), pago_recogida)
         .replace(new RegExp("{D8}", "g"), pago_alquiler)
-        .replace(new RegExp("{Z3}", "g"), `<img src="${this.descripcionVehiculos[formulario.descripcion_vehiculo]}">` )
+        .replace(new RegExp("{Z3}", "g"), `<img src="${descripcionVehiculos[formulario.descripcion_vehiculo]}">` )
         .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="https://www.rentcarmallorca.es/img/imagenlocalizacion.webp" width="200"></a>`)
         .replace(new RegExp("{C1}", "g"), "RentCarMallorca.es")
         .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
