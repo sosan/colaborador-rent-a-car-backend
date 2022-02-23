@@ -158,7 +158,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
     const descripcionVehiculos = await logicGetReservas.GetDescripcionVehiculos();
     const imgSrc = descripcionVehiculos[formulario.descripcion_vehiculo];
 
-    const texto = traduccion["registro_confirmacion"]
+    let texto = traduccion["registro_confirmacion"]
         .replace(new RegExp("{A1}", "g"), formulario.nombre)
         .replace(new RegExp("{C1}", "g"), "RentCarMallorca")
         .replace(new RegExp("{D1}", "g"), formulario.descripcion_vehiculo)
@@ -167,11 +167,6 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{F1}", "g"), formulario.fechaDevolucion)
         .replace(new RegExp("{E4}", "g"), formulario.horaDevolucion)
         .replace(new RegExp("{G1}", "g"), resultadoInsercion.numeroRegistro)
-        .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
-        .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
-        .replace(new RegExp("{D4}", "g"), precio_sillas_ninos)
-        .replace(new RegExp("{D5}", "g"), precio_booster_ninos)
-        .replace(new RegExp("{D9}", "g"), total_suplmento_tipo_conductor)
         .replace(new RegExp("{D6}", "g"), pago_online)
         .replace(new RegExp("{D7}", "g"), pago_recogida)
         .replace(new RegExp("{D8}", "g"), pago_alquiler)
@@ -180,7 +175,37 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("{J1}", "g"), "Camino de Can Pastilla, 51")
         .replace(new RegExp("{K1}", "g"), "07610 Can Pastilla - Palma de Mallorca")
-    ;
+        ;
+
+    const textoSillas = traduccion["remplazo_sillas"]
+        .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
+        .replace(new RegExp("{D4}", "g"), precio_sillas_ninos);
+
+    const textoBooster = traduccion["remplazo_booster"]
+        .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
+        .replace(new RegExp("{D5}", "g"), precio_booster_ninos);
+    const textoConductorJoven = traduccion["remplazo_conductor_joven"]
+        .replace(new RegExp("{D9}", "g"), total_suplmento_tipo_conductor);
+
+    if (total_suplmento_tipo_conductor !== "0") {
+        texto = texto.replace(new RegExp("{R1}", "g"), textoBooster);
+
+    }
+
+    if (precio_sillas_ninos !== "0") {
+        texto = texto.replace(new RegExp("{R2}", "g"), textoSillas);
+
+    }
+
+    if (precio_booster_ninos !== "0") {
+        texto = texto.replace(new RegExp("{R3}", "g"), textoBooster);
+    }
+
+
+    texto = texto.replace(new RegExp("{br}", "g"), "<br>")
+        .replace(new RegExp("{R1}", "g"), "")
+        .replace(new RegExp("{R2}", "g"), "")
+        .replace(new RegExp("{R3}", "g"), "");
     
     const bodyConfirmacionEmail = htmlEmail
         .replace("0000", "https://www.rentcarmallorca.es/")
