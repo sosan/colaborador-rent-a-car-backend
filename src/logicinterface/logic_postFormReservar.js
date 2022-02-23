@@ -705,14 +705,17 @@ const CheckReservaValida = async (formulario) =>
     const precioPagoRecogida = ((precioAlquiler * formularioDescuento) / 100).toFixed(2) ;
     const precioPagoOnline = (precioAlquiler - precioPagoRecogida).toFixed(2);
 
-    const pagoRecogidaConv = (formulario.pagoRecogida - 0).toFixed(2);
-    const pagoOnlineConv = (formulario.pago_online - 0).toFixed(2);
+    const pagoRecogidaConv = (formulario.pagoRecogida - 0);
+    const pagoOnlineConv = (formulario.pago_online - 0);
 
     const precioAlquilerConv = ((pagoOnlineConv + pagoRecogidaConv).toFixed(2)) - 0;
 
+    const pagoOnlineText = pagoOnlineConv.toFixed(2);
+    const pagoRecogidaText = pagoRecogidaConv.toFixed(2);
+
     if (precioAlquiler === precioAlquilerConv && 
-        precioPagoOnline === pagoOnlineConv  &&
-        precioPagoRecogida === pagoRecogidaConv
+        precioPagoOnline === pagoOnlineText  &&
+        precioPagoRecogida === pagoRecogidaText
     )
     {
         return true;
