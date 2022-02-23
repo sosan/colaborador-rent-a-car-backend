@@ -153,6 +153,7 @@ exports.ConfirmarReserva = async (req, res ) =>
     }
     let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
     let pago_alquiler = ((pago_online - 0) + (pago_recogida - 0)).toFixed(2);
+    let precioBase = (formulario.alquiler - 0).toFixed(2);
 
     [
         precio_sillas_ninos,
@@ -160,13 +161,16 @@ exports.ConfirmarReserva = async (req, res ) =>
         total_suplmento_tipo_conductor,
         pago_online,
         pago_recogida,
-        pago_alquiler] = await logic_postFormReservar.SanitizarPrecioDecimales(
+        pago_alquiler,
+        precioBase
+    ] = await logic_postFormReservar.SanitizarPrecioDecimales(
             precio_sillas_ninos,
             precio_booster_ninos,
             total_suplmento_tipo_conductor,
             pago_online,
             pago_recogida,
-            pago_alquiler
+            pago_alquiler,
+            precioBase
         );
 
     
@@ -178,7 +182,7 @@ exports.ConfirmarReserva = async (req, res ) =>
         .replace(new RegExp("{F1}", "g"), formulario.fechaDevolucion)
         .replace(new RegExp("{E4}", "g"), formulario.horaDevolucion)
         .replace(new RegExp("{G1}", "g"), formulario.localizador)
-        .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
+        .replace(new RegExp("{Y1}", "g"), precioBase)
         .replace(new RegExp("{D6}", "g"), pago_online)
         .replace(new RegExp("{D7}", "g"), pago_recogida)
         .replace(new RegExp("{D8}", "g"), pago_alquiler)

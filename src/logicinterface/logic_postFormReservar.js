@@ -139,6 +139,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
     let pago_online = (formulario.pago_online - 0).toFixed(2);
     let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
     let pago_alquiler = ((pago_online - 0) + (pago_recogida - 0)).toFixed(2);
+    let precioBase = (formulario.alquiler - 0).toFixed(2);
 
     [
         precio_sillas_ninos,
@@ -146,13 +147,17 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         total_suplmento_tipo_conductor,
         pago_online,
         pago_recogida,
-        pago_alquiler ] = await this.SanitizarPrecioDecimales(
+        pago_alquiler,
+        precioBase
+        
+    ] = await this.SanitizarPrecioDecimales(
         precio_sillas_ninos,
         precio_booster_ninos,
         total_suplmento_tipo_conductor,
         pago_online,
         pago_recogida,
-        pago_alquiler
+        pago_alquiler,
+        precioBase
     );
 
     const descripcionVehiculos = await logicGetReservas.GetDescripcionVehiculos();
@@ -167,6 +172,7 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{F1}", "g"), formulario.fechaDevolucion)
         .replace(new RegExp("{E4}", "g"), formulario.horaDevolucion)
         .replace(new RegExp("{G1}", "g"), resultadoInsercion.numeroRegistro)
+        .replace(new RegExp("{Y1}", "g"), precioBase)
         .replace(new RegExp("{D6}", "g"), pago_online)
         .replace(new RegExp("{D7}", "g"), pago_recogida)
         .replace(new RegExp("{D8}", "g"), pago_alquiler)
@@ -236,7 +242,9 @@ exports.SanitizarPrecioDecimales = async (
     total_suplmento_tipo_conductor,
     pago_online,
     pago_recogida,
-    pago_alquiler) =>
+    pago_alquiler,
+    precioBase
+    ) =>
 {
 
     if (precio_sillas_ninos === "0.00") {
@@ -263,13 +271,19 @@ exports.SanitizarPrecioDecimales = async (
         pago_alquiler = "0";
     }
 
+    if (precioBase === "0.00") {
+        precioBase = "0";
+    }
+    
+
     return [
         precio_sillas_ninos,
         precio_booster_ninos,
         total_suplmento_tipo_conductor,
         pago_online,
         pago_recogida,
-        pago_alquiler
+        pago_alquiler,
+        precioBase
     ];
 
 };
