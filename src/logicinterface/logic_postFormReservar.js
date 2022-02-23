@@ -696,7 +696,7 @@ const CheckReservaValida = async (formulario) =>
     const cantidadSillas = formulario.numero_sillas_nino - 0;
     const totalSuplementoTipoConductor = formulario.total_suplmento_tipo_conductor - 0;
 
-    // precioAlquiler += totalSuplementoTipoConductor;
+    precioAlquiler += totalSuplementoTipoConductor;
     const precioBooster = (cantidadBooster * 3 * dias);
     const precioSillas = (cantidadSillas * 3 * dias);
 
