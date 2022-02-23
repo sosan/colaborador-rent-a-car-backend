@@ -179,6 +179,42 @@ jobs:
                   - backend
                   - fluentbit
                 logging: *default-logging
+              
+              frontend_dev:
+                container_name: frontend_server_dev
+                restart: "no"
+                hostname: frontend_server_dev
+                deploy:
+                  replicas: 1
+                build:
+                  context: "../colaborador-rent-a-car-frontend"
+                  dockerfile: "Dockerfile"
+                expose: 
+                  - 9091
+                ports: 
+                  - "9091:8080"
+                environment:
+                  URL_BACKEND: backend
+                  URL_FRONTEND: frontend_dev
+                  NODE_ENV: production
+                  CONTAINER_NAME: frontend_server_dev
+                  SECRET_MOUNT_PATH: /run/secrets
+                secrets:
+                    - PORT_BACKEND
+                    - ENDPOINT_VARIABLES_FRONTEND
+                    - TOKEN_FOR_BACKEND_ACCESS
+                networks:
+                  eth0:
+                    ipv4_address: 172.22.0.41
+                depends_on:
+                  - backend
+                  - fluentbit
+                logging:
+                  driver: fluentd
+                  options:
+                    fluentd-address: 172.22.0.2:2020
+                # logging: *default-logging
+
               backoffice:
                 container_name: backoffice_server
                 image: sosan/backoffice-rentacarmallorca:latest
@@ -259,7 +295,8 @@ jobs:
             ${HOME}/bin/docker pull sosan/frontend-rentacarmallorca-basico:latest && \
             ${HOME}/bin/docker pull sosan/envoy-rentacarmallorca:latest && \
             ${HOME}/bin/docker pull sosan/fluentloki-rentacarmallorca:latest && \
-            /usr/bin/docker-compose -f ${HOME}/docker-compose.yaml up -d
+            /usr/bin/docker-compose -f ${HOME}/docker-compose.yaml up -d && \
+            ${HOME}/bin/docker stop frontend_server_dev
             ${HOME}/bin/docker rmi $(${HOME}/bin/docker images | grep "<none>" | awk '{print $3}') 2>/dev/null || echo "No hay images por borrar"
             ${HOME}/bin/docker system prune --force
             

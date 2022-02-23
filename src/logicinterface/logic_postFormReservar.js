@@ -767,8 +767,8 @@ const CheckReservaValida = async (formulario) =>
     const totalSuplementoTipoConductor = formulario.total_suplmento_tipo_conductor - 0;
 
     precioAlquiler += totalSuplementoTipoConductor;
-    const precioBooster = (cantidadBooster * 3 * dias);
-    const precioSillas = (cantidadSillas * 3 * dias);
+    const precioBooster = (cantidadBooster * logicGetReservas.PRECIO_BOOSTER_UNIDAD * dias);
+    const precioSillas = (cantidadSillas * logicGetReservas.PRECIO_SILLA_UNIDAD * dias);
 
     precioAlquiler = ((precioAlquiler + (precioBooster + precioSillas)).toFixed(2)) - 0;
 
