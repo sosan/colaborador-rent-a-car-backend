@@ -137,39 +137,31 @@ static_resources:
           route_config:
             name: local_route
             virtual_hosts:
-            - name: localhost
-              domains:
-              - "localhost"
-              routes:
-              - match:
-                  prefix: "/"
-                route:
-                  cluster: frontend_cluster
-            - name: sin_www_service
-              domains:
-              - "rentcarmallorca.es"
-              routes:
-              - match:
-                  prefix: "/"
-                redirect:
-                  host_redirect: "www.rentcarmallorca.es"
-                  https_redirect: true
-            - name: service
-              domains:
-              - "www.rentcarmallorca.es"
-              routes:
-              - match:
-                  prefix: "/"
-                route:
-                  cluster: frontend_cluster
-            - name: frontend_dev
-              domains:
-              - "www.rentcarmallorca.es"
-              routes:
-              - match:
-                  prefix: "/dev"
-                route:
-                  cluster: frontend_cluster_dev
+              - name: localhost
+                domains:
+                - "localhost"
+                routes:
+                - match:
+                    prefix: "/"
+                  route:
+                    cluster: frontend_cluster
+              - name: sin_www_service
+                domains:
+                - "rentcarmallorca.es"
+                routes:
+                - match:
+                    prefix: "/"
+                  redirect:
+                    host_redirect: "www.rentcarmallorca.es"
+                    https_redirect: true
+              - name: service
+                domains:
+                - "www.rentcarmallorca.es"
+                routes:
+                - match:
+                    prefix: "/"
+                  route:
+                    cluster: frontend_cluster
           http_filters:
           - name: envoy.filters.http.buffer
             typed_config:
@@ -343,25 +335,18 @@ static_resources:
           route_config:
             name: local_route_web
             virtual_hosts:
-            - name: localhost
-              domains:
-              - "localhost"
-              routes:
-              - match:
-                  prefix: "/"
-                route:
-                  cluster: frontend_cluster_dev
             - name: cualquier_frontend
               domains:
               - "*"
               routes:
               - match:
                   prefix: "/"
-                redirect:
-                  path_redirect: "/dev"
-                  https_redirect: true
-            
-                
+                route:
+                  cluster: frontend_cluster_dev
+
+                # redirect:
+                  # path_redirect: "/"
+                  # https_redirect: true
           http_filters:
           - name: envoy.filters.http.buffer
             typed_config:
@@ -408,7 +393,24 @@ static_resources:
             initial_connection_window_size: 1048576  # 1 MiB
           stream_idle_timeout: 300s  # 5 mins, must be disabled for long-lived and streaming requests
           request_timeout: 300s 
-
+      transport_socket:
+        name: envoy.transport_sockets.tls
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+          common_tls_context:
+            tls_params:
+              tls_minimum_protocol_version: TLSv1_2
+              tls_maximum_protocol_version: TLSv1_3
+            tls_certificate_sds_secret_configs:
+              - name: server_cert
+            # tls_certificates:
+            #   - certificate_chain:
+            #       filename: "/etc/rentcarmallorca_es.crt"
+            #     private_key:
+            #       filename: "/etc/rentcarmallorca_es.key"
+            #   - watched_directory:
+            #       path: "/etc/"
+            alpn_protocols: [ "h2,http/1.1" ]
 
   
   clusters:
@@ -487,8 +489,8 @@ static_resources:
         - endpoint:
             address:
               socket_address:
-                address: frontend_dev
-                port_value: 9091
+                address: frontend_server_dev
+                port_value: 8080
 
 layered_runtime:
   layers:
