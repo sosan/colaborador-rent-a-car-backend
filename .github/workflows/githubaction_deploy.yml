@@ -186,13 +186,9 @@ jobs:
                 hostname: frontend_server_dev
                 deploy:
                   replicas: 1
-                build:
-                  context: "../colaborador-rent-a-car-frontend"
-                  dockerfile: "Dockerfile"
+                image: sosan/frontend-dev-rentacarmallorca:latest
                 expose: 
                   - 9091
-                ports: 
-                  - "9091:8080"
                 environment:
                   URL_BACKEND: backend
                   URL_FRONTEND: frontend_dev
