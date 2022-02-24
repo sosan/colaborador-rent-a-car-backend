@@ -343,10 +343,6 @@ static_resources:
                   prefix: "/"
                 route:
                   cluster: frontend_cluster_dev
-
-                # redirect:
-                  # path_redirect: "/"
-                  # https_redirect: true
           http_filters:
           - name: envoy.filters.http.buffer
             typed_config:
