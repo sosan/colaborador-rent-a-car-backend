@@ -19,7 +19,7 @@
     const mes=(date_ob.getMonth() + 1).toString().padStart(2, "00" ); 
     const anyo=date_ob.getFullYear(); 
     const minuto=date_ob.getMinutes().toString().padStart(2, "00" ); 
-    const horas=date_ob.getHours().toString().padStart(2, "00" ); 
+    const horas=(date_ob.getHours() + 1).toString().padStart(2, "00" ); 
     const segundos=date_ob.getSeconds().toString().padStart(2, "00" ); 
     
     const fechaActual=`${dia}-${mes}-${anyo} ${horas}:${minuto}:${segundos}`;
