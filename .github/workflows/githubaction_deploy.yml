@@ -142,10 +142,12 @@ jobs:
                   - "80"
                   - "443"
                   - "3100"
+                  - "9091"
                 ports: 
                   - "80:80"
                   - "443:443"
                   - "3100:3100"
+                  - "9091:9091"
                 volumes:
                   - ${HOME}/envoy/certificates/www.rentcarmallorca.es.crt:/etc/rentcarmallorca_es.crt
                   - ${HOME}/envoy/certificates/www.rentcarmallorca.es.key:/etc/rentcarmallorca_es.key
