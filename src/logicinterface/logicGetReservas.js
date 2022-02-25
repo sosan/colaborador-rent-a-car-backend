@@ -124,13 +124,19 @@ exports.MostrarReservasPorFecha = async (req, res) =>
 
 };
 
+exports.DEBUG_PERMITIR_ENVIAR_CORREOS = false;
 
 exports.ConfirmarReserva = async (req, res ) =>
 {
-
-    // const reservaTemp = await dbInterfaces.FindReservasByLocalizador("AXZ20210903");
     
     let formulario = req.body;
+    // consultar si existe pago de la reserva
+    const resultadoEmailConfirmacionReserva = await logic_postFormReservar.ComprobarPagoReserva(formulario.numeroRegistro);
+
+    if (resultadoEmailConfirmacionReserva === false && this.DEBUG_PERMITIR_ENVIAR_CORREOS === false) {
+        return res.send({ "isOk": false });
+    }
+
     const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
 
     if (formulario.dias === undefined)
@@ -349,7 +355,7 @@ exports.EnviarEmailUsuario = async (req, res) =>
 
     const resultadoEmailsEnviados = await logic_postFormReservar.EnviarCorreos(reserva, reserva);
     const isUpdated = await logic_postFormReservar.ConfirmacionEmailsEnviados(resultadoEmailsEnviados, ObjectId(_id));
-    resultadoEmailsEnviados["reservaContieneErrores"] = !isUpdated;
+    resultadoEmailsEnviados["isUpdated"] = isUpdated;
     res.send({ "resultadoEmailsEnviados": resultadoEmailsEnviados });
 
 };

@@ -55,13 +55,24 @@ const GenerateTokenBackendToFrontend = async () => {
 
 exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 {
+    // consultar si existe pago de la reserva
+    const resultadoEmailConfirmacionReserva = await this.ComprobarPagoReserva(formulario.numeroRegistro);
+
+    if (resultadoEmailConfirmacionReserva === false && logicGetReservas.DEBUG_PERMITIR_ENVIAR_CORREOS === false)
+    {
+        return {
+            "reservaContieneErrores": true,
+            "resultadoUserEmailSended": { isSended: false, messageId: -1, cannotSend: true },
+            "resultadoAdminEmailSended": { isSended: false, messageId: -1, cannotSend: true },
+        };
+    }
 
     const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
 
     if (traduccion === undefined)
     {
         return {
-            "reservaContieneErrores": false,
+            "reservaContieneErrores": true,
             "resultadoUserEmailSended": { isSended: false, messageId: -1, cannotSend: true },
             "resultadoAdminEmailSended": { isSended: false, messageId: -1, cannotSend: true },
         };
@@ -78,8 +89,9 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     }
 // -------------
 
+
     // envio correo administracion
-    bodyEmail = await ConstruirEmailAdmins(resultadoInsercion, formulario);
+    bodyEmail = await ConstruirEmailAdmins(resultadoUserEmailSended, formulario, undefined, resultadoEmailConfirmacionReserva);
 
     //envio correo admins
     const resultadoAdminEmailSended = await EnviarCorreoIo(bodyEmail);
@@ -89,7 +101,6 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
         "resultadoAdminEmailSended": resultadoAdminEmailSended
     };
 
-    // return emailsEnviados;
 
 };
 
@@ -112,6 +123,26 @@ exports.EnviarCorreosReservaConErrores = async (resultadoInsercion, formulario, 
 
 };
 
+
+exports.ComprobarPagoReserva = async (localizador) => 
+{
+    let exist = false;
+    const resultado = await dbInterfaces.FindReservasByLocalizador(localizador);
+    if (resultado.length === 1)
+    {
+
+        if (("Ds_Order" in resultado[0]) === true)
+        {
+            exist = true;
+        }
+
+    }
+
+    // console.log(JSON.stringify(exist));
+
+    return exist;
+
+};
 
 exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
 {
@@ -317,36 +348,171 @@ exports.SanitizarPrecioDecimales = async (
 
 };
 
-const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErrores) =>
+const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErrores, resultadoEmailConfirmacionReserva) =>
 {
 
-    let tabla = "";
+    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * logicGetReservas.PRECIO_SILLA_UNIDAD).toFixed(2);
+    let precio_booster_ninos = ((formulario.numero_booster - 0) * (formulario.dias - 0) * logicGetReservas.PRECIO_BOOSTER_UNIDAD).toFixed(2);
+    let total_suplmento_tipo_conductor = (formulario.total_suplmento_tipo_conductor - 0).toFixed(2);
+    let pago_online = (formulario.pago_online - 0).toFixed(2);
+    let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
+    let pago_alquiler = ((pago_online - 0) + (pago_recogida - 0)).toFixed(2);
+    let precioBase = (formulario.alquiler - 0).toFixed(2);
 
-    for (const key in formulario)
+    [
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler,
+        precioBase
+
+    ] = await this.SanitizarPrecioDecimales(
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler,
+        precioBase
+    );
+
+    let textoResultadoEmailRegistro = "NO ENVIADO";
+
+    if (resultadoInsercion.isSended === true)
     {
-        if (key === "token" || key === "useragent" || key === "location") continue;
-        
-        tabla += `
-        <tr>
-            <th>${key}</th>
-            <th>${formulario[key]}</th>
-        </tr>`;
-
+        textoResultadoEmailRegistro = "ENVIADO";
     }
 
+    let textoResultadoEmailConfirmacion = "NO ENVIADO";
+
+    if (resultadoEmailConfirmacionReserva === true)
+    {
+        textoResultadoEmailConfirmacion = "ENVIADO";
+    }
+
+    let tabla = `
+<table >
+    <thead>
+        <tr>
+            <th colspan="2">Registro Reserva ${formulario.numeroRegistro}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Vehiculo</td>
+            <td>: ${formulario.descripcion_vehiculo}</td>
+        </tr>
+        <tr>
+            <td>Fecha recogida</td>
+            <td>: ${formulario.fechaRecogida} ${formulario.horaRecogida}</td>
+        </tr>
+        <tr>
+            <td>Fecha devolucion</td>
+            <td>: ${formulario.fechaDevolucion} ${formulario.horaDevolucion}</td>
+        </tr>
+        <tr>
+            <td>Numero dias</td>
+            <td>: ${formulario.dias}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr></td>
+        </tr>
+        <tr>
+            <td>Nombre</td>
+            <td>: ${formulario.nombre}</td>
+        </tr>
+        <tr>
+            <td>Apellidos</td>
+            <td>: ${formulario.apellidos}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>: ${formulario.email}</td>
+        </tr>
+        <tr>
+            <td>Telefono</td>
+            <td>: ${formulario.telefono}</td>
+        </tr>
+        <tr>
+            <td>Idioma</td>
+            <td>: ${formulario.idioma.toUpperCase()}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <hr>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Valor Alquiler</td>
+            <td>: ${precioBase}€</td>
+        </tr>
+        <tr>
+            <td>Conductor Joven</td>
+            <td>: ${total_suplmento_tipo_conductor}€</td>
+        </tr>
+        <tr>
+            <td>Sillas niño:</td>
+            <td>: ${formulario.numero_sillas_nino} &nbsp; ${precio_sillas_ninos}€</td>
+        </tr>
+        <tr>
+            <td>Elevadores niño</td>
+            <td>: ${formulario.numero_booster} &nbsp; ${precio_booster_ninos}€</td>
+        </tr>
+        <tr>
+            <td>Total alquiler</td>
+            <td>: ${pago_alquiler}€</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            </td>
+        </tr>
+
+        <tr>
+            <td>Pago Online</td>
+            <td>: ${pago_online}€</td>
+        </tr>
+        <tr>
+            <td>Pago Recogida</td>
+            <td>: ${pago_recogida}€</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <hr>
+            </td>
+        </tr>
+        <tr>
+            <td>Email registro reserva</td>
+            <td>: ${textoResultadoEmailRegistro}</td>
+        </tr>
+        <tr>
+            <td>Email confirmacion reserva</td>
+            <td>: ${textoResultadoEmailConfirmacion}</td>
+        </tr>
+
+    </tbody>
+</table>
+    
+    
+    
+    `;
+
+
     let errorEmailSended = "";
-    let subject = `Numero Registro: ${resultadoInsercion.numeroRegistro}`;
+    let subject = `Numero Registro: ${formulario.numeroRegistro}`;
     if (formulario.isUserEmailSended === false) {
         // mostrar error en el correo
         errorEmailSended = `ATENCION!!!! Ha habido un error al enviar correo al usuario ${formulario.email}`;
-        subject = `Problemas! El Numero Registro: ${resultadoInsercion.numeroRegistro} tiene problemas`;
+        subject = `Problemas! El Numero Registro: ${formulario.numeroRegistro} tiene problemas`;
 
     }
 
     if (contieneErrores)
     {
         errorEmailSended += `ATENCION!!!! Ha habido un error al procesar la reserva al usuario ${formulario.email}`;
-        subject = `Problemas! El Numero Registro: ${resultadoInsercion.numeroRegistro} tiene problemas`;
+        subject = `Problemas! El Numero Registro: ${formulario.numeroRegistro} tiene problemas`;
     }
 
     let html = 
@@ -355,43 +521,34 @@ const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErro
 <html>
 <head>
 <style>
-#customers {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+    table {
+        border: 0px solid #b3adad;
+        border-collapse: collapse;
+        padding: 5px;
+    }
 
-#customers td, #customers th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
+    table th {
+        border: 0px solid #b3adad;
+        padding: 5px;
+        background: #f0f0f0;
+        color: #313030;
+    }
 
-#customers tr:nth-child(even){background-color: #f2f2f2;}
-
-#customers tr:hover {background-color: #ddd;}
-
-#customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #04AA6D;
-  color: white;
-}
-
-a
-{
-    color: black;
-}
-
+    table td {
+        border: 0px solid #b3adad;
+        text-align: left;
+        padding: 5px;
+        background: #ffffff;
+        color: #313030;
+    }
 </style>
+
 </head>
 <body>
 ${errorEmailSended}
-Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroRegistro} con los siguientes datos
+Ha llegado una reserva nueva con el numero registro ${formulario.numeroRegistro} con los siguientes datos
 <br>
-<table id="customers">
-  ${tabla}
-</table>
+${tabla}
 </body>
 </html>
 `;
