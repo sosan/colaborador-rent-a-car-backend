@@ -249,8 +249,15 @@ var AnadirEventosFormularios = async () =>
                 boton.classList.remove("azul");
                 boton.classList.add("rojo");
     
-                formularios[i].parentElement.previousElementSibling.innerText = "ERROR!";
+                // formularios[i].parentElement.previousElementSibling.innerText = "ERROR!";
     
+                setTimeout(() => {
+                    boton.innerText = "Enviar confirmacion";
+                    boton.classList.remove("rojo");
+                    boton.classList.add("azul");
+
+                }, 3000);
+
             }
     
     
