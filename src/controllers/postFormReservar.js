@@ -48,7 +48,7 @@ exports.PeticionPago = async (req, res) => {
     });
 
     const datos = await responseRaw.json();
-    console.log("datos=" + datos);
+    // console.log("datos=" + datos);
 
 };
 
