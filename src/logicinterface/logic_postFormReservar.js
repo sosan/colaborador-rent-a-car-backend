@@ -394,11 +394,11 @@ const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErro
         textoResultadoEmailRegistro = "ENVIADO";
     }
 
-    let textoResultadoEmailConfirmacion = "NO ENVIADO";
+    let textoResultadoEmailConfirmacion = "NO AUTORIZADO";
 
     if (resultadoEmailConfirmacionReserva === true)
     {
-        textoResultadoEmailConfirmacion = "ENVIADO";
+        textoResultadoEmailConfirmacion = "AUTORIZADO";
     }
 
     let tabla = `
@@ -497,7 +497,7 @@ const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErro
             <td>: ${textoResultadoEmailRegistro}</td>
         </tr>
         <tr>
-            <td>Email confirmacion reserva</td>
+            <td>Pago TPV</td>
             <td>: ${textoResultadoEmailConfirmacion}</td>
         </tr>
 
@@ -554,8 +554,11 @@ const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErro
 
 </head>
 <body>
+<img src="https://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png">
+<br>
 ${errorEmailSended}
-Ha llegado una reserva nueva con el numero registro ${formulario.numeroRegistro} con los siguientes datos
+<br>
+Ha llegado una reserva nueva con el numero registro ${formulario.numeroRegistro} con los siguientes datos:
 <br>
 ${tabla}
 </body>
