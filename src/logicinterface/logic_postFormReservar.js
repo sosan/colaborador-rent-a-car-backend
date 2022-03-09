@@ -117,7 +117,7 @@ exports.EnviarCorreosReservaConErrores = async (resultadoInsercion, formulario, 
 
     return {
         "reservaContieneErrores": true,
-        "resultadoUserEmailSended": resultadoUserEmailSended,
+        "resultadoUserEmailSended": resultadoAdminEmailSended,
         "resultadoAdminEmailSended": resultadoAdminEmailSended
     };
 
