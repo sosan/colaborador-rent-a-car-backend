@@ -73,7 +73,7 @@ jobs:
           script: |
             ${HOME}/bin/docker context use rootless
             ${HOME}/bin/docker pull sosan/backoffice-rentacarmallorca:latest
-            /usr/bin/docker-compose -f ${HOME}/deploy-compose.txt up -d
+            /usr/bin/docker-compose -f ${HOME}/docker-compose.yaml up -d
       # - name: Send discord failure message
       #   if: ${{ failure() }}
       #   uses: appleboy/discord-action@master
