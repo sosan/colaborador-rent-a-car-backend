@@ -56,7 +56,12 @@ const GenerateTokenBackendToFrontend = async () => {
 exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 {
     // consultar si existe pago de la reserva
-    const resultadoEmailConfirmacionReserva = await this.ComprobarPagoReserva(formulario.numeroRegistro);
+    let localizador = formulario.numeroRegistro;
+    if (localizador === undefined) {
+        localizador = formulario.localizador;
+    }
+
+    const resultadoEmailConfirmacionReserva = await this.ComprobarPagoReserva(localizador);
 
     if (resultadoEmailConfirmacionReserva === false && logicGetReservas.DEBUG_PERMITIR_ENVIAR_CORREOS === false)
     {
@@ -127,6 +132,10 @@ exports.EnviarCorreosReservaConErrores = async (resultadoInsercion, formulario, 
 exports.ComprobarPagoReserva = async (localizador) => 
 {
     let exist = false;
+    if (localizador === undefined)
+    {
+        return exist;
+    }
     const resultado = await dbInterfaces.FindReservasByLocalizador(localizador);
     if (resultado.length === 1)
     {

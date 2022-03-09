@@ -131,7 +131,14 @@ exports.ConfirmarReserva = async (req, res ) =>
     
     let formulario = req.body;
     // consultar si existe pago de la reserva
-    const resultadoEmailConfirmacionReserva = await logic_postFormReservar.ComprobarPagoReserva(formulario.numeroRegistro);
+
+    let localizador = formulario.numeroRegistro;
+    if (localizador === undefined)
+    {
+        localizador = formulario.localizador;
+    }
+
+    const resultadoEmailConfirmacionReserva = await logic_postFormReservar.ComprobarPagoReserva(localizador);
 
     if (resultadoEmailConfirmacionReserva === false && this.DEBUG_PERMITIR_ENVIAR_CORREOS === false) {
         return res.send({ "isOk": false });
@@ -192,7 +199,7 @@ exports.ConfirmarReserva = async (req, res ) =>
         .replace(new RegExp("{E3}", "g"), formulario.horaRecogida)
         .replace(new RegExp("{F1}", "g"), formulario.fechaDevolucion)
         .replace(new RegExp("{E4}", "g"), formulario.horaDevolucion)
-        .replace(new RegExp("{G1}", "g"), formulario.localizador)
+        .replace(new RegExp("{G1}", "g"), localizador)
         .replace(new RegExp("{Y1}", "g"), precioBase)
         .replace(new RegExp("{D6}", "g"), pago_online)
         .replace(new RegExp("{D7}", "g"), pago_recogida)
@@ -248,7 +255,7 @@ exports.ConfirmarReserva = async (req, res ) =>
             address: `${EMAIL_ADMIN_RECIBIR_RESERVAS_1}`
         },
         to: `${formulario.email}`,
-        subject: `${traduccion.sureserva} ${formulario.localizador}`,
+        subject: `${traduccion.sureserva} ${localizador}`,
         html: `${bodyConfirmacionEmail}`,
 
     };
