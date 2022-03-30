@@ -140,9 +140,13 @@ exports.ComprobarPagoReserva = async (localizador) =>
     if (resultado.length === 1)
     {
 
-        if (("Ds_Order" in resultado[0]) === true)
+        if (("Ds_Response" in resultado[0]) === true)
         {
-            exist = true;
+            if ((resultado[0]["Ds_Response"]) - 0 === 0)
+            {
+                exist = true;
+
+            }
         }
 
     }
@@ -503,9 +507,6 @@ const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErro
 
     </tbody>
 </table>
-    
-    
-    
     `;
 
 
@@ -1053,7 +1054,7 @@ const obtenerPrecioSegunCantidadDias = async (dias, preciosPorClase) =>
             precio = preciosPorClase.PRECIO6 - 0;
         break;
         case 7: 
-            precio = preciosPorClase.PRECIO6 - 0;
+            precio = preciosPorClase.PRECIO7 - 0;
         break;
         default:
             precio = (preciosPorClase.PRECIOMAS7 - 0) * dias;
