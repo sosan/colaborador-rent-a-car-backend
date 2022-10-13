@@ -37,7 +37,7 @@ jobs:
     if: "contains(github.event.head_commit.message, '/d')"
     steps:
       - name: Avoid redudant builds
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
       - name: Checkout
