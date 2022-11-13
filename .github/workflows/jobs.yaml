@@ -35,8 +35,6 @@ jobs:
           cache-to: type=gha,mode=max
           platforms: linux/amd64
 
-
-
   test-unit:
     name: Unit tests in Docker
     needs: [build-test-image]
