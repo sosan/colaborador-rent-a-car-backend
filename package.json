@@ -35,7 +35,7 @@
     "express-rate-limit": "^6.0.0",
     "express-useragent": "^1.0.15",
     "fs": "^0.0.2",
-    "helmet": "^4.6.0",
+    "helmet": "^6.0.0",
     "ioredis": "^5.0.0",
     "joi": "^17.6.0",
     "mongodb": "^4.0.0",
