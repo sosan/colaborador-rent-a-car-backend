@@ -74,9 +74,10 @@ router.get(process.env.ENDPOINT_GET_GENERAL_STATS, async (req, res) => await log
 
 router.get("/reservas_noenviadas", async (req, res) => await logicGetReservas.GetReservasNotSended(req, res) );
 router.get("/reservas_enviadas", async (req, res) => await logicGetReservas.GetReservasSended(req, res));
+router.get("/reservaserrores", async (req, res) => await logicGetReservas.MostrarReservasErrores(req, res));
 router.post("/envioCorreoConfirmacionReserva", async (req, res) => await logicGetReservas.ConfirmarReserva(req, res) );
 router.post("/borrarreserva", async (req, res) => await logicGetReservas.BorrarReserva(req, res));
-
+router.post("/enviaremailusuario", async (req, res) => await logicGetReservas.EnviarEmailUsuario(req, res));
 
 router.post("/busquedareservasfecha", async (req, res) => await logicGetReservas.MostrarReservasPorFecha(req, res));
 router.post(process.env.ENDPOINT_TEMPLATE_FRONTEND, async (req, res) => await logicTemplates.MostrarTemplate(req, res));

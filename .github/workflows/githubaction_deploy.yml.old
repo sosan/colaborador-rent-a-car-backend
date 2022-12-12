@@ -41,7 +41,7 @@ jobs:
         with:
           access_token: ${{ github.token }}
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       
       - name: Get current date
         id: date
@@ -90,16 +90,16 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY}}
           port:  ${{ secrets.PORT_SERVIDOR }}
           script: |
-            echo "${{secrets.REDISDB_PASSWORD}}" > /tmp/redisdb_password.txt && \
-            echo "${{secrets.REDISDB_PORT}}" > /tmp/redisdb_port.txt && \
-            echo "${{secrets.REDISDB_HOST}}" > /tmp/redisdb_host.txt && \
-            echo "${{secrets.PORT_FRONTEND}}" > /tmp/port_frontend.txt && \
-            echo "${{secrets.PORT_BACKEND}}" > /tmp/port_backend.txt && \
-            echo "${{secrets.PORT_BACKOFFICE}}" > /tmp/port_backoffice.txt && \
-            echo "${{secrets.ENDPOINT_VARIABLES_FRONTEND}}" > /tmp/endpoint_variables_frontend.txt && \
-            echo "${{secrets.TOKEN_FOR_BACKEND_ACCESS}}" > /tmp/token_for_backend_access.txt && \
-            echo "${{secrets.TOKEN_PGP}}" > /tmp/token_pgp.txt && \
-            cat <<EOF > /tmp/deploy-compose.txt
+            echo "${{secrets.REDISDB_PASSWORD}}" > ${HOME}/redisdb_password.txt && \
+            echo "${{secrets.REDISDB_PORT}}" > ${HOME}/redisdb_port.txt && \
+            echo "${{secrets.REDISDB_HOST}}" > ${HOME}/redisdb_host.txt && \
+            echo "${{secrets.PORT_FRONTEND}}" > ${HOME}/port_frontend.txt && \
+            echo "${{secrets.PORT_BACKEND}}" > ${HOME}/port_backend.txt && \
+            echo "${{secrets.PORT_BACKOFFICE}}" > ${HOME}/port_backoffice.txt && \
+            echo "${{secrets.ENDPOINT_VARIABLES_FRONTEND}}" > ${HOME}/endpoint_variables_frontend.txt && \
+            echo "${{secrets.TOKEN_FOR_BACKEND_ACCESS}}" > ${HOME}/token_for_backend_access.txt && \
+            echo "${{secrets.TOKEN_PGP}}" > ${HOME}/token_pgp.txt && \
+            cat <<EOF > ${HOME}/docker-compose.yaml
             version: "3.9"
             x-logging:
               &default-logging
@@ -142,10 +142,12 @@ jobs:
                   - "80"
                   - "443"
                   - "3100"
+                  - "9091"
                 ports: 
                   - "80:80"
                   - "443:443"
                   - "3100:3100"
+                  - "9091:9091"
                 volumes:
                   - ${HOME}/envoy/certificates/www.rentcarmallorca.es.crt:/etc/rentcarmallorca_es.crt
                   - ${HOME}/envoy/certificates/www.rentcarmallorca.es.key:/etc/rentcarmallorca_es.key
@@ -179,6 +181,38 @@ jobs:
                   - backend
                   - fluentbit
                 logging: *default-logging
+              
+              frontend_dev:
+                container_name: frontend_server_dev
+                restart: "no"
+                hostname: frontend_server_dev
+                deploy:
+                  replicas: 1
+                image: sosan/frontend-dev-rentacarmallorca:latest
+                expose: 
+                  - 8080
+                environment:
+                  URL_BACKEND: backend
+                  URL_FRONTEND: frontend_dev
+                  NODE_ENV: production
+                  CONTAINER_NAME: frontend_server_dev
+                  SECRET_MOUNT_PATH: /run/secrets
+                secrets:
+                    - PORT_BACKEND
+                    - ENDPOINT_VARIABLES_FRONTEND
+                    - TOKEN_FOR_BACKEND_ACCESS
+                networks:
+                  eth0:
+                    ipv4_address: 172.22.0.41
+                depends_on:
+                  - backend
+                  - fluentbit
+                logging:
+                  driver: fluentd
+                  options:
+                    fluentd-address: 172.22.0.2:2020
+                # logging: *default-logging
+
               backoffice:
                 container_name: backoffice_server
                 image: sosan/backoffice-rentacarmallorca:latest
@@ -234,32 +268,33 @@ jobs:
                 logging: *default-logging
             secrets:
               REDISDB_PASSWORD:
-                file: "/tmp/redisdb_password.txt"
+                file: "${HOME}/redisdb_password.txt"
               REDISDB_PORT:
-                file: "/tmp/redisdb_port.txt"
+                file: "${HOME}/redisdb_port.txt"
               REDISDB_HOST:
-                file: "/tmp/redisdb_host.txt"
+                file: "${HOME}/redisdb_host.txt"
               PORT_FRONTEND:
-                file: "/tmp/port_frontend.txt"
+                file: "${HOME}/port_frontend.txt"
               PORT_BACKEND:
-                file: "/tmp/port_backend.txt"
+                file: "${HOME}/port_backend.txt"
               ENDPOINT_VARIABLES_FRONTEND:
-                file: "/tmp/endpoint_variables_frontend.txt"
+                file: "${HOME}/endpoint_variables_frontend.txt"
               TOKEN_FOR_BACKEND_ACCESS:
-                file: "/tmp/token_for_backend_access.txt"
+                file: "${HOME}/token_for_backend_access.txt"
               TOKEN_PGP:
-                file: "/tmp/token_pgp.txt"
+                file: "${HOME}/token_pgp.txt"
               PORT_BACKOFFICE:
-                file: "/tmp/port_backoffice.txt"
+                file: "${HOME}/port_backoffice.txt"
             EOF
-            /home/alvaro/bin/docker context use rootless
-            /home/alvaro/bin/docker pull sosan/backend-rentacarmallorca:latest && \
-            /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
-            /home/alvaro/bin/docker pull sosan/backoffice-rentacarmallorca:latest && \
-            /home/alvaro/bin/docker pull sosan/frontend-rentacarmallorca-basico:latest && \
-            /home/alvaro/bin/docker pull sosan/envoy-rentacarmallorca:latest && \
-            /home/alvaro/bin/docker pull sosan/fluentloki-rentacarmallorca:latest && \
-            /usr/bin/docker-compose -f /tmp/deploy-compose.txt up -d
-            /home/alvaro/bin/docker rmi $(/home/alvaro/bin/docker images | grep "<none>" | awk '{print $3}') 2>/dev/null || echo "No hay images por borrar"
-            /home/alvaro/bin/docker system prune --force
+            ${HOME}/bin/docker context use rootless
+            ${HOME}/bin/docker pull sosan/backend-rentacarmallorca:latest && \
+            ${HOME}/bin/docker pull sosan/frontend-rentacarmallorca:latest && \
+            ${HOME}/bin/docker pull sosan/backoffice-rentacarmallorca:latest && \
+            ${HOME}/bin/docker pull sosan/frontend-rentacarmallorca-basico:latest && \
+            ${HOME}/bin/docker pull sosan/envoy-rentacarmallorca:latest && \
+            ${HOME}/bin/docker pull sosan/fluentloki-rentacarmallorca:latest && \
+            /usr/bin/docker-compose -f ${HOME}/docker-compose.yaml up -d && \
+            ${HOME}/bin/docker stop frontend_server_dev
+            ${HOME}/bin/docker rmi $(${HOME}/bin/docker images | grep "<none>" | awk '{print $3}') 2>/dev/null || echo "No hay images por borrar"
+            ${HOME}/bin/docker system prune --force
             

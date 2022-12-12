@@ -4,11 +4,12 @@ const logicStats = require("../logicinterface/logic_stats");
 const traducciones = require("../controllers/location");
 const fetch = require("node-fetch");
 const { transporter } = require("./logicSendEmail");
-const { descripcionVehiculos } = require("./logicGetReservas");
+const logicGetReservas = require("./logicGetReservas");
 const logicPostFormIndex = require("./logic_postFormIndex");
 const crypto = require("crypto");
 const base64url = require("base64url");
 const nanoid = require("nanoid");
+
 
 
 const URI_EMAIL_ADMIN_API_BACKEND = `${process.env.URI_EMAIL_ADMIN_API_BACKEND}`;
@@ -54,10 +55,33 @@ const GenerateTokenBackendToFrontend = async () => {
 
 exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
 {
+    // consultar si existe pago de la reserva
+    let localizador = formulario.numeroRegistro;
+    if (localizador === undefined) {
+        localizador = formulario.localizador;
+    }
+
+    const resultadoEmailConfirmacionReserva = await this.ComprobarPagoReserva(localizador);
+
+    if (resultadoEmailConfirmacionReserva === false && logicGetReservas.DEBUG_PERMITIR_ENVIAR_CORREOS === false)
+    {
+        return {
+            "reservaContieneErrores": true,
+            "resultadoUserEmailSended": { isSended: false, messageId: -1, cannotSend: true },
+            "resultadoAdminEmailSended": { isSended: false, messageId: -1, cannotSend: true },
+        };
+    }
 
     const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
 
-    if (traduccion === undefined) return;
+    if (traduccion === undefined)
+    {
+        return {
+            "reservaContieneErrores": true,
+            "resultadoUserEmailSended": { isSended: false, messageId: -1, cannotSend: true },
+            "resultadoAdminEmailSended": { isSended: false, messageId: -1, cannotSend: true },
+        };
+    }
 
     let bodyEmail = await ContruirEmailUsuario(resultadoInsercion, formulario, traduccion);
 
@@ -70,8 +94,9 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
     }
 // -------------
 
+
     // envio correo administracion
-    bodyEmail = await ConstruirEmailAdmins(resultadoInsercion, formulario);
+    bodyEmail = await ConstruirEmailAdmins(resultadoUserEmailSended, formulario, undefined, resultadoEmailConfirmacionReserva);
 
     //envio correo admins
     const resultadoAdminEmailSended = await EnviarCorreoIo(bodyEmail);
@@ -81,7 +106,54 @@ exports.EnviarCorreos = async (resultadoInsercion, formulario) =>
         "resultadoAdminEmailSended": resultadoAdminEmailSended
     };
 
-    // return emailsEnviados;
+
+};
+
+exports.EnviarCorreosReservaConErrores = async (resultadoInsercion, formulario, contieneErrores) => {
+
+    // const traduccion = await traducciones.ObtenerTraduccionEmailUsuario(formulario.idioma);
+    // if (traduccion === undefined) return;
+
+    // envio correo administracion
+    let bodyEmail = await ConstruirEmailAdmins(resultadoInsercion, formulario, contieneErrores);
+
+    //envio correo admins
+    const resultadoAdminEmailSended = await EnviarCorreoIo(bodyEmail);
+
+    return {
+        "reservaContieneErrores": true,
+        "resultadoUserEmailSended": resultadoAdminEmailSended,
+        "resultadoAdminEmailSended": resultadoAdminEmailSended
+    };
+
+};
+
+
+exports.ComprobarPagoReserva = async (localizador) => 
+{
+    let exist = false;
+    if (localizador === undefined)
+    {
+        return exist;
+    }
+    const resultado = await dbInterfaces.FindReservasByLocalizador(localizador);
+    if (resultado.length === 1)
+    {
+
+        if (("Ds_Response" in resultado[0]) === true)
+        {
+            if ((resultado[0]["Ds_Response"]) - 0 === 0)
+            {
+                exist = true;
+
+            }
+        }
+
+    }
+
+    // console.log(JSON.stringify(exist));
+
+    return exist;
 
 };
 
@@ -95,16 +167,47 @@ exports.ConfirmacionEmailsEnviados = async (emailsEnviados, objectId) =>
     emailsEnviados.resultadoAdminEmailSended["fechaEmailsActualizado"] = currentDate;
 
     //buscar por id
-    await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
+    const isUpdated = await dbInterfaces.UpdateReserva(emailsEnviados, objectId);
     console.log(`emails enviados:\n-> Usuarios: ${emailsEnviados.resultadoUserEmailSended.isSended}\n-> Admins: ${emailsEnviados.resultadoAdminEmailSended.isSended}` )
-
+    return isUpdated;
 };
 
 const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) =>
 {
 
-    const texto = traduccion["registro_confirmacion"]
+    // const reservaTemp = await dbInterfaces.FindReservasByLocalizador("AXZ20210903");
+
+    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * logicGetReservas.PRECIO_SILLA_UNIDAD).toFixed(2);
+    let precio_booster_ninos = ((formulario.numero_booster - 0) * (formulario.dias - 0) * logicGetReservas.PRECIO_BOOSTER_UNIDAD).toFixed(2);
+    let total_suplmento_tipo_conductor = (formulario.total_suplmento_tipo_conductor - 0).toFixed(2);
+    let pago_online = (formulario.pago_online - 0).toFixed(2);
+    let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
+    let pago_alquiler = ((pago_online - 0) + (pago_recogida - 0)).toFixed(2);
+    let precioBase = (formulario.alquiler - 0).toFixed(2);
+
+    [
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler,
+        precioBase
         
+    ] = await this.SanitizarPrecioDecimales(
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler,
+        precioBase
+    );
+
+    const descripcionVehiculos = await logicGetReservas.GetDescripcionVehiculos();
+    const imgSrc = descripcionVehiculos[formulario.descripcion_vehiculo];
+
+    let texto = traduccion["registro_confirmacion"]
         .replace(new RegExp("{A1}", "g"), formulario.nombre)
         .replace(new RegExp("{C1}", "g"), "RentCarMallorca")
         .replace(new RegExp("{D1}", "g"), formulario.descripcion_vehiculo)
@@ -113,14 +216,48 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
         .replace(new RegExp("{F1}", "g"), formulario.fechaDevolucion)
         .replace(new RegExp("{E4}", "g"), formulario.horaDevolucion)
         .replace(new RegExp("{G1}", "g"), resultadoInsercion.numeroRegistro)
-        .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
-        .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
-        .replace(new RegExp("{Z3}", "g"), `<img src="${descripcionVehiculos[formulario.descripcion_vehiculo]}">`)
+        .replace(new RegExp("{Y1}", "g"), precioBase)
+        .replace(new RegExp("{D6}", "g"), pago_online)
+        .replace(new RegExp("{D7}", "g"), pago_recogida)
+        .replace(new RegExp("{D8}", "g"), pago_alquiler)
+        .replace(new RegExp("{Z3}", "g"), `<img src="${imgSrc}">`)
         .replace(new RegExp("{Z4}", "g"), `<a href="https://www.google.com/maps/place/Cam%C3%AD+de+Can+Pastilla,+51,+07610+Can+Pastilla,+Illes+Balears/@39.538882,2.71428,15z/data=!4m5!3m4!1s0x1297941e14ebb901:0x269d00f6b5ad9230!8m2!3d39.5388821!4d2.7142801?hl=es"><img src="https://www.rentcarmallorca.es/img/imagenlocalizacion.webp" width="200"></a>`)
         .replace(new RegExp("{H1}", "g"), "servicios@rentcarmallorca.es")
         .replace(new RegExp("{J1}", "g"), "Camino de Can Pastilla, 51")
         .replace(new RegExp("{K1}", "g"), "07610 Can Pastilla - Palma de Mallorca")
-    ;
+        ;
+
+// Pago online: {D6}€ {br} Pago a la recogida: {D7}€ {br} Pago total: {D8}€
+
+    const textoSillas = traduccion["remplazo_sillas"]
+        .replace(new RegExp("{D2}", "g"), formulario.numero_sillas_nino)
+        .replace(new RegExp("{D4}", "g"), precio_sillas_ninos);
+
+    const textoBooster = traduccion["remplazo_booster"]
+        .replace(new RegExp("{D3}", "g"), formulario.numero_booster)
+        .replace(new RegExp("{D5}", "g"), precio_booster_ninos);
+    const textoConductorJoven = traduccion["remplazo_conductor_joven"]
+        .replace(new RegExp("{D9}", "g"), total_suplmento_tipo_conductor);
+
+    if (total_suplmento_tipo_conductor !== "0") {
+        texto = texto.replace(new RegExp("{R1}", "g"), textoConductorJoven);
+
+    }
+
+    if (precio_sillas_ninos !== "0") {
+        texto = texto.replace(new RegExp("{R2}", "g"), textoSillas);
+
+    }
+
+    if (precio_booster_ninos !== "0") {
+        texto = texto.replace(new RegExp("{R3}", "g"), textoBooster);
+    }
+
+
+    texto = texto.replace(new RegExp("{br}", "g"), "<br>")
+        .replace(new RegExp("{R1}", "g"), "")
+        .replace(new RegExp("{R2}", "g"), "")
+        .replace(new RegExp("{R3}", "g"), "");
     
     const bodyConfirmacionEmail = htmlEmail
         .replace("0000", "https://www.rentcarmallorca.es/")
@@ -142,30 +279,250 @@ const ContruirEmailUsuario = async (resultadoInsercion, formulario, traduccion) 
 
 };
 
-const ConstruirEmailAdmins = async (resultadoInsercion, formulario) =>
+
+exports.SanitizarPrecioDecimales = async (
+    precio_sillas_ninos,
+    precio_booster_ninos,
+    total_suplmento_tipo_conductor,
+    pago_online,
+    pago_recogida,
+    pago_alquiler,
+    precioBase
+    ) =>
 {
 
-    let tabla = "";
-
-    for (const key in formulario)
-    {
-        if (key === "token" || key === "useragent" || key === "location") continue;
-        
-        tabla += `
-        <tr>
-            <th>${key}</th>
-            <th>${formulario[key]}</th>
-        </tr>`;
-
+    if (precio_sillas_ninos === "0.00") {
+        precio_sillas_ninos = "0";
     }
 
+    if (precio_sillas_ninos.indexOf(".00") !== 0)
+    {
+        precio_sillas_ninos = precio_sillas_ninos.split(".00")[0];
+    }
+
+    if (precio_booster_ninos === "0.00") {
+        precio_booster_ninos = "0";
+    }
+
+    if (precio_booster_ninos.indexOf(".00") !== 0) {
+        precio_booster_ninos = precio_booster_ninos.split(".00")[0];
+    }
+
+
+    if (total_suplmento_tipo_conductor === "0.00") {
+        total_suplmento_tipo_conductor = "0";
+    }
+
+    if (total_suplmento_tipo_conductor.indexOf(".00") !== 0) {
+        total_suplmento_tipo_conductor = total_suplmento_tipo_conductor.split(".00")[0];
+    }
+
+    if (pago_online === "0.00") {
+        pago_online = "0";
+    }
+
+    if (pago_online.indexOf(".00") !== 0) {
+        pago_online = pago_online.split(".00")[0];
+    }
+
+    if (pago_recogida === "0.00") {
+        pago_recogida = "0";
+    }
+
+    if (pago_recogida.indexOf(".00") !== 0) {
+        pago_recogida = pago_recogida.split(".00")[0];
+    }
+
+    if (pago_alquiler === "0.00") {
+        pago_alquiler = "0";
+    }
+
+    if (pago_alquiler.indexOf(".00") !== 0) {
+        pago_alquiler = pago_alquiler.split(".00")[0];
+    }
+
+    if (precioBase === "0.00") {
+        precioBase = "0";
+    }
+    
+    if (precioBase.indexOf(".00") !== 0) {
+        precioBase = precioBase.split(".00")[0];
+    }
+
+    return [
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler,
+        precioBase
+    ];
+
+};
+
+const ConstruirEmailAdmins = async (resultadoInsercion, formulario, contieneErrores, resultadoEmailConfirmacionReserva) =>
+{
+
+    let precio_sillas_ninos = ((formulario.numero_sillas_nino - 0) * (formulario.dias - 0) * logicGetReservas.PRECIO_SILLA_UNIDAD).toFixed(2);
+    let precio_booster_ninos = ((formulario.numero_booster - 0) * (formulario.dias - 0) * logicGetReservas.PRECIO_BOOSTER_UNIDAD).toFixed(2);
+    let total_suplmento_tipo_conductor = (formulario.total_suplmento_tipo_conductor - 0).toFixed(2);
+    let pago_online = (formulario.pago_online - 0).toFixed(2);
+    let pago_recogida = (formulario.pagoRecogida - 0).toFixed(2);
+    let pago_alquiler = ((pago_online - 0) + (pago_recogida - 0)).toFixed(2);
+    let precioBase = (formulario.alquiler - 0).toFixed(2);
+
+    [
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler,
+        precioBase
+
+    ] = await this.SanitizarPrecioDecimales(
+        precio_sillas_ninos,
+        precio_booster_ninos,
+        total_suplmento_tipo_conductor,
+        pago_online,
+        pago_recogida,
+        pago_alquiler,
+        precioBase
+    );
+
+    let textoResultadoEmailRegistro = "NO ENVIADO";
+
+    if (resultadoInsercion.isSended === true)
+    {
+        textoResultadoEmailRegistro = "ENVIADO";
+    }
+
+    let textoResultadoEmailConfirmacion = "NO AUTORIZADO";
+
+    if (resultadoEmailConfirmacionReserva === true)
+    {
+        textoResultadoEmailConfirmacion = "AUTORIZADO";
+    }
+
+    let tabla = `
+<table >
+    <thead>
+        <tr>
+            <th colspan="2">Registro Reserva ${formulario.numeroRegistro}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Vehiculo</td>
+            <td>: ${formulario.descripcion_vehiculo}</td>
+        </tr>
+        <tr>
+            <td>Fecha recogida</td>
+            <td>: ${formulario.fechaRecogida} ${formulario.horaRecogida}</td>
+        </tr>
+        <tr>
+            <td>Fecha devolucion</td>
+            <td>: ${formulario.fechaDevolucion} ${formulario.horaDevolucion}</td>
+        </tr>
+        <tr>
+            <td>Numero dias</td>
+            <td>: ${formulario.dias}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><hr></td>
+        </tr>
+        <tr>
+            <td>Nombre</td>
+            <td>: ${formulario.nombre}</td>
+        </tr>
+        <tr>
+            <td>Apellidos</td>
+            <td>: ${formulario.apellidos}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>: ${formulario.email}</td>
+        </tr>
+        <tr>
+            <td>Telefono</td>
+            <td>: ${formulario.telefono}</td>
+        </tr>
+        <tr>
+            <td>Idioma</td>
+            <td>: ${formulario.idioma.toUpperCase()}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <hr>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Valor Alquiler</td>
+            <td>: ${precioBase}€</td>
+        </tr>
+        <tr>
+            <td>Conductor Joven</td>
+            <td>: ${total_suplmento_tipo_conductor}€</td>
+        </tr>
+        <tr>
+            <td>Sillas niño:</td>
+            <td>: ${formulario.numero_sillas_nino} &nbsp; ${precio_sillas_ninos}€</td>
+        </tr>
+        <tr>
+            <td>Elevadores niño</td>
+            <td>: ${formulario.numero_booster} &nbsp; ${precio_booster_ninos}€</td>
+        </tr>
+        <tr>
+            <td>Total alquiler</td>
+            <td>: ${pago_alquiler}€</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            </td>
+        </tr>
+
+        <tr>
+            <td>Pago Online</td>
+            <td>: ${pago_online}€</td>
+        </tr>
+        <tr>
+            <td>Pago Recogida</td>
+            <td>: ${pago_recogida}€</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <hr>
+            </td>
+        </tr>
+        <tr>
+            <td>Email registro reserva</td>
+            <td>: ${textoResultadoEmailRegistro}</td>
+        </tr>
+        <tr>
+            <td>Pago TPV</td>
+            <td>: ${textoResultadoEmailConfirmacion}</td>
+        </tr>
+
+    </tbody>
+</table>
+    `;
+
+
     let errorEmailSended = "";
-    let subject = `Numero Registro: ${resultadoInsercion.numeroRegistro}`;
+    let subject = `Numero Registro: ${formulario.numeroRegistro}`;
     if (formulario.isUserEmailSended === false) {
         // mostrar error en el correo
         errorEmailSended = `ATENCION!!!! Ha habido un error al enviar correo al usuario ${formulario.email}`;
-        subject = `Problemas! El Numero Registro: ${resultadoInsercion.numeroRegistro} tiene problemas`;
+        subject = `Problemas! El Numero Registro: ${formulario.numeroRegistro} tiene problemas`;
 
+    }
+
+    if (contieneErrores)
+    {
+        errorEmailSended += `ATENCION!!!! Ha habido un error al procesar la reserva al usuario ${formulario.email}`;
+        subject = `Problemas! El Numero Registro: ${formulario.numeroRegistro} tiene problemas`;
     }
 
     let html = 
@@ -174,43 +531,37 @@ const ConstruirEmailAdmins = async (resultadoInsercion, formulario) =>
 <html>
 <head>
 <style>
-#customers {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+    table {
+        border: 0px solid #b3adad;
+        border-collapse: collapse;
+        padding: 5px;
+    }
 
-#customers td, #customers th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
+    table th {
+        border: 0px solid #b3adad;
+        padding: 5px;
+        background: #f0f0f0;
+        color: #313030;
+    }
 
-#customers tr:nth-child(even){background-color: #f2f2f2;}
-
-#customers tr:hover {background-color: #ddd;}
-
-#customers th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #04AA6D;
-  color: white;
-}
-
-a
-{
-    color: black;
-}
-
+    table td {
+        border: 0px solid #b3adad;
+        text-align: left;
+        padding: 5px;
+        background: #ffffff;
+        color: #313030;
+    }
 </style>
+
 </head>
 <body>
-${errorEmailSended}
-Ha llegado una reserva nueva con el numero registro ${resultadoInsercion.numeroRegistro} con los siguientes datos
+<img src="https://www.rentcarmallorca.es/img/Img-Logo/rentacar_logo_header.png">
 <br>
-<table id="customers">
-  ${tabla}
-</table>
+${errorEmailSended}
+<br>
+Ha llegado una reserva nueva con el numero registro ${formulario.numeroRegistro} con los siguientes datos:
+<br>
+${tabla}
 </body>
 </html>
 `;
@@ -333,6 +684,7 @@ exports.ProcesarReserva = async (formulario, currentDate) =>
     const isReservaValida = await CheckReservaValida(formulario);
     if (isReservaValida === false)
     {
+        console.log("ERROR!! La reserva no es valida numeroRegistro=" + numeroRegistro)
         return { "isInserted": false, "objectId": undefined, "numeroRegistro": numeroRegistro };
     }
 
@@ -369,8 +721,8 @@ const SanitizarFormulario = async (formulario) =>
 {
     
     //quitar mayusculas, espacios, o caracteres no permitidos
-    formulario["nombre"] = await CapitalizarString(formulario["nombre"]);
-    formulario["apellidos"] = await CapitalizarString(formulario["apellidos"]);
+    formulario["nombre"] = await CapitalizarString(formulario["nombre"]) || formulario["nombre"];
+    formulario["apellidos"] = await CapitalizarString(formulario["apellidos"]) || formulario["apellidos"];
 
     formulario["email"] = formulario["email"].trim().toLowerCase();
     formulario["telefono"] = formulario["telefono"].trim().toLowerCase();
@@ -381,15 +733,28 @@ const SanitizarFormulario = async (formulario) =>
 
 const CapitalizarString = async (cadena) =>
 {
+    try
+    {
+        const palabras = cadena.toLowerCase().split(" ");
+    
+        for (let i = 0; i < palabras.length; i++) 
+        {
+            if (palabras[i][0] !== undefined)
+            {
+                palabras[i] = palabras[i][0].toUpperCase() + palabras[i].substr(1);
+            }
+    
+        }
+    
+        const texto = palabras.join(" ");
+        return texto;
 
-    const palabras = cadena.toLowerCase().split(" ");
-
-    for (let i = 0; i < palabras.length; i++) {
-        palabras[i] = palabras[i][0].toUpperCase() + palabras[i].substr(1);
+    }
+    catch(error)
+    {
+        return cadena;
     }
 
-    const texto = palabras.join(" ");
-    return texto;
 
 };
 
@@ -504,24 +869,93 @@ const CheckReservaValida = async (formulario) =>
     }
 
     
-
+    // const temporada = await logicPostFormIndex.CalcularTemporada(formulario.fechaRecogida) || "3";
     const datosVehiculo = await dbInterfaces.GetCarByDescripcion(formulario.descripcion_vehiculo);
-    // const allDatosSuplementoTipoChofer = await dbInterfaces.GetSuplementosTipoChofer();
-    const preciosPorClase = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo);
+    
+    // if (tiposClases.isOk === false) {
+        //     const error = `| - NO hay collecion tiposclases `;
+        //     console.error(error);
+    //     return { isOk: false, resultados: undefined, errores: error };
+    // }
+
+    const [rangoFechaInicio, temporadaFechaRecogida] = await logicPostFormIndex.FechaSuperpuesta(formulario.fechaRecogida);
+    const [rangoFechaFin, temporadaFechaDevolucion] = await logicPostFormIndex.FechaSuperpuesta(formulario.fechaDevolucion);
+    
+    
+    let preciosPorClase = [];
+    let listadoDiasTemporada = [];
+    let precioAlquiler = 0;
+    let preciosFinales = [];
+
+    if ((rangoFechaInicio === rangoFechaFin) || ((rangoFechaInicio === 10 || rangoFechaInicio === 11) && rangoFechaFin === 1)) {
+        // const precios = await dbInterfaces.GetPreciosPorClase(datosVehiculo.resultados, temporadaFechaRecogida);
+        const precios = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo, temporadaFechaRecogida);
+        preciosPorClase.push(precios);
+        precioAlquiler = await obtenerPrecioSegunCantidadDias(dias, precios.resultados);
+
+    }
+    else {
+        listadoDiasTemporada = await logicPostFormIndex.CalcularTemporadaSegmentada(
+            formulario.fechaRecogida,
+            formulario.fechaDevolucion,
+            rangoFechaInicio,
+            rangoFechaFin
+        );
+
+        for (let i = 0; i < listadoDiasTemporada.length; i++) {
+            const precios = await dbInterfaces.GetPreciosUnicaClase(datosVehiculo.resultados.clasevehiculo, listadoDiasTemporada[i].temporadaFechaInicio);
+            preciosPorClase.push(precios);
+            // const precios = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados, listadoDiasTemporada[i].temporadaFechaInicio);
+
+        }
+        
+        if (preciosPorClase.length === 0) {
+            const error = `| - NO hay collecion preciosporclase `;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+    
+        //TODO: mejorar estatico
+        const transformadosPreciosPorClase = await logicPostFormIndex.TransformarPreciosPorUnicaClase(preciosPorClase, listadoDiasTemporada);
+    
+        if (transformadosPreciosPorClase === undefined) {
+            const error = `| - Transformacion no posible en preciosporclase `;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+    
+        precioAlquiler = await obtenerPrecioSegunCantidadDiasSegmentado(transformadosPreciosPorClase);
+    
+    }
     
     const porcentajeTipoVehiculo = await dbInterfaces.GetPorcentajeTipoVehiculo();
     const formularioDescuento = porcentajeTipoVehiculo[datosVehiculo.resultados.clasevehiculo] - 0;
 
-    const precioAlquiler = await obtenerPrecioSegunCantidadDias(dias, preciosPorClase.resultados);
     
+    const cantidadBooster = formulario.numero_booster - 0;
+    const cantidadSillas = formulario.numero_sillas_nino - 0;
+    const totalSuplementoTipoConductor = formulario.total_suplmento_tipo_conductor - 0;
 
-    const precioPagoRecogida = (precioAlquiler * formularioDescuento) / 100 ;
-    const precioPagoOnline = precioAlquiler - precioPagoRecogida;
+    precioAlquiler += totalSuplementoTipoConductor;
+    const precioBooster = (cantidadBooster * logicGetReservas.PRECIO_BOOSTER_UNIDAD * dias);
+    const precioSillas = (cantidadSillas * logicGetReservas.PRECIO_SILLA_UNIDAD * dias);
 
-    if (
-        precioAlquiler === (formulario.alquiler - 0) && 
-        precioPagoOnline === (formulario.pago_online - 0) &&
-        precioPagoRecogida === (formulario.pagoRecogida - 0)
+    precioAlquiler = ((precioAlquiler + (precioBooster + precioSillas)).toFixed(2)) - 0;
+
+    const precioPagoRecogida = ((precioAlquiler * formularioDescuento) / 100).toFixed(2) ;
+    const precioPagoOnline = (precioAlquiler - precioPagoRecogida).toFixed(2);
+
+    const pagoRecogidaConv = (formulario.pagoRecogida - 0);
+    const pagoOnlineConv = (formulario.pago_online - 0);
+
+    const precioAlquilerConv = ((pagoOnlineConv + pagoRecogidaConv).toFixed(2)) - 0;
+
+    const pagoOnlineText = pagoOnlineConv.toFixed(2);
+    const pagoRecogidaText = pagoRecogidaConv.toFixed(2);
+
+    if (precioAlquiler === precioAlquilerConv && 
+        precioPagoOnline === pagoOnlineText  &&
+        precioPagoRecogida === pagoRecogidaText
     )
     {
         return true;
@@ -532,6 +966,64 @@ const CheckReservaValida = async (formulario) =>
 
 
 };
+
+
+const obtenerPrecioSegunCantidadDiasSegmentado = async (preciosPorClase) =>
+{
+
+    let precio = 0;
+
+    for (let keyTemporada in preciosPorClase)
+    {
+        for (let keyClase in preciosPorClase[keyTemporada])
+        {
+
+            if (keyClase === "dias") continue;
+
+            const listadoPrecios = preciosPorClase[keyTemporada][keyClase];
+            const dias = preciosPorClase[keyTemporada]["dias"];
+            switch (dias) {
+                case 0:
+                    precio += 0;
+                    break;
+                case 1:
+                    precio += listadoPrecios[2] - 0;
+                    break;
+                case 2:
+                    precio += listadoPrecios[3] - 0;
+                    break;
+                case 3:
+                    precio += listadoPrecios[4] - 0;
+                    break;
+                case 4:
+                    precio += listadoPrecios[5] - 0;
+                    break;
+                case 5:
+                    precio += listadoPrecios[6] - 0;
+                    break;
+                case 6:
+                    precio += listadoPrecios[7] - 0;
+                    break;
+                case 7:
+                    precio += listadoPrecios[8] - 0;
+                    break;
+                default:
+                    // precio = (preciosPorClase.PRECIOMAS7 - 0) * dias;
+                    precio += (listadoPrecios[9] - 0) * dias;
+                break;
+            }
+
+
+        }
+
+
+    }
+
+
+    return precio;
+
+
+}
 
 const obtenerPrecioSegunCantidadDias = async (dias, preciosPorClase) =>
 {
@@ -562,7 +1054,7 @@ const obtenerPrecioSegunCantidadDias = async (dias, preciosPorClase) =>
             precio = preciosPorClase.PRECIO6 - 0;
         break;
         case 7: 
-            precio = preciosPorClase.PRECIO6 - 0;
+            precio = preciosPorClase.PRECIO7 - 0;
         break;
         default:
             precio = (preciosPorClase.PRECIOMAS7 - 0) * dias;

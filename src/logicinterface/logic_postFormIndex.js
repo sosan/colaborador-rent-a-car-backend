@@ -1,6 +1,7 @@
 const dbInterfaces = require("../database/dbInterfaces");
 const porcentajeVehiculoInterface = require("../controllers/porcentajeTipoVehiculo");
 const Joi = require("joi");
+const logicGetReservas = require("./logicGetReservas");
 
 const DAY_IN_MILISECONDS = 86400000;
 
@@ -231,7 +232,9 @@ exports.GetCars = async (formulario, token) => {
             "isOk": false,
             "data": [],
             "errorFormulario": "error_formulario1",
-            "diasEntreRecogidaDevolucion": undefined
+            "diasEntreRecogidaDevolucion": undefined,
+            "precio_sillas": logicGetReservas.PRECIO_SILLA_UNIDAD,
+            "precio_booster": logicGetReservas.PRECIO_BOOSTER_UNIDAD
         });
 
     }
@@ -241,7 +244,9 @@ exports.GetCars = async (formulario, token) => {
             "isOk": true,
             "data": [],
             "errorFormulario": "error_formulario2",
-            "diasEntreRecogidaDevolucion": undefined
+            "diasEntreRecogidaDevolucion": undefined,
+            "precio_sillas": logicGetReservas.PRECIO_SILLA_UNIDAD,
+            "precio_booster": logicGetReservas.PRECIO_BOOSTER_UNIDAD
         });
     }
 
@@ -263,8 +268,8 @@ exports.GetCars = async (formulario, token) => {
 
 
 
+    let datosDevueltos = {};
 
-    let datosDevueltos = { };
     if (resultadosObjetoCoches.isOk === false) {
 
         console.error(`|- ${resultadosObjetoCoches.errorFormulario}`);
@@ -272,7 +277,9 @@ exports.GetCars = async (formulario, token) => {
             "isOk": false,
             "data": [],
             "errorFormulario": resultadosObjetoCoches.errorFormulario,
-            "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion
+            "diasEntreRecogidaDevolucion": resultadosObjetoCoches.diasEntreRecogidaDevolucion,
+            "precio_sillas": logicGetReservas.PRECIO_SILLA_UNIDAD,
+            "precio_booster": logicGetReservas.PRECIO_BOOSTER_UNIDAD
         };
     }
     else {
@@ -286,7 +293,8 @@ exports.GetCars = async (formulario, token) => {
             "suplementotipochofer_base": cochesPreciosRaw.datosSuplementoTipoChofer.resultados,
             "preciosPorClase": cochesPreciosRaw.preciosPorClase,
             "condicionesgenerales": cochesPreciosRaw.condicionesgenerales.resultados,
-
+            "precio_sillas": logicGetReservas.PRECIO_SILLA_UNIDAD,
+            "precio_booster": logicGetReservas.PRECIO_BOOSTER_UNIDAD
         };
 
     }
@@ -298,7 +306,7 @@ exports.GetCars = async (formulario, token) => {
 
 const GetCarsByReservado = async (formulario) => {
 
-    const filtrado = await GenerarParametros(false, formulario.conductor_con_experiencia);
+    const filtrado = await GenerarParametros(false, formulario);
     const datosVehiculos = await dbInterfaces.GetCarsByReservado(filtrado);
 
 
@@ -327,8 +335,7 @@ const GetCarsByReservado = async (formulario) => {
     }
 
     datosVehiculos["datosSuplementoGenerico"] = datosSuplementoGenerico;
-
-
+    
     const tiposClases = await dbInterfaces.GetTiposClases();
 
     if (tiposClases.isOk === false) {
@@ -337,18 +344,45 @@ const GetCarsByReservado = async (formulario) => {
         return { isOk: false, resultados: undefined, errores: error };
     }
 
-    const preciosPorClase = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados);
+    const [rangoFechaInicio, temporadaFechaRecogida] = await this.FechaSuperpuesta(formulario.fechaRecogida);
+    const [rangoFechaFin, temporadaFechaDevolucion] = await this.FechaSuperpuesta(formulario.fechaDevolucion);
 
-    if (preciosPorClase.isOk === false) {
+    
+    let preciosPorClase = [];
+    let listadoDiasTemporada = [];
+    if ((rangoFechaInicio === rangoFechaFin) || ((rangoFechaInicio === 10 || rangoFechaInicio === 11) && rangoFechaFin === 1))
+    {
+        const precios = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados, temporadaFechaRecogida);
+        preciosPorClase.push(precios);
+    }
+    else
+    {
+        listadoDiasTemporada = await this.CalcularTemporadaSegmentada(
+            formulario.fechaRecogida, 
+            formulario.fechaDevolucion,
+            rangoFechaInicio,
+            rangoFechaFin
+        );
+
+        for (let i = 0; i < listadoDiasTemporada.length; i++)
+        {
+            const precios = await dbInterfaces.GetPreciosPorClase(tiposClases.resultados, listadoDiasTemporada[i].temporadaFechaInicio);
+            preciosPorClase.push(precios);
+
+        }
+
+    }
+
+    if (preciosPorClase.length === 0) {
         const error = `| - NO hay collecion preciosporclase `;
         console.error(error);
         return { isOk: false, resultados: undefined, errores: error };
     }
 
     //TODO: mejorar estatico
-    const transformadosPreciosPorClase = await TransformarPreciosPorClase(preciosPorClase.resultados);
+    const transformadosPreciosPorClase = await this.TransformarPreciosPorClase(preciosPorClase, listadoDiasTemporada);
 
-    if (transformadosPreciosPorClase === undefined || transformadosPreciosPorClase === {}) {
+    if (transformadosPreciosPorClase === undefined) {
         const error = `| - Transformacion no posible en preciosporclase `;
         console.error(error);
         return { isOk: false, resultados: undefined, errores: error };
@@ -366,38 +400,437 @@ const GetCarsByReservado = async (formulario) => {
 
 };
 
-// funcion donde genera el objeto para filtrar en la db
-const GenerarParametros = async (reservado, conductor_con_experiencia) => {
 
-    if (conductor_con_experiencia === "on") {
-        return { "reservado": reservado };
+exports.ConversionTextoAFecha = async (textoFecha) =>
+{
+
+    if (textoFecha === undefined) return;
+
+    if (textoFecha.toString().indexOf("T") > 1) {
+
+        let fechaSplitted = textoFecha.split("T")[0];
+        fechaSplitted = fechaSplitted.split("-");
+
+        const anyo = fechaSplitted[0] - 0;
+        const mes = fechaSplitted[1] - 1;
+        const dia = fechaSplitted[2] - 0;
+
+        textoFecha = new Date(anyo, mes, dia);
+
     }
     else {
-        return {
-            "reservado": reservado,
-        };
+
+        const fechaSplitted = textoFecha.split("-");
+
+        const dia = fechaSplitted[0] - 0;
+        const mes = fechaSplitted[1] - 1;
+        const anyo = fechaSplitted[2] - 0;
+
+        textoFecha = new Date(anyo, mes, dia);
+
     }
+
+    let isValidDate = Date.parse(textoFecha);
+
+    if (isNaN(isValidDate) === true) {
+        console.log("textoFechaRecogida" + textoFecha);
+    }
+
+    return textoFecha;
 
 };
 
-const TransformarPreciosPorClase = async (preciosPorClase) => {
+exports.CalcularTemporada = async (textoFechaRecogida) =>
+{
+    if (textoFechaRecogida === undefined) return;
+    textoFechaRecogida = await this.ConversionTextoAFecha(textoFechaRecogida);
+    
+    const fechaRecogida = new Date(textoFechaRecogida);
 
-    let schema = {};
+    const temporada = await SwitchTemporada(fechaRecogida);
+    return temporada;
 
-    for (let i = 0; i < preciosPorClase.length; i++) {
+};
 
-        const key = preciosPorClase[i]["CLASE"];
+const SwitchTemporada = async (fecha) =>
+{
+    let temporada = "3";
 
-        let arrayPrecios = [];
+    switch (fecha.getMonth()) {
+        case 0: // enero
+        case 1: // febrero
+        case 2: // marzo
+            temporada = "1";
+            break;
+        case 3: // abril
+        case 4: // mayo
+            temporada = "2";
+            break;
+        case 5: // junio
+            if (fecha.getDate() >= 1 && fecha.getDate() <= 15) {
+                temporada = "2";
+            }
+            else {
+                temporada = "3";
+            }
+            break;
+        case 6: // julio
+            temporada = "3";
+            break;
+        case 7: // agosto
+            temporada = "3";
+            break;
+        case 8: // septiembre
+            if (fecha.getDate() >= 1 && fecha.getDate() <= 15) {
+                temporada = "3";
+            }
+            else {
+                temporada = "2";
+            }
+            break;
+        case 9: // octubre
+            temporada = "2";
+            break;
+        case 10: // noviembre
+            temporada = "1";
+            break;
+        case 11: // diciembre
+            temporada = "1";
+            break;
+        default:
+            temporada = "3";
+            break;
+    }
 
-        for (let key in preciosPorClase[i]) {
-            if (key === "CLASE") continue;
-            const valorPrecio = preciosPorClase[i][key];
-            arrayPrecios.push(valorPrecio);
+    return temporada;
+
+}
+
+exports.CalcularTemporadaSegmentada = async (textoFechaRecogida, textoFechaDevolucion, rangoFechaInicio, rangoFechaFin) =>
+{
+
+    if (textoFechaRecogida === undefined || textoFechaDevolucion === undefined) return;
+
+    textoFechaRecogida = await this.ConversionTextoAFecha(textoFechaRecogida);
+    let fechaRecogida = new Date(textoFechaRecogida);
+    fechaRecogida.setHours(0, 0, 0, 0);
+
+    textoFechaDevolucion = await this.ConversionTextoAFecha(textoFechaDevolucion);
+    let fechaDevolucion = new Date(textoFechaDevolucion);
+    fechaDevolucion.setHours(0, 0, 0, 0);
+    
+    const yearRecogida = fechaRecogida.getFullYear();
+    const yearDevolucion = fechaDevolucion.getFullYear();
+
+    if (yearDevolucion !== yearRecogida)
+    {
+        //TODO: mejorarlo para años diferentes
+        console.log("años diferentes");
+    }
+    
+    let listadoTemporadaDias = [];
+
+    const pivotPoints = await DiasFinalesMeses(yearRecogida, yearDevolucion);
+
+    for (let i = 0; i < pivotPoints.length; i++)
+    {
+        let fechaFin = pivotPoints[i]["fin"];
+        let fechaInicio = pivotPoints[i]["inicio"];
+        
+        // (StartDate1 <= EndDate2) and(EndDate1 >= StartDate2)
+        if (((fechaRecogida <= fechaFin) && (fechaDevolucion >= fechaInicio)) === false)
+        {
+            continue;
+        }
+
+        if (fechaFin >= fechaDevolucion)
+        {
+
+            // zona de corte final
+            let diasEntreFechas = 0;
+            if (fechaInicio <= fechaRecogida)
+            {
+                const temporadaFechaInicio = await SwitchTemporada(fechaRecogida); //fechaInicio
+                const temporadaFechaFin = await SwitchTemporada(fechaDevolucion);
+    
+                if (temporadaFechaInicio !== temporadaFechaFin)
+                {
+                    //// enviar de nuevo
+                    continue;
+                }
+    
+                diasEntreFechas = await this.CalcularDiasEntrePivotes(
+                    fechaRecogida,
+                    fechaDevolucion,
+                );
+
+                listadoTemporadaDias.push(
+                    {
+                        "fechaInicio": fechaRecogida,
+                        "fechaFin": fechaDevolucion,
+                        "diasEntreFechas": diasEntreFechas,
+                        "temporadaFechaInicio": temporadaFechaInicio,
+                        "temporadaFechaFin": temporadaFechaFin
+                    });
+
+
+            }
+            else
+            {
+                const temporadaFechaInicio = await SwitchTemporada(fechaInicio); //
+                const temporadaFechaFin = await SwitchTemporada(fechaDevolucion);
+
+                if (temporadaFechaInicio !== temporadaFechaFin) {
+                    //// enviar de nuevo
+                    continue;
+                }
+
+                diasEntreFechas = await this.CalcularDiasEntrePivotes(
+                    fechaInicio,
+                    fechaDevolucion,
+                );
+                listadoTemporadaDias.push(
+                    {
+                        "fechaInicio": fechaInicio,
+                        "fechaFin": fechaDevolucion,
+                        "diasEntreFechas": diasEntreFechas,
+                        "temporadaFechaInicio": temporadaFechaInicio,
+                        "temporadaFechaFin": temporadaFechaFin
+                    });
+            }
+            
+
+
+        }
+        else
+        {
+
+            //zona de corte entremedio
+
+            let diasEntreFechas = 0;
+            if (fechaInicio <= fechaRecogida)
+            {
+                diasEntreFechas = await this.CalcularDiasEntrePivotes(
+                    fechaRecogida,
+                    fechaFin
+                );
+                
+                const temporadaFechaInicio = await SwitchTemporada(fechaRecogida);
+                const temporadaFechaFin = await SwitchTemporada(fechaFin);
+
+                listadoTemporadaDias.push(
+                    {
+                        "fechaInicio": fechaRecogida,
+                        "fechaFin": fechaFin,
+                        "diasEntreFechas": diasEntreFechas,
+                        "temporadaFechaInicio": temporadaFechaInicio,
+                        "temporadaFechaFin": temporadaFechaFin
+                    });
+
+            }
+            else
+            {
+                
+                diasEntreFechas = await this.CalcularDiasEntrePivotes(
+                    fechaInicio,
+                    fechaFin
+                    );
+
+                const temporadaFechaInicio = await SwitchTemporada(fechaInicio);
+                const temporadaFechaFin = await SwitchTemporada(fechaFin);
+                
+                listadoTemporadaDias.push(
+                {
+                    "fechaInicio": fechaInicio,
+                    "fechaFin": fechaFin,
+                    "diasEntreFechas": diasEntreFechas,
+                    "temporadaFechaInicio": temporadaFechaInicio,
+                    "temporadaFechaFin": temporadaFechaFin
+                });
+            }
 
         }
 
-        schema[key] = arrayPrecios;
+    }
+
+    return listadoTemporadaDias;
+
+};
+
+
+const DiasFinalesMeses = async (yearRecogida, yearDevolucion) =>
+{
+
+    const matriz = [];
+    for (let yearCurrent = yearRecogida; yearCurrent <= yearDevolucion; yearCurrent++)
+    {
+
+        let diaFinalRango1 = new Date(yearCurrent, 3, 1);
+        diaFinalRango1.setDate(diaFinalRango1.getDate() - 1);
+        
+        let diaFinalRango2 = new Date(yearCurrent, 5, 15);
+        let diaFinalRango3 = new Date(yearCurrent, 8, 15);
+    
+        let diaFinalRango4 = new Date(yearCurrent, 10, 1);
+        diaFinalRango4.setDate(diaFinalRango4.getDate() - 1);
+    
+        let diaFinalRango5 = new Date(yearCurrent + 1, 0, 1);
+        diaFinalRango5.setDate(diaFinalRango5.getDate() - 1);
+    
+        let diaInicioRango1 = new Date(yearCurrent, 0, 1);
+        let diaInicioRango2 = new Date(yearCurrent, 3, 1);
+        let diaInicioRango3 = new Date(yearCurrent, 5, 16);
+        let diaInicioRango4 = new Date(yearCurrent, 8, 16);
+        let diaInicioRango5 = new Date(yearCurrent, 10, 1);
+        
+        diaFinalRango1.setHours(0, 0, 0, 0);
+        diaFinalRango2.setHours(0, 0, 0, 0);
+        diaFinalRango3.setHours(0, 0, 0, 0);
+        diaFinalRango4.setHours(0, 0, 0, 0);
+        diaFinalRango5.setHours(0, 0, 0, 0);
+    
+        diaInicioRango1.setHours(0, 0, 0, 0);
+        diaInicioRango2.setHours(0, 0, 0, 0);
+        diaInicioRango3.setHours(0, 0, 0, 0);
+        diaInicioRango4.setHours(0, 0, 0, 0);
+        diaInicioRango5.setHours(0, 0, 0, 0);
+    
+        matriz.push(
+            { "inicio": diaInicioRango1, "fin": diaFinalRango1 }, 
+            { "inicio": diaInicioRango2, "fin": diaFinalRango2 },
+            { "inicio": diaInicioRango3, "fin": diaFinalRango3 },
+            { "inicio": diaInicioRango4, "fin": diaFinalRango4 },
+            { "inicio": diaInicioRango5, "fin": diaFinalRango5 },
+        );
+
+    }
+
+    return matriz;
+
+};
+
+exports.CalcularDiasEntrePivotes = async (fechaInicio, fechaFin) =>
+{
+
+    let diferenciaFechas = fechaFin.getTime() - fechaInicio.getTime();
+    let diasEntreFechas = (Math.round(diferenciaFechas / 86400000)) + 1;
+
+    return diasEntreFechas;
+}
+
+
+exports.FechaSuperpuesta = async (fecha) =>
+{
+    if (fecha === undefined) return [undefined, undefined];
+
+    fecha = await this.ConversionTextoAFecha(fecha);
+    let rango = [-1,"-1"];
+
+    switch (fecha.getMonth()) {
+        case 0: // enero
+        case 1: // febrero
+        case 2: // marzo
+            rango = [1, "1"] ;
+            break;
+        case 3: // abril
+        case 4: // mayo
+            rango = [2, "2"];
+            break;
+        case 5: // junio
+            if (fecha.getDate() >= 1 && fecha.getDate() <= 15) {
+                rango = [3, "2"];
+            }
+            else {
+                rango = [4, "3"];
+            }
+            break;
+        case 6: // julio
+            rango = [5, "3"];
+            break;
+        case 7: // agosto
+            rango = [6, "3"];
+            break;
+        case 8: // septiembre
+            if (fecha.getDate() >= 1 && fecha.getDate() <= 15) {
+                rango = [7, "3"];
+            }
+            else {
+                rango = [8, "2"];
+            }
+            break;
+        case 9: // octubre
+            rango = [9, "2"];
+            break;
+        case 10: // noviembre
+            rango = [10, "1"];
+            break;
+        case 11: // diciembre
+            rango = [11, "1"];
+            break;
+        default:
+            rango = [-1, "-1"];
+            break;
+    }
+
+    return rango;
+
+};
+
+// funcion donde genera el objeto para filtrar en la db
+const GenerarParametros = async (reservado, formulario) => {
+
+    let dato = { "reservado": reservado };
+    return dato;
+
+};
+
+exports.TransformarPreciosPorClase = async (preciosPorClase, listadoDiasTemporada) => {
+
+    let schema = { };
+
+    for (let i = 0; i < preciosPorClase.length; i++) 
+    {
+
+        if (preciosPorClase[i].resultados.length <= 0)
+        {
+            break;
+        }
+
+        const temporada = preciosPorClase[i].resultados[0]["TEMPORADA"];
+        
+        let elementos = {};
+
+        for (let j = 0; j < preciosPorClase[i].resultados.length; j++)
+        {
+
+            const keyClase = preciosPorClase[i].resultados[j]["CLASE"];
+    
+            let arrayPrecios = [];
+    
+            for (let key in preciosPorClase[i].resultados[j])
+            {
+                if (key === "CLASE") continue;
+                const valorPrecio = preciosPorClase[i].resultados[j][key];
+                arrayPrecios.push(valorPrecio);
+    
+            }
+    
+            elementos[keyClase] = arrayPrecios;
+
+        }
+
+        for (let o = 0; o < listadoDiasTemporada.length; o++) 
+        {
+
+            if (listadoDiasTemporada[o].temporadaFechaInicio.toString() === preciosPorClase[i].resultados[0]["TEMPORADA"].toString())
+            {
+                elementos["dias"] = listadoDiasTemporada[o].diasEntreFechas;
+            }
+            
+            
+        }
+
+        schema[temporada] = elementos;
 
     }
 
@@ -405,6 +838,54 @@ const TransformarPreciosPorClase = async (preciosPorClase) => {
 
 
 };
+
+exports.TransformarPreciosPorUnicaClase = async (preciosPorClase, listadoDiasTemporada) => {
+
+    let schema = {};
+
+    for (let i = 0; i < preciosPorClase.length; i++) {
+
+        if (preciosPorClase[i].resultados.length <= 0) {
+            break;
+        }
+
+        const temporada = preciosPorClase[i].resultados["TEMPORADA"];
+        const keyClase = preciosPorClase[i].resultados["CLASE"];
+
+        let elementos = {};
+        let arrayPrecios = [];
+
+        for (let key in preciosPorClase[i].resultados) {
+            if (key === "CLASE") continue;
+            const valorPrecio = preciosPorClase[i].resultados[key];
+            arrayPrecios.push(valorPrecio);
+
+        }
+        elementos[keyClase] = arrayPrecios;
+
+        
+        for (let o = 0; o < listadoDiasTemporada.length; o++) {
+
+            if (listadoDiasTemporada[o].temporadaFechaInicio.toString() === preciosPorClase[i].resultados["TEMPORADA"].toString()) {
+                elementos["dias"] = listadoDiasTemporada[o].diasEntreFechas;
+            }
+
+        }
+
+        schema[temporada] = elementos;
+
+    }
+
+    return schema;
+
+
+};
+
+
+
+
+
+
 //--
 
 const CheckResultadosCoches = async (
@@ -423,30 +904,47 @@ const CheckResultadosCoches = async (
         //comprobar los dias de reserva, si es mayor a 7 dias, aplicar PRECIOMAS7 * DIAS
         const claseVehiculo = resultadosCoches[i].clasevehiculo;
         const porcentaje = porcentajeTipoVehiculo[claseVehiculo];
-
-        //si no existe la clase
-        if (!preciosPorClase[claseVehiculo]) {
-            console.error(`resultadoscoche ${resultadosCoches[i]} clasevehiculo ${claseVehiculo}`);
-            continue;
-        }
-
-        const listadoPrecios = preciosPorClase[claseVehiculo];
+        let saltar = false;
 
         let precioDiaPorClase = 0;
         let precioTotalDias = 0;
-        let precioDiaSinDescuento = listadoPrecios[1];
+        let precioDiaSinDescuento = 0;
+        
+        for (const keyPrecioPorTemporada in preciosPorClase)
+        {
+            if (!preciosPorClase[keyPrecioPorTemporada][claseVehiculo])
+            {
+                // console.error(`resultadoscoche ${resultadosCoches[i]} clasevehiculo ${claseVehiculo}`);
+                saltar = true;
+                break;
+            }
+            
+            const listadoPrecios = preciosPorClase[keyPrecioPorTemporada][claseVehiculo];
+            precioDiaSinDescuento = listadoPrecios[2]; ///////--------------
+            let numeroDias = numeroDiasRecogidaDevolucion;
 
-        if (numeroDiasRecogidaDevolucion > 7) {
-            precioDiaPorClase = listadoPrecios[listadoPrecios.length - 1];
-            precioTotalDias = precioDiaPorClase * numeroDiasRecogidaDevolucion;
+            if ("dias" in preciosPorClase[keyPrecioPorTemporada] === true)
+            {
+                numeroDias = preciosPorClase[keyPrecioPorTemporada]["dias"] - 0;
+            }
+            
+            if (numeroDias > 7) {
+                precioDiaPorClase = listadoPrecios[listadoPrecios.length - 1];
+                precioTotalDias += precioDiaPorClase * numeroDias;
+    
+            }
+            else {
+                precioDiaPorClase = listadoPrecios[2]; /////////////---------
+                precioTotalDias += listadoPrecios[numeroDias + 1];
+    
+            }
 
         }
-        else {
-            precioDiaPorClase = listadoPrecios[1];
-            precioTotalDias = listadoPrecios[numeroDiasRecogidaDevolucion];
 
+        if (saltar === true)
+        {
+            continue;
         }
-
 
         resultadosCoches[i]["preciototaldias"] = precioTotalDias;
 
@@ -538,6 +1036,8 @@ const TransformarResultadosCoche = async (
     };
 
 
+    
+
 };
 
 
@@ -586,7 +1086,8 @@ const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia
 
     if (conductor_con_experiencia === "on" || conductor_con_experiencia === "true")
     {
-        if (claseVehiculo === "motos2") {
+
+        if (claseVehiculo === "motosA" || claseVehiculo === "motosB" || claseVehiculo === "motosC" || claseVehiculo === "motosD") {
             currentTipoChofer = suplementoTipoChofer["choferPlus252Motos"];
         }
         else {
@@ -595,7 +1096,8 @@ const ObtenerListadoTipoChofer = async (claseVehiculo, conductor_con_experiencia
     }
     else
     {
-        if (claseVehiculo === "motos2") {
+
+        if (claseVehiculo === "motosA" || claseVehiculo === "motosB" || claseVehiculo === "motosC" || claseVehiculo === "motosD") {
             currentTipoChofer = suplementoTipoChofer["choferPlusNovelMotos"];
         }
         else {

@@ -130,6 +130,34 @@ exports.GetCarsByReservado = async (filtro) =>
 
 };
 
+exports.GetPrecioBoosterSillas = async () =>
+{
+
+    try {
+
+        const resultados = await collectionHelper.find({ "id": "preciosillasbooster"})
+            .project({ _id: 0 })
+            .toArray();
+
+        if (resultados !== undefined) {
+            return { isOk: true, resultados: resultados[0], errores: "" }
+        }
+        else {
+            const error = `${EnumTiposErrores.SinDatos} Coleccion Cars`;
+            console.error(error);
+            return { isOk: false, resultados: undefined, errores: error };
+        }
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Cars`;
+        console.error(error);
+
+    }
+
+};
+
 exports.GetCarByDescripcion = async (descripcion) =>
 {
 
@@ -163,7 +191,7 @@ exports.GetClaseVehiculosOrdenados = async () =>
 
     try {
 
-        const resultados = await collectionHelper.find({ id: "ordenacion"})
+        const resultados = await collectionHelper.find({ id: "ordenacion_local"})
             .project({ _id: 0 })
             .toArray();
 
@@ -222,7 +250,7 @@ exports.GetAllSuplementosTipoChofer = async () => {
 
     try {
 
-        const resultados = await collectionsupleTipochoferVehiculo.find({"id": "experienciaConductor"})
+        const resultados = await collectionsupleTipochoferVehiculo.find({ "id": "experienciaConductor_local"})
         .project({ _id: 0, id: 0 })
         .toArray();
 
@@ -284,7 +312,7 @@ exports.GetTiposClases = async () =>
     {
         const tiposClases = await collectionHelper.find(
             {
-                "id": "clases"
+                "id": "clases_local"
             }
         )
         .project({ _id: 0 })
@@ -308,12 +336,13 @@ exports.GetTiposClases = async () =>
     }
 };
 //TODO: ahora recoge en collectionPRecios, pero hay un array optimizado para los precios modificar
-exports.GetPreciosPorClase = async (tiposClases) =>
+exports.GetPreciosPorClase = async (tiposClases, temporada) =>
 {
     try {
         
         const resultados = await collectionPrecios.find(
             {
+                "TEMPORADA": temporada,
                 "CLASE": { $in: tiposClases }
             }
         ).project({_id: 0}).toArray();
@@ -335,13 +364,14 @@ exports.GetPreciosPorClase = async (tiposClases) =>
 
 };
 
-exports.GetPreciosUnicaClase = async (tipoClase) =>
+exports.GetPreciosUnicaClase = async (tipoClase, temporada) =>
 {
 
     try {
 
         const resultados = await collectionPrecios.find(
             {
+                "TEMPORADA": temporada,
                 "CLASE": tipoClase
             }
         ).project({ _id: 0 }).toArray();
@@ -646,7 +676,7 @@ exports.NumeroReservasPorDia = async (fechaInicio, fechaFin) =>
 exports.GetPorcentajeTipoVehiculo = async () => 
 {
     try {
-        const datos = await collectionPorcentajeClaseVehiculos.find({ "id": "porcentaje_clase_vehiculos" }).project({ _id: 0, id: 0 }).toArray();
+        const datos = await collectionPorcentajeClaseVehiculos.find({ "id": "porcentaje_clase_vehiculos_local" }).project({ _id: 0, id: 0 }).toArray();
         return datos[0];
 
     } catch (error) {
@@ -676,6 +706,30 @@ exports.ProcesarReserva = async (formulario) =>
         console.error(error);
     }
     
+};
+
+
+exports.FindReservasByLocalizador = async (localizador) =>
+{
+
+    try {
+
+        const resultados = await collectionReservas.find(
+            { "numeroRegistro": localizador },
+        ).project({ _id: 0, id: 0 }).toArray();
+
+        // console.log("resultados actualizacion=" + JSON.stringify(resultados));
+
+        return resultados;
+
+    }
+    catch (err) {
+        //TODO: enviar a otra db error, redis
+        const error = `${err} Coleccion Reservas`;
+        console.error(error);
+    }
+
+
 };
 
 
@@ -908,6 +962,24 @@ exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
 
 };
 
+exports.GetReservasErrores = async () => {
+
+    try {
+        const datos = await collectionReservas
+            .find(
+                {
+                    "resultadoUserEmailSended.cannotSend": false 
+                }).sort("fechaAlta", -1).toArray();
+        return datos;
+
+    }
+    catch (error) {
+        console.log(`error ${error}`);
+    }
+
+};
+
+
 exports.InivisibleReserva = async (_id) =>
 {
 
@@ -929,6 +1001,28 @@ exports.InivisibleReserva = async (_id) =>
     }   
     catch(error)
     {
+        console.log(`error ${_id} ${error}`);
+    } 
+
+};
+
+exports.GetReservasById = async (_id) =>
+{
+
+    try {
+
+        let objectId = ObjectId(_id);
+        const resultados = await collectionReservas.find({ "_id": objectId } ).project({ _id: 0 }).toArray();
+
+        if (resultados?.length === 1)
+        {
+            return resultados[0];
+
+        }
+
+        return null;
+    }
+    catch (error) {
         console.log(`error ${_id} ${error}`);
     } 
 

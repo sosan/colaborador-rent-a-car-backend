@@ -10,10 +10,12 @@ exports.InitServer = async () =>
     const compression = require("compression");
     const userAgent = require("express-useragent");
     
-    const dbInterfaces = require("./database/dbInterfaces");
-
     // --- conexion base de datos
-    dbInterfaces.ConnectDB();
+    const dbInterfaces = require("./database/dbInterfaces");
+    await dbInterfaces.ConnectDB();
+
+    const logicFillVariables = require("./logicinterface/logicFillVariables");
+    await logicFillVariables.RellenarVariables();
     
     const router = require("./routes/routes");
     const cookieParser = require("cookie-parser");

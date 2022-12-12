@@ -47,6 +47,12 @@ exports.GetCarsByReservado = async (filtrado) => {
 
 };
 
+exports.GetPrecioBoosterSillas = async () =>
+{
+    return await mongo_dao.GetPrecioBoosterSillas();
+    
+}
+
 exports.GetCarByDescripcion = async (descripcion) =>
 {
     return await mongo_dao.GetCarByDescripcion(descripcion);
@@ -82,16 +88,16 @@ exports.GetTiposClases = async () => {
 
 };
 
-exports.GetPreciosPorClase = async (tiposClases) => {
+exports.GetPreciosPorClase = async (tiposClases, temporada) => {
 
-    return await mongo_dao.GetPreciosPorClase(tiposClases);
+    return await mongo_dao.GetPreciosPorClase(tiposClases, temporada);
 
 };
 
-exports.GetPreciosUnicaClase = async (tipoClase) =>
+exports.GetPreciosUnicaClase = async (tipoClase, temporada) =>
 {
 
-    return await mongo_dao.GetPreciosUnicaClase(tipoClase);
+    return await mongo_dao.GetPreciosUnicaClase(tipoClase, temporada);
 
 };
 
@@ -150,6 +156,13 @@ exports.ProcesarReserva = async (formulario) => {
 
     return await mongo_dao.ProcesarReserva(formulario);
     
+
+};
+
+exports.FindReservasByLocalizador = async (localizador) =>
+{
+    const resultado = await mongo_dao.FindReservasByLocalizador(localizador);
+    return resultado;
 
 };
 
@@ -251,6 +264,12 @@ exports.MarcarCorreoNewsletterCorrectoIncorrecto = async (correo, validez) =>
 
 }
 
+exports.GetReservasErrores = async () =>
+{
+    return await mongo_dao.GetReservasErrores();
+
+};
+
 
 exports.InivisibleReserva = async (_id) =>
 {
@@ -258,3 +277,9 @@ exports.InivisibleReserva = async (_id) =>
     return await mongo_dao.InivisibleReserva(_id);
 
 };
+
+
+exports.GetReservasById = async (_id) =>
+{
+    return await mongo_dao.GetReservasById(_id);
+}

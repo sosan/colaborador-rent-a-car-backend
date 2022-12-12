@@ -84,8 +84,8 @@ exports.postFormIndex = async (req, res) =>
             return res.send({ "isOk": false, "errorFormulario": "" });
         }
     
-        const resultados = await logicInterface.GetCars(formulario);
-    
+        let resultados = await logicInterface.GetCars(formulario);
+        
         return res.send(resultados);
 
     }

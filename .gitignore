@@ -4,6 +4,7 @@
 # Node
 node_modules/
 .env
+.clinic
 .vscode/
 secrets/
 certificados_locales/

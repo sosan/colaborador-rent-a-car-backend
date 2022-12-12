@@ -10,7 +10,8 @@
     "gkeys": "node encode_envs/generateKeys.js",
     "evars": "node encode_envs/encriptVars.js",
     "test": "jest --detectOpenHandles --testTimeout 60000",
-    "test:api": "jest -i test/anadirestadisticas.spec.js -t --detectOpenHandles --testTimeout 60000"
+    "test:api": "jest -i test/anadirestadisticas.spec.js -t --detectOpenHandles --testTimeout 60000",
+    "clinic": "NODE_ENV=development LOCAL_SECRETS=true clinic doctor --autocannon [ / --method GET ] -- node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -25,28 +26,28 @@
   "homepage": "https://github.com/AlvaroRuizGomez/Colaborador-rent-a-car#readme",
   "dependencies": {
     "base64url": "^3.0.1",
-    "body-parser": "^1.19.1",
+    "body-parser": "^1.19.2",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^9.0.2",
-    "express": "^4.17.2",
+    "express": "^4.17.3",
     "express-rate-limit": "^5.5.1",
     "express-useragent": "^1.0.15",
     "fs": "^0.0.2",
     "helmet": "^4.6.0",
-    "ioredis": "^4.28.2",
+    "ioredis": "^4.28.5",
     "joi": "^17.4.2",
     "mongodb": "^3.7.2",
     "morgan": "^1.10.0",
-    "nanoid": "^3.1.29",
-    "node-fetch": "^3.1.1",
+    "node-fetch": "^3.2.10",
+    "nanoid": "^3.3.0",
     "nodemailer": "^6.7.2",
-    "openpgp": "^5.0.1"
+    "openpgp": "^5.1.0"
   },
   "devDependencies": {
     "jest": "^27.3.1",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.15"
   },
   "bin": "./src/index.js"
 }
