@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.2
+# syntax=docker/dockerfile:1.6
 FROM mhart/alpine-node:16.4.2 as builder
 WORKDIR /usr/src/app
 COPY package*.json ./
